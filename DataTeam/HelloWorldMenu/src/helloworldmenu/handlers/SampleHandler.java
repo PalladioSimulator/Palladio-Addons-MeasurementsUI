@@ -34,15 +34,20 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.util.AllocationResourceFactoryImpl;
+import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.util.RepositoryResourceFactoryImpl;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.resourceenvironment.util.ResourceenvironmentResourceFactoryImpl;
 import org.palladiosimulator.pcm.system.util.SystemResourceFactoryImpl;
+import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.xml.sax.SAXException;
@@ -55,262 +60,89 @@ import org.eclipse.sirius.business.api.session.SessionManager;
 
 public class SampleHandler extends AbstractHandler {
 	
-	
-    private final static String REPOSITORY_EXTENSION = "repository";
-    private final static String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
-    private final static String SYSTEM_EXTENSION = "system";
-    private final static String ALLOCATION_EXTENSION = "allocation";
-	
-	
-	
-	private static final String MODEL_FOLDER = "/ExampleModels/org.palladiosimulator.simulizar.examples.loadbalancer";
 
-    private final static String REPOSITORY_PATH = "/ExampleModels/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository";
-    private final static String RESOURCE_ENVIRONMENT_PATH = "/ExampleModels/org.palladiosimulator.simulizar.examples.loadbalancer/iaas.resourceenvironment";
-    private final static String SYSTEM_PATH = "/ExampleModels/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.system";
-    private final static String ALLOCATION_PATH = "/ExampleModels/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer_on_iaas.allocation";
+	private final String filePath= "/nbvc/representations.aird";
 	
-	  private static final String MONITOR_REPO_PATH = MODEL_FOLDER + "/monitors/server.monitorrepository";
+	private ResourceEnvironment resourceEnvironment;
+	private org.palladiosimulator.pcm.system.System system;
+	private Allocation allocation;
+	private Repository repository;
+	private UsageModel usageModel;
 	
-	   private static URI systemURI;
-	    private static URI resourceEnvironmentURI;
-	    private static URI repositoryURI;
-	    private static URI allocationURI;
-	 private static URI monitorRepoUri;
-	 
+	private MeasuringPointRepository measuringPointRpository;
+	private MonitorRepository monitorRepository;
 	
+	
+	private void checkPcmModel(EObject pcmModel) {
+		
+		if (pcmModel instanceof ResourceEnvironment) {
+			this.resourceEnvironment = (ResourceEnvironment) pcmModel;
+			System.out.println("resource");
+		}
+		if (pcmModel instanceof org.palladiosimulator.pcm.system.System) {
+			this.system = (org.palladiosimulator.pcm.system.System) pcmModel;
+			System.out.println("system");
+		}
+		if (pcmModel instanceof Allocation) {
+			this.allocation = (Allocation) pcmModel;
+			System.out.println("allo");
+		}
+		if (pcmModel instanceof Repository) {
+			this.repository = (Repository) pcmModel;
+			System.out.println(pcmModel.eResource().getURI());
+			
+			System.out.println(((Repository) pcmModel).getEntityName());
+			System.out.println(((Repository) pcmModel).getId());
+			System.out.println("repsoi");
+		}
 
+		if (pcmModel instanceof UsageModel) {
+			this.usageModel = (UsageModel) pcmModel;
+			System.out.println("usage");
+		}
 
+		if (pcmModel instanceof MeasuringPointRepository) {
+			this.measuringPointRpository = (MeasuringPointRepository) pcmModel;
+			System.out.println("MP");
+		}
 
+		if (pcmModel instanceof MonitorRepository) {
+			this.monitorRepository = (MonitorRepository) pcmModel;
+			System.out.println("monitor");
+		}
+	}
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		
 		
+		// test for any available session
+//		for (Session session : SessionManager.INSTANCE.getSessions()) {
+//			System.out.println(session.getID());
+//			for (Resource resource : session.getSemanticResources()) {
+//				System.out.println(resource.getURI());
+//				System.out.println(resource.toString());
+//			}
+//		}
+
+		
+		// create URI and accordingly the session
 		URI sessionResourceURI = URI.createPlatformResourceURI(
-				"/ExampleModels/org.palladiosimulator.simulizar.examples.loadbalancer/representations.aird", true);
-
-		System.out.println("TEst");
-		for (Session session : SessionManager.INSTANCE.getSessions()) {
-			System.out.println(session.getID());
-			for (Resource resource : session.getSemanticResources()) {
-				System.out.println(resource.getURI());
-				System.out.println(resource.toString());
-			}
-		}
-
+				filePath, true);
 		final Session session = SessionManager.INSTANCE.getSession(sessionResourceURI, new NullProgressMonitor());
 		//ModelAccessor access = session.getModelAccessor();
 
 		for (Resource resource : session.getSemanticResources()) {
 
-			System.out.println("URI: " + resource.getURI());
-			for (int i = 0; i < 3; i++) {
-				EObject object = resource.getContents().get(i);
-
-//				ResourceContainer contaienr = (ResourceContainer) object;
-
-				for (EObject object2 : object.eContents()) {
-					System.out.println("toString " + object2.toString());
-					System.out.println("contaienr " + object2.eContainer().toString());
-					System.out.println("resource " + object2.eResource().toString());
-					System.out.println("class " + object2.eClass().getName());
-					System.out.println("class " + object2.eClass().getClassifierID());
-					System.out.println("class " + object2.eClass().getFeatureCount());
-					for (EObject object3 : object2.eContents()) {
-
-//						ProcessingResourceSpecification test = (ProcessingResourceSpecification) object3;
-
-						System.out.println("toString " + object3.toString());
-						System.out.println("contaienr " + object3.eContainer().toString());
-						System.out.println("resource " + object3.eResource().toString());
-						System.out.println("class " + object3.eClass().getName());
-						System.out.println("class " + object3.eClass().getClassifierID());
-						System.out.println("class " + object3.eClass().getFeatureCount());
-
-					}
-				}
+			for (EObject pcmModel: resource.getContents()) {	
+				//System.out.println(pcmModel.eClass().getName());
+				
+				checkPcmModel(pcmModel);
 			}
 		}
 		
 		
-//		
-//		
-//		  Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
-//	                new RepositoryResourceFactoryImpl());
-//	        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
-//	                new ResourceenvironmentResourceFactoryImpl());
-//	        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION,
-//	                new SystemResourceFactoryImpl());
-//	        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
-//	                new AllocationResourceFactoryImpl());
-//	        Map<URI, URI> uriMap = URIConverter.URI_MAP;
-//	        uriMap.put(URI.createURI(" pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec"),
-//	                URI.createURI("platform:/plugin/org.palladiosimulator.metricspec.resources/commonMetrics.metricspec"));
-//		
-//		
-//		 repositoryURI = URI.createURI(REPOSITORY_PATH, true);
-//		 System.out.println(repositoryURI);
-//		 
-//	        repositoryURI = CommonPlugin.resolve(repositoryURI);
-//	        
-//	        System.out.println(repositoryURI);
-//	        
-//	        resourceEnvironmentURI = URI.createURI(RESOURCE_ENVIRONMENT_PATH, true);
-//	        resourceEnvironmentURI = CommonPlugin.resolve(resourceEnvironmentURI);
-//	        systemURI = URI.createURI(SYSTEM_PATH, true);
-//	        systemURI = CommonPlugin.resolve(systemURI);
-//	        allocationURI = URI.createURI(ALLOCATION_PATH, true);
-//	        allocationURI = CommonPlugin.resolve(allocationURI);
-//	     
-//		
-//		 monitorRepoUri = URI.createURI(MONITOR_REPO_PATH, true);
-//		 monitorRepoUri = CommonPlugin.resolve(monitorRepoUri);
-//		 
-//		 final PCMResourceSetPartition pcmResourceSet = new PCMResourceSetPartition();
-//	        pcmResourceSet.loadModel(repositoryURI);
-//	        pcmResourceSet.loadModel(resourceEnvironmentURI);
-//	        pcmResourceSet.loadModel(systemURI);
-//	        pcmResourceSet.loadModel(allocationURI);
-//	        final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getAllocation().eAllContents();
-//	        System.out.println("SIZEE: " + pcmResourceSet.getRepositories().size());
-//	        EObject monitoredElement = null;
-//	        while (pcmModelIterator.hasNext()) {
-//	            final EObject element = pcmModelIterator.next();
-//	            final EAttribute id = element.eClass().getEIDAttribute();
-//	           
-//	            
-//	           System.out.println(element.eContainingFeature());
-//	        }
-//
-//	        /*
-//	         * Put the PCM model into the MDSD blackboard.
-//	         */
-//	        final MDSDBlackboard blackboard = new MDSDBlackboard();
-//	        blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
-//	        final IModelAccess modelAccess = new ModelAccess(blackboard);
-//	        
-//	        //System.out.println(modelAccess.getMonitorRepositoryModel().getMonitors().get(0).getEntityName());
-//			return null;
-//	
-//	
-	
-//	private static final String UTF8_ENCODING = "UTF-8";
-//	private static final String ELEMENT_ID_PREFIX = "platform:/resource";
-//	private static final String REPOSITORY_FILE_EXTENSION = ".repository#";
-//	public static final String MEASURING_POINT_FILE_EXTENSION = ".measuringpoint";
-//	
-//	private static Set<String> getMonitoredElementsForMeasuringPoints(IProject[] projects)
-//			throws ParserConfigurationException, SAXException, IOException, TransformerException, CoreException {
-//		Map<String, IProject> map = new HashMap<>();
-//		for (IProject project : projects) {
-//			if (project.isOpen())
-//				project.accept(new ResourceURIsFromSAsExtractor(map), IResource.DEPTH_INFINITE, true);
-//		}
-//		return map.keySet();
-//	}
-//	
-//	private static String getMeasuringPointName(String resourceURI) {
-//		String fileName = resourceURI.replace(ELEMENT_ID_PREFIX, ""); //$NON-NLS-2$
-//		fileName = fileName.replace(REPOSITORY_FILE_EXTENSION, ""); //$NON-NLS-2$
-//		fileName = fileName + MEASURING_POINT_FILE_EXTENSION;
-//		//fileName = "/Pets.com/PetsMeasuringPoint.measuringpoint";
-//		return fileName;
-//	}
-//
-//	@Override
-//	public Object execute(ExecutionEvent event) throws ExecutionException {
-//		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-//		MessageDialog.openInformation(
-//				window.getShell(),
-//				"HelloWorldMenu",
-//				"Hello, Eclipse world");
-//		
-//		System.out.println("Test123");
-//		
-//
-//		// Get the root of the workspace
-//				IWorkspace workspace = ResourcesPlugin.getWorkspace();
-//				IWorkspaceRoot root = workspace.getRoot();
-//				// Get all projects in the workspace
-//				IProject[] projects = root.getProjects();
-//				// Loop over all projects
-//				for (IProject project : projects) {
-//					System.out.println(project.getName());
-//					IResource test = project.findMember("PetsMeasuringPoint.measuringpoint");
-//					IResource test2 =  project.getFolder("monitors");
-//
-//					if(test2!= null)
-//						System.out.println(test2.getName());
-//					
-//					
-//					if(test!= null)
-//						
-//						System.out.println(test.getName());
-//				}
-//				
-//				
-//				
-//				System.out.println("HAIODLAWKDAWD");
-//		
-//				Set<String> newResourceURIs;
-//
-//				try {
-////					newResourceURIs = getMonitoredElementsForMeasuringPoints(projects);
-////					Iterator iter = newResourceURIs.iterator();
-////					Object first = iter.next();
-////					String resourceURI = (String) first;
-//			
-//				
-//				
-//				final ResourceSet resourceSet = new ResourceSetImpl();
-//
-//				// Get the URI of the model file.
-//				//
-////				String fileName = getMeasuringPointName(resourceURI);
-////				final URI fileURI = URI.createPlatformResourceURI(fileName, true);
-//
-//				// Create a resource for this file.
-//				//
-////				final Resource resource = resourceSet.createResource(fileURI);
-//
-//				// Add the initial model object to the contents.
-//				MeasuringpointPackage measuringpointPackage = MeasuringpointPackage.eINSTANCE;
-//				MeasuringpointFactory measuringpointFactory = measuringpointPackage.getMeasuringpointFactory();
-//
-//				EClass measuringPoint = measuringpointPackage.getResourceURIMeasuringPoint();
-//
-//				final EObject rootObject = measuringpointFactory.create(measuringPoint);
-//				EAttribute resourceURIAttribute = measuringpointPackage.getResourceURIMeasuringPoint_ResourceURI();
-////				rootObject.eSet(resourceURIAttribute, resourceURI);
-//				
-//
-//				System.out.println("HELLLO!!!!!");
-//				System.out.println("HELLLO!!!!!");
-//				System.out.println("HELLLO!!!!!");
-//				System.out.println("HELLLO!!!!!");
-//				System.out.println("HELLLO!!!!!");
-//				
-//				if (rootObject != null) {
-////					resource.getContents().add(rootObject);
-//					System.out.println(rootObject.toString());
-//					
-//				}
-//
-//				// Save the contents of the resource to the file system.
-//				final Map<Object, Object> options = new HashMap<Object, Object>();
-//				options.put(XMLResource.OPTION_ENCODING, UTF8_ENCODING);
-////				resource.save(options);
-//				
-////				} catch (IOException | ParserConfigurationException | SAXException | TransformerException | CoreException e) {
-//					// TODO Auto-generated catch block
-////					e.printStackTrace();
-//				}
-//				
-//				finally {
-//					
-//				}
-//				
+			
 		return null;
 	}
 }
