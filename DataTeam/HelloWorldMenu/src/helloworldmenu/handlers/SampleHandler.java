@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -31,6 +32,7 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
@@ -54,6 +56,7 @@ import org.xml.sax.SAXException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 
@@ -113,31 +116,10 @@ public class SampleHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+
+//		getAirdFile(getCurrentSelectedProject());
+		System.out.println(getAirdFile(getCurrentSelectedProject().toString()));
 		
-		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-		IProject [] wsProjects = wsRoot.getProjects();
-		for (IProject project : wsProjects) {
-			System.out.println("Project :"+project.getName());
-			try {
-				IResource [] allMembers = project.members();
-				for( IResource oneMember : allMembers) {
-					System.out.println("Member: "+oneMember.getName());
-					System.out.println("Extension : "+oneMember.getFileExtension());
-					try {
-						if( oneMember.getFileExtension().equals("aird")) {
-							System.out.println("Path of aird File: "+ oneMember.getFullPath());
-							System.out.println("URI of aird File: "+ oneMember.getLocationURI().toString());
-						}
-					} catch (NullPointerException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			} catch (CoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 		
 		// test for any available session
 //		for (Session session : SessionManager.INSTANCE.getSessions()) {
@@ -150,22 +132,88 @@ public class SampleHandler extends AbstractHandler {
 
 		
 		// create URI and accordingly the session
-		URI sessionResourceURI = URI.createPlatformResourceURI(
-				filePath, true);
-		final Session session = SessionManager.INSTANCE.getSession(sessionResourceURI, new NullProgressMonitor());
-		//ModelAccessor access = session.getModelAccessor();
-
-		for (Resource resource : session.getSemanticResources()) {
-
-			for (EObject pcmModel: resource.getContents()) {	
-				//System.out.println(pcmModel.eClass().getName());
-				
-				checkPcmModel(pcmModel);
-			}
-		}
+//		URI sessionResourceURI = URI.createPlatformResourceURI(
+//				filePath, true);
+//		final Session session = SessionManager.INSTANCE.getSession(sessionResourceURI, new NullProgressMonitor());
+//		//ModelAccessor access = session.getModelAccessor();
+//
+//		for (Resource resource : session.getSemanticResources()) {
+//
+//			for (EObject pcmModel: resource.getContents()) {	
+//				//System.out.println(pcmModel.eClass().getName());
+//				
+//				checkPcmModel(pcmModel);
+//			}
+//		}
 		
 		
 			
+		return null;
+	}
+/**
+ * @author Florian
+ * This method returns the aird file of the project that is currently selected in project explorer
+ * @param selectedProject a String of the base project that is currently selected in the project explorer
+ */
+	private java.net.URI getAirdFile(String selectedProject) {
+		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
+		IProject [] wsProjects = wsRoot.getProjects();
+		for (IProject project : wsProjects) {
+			if(selectedProject != null && project.getName().equals(selectedProject)) {	
+//				System.out.println("Project :"+project.getName());
+				try {
+					IResource [] allMembers = project.members();
+					for( IResource oneMember : allMembers) {
+//						System.out.println("Member: "+oneMember.getName());
+//						System.out.println("Extension : "+oneMember.getFileExtension());
+						try {
+							if( oneMember.getFileExtension().equals("aird")) {
+//								System.out.println("Path of aird File: "+ oneMember.getFullPath());
+//								System.out.println("URI of aird File: "+ oneMember.getLocationURI().toString());
+								return oneMember.getLocationURI();
+							}
+						} catch (NullPointerException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		return null;
+	}
+	/**
+	 * @author Florian
+	 * @return the name of the selected base project
+	 */
+	private String getCurrentSelectedProject() {
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		try {
+			if(window != null) {
+//				System.out.println("Window: "+window.toString());
+				IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
+//				System.out.println("Selection: "+selection.toString());
+				
+				Object firstElement = selection.getFirstElement();
+//				System.out.println("First Element: "+ firstElement.toString());
+				String projectName = firstElement.toString().split("/")[1];
+//				System.out.println("Base Project: "+ projectName);
+				
+//				if(firstElement instanceof IAdaptable) {
+//					IProject project = (IProject)((IAdaptable)firstElement).getAdapter(IProject.class);
+//					System.out.println("Project: "+ project);
+//					
+//				}
+				return projectName;
+			}
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Make sure a project is selected");
+		}
 		return null;
 	}
 }
