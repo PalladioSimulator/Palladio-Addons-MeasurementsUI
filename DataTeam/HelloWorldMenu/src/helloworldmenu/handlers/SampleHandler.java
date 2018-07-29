@@ -1,5 +1,6 @@
 package helloworldmenu.handlers;
 
+import java.awt.Container;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,6 +13,7 @@ import javax.xml.transform.TransformerException;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -46,7 +48,6 @@ import org.palladiosimulator.pcm.system.util.SystemResourceFactoryImpl;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.xml.sax.SAXException;
-
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -78,13 +79,35 @@ public class SampleHandler extends AbstractHandler {
 	    private static URI allocationURI;
 	 private static URI monitorRepoUri;
 	 
-	
-
-
 
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+		
+		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
+		IProject [] wsProjects = wsRoot.getProjects();
+		for (IProject project : wsProjects) {
+			System.out.println("Project :"+project.getName());
+			try {
+				IResource [] allMembers = project.members();
+				for( IResource oneMember : allMembers) {
+					System.out.println("Member: "+oneMember.getName());
+					System.out.println("Extension : "+oneMember.getFileExtension());
+					try {
+						if( oneMember.getFileExtension().equals("aird")) {
+							System.out.println("Path of aird File: "+ oneMember.getFullPath());
+							System.out.println("URI of aird File: "+ oneMember.getLocationURI().toString());
+						}
+					} catch (NullPointerException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		
 		URI sessionResourceURI = URI.createPlatformResourceURI(
