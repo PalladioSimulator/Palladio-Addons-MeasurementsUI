@@ -77,9 +77,11 @@ public class SampleHandler extends AbstractHandler {
 		
 		if (pcmModel instanceof ResourceEnvironment) {
 			this.resourceEnvironment = (ResourceEnvironment) pcmModel;
+			System.out.println("resource");
 		}
 		if (pcmModel instanceof org.palladiosimulator.pcm.system.System) {
 			this.system = (org.palladiosimulator.pcm.system.System) pcmModel;
+			System.out.println("system");
 		}
 		if (pcmModel instanceof Allocation) {
 			this.allocation = (Allocation) pcmModel;
@@ -87,18 +89,26 @@ public class SampleHandler extends AbstractHandler {
 		}
 		if (pcmModel instanceof Repository) {
 			this.repository = (Repository) pcmModel;
+			System.out.println(pcmModel.eResource().getURI());
+			
+			System.out.println(((Repository) pcmModel).getEntityName());
+			System.out.println(((Repository) pcmModel).getId());
+			System.out.println("repsoi");
 		}
 
 		if (pcmModel instanceof UsageModel) {
 			this.usageModel = (UsageModel) pcmModel;
+			System.out.println("usage");
 		}
 
 		if (pcmModel instanceof MeasuringPointRepository) {
 			this.measuringPointRpository = (MeasuringPointRepository) pcmModel;
+			System.out.println("MP");
 		}
 
 		if (pcmModel instanceof MonitorRepository) {
 			this.monitorRepository = (MonitorRepository) pcmModel;
+			System.out.println("monitor");
 		}
 	}
 
