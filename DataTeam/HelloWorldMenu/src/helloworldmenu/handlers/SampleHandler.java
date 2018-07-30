@@ -7,15 +7,15 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 
+
 import dataManipulation.DataEditor;
 import init.StartApplication;
 
 
 
-
 public class SampleHandler extends AbstractHandler {
 
-
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
