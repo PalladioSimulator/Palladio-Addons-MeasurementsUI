@@ -120,28 +120,9 @@ public class SampleHandler extends AbstractHandler {
 
 		if (pcmModel instanceof MonitorRepository) {
 			this.monitorRepository = (MonitorRepository) pcmModel;
-			System.out.println("MonRepoName: "+monitorRepository.getEntityName());
-			doEditing(monitorRepository);
-			System.out.println("MonRepoName: "+monitorRepository.getEntityName());
-			System.out.println("MonitorChildName: "+ monitorRepository.getMonitors().get(0).getEntityName());
 		}
 	}
 
-
-
-	public void doEditing(EObject element) {
-	    // Make sure your element is attached to a resource, otherwise this will return null
-	    TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(element);
-	    domain.getCommandStack().execute(new RecordingCommand(domain) {
-	    
-	        @Override
-	        protected void doExecute() {
-	            // Implement your write operations here,
-	            // for example: set a new name
-	            element.eSet(element.eClass().getEStructuralFeature("Entity Name"), "aNewName");
-	        }
-	    });
-	}
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
