@@ -1,6 +1,7 @@
 package helloworldmenu.handlers;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -55,6 +56,10 @@ import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.xml.sax.SAXException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain; 
+import org.eclipse.emf.transaction.util.TransactionUtil;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.sirius.business.api.session.Session;
@@ -79,15 +84,15 @@ public class SampleHandler extends AbstractHandler {
 		
 		if (pcmModel instanceof ResourceEnvironment) {
 			this.resourceEnvironment = (ResourceEnvironment) pcmModel;
-			System.out.println("resource");
+//			System.out.println("resource");
 		}
 		if (pcmModel instanceof org.palladiosimulator.pcm.system.System) {
 			this.system = (org.palladiosimulator.pcm.system.System) pcmModel;
-			System.out.println("system");
+//			System.out.println("system");
 		}
 		if (pcmModel instanceof Allocation) {
 			this.allocation = (Allocation) pcmModel;
-			System.out.println("allo");
+//			System.out.println("allo");
 		}
 		if (pcmModel instanceof Repository) {
 			
@@ -95,30 +100,49 @@ public class SampleHandler extends AbstractHandler {
 			if(pcmModel.eResource().getURI().toString().split(":")[0].contains("platform")) {
 				this.repository = (Repository) pcmModel;
 				
-				System.out.println(pcmModel.eResource().getURI());
-				
-				System.out.println(((Repository) pcmModel).getEntityName());
-				System.out.println(((Repository) pcmModel).getId());
-				System.out.println("repsoi");
+//				System.out.println(pcmModel.eResource().getURI());
+//				
+//				System.out.println(((Repository) pcmModel).getEntityName());
+//				System.out.println(((Repository) pcmModel).getId());
+//				System.out.println("repsoi");
 			}
 		}
 
 		if (pcmModel instanceof UsageModel) {
 			this.usageModel = (UsageModel) pcmModel;
-			System.out.println("usage");
+//			System.out.println("usage");
 		}
 
 		if (pcmModel instanceof MeasuringPointRepository) {
 			this.measuringPointRpository = (MeasuringPointRepository) pcmModel;
-			System.out.println("MP");
+//			System.out.println("MP");
 		}
 
 		if (pcmModel instanceof MonitorRepository) {
 			this.monitorRepository = (MonitorRepository) pcmModel;
-			System.out.println("monitor");
+			System.out.println("MonRepoName: "+monitorRepository.getEntityName());
+			doEditing(monitorRepository);
+			System.out.println("MonRepoName: "+monitorRepository.getEntityName());
+			System.out.println("MonitorChildName: "+ monitorRepository.getMonitors().get(0).getEntityName());
 		}
 	}
 
+
+
+	public void doEditing(EObject element) {
+	    // Make sure your element is attached to a resource, otherwise this will return null
+	    TransactionalEditingDomain domain = TransactionUtil.getEditingDomain(element);
+	    domain.getCommandStack().execute(new RecordingCommand(domain) {
+	    
+	        @Override
+	        protected void doExecute() {
+	            // Implement your write operations here,
+	            // for example: set a new name
+	            element.eSet(element.eClass().getEStructuralFeature("Entity Name"), "aNewName");
+	        }
+	    });
+	}
+	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
