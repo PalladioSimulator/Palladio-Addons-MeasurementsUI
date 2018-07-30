@@ -90,12 +90,17 @@ public class SampleHandler extends AbstractHandler {
 			System.out.println("allo");
 		}
 		if (pcmModel instanceof Repository) {
-			this.repository = (Repository) pcmModel;
-			System.out.println(pcmModel.eResource().getURI());
 			
-			System.out.println(((Repository) pcmModel).getEntityName());
-			System.out.println(((Repository) pcmModel).getId());
-			System.out.println("repsoi");
+			
+			if(pcmModel.eResource().getURI().toString().split(":")[0].contains("platform")) {
+				this.repository = (Repository) pcmModel;
+				
+				System.out.println(pcmModel.eResource().getURI());
+				
+				System.out.println(((Repository) pcmModel).getEntityName());
+				System.out.println(((Repository) pcmModel).getId());
+				System.out.println("repsoi");
+			}
 		}
 
 		if (pcmModel instanceof UsageModel) {
