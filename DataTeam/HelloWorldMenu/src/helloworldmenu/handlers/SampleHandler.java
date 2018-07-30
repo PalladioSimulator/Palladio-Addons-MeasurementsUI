@@ -16,7 +16,7 @@ public class SampleHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		
-		StartApplication start = new StartApplication();
+		StartApplication start = StartApplication.getInstance();
 		
 		start.startApplication();
 		

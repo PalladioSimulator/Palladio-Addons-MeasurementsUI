@@ -14,28 +14,52 @@ public class StartApplication {
 	private Session session;
 	private URI sessionResourceURI;
 	
-	public StartApplication(){
+	private static StartApplication instance;
+
+
+	private StartApplication () {
 		this.dataGathering = new DataGathering();
 		this.modelAccessor = new ModelAccessor();
+
 	}
-	
+	public static StartApplication getInstance () {
+		if (StartApplication.instance == null) {
+			StartApplication.instance = new StartApplication ();
+		}
+		return StartApplication.instance;
+	}
+
 	public void startApplication() {
 		
 		initializeSessionResourceURI(this.dataGathering.getAirdPath());
 		initializeSession(sessionResourceURI);
 		
-		this.modelAccessor.initializeModels(session);
+		if(session!= null && session.isOpen()) {
+			this.modelAccessor.initializeModels(session);
+		} else {
+			System.out.println("No Models are initiated.Make sure a Session is open.");
+		}
 		
 	}
 	
 	private void initializeSessionResourceURI(String AirdPath) {
-		this.sessionResourceURI = URI.createPlatformResourceURI(
-				dataGathering.getAirdPath(), true);
+		
+		try {
+			this.sessionResourceURI = URI.createPlatformResourceURI(
+					dataGathering.getAirdPath(), true);
+		} catch (NullPointerException e) {
+			System.out.println("Make sure a project in the project explorer is selected");
+		}
 		
 	}
 	
 	private void initializeSession(URI sessionResourceURI) {
-		this.session = SessionManager.INSTANCE.getSession(sessionResourceURI, new NullProgressMonitor());
+		
+		try {
+			this.session = SessionManager.INSTANCE.getSession(sessionResourceURI, new NullProgressMonitor());
+		} catch (Exception e) {
+			System.out.println("MAke sure a Session can be initiated. A valid URI must be present.");
+		}
 	}
 
 	
