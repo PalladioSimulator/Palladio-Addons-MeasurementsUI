@@ -39,6 +39,41 @@ public class ModelAccessor {
 	}
 	
 
+	public List<ResourceEnvironment> getResourceEnvironment() {
+		return resourceEnvironment;
+	}
+
+
+	public List<org.palladiosimulator.pcm.system.System> getSystem() {
+		return system;
+	}
+
+
+	public List<Allocation> getAllocation() {
+		return allocation;
+	}
+
+
+	public List<Repository> getRepository() {
+		return repository;
+	}
+
+
+	public List<UsageModel> getUsageModel() {
+		return usageModel;
+	}
+
+
+	public List<MeasuringPointRepository> getMeasuringPointRpository() {
+		return measuringPointRpository;
+	}
+
+
+	public List<MonitorRepository> getMonitorRepository() {
+		return monitorRepository;
+	}
+
+
 	/**
 	 * Given a sirius session this Method initializes all found pcm Models in the session.
 	 * 
