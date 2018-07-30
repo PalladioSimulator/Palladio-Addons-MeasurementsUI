@@ -118,7 +118,9 @@ public class SampleHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 //		getAirdFile(getCurrentSelectedProject());
-		System.out.println(getAirdFile(getCurrentSelectedProject().toString()));
+		System.out.println("Path: "+getAirdFile(getCurrentSelectedProject().toString()));
+		String path = "/"+getAirdFile(getCurrentSelectedProject().toString());
+		
 		
 		
 		// test for any available session
@@ -132,19 +134,19 @@ public class SampleHandler extends AbstractHandler {
 
 		
 		// create URI and accordingly the session
-//		URI sessionResourceURI = URI.createPlatformResourceURI(
-//				filePath, true);
-//		final Session session = SessionManager.INSTANCE.getSession(sessionResourceURI, new NullProgressMonitor());
-//		//ModelAccessor access = session.getModelAccessor();
-//
-//		for (Resource resource : session.getSemanticResources()) {
-//
-//			for (EObject pcmModel: resource.getContents()) {	
-//				//System.out.println(pcmModel.eClass().getName());
-//				
-//				checkPcmModel(pcmModel);
-//			}
-//		}
+		URI sessionResourceURI = URI.createPlatformResourceURI(
+				path, true);
+		final Session session = SessionManager.INSTANCE.getSession(sessionResourceURI, new NullProgressMonitor());
+		//ModelAccessor access = session.getModelAccessor();
+
+		for (Resource resource : session.getSemanticResources()) {
+
+			for (EObject pcmModel: resource.getContents()) {	
+				//System.out.println(pcmModel.eClass().getName());
+				
+				checkPcmModel(pcmModel);
+			}
+		}
 		
 		
 			
@@ -155,7 +157,7 @@ public class SampleHandler extends AbstractHandler {
  * This method returns the aird file of the project that is currently selected in project explorer
  * @param selectedProject a String of the base project that is currently selected in the project explorer
  */
-	private java.net.URI getAirdFile(String selectedProject) {
+	private String getAirdFile(String selectedProject) {
 		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
 		IProject [] wsProjects = wsRoot.getProjects();
 		for (IProject project : wsProjects) {
@@ -170,7 +172,8 @@ public class SampleHandler extends AbstractHandler {
 							if( oneMember.getFileExtension().equals("aird")) {
 //								System.out.println("Path of aird File: "+ oneMember.getFullPath());
 //								System.out.println("URI of aird File: "+ oneMember.getLocationURI().toString());
-								return oneMember.getLocationURI();
+								
+								return oneMember.getFullPath().toString();
 							}
 						} catch (NullPointerException e) {
 							// TODO Auto-generated catch block
