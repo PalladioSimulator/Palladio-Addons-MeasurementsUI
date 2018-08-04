@@ -1,0 +1,13 @@
+import propertiespage.PropertiespageOnSelectionFormView
+
+/* propertiespage EMF Parsley Dsl Module file */
+module propertiespage {
+	
+	parts {
+		viewpart propertiespage {
+			viewname "Mp Properties Page"
+			viewclass PropertiespageOnSelectionFormView
+		}
+	}
+	
+}

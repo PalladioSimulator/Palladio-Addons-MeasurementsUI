@@ -1,5 +1,6 @@
 package mpview.resource;
 
+import java.io.IOException;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -12,5 +13,11 @@ public class MpviewResourceManager extends ResourceManager {
   public void initialize(final Resource it) {
     EList<EObject> _contents = it.getContents();
     _contents.add(MonitorRepositoryFactory.eINSTANCE);
+  }
+  
+  @Override
+  public boolean save(final Resource it) throws IOException {
+    it.save(null);
+    return true;
   }
 }

@@ -15,6 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  javax.annotation,
  org.eclipse.emf.parsley.common,
  org.eclipse.core.resources
-Import-Package: org.apache.log4j,
- org.apache.commons.logging
+Import-Package: dataManipulation,
+ org.apache.commons.logging,
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-10
+Export-Package: mpview

@@ -1,0 +1,45 @@
+import emptymeasuringpoints.EmptymeasuringpointsSaveableTreeView
+import org.eclipse.emf.common.util.URI
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory
+import org.eclipse.emf.parsley.edit.ui.provider.ViewerContentProvider
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint
+import org.eclipse.swt.internal.win32.MEASUREITEMSTRUCT
+import org.palladiosimulator.edp2.models.measuringpoint.impl.MeasuringPointRepositoryImpl
+import java.util.ArrayList
+import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint
+
+/* emptymeasuringpoints EMF Parsley Dsl Module file */
+module emptymeasuringpoints {
+	
+	parts {
+		viewpart emptymeasuringpoints {
+			viewname "Emptymeasuringpoints"
+			viewclass EmptymeasuringpointsSaveableTreeView
+		}
+	}
+	
+	configurator {
+		resourceURI {
+			EmptymeasuringpointsSaveableTreeView -> {
+				return URI.createFileURI("D:/Benutzer/David/Dokumente/Uni/EnPro/runtime-EclipseApplication/Pets.com/PetsMeasuringPoint.measuringpoint")
+			}
+		}
+	}
+	
+	resourceManager {
+		initializeResource {
+			it.getContents += MeasuringpointFactory.eINSTANCE
+		}
+	}
+	
+	viewerContentProvider {
+		elements {
+			MeasuringPointRepository mpf -> mpf.measuringPoints
+		}
+		children {
+			
+		}
+	}
+	
+}

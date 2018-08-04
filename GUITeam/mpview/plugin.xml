@@ -10,19 +10,11 @@
             name="Measuringpoint View"
             restorable="true">
       </view>
-      <view
-            category="org.eclipse.emf.parsley"
-            class="mpview.MpviewExecutableExtensionFactory:mpview.EmptyMeasuringPointsView"
-            id="emptympview"
-            name="Empty Measuringpoints"
-            restorable="true">
-      </view>
-      <view
-            category="org.eclipse.emf.parsley"
-            class="mpview.MpviewExecutableExtensionFactory:mpview.MpButtonView"
-            id="buttonview"
-            name="Measuringpoint functionality"
-            restorable="true">
-      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertiesView">
+      <excludeSources
+            id="mpview.excludeSources1">
+      </excludeSources>
    </extension>
 </plugin>

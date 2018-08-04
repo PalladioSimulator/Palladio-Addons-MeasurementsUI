@@ -1,8 +1,11 @@
 import mpview.MpviewSaveableTreeFormView
 import org.eclipse.emf.common.util.URI
-import org.palladiosimulator.monitorrepository.*;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint
 import java.util.ArrayList
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint
+import org.palladiosimulator.monitorrepository.Monitor
+import org.palladiosimulator.monitorrepository.MeasurementSpecification
+import org.palladiosimulator.monitorrepository.MonitorRepository
 
 /* mpview EMF Parsley Dsl Module file */
 module mpview {
@@ -20,8 +23,6 @@ module mpview {
 				return URI.createFileURI("D:/Benutzer/David/Dokumente/Uni/EnPro/runtime-EclipseApplication/Pets.com/PetsMonitor.monitorrepository")
 			}
 		}
-		
-		
 	}
 	
 	resourceManager {
@@ -31,6 +32,12 @@ module mpview {
 			// e.g., it.getContents += myFactory.createMyClass
 			it.getContents += MonitorRepositoryFactory.eINSTANCE
 		}
+		
+		saveResource {
+			it.save(null)
+			return true
+		}
+		
 	}
 	
 	viewerContentProvider {
@@ -43,6 +50,7 @@ module mpview {
 			}
 		}
 	} 
+	
 	
 	labelProvider {
 		text {
