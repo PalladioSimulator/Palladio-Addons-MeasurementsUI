@@ -20,6 +20,7 @@ module mpview {
 	configurator {
 		resourceURI {
 			MpviewSaveableTreeFormView -> {
+				//TODO Eigener Monitorrepositorypfad angegeben. Der Pfad wird später im E4 Plugin extra gesetzt und ist nur für einfachen Parsley "Measuringpoint View" notwendig.
 				return URI.createFileURI("D:/Benutzer/David/Dokumente/Uni/EnPro/runtime-EclipseApplication/Pets.com/PetsMonitor.monitorrepository")
 			}
 		}
@@ -43,6 +44,9 @@ module mpview {
 	viewerContentProvider {
 		children {
 			 Monitor mon-> {
+			 	//Ein Monitor hat einen MeasuringPoint und seine MeasurementSpecifications als Kindknoten. 
+			 	//Da der MeasuringPoint im EMF- Modell nur ein Attribut von einem Monitor ist, gibt es später Probleme, wenn man einen MeasuringPoint
+			 	//über den TreeView bearbeitet. (Drag and Drop oder MeasuringPoint löschen)
 				new ArrayList()=>[
 						add(mon.measuringPoint)
 						addAll(mon.measurementSpecifications)
@@ -83,6 +87,7 @@ module mpview {
 		}
 	}
 	
+	//Hier müssen noch weitere Menupunkte spezifisch für das Selektierte Item angeboten werden.
 	menuBuilder {
 		menus {
 			MonitorRepository mr -> #[

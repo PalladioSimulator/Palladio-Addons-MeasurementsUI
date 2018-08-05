@@ -17,6 +17,12 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.impl.MeasurementSpecificationImpl;
 import org.palladiosimulator.monitorrepository.impl.MonitorImpl;
 
+/**
+ * Mouselistener which changes an emf attribute via a double click on an icon in the treeviewer.
+ * Currently the attributes are set manually and not via parsley.
+ * @author David Schütz
+ *
+ */
 public class MpTreeDoubleClickListener implements MouseListener{
 
 	private Tree mpTree;

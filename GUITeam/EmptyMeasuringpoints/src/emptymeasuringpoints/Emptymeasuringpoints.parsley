@@ -8,6 +8,7 @@ import org.eclipse.swt.internal.win32.MEASUREITEMSTRUCT
 import org.palladiosimulator.edp2.models.measuringpoint.impl.MeasuringPointRepositoryImpl
 import java.util.ArrayList
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint
+import org.eclipse.jface.viewers.IContentProvider
 
 /* emptymeasuringpoints EMF Parsley Dsl Module file */
 module emptymeasuringpoints {
@@ -22,10 +23,12 @@ module emptymeasuringpoints {
 	configurator {
 		resourceURI {
 			EmptymeasuringpointsSaveableTreeView -> {
+				//TODO Link zu deinem MeasuringpointRepository. Gleich wie beim mpview wird der Code hier nicht für den E4 Plugin Code benötigt, sondern lediglich
+				//für den einzelnen Parsleyview "Emptymeasuringpoints"
 				return URI.createFileURI("D:/Benutzer/David/Dokumente/Uni/EnPro/runtime-EclipseApplication/Pets.com/PetsMeasuringPoint.measuringpoint")
 			}
 		}
-	}
+	} 
 	
 	resourceManager {
 		initializeResource {
@@ -34,6 +37,9 @@ module emptymeasuringpoints {
 	}
 	
 	viewerContentProvider {
+		//Hier hätte ich gerne, dass das MeasuringpointRepository nicht im Baum angezeigt wird.
+		//Scheint leider nicht zu funktionieren, tatsächlich wird die zugehörige Methode "elements" in
+		//EmptymeasuringpointsViewerContentProvider nie aufgerufen. 
 		elements {
 			MeasuringPointRepository mpf -> mpf.measuringPoints
 		}
@@ -41,5 +47,4 @@ module emptymeasuringpoints {
 			
 		}
 	}
-	
 }

@@ -46,6 +46,10 @@ public class MpviewSaveableTreeFormView extends SaveableMpTreeView  {
 		getSite().setSelectionProvider(this.getViewer());
 	}
 	
+	/**
+	 * Code um das selektierte EMF-Objekt im Properties View anzuzeigen. Es funktioniert momentan noch nicht, da kein Adapter vom Typ IPropertySheetPage
+	 * die Funktion aufruft. Ich vermute, dass man hier noch einen Extensionpoint dem Projekt hinzufügen muss, habe aber nichts gefunden was funktioniert.
+	 */
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		BasicCommandStack commandStack = new BasicCommandStack();
@@ -57,7 +61,6 @@ public class MpviewSaveableTreeFormView extends SaveableMpTreeView  {
 			}
 			return (T) propertyPage;
 		}
-		System.out.println("nope");
 		return super.getAdapter(adapter);
 	}
 	

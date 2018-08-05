@@ -68,6 +68,9 @@ public class MonitorTreeViewer extends MpTreeViewer{
 	
 	@Override
 	protected void initParsley(Composite parent, List<MonitorRepository> repository) {
+		//Siehe Eclipse 4.x in der Parsley Doku. Je nach Darstellungsart(Tree, Form, Table, TreeForm,...) des Parsleyprojektes muss der Code hier
+		//leicht modifiziert werden.
+		
 		// Guice injector
      	Injector injector = MpviewInjectorProvider.getInjector();
      			
@@ -90,6 +93,10 @@ public class MonitorTreeViewer extends MpTreeViewer{
 	
 		// set context menu and drag and drop
 		contextMenuHelper.addViewerContextMenu(treeFormComposite.getViewer(), editingDomain);
+		
+		//Leider ist das Drag and Drop in Parsley für unser Projekt nicht so geeignet, da es lediglich auf EMF.Edit basiert.
+		//Wahrscheinlich müssen wir eine eigene DragandDrop Funktion programmieren. 
+		//Oder besser aber auf unserem eigenen ECoreModell arbeiten, wo das dann alles funktioniert :)
 		dragAndDropHelper.addDragAndDrop(treeFormComposite.getViewer(), editingDomain);
 	
 		//update the composite
@@ -97,6 +104,7 @@ public class MonitorTreeViewer extends MpTreeViewer{
 		
 		this.mpTreeViewer = (TreeViewer) treeFormComposite.getViewer();
 		
+		//Speichern der Änderungen. Funktioniert gerade leider noch nicht siehe SaveHandler.java
 		editingDomain.getCommandStack().addCommandStackListener(
 				new CommandStackListener() {
 					public void commandStackChanged(EventObject event) {
