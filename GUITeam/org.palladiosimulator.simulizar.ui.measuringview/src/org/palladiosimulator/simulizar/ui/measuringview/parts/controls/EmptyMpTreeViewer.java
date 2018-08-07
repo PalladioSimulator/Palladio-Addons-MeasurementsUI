@@ -30,7 +30,8 @@ public class EmptyMpTreeViewer extends MpTreeViewer{
      			
      	// The EditingDomain is needed for context menu and drag and drop
      	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
-     	URI uri = URI.createFileURI("D:/Benutzer/David/Dokumente/Uni/EnPro/runtime-EclipseApplication/Pets.com/PetsMeasuringPoint.measuringpoint");
+     	URI uri = URI.createFileURI("/Users/enpro2/Downloads/Pets.com/PetsMeasuringPoint.measuringpoint");
+     	
      	ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
      	//load the resource
      	Object resource = resourceLoader.getResource(editingDomain, uri).getResource();

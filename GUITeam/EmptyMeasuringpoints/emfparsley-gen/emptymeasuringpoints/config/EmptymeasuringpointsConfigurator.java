@@ -7,6 +7,6 @@ import org.eclipse.emf.parsley.config.Configurator;
 @SuppressWarnings("all")
 public class EmptymeasuringpointsConfigurator extends Configurator {
   public URI resourceURI(final EmptymeasuringpointsSaveableTreeView it) {
-    return URI.createFileURI("D:/Benutzer/David/Dokumente/Uni/EnPro/runtime-EclipseApplication/Pets.com/PetsMeasuringPoint.measuringpoint");
+    return URI.createFileURI("/Users/enpro2/Downloads/Pets.com/PetsMeasuringPoint.measuringpoint");
   }
 }
