@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts;
 
+import java.awt.Event;
+
 import javax.annotation.PostConstruct;
 
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
@@ -10,6 +12,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Listener;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
@@ -74,6 +77,14 @@ public class MeasuringpointView {
 	private void createViewButtons(Composite buttonContainer) {
 		Button newMpButton = new Button(buttonContainer, SWT.PUSH);
         newMpButton.setText("Add new Measuring Point");
+//        newMpButton.addListener(SWT.Selection, new Listener() {
+//			@Override
+//			public void handleEvent(org.eclipse.swt.widgets.Event event) {
+//				System.out.println("Add new Measuring Point Button pressed");
+//				
+//			}
+//        });
+//
         Button editMpButton = new Button(buttonContainer, SWT.PUSH);
         editMpButton.setText("Edit...");
         Button deleteMpButton = new Button(buttonContainer, SWT.PUSH);
