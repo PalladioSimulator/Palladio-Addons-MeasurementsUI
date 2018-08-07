@@ -43,7 +43,7 @@ public class MonitorTreeViewer extends MpTreeViewer{
      			
      	// The EditingDomain is needed for context menu and drag and drop
      	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
-     	URI uri = URI.createFileURI("/Users/enpro2/Downloads/Pets.com/PetsMonitor.monitorrepository");
+     	URI uri = URI.createFileURI("/Users/zss2/runtime-EclipseApplication/Pets.com/PetsMonitor.monitorrepository");
 	
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
 		//load the resource
