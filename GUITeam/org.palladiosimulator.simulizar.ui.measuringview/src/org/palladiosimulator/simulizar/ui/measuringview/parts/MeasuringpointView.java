@@ -1,26 +1,8 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
-import mpview.MpviewInjectorProvider;
-import org.eclipse.e4.core.di.annotations.Optional;
-import org.eclipse.e4.ui.di.Focus;
-import org.eclipse.e4.ui.services.IServiceConstants;
-import org.eclipse.emf.common.command.BasicCommandStack;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.ui.provider.AdapterFactoryContentProvider;
+
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
-import org.eclipse.emf.parsley.composite.TreeFormComposite;
-import org.eclipse.emf.parsley.composite.TreeFormFactory;
-import org.eclipse.emf.parsley.edit.ui.dnd.ViewerDragAndDropHelper;
-import org.eclipse.emf.parsley.menus.ViewerContextMenuHelper;
-import org.eclipse.emf.parsley.resource.ResourceLoader;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.FillLayout;
@@ -28,11 +10,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.IPropertySheetPage;
-import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
-import org.palladiosimulator.monitorrepository.util.MonitorRepositoryAdapterFactory;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTreeViewer;
+import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
 
 /**
  * 

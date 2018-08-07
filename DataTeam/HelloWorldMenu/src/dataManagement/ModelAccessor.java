@@ -1,15 +1,15 @@
 package dataManagement;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.business.api.session.Session;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
+import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.repository.Repository;
@@ -72,6 +72,56 @@ public class ModelAccessor {
 	public List<MonitorRepository> getMonitorRepository() {
 		return monitorRepository;
 	}
+	
+	/**
+	 * Checks whether there exists an MonitorRepository
+	 * @return boolean whether a monitorRepository exists
+	 */
+	public boolean monitorRepositoryExists() {
+		if(this.monitorRepository!= null && !this.monitorRepository.isEmpty()) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * This method returns a list of all MeasuringPoints which are not assigned to any Monitor.
+	 * @return List of unassigned MeasuringPoints
+	 */
+	public List<MeasuringPoint> getUnassignedMeasuringPoints() {
+		
+		List<MeasuringPoint> unassignedMeasuringPoints = new ArrayList<MeasuringPoint>();
+		
+		for (MeasuringPointRepository measuringPointRepository : this.measuringPointRpository) {
+			for (MeasuringPoint measuringPoint : measuringPointRepository.getMeasuringPoints()) {
+				if(!checkIfMeasuringPointIsAssignedToAnyMonitor(measuringPoint)) {
+					unassignedMeasuringPoints.add(measuringPoint);
+				}
+			}
+			
+		}
+		return unassignedMeasuringPoints;
+		
+	}
+	
+	/**
+	 * This method checks whether a MeasuringPoint is assigned to any Monitor
+	 * @param measuringpoint to check
+	 * @return boolean whether the measuringPoint is assigned to any Monitor
+	 */
+	private boolean checkIfMeasuringPointIsAssignedToAnyMonitor(MeasuringPoint measuringpoint) {
+		
+		for (MonitorRepository monitorRepository: this.monitorRepository) {
+			for (Monitor monitor: monitorRepository.getMonitors()) {
+				if(monitor.getMeasuringPoint().equals(measuringpoint)) {
+					return true;
+				}
+				
+			}
+			
+		}
+		return false;
+	}
 
 
 	/**
@@ -105,134 +155,34 @@ public class ModelAccessor {
 		pcmEnum.createPcmInstance(this, pcmModel);
 	}
 	
-	/**
-	 * Enum for the different pcm Models.
-	 * Depending on the existing models the method createPcmInstance creates the according
-	 * pcm Model and adds it to the corresponding list.
-	 * @author Lasse
-	 *
-	 */
-	public enum PcmModelEnum { 
-		ResourceEnvironment{
-
-			@Override
-			void createPcmInstance(ModelAccessor modelAccsessor, EObject pcmModel) {
-				modelAccsessor.addResourceEnvironment((ResourceEnvironment) pcmModel);
-
-			}
-
-		}, 
-		System{
-
-			@Override
-			void createPcmInstance(ModelAccessor modelAccsessor, EObject pcmModel) {
-				modelAccsessor.addSystem((org.palladiosimulator.pcm.system.System) pcmModel);
-
-			}
-
-		}, 
-		Allocation{
-
-			@Override
-			void createPcmInstance(ModelAccessor modelAccsessor, EObject pcmModel) {
-				modelAccsessor.addAllocation((org.palladiosimulator.pcm.allocation.Allocation) pcmModel);
-
-			}
-
-		}, 
-		Repository{
-
-			@Override
-			void createPcmInstance(ModelAccessor modelAccsessor, EObject pcmModel) {
-				if(pcmModel.eResource().getURI().toString().split(":")[0].contains("platform")) {
-					modelAccsessor.addRepository((org.palladiosimulator.pcm.repository.Repository) pcmModel);
-				}
-
-			}
-
-		}, 
-		UsageModel{
-
-			@Override
-			void createPcmInstance(ModelAccessor modelAccsessor, EObject pcmModel) {
-				modelAccsessor.addUsageModel((org.palladiosimulator.pcm.usagemodel.UsageModel) pcmModel);
-
-			}
-
-		}, 
-		MeasuringPointRepository{
-
-			@Override
-			void createPcmInstance(ModelAccessor modelAccsessor, EObject pcmModel) {
-				modelAccsessor.addMeasuringPointRepository((org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository) pcmModel);
-
-			}
-
-		}, 
-		MonitorRepository{
-
-			@Override
-			void createPcmInstance(ModelAccessor modelAccsessor, EObject pcmModel) {
-				modelAccsessor.addMonitorRepository((org.palladiosimulator.monitorrepository.MonitorRepository) pcmModel);
-
-			}
-
-		};
-
-		/**
-		 * This method adds the pcm Model to the according List of the ModelAccsessor
-		 * 
-		 * @param modelAccsessor the instance in which the models should be added
-		 * @param pcmModel the model which should be initialized
-		 */
-		abstract void createPcmInstance (ModelAccessor modelAccsessor,EObject pcmModel);
-
-		private static final Map<String, PcmModelEnum> nameToValueMap =
-				new HashMap<String, PcmModelEnum>();
-
-		static {
-			for (PcmModelEnum value : EnumSet.allOf(PcmModelEnum.class)) {
-				nameToValueMap.put(value.name(), value);
-			}
-		}
-
-		/**
-		 * Checks in the name is one of the Enums
-		 * 
-		 * @param name of the Enum to check
-		 * @return PcmModelEnum instance according to the name
-		 */
-		public static PcmModelEnum checkName(String name) {
-			return nameToValueMap.get(name);
-		}
-	}
 	
 	
-	private void addResourceEnvironment(ResourceEnvironment resourceEnvironment) {
+	
+	protected void addResourceEnvironment(ResourceEnvironment resourceEnvironment) {
 		this.resourceEnvironment.add(resourceEnvironment);
 	}
 	
-	private void addSystem(org.palladiosimulator.pcm.system.System system) {
+	protected void addSystem(org.palladiosimulator.pcm.system.System system) {
 		this.system.add(system);
 	}
 	
-	private void addAllocation(Allocation allocation) {
+	protected void addAllocation(Allocation allocation) {
 		this.allocation.add(allocation);
 	}
 	
-	private void addRepository(Repository repository) {
+	protected void addRepository(Repository repository) {
 		this.repository.add(repository);
 	}
 	
-	private void addUsageModel(UsageModel usageModel) {
+	protected void addUsageModel(UsageModel usageModel) {
 		this.usageModel.add(usageModel);
 	}
 	
-	private void addMonitorRepository(MonitorRepository monitorRepository){
+	protected void addMonitorRepository(MonitorRepository monitorRepository){
 		this.monitorRepository.add(monitorRepository);
 	}
 	
-	private void addMeasuringPointRepository(MeasuringPointRepository measuringPointRepository){
+	protected void addMeasuringPointRepository(MeasuringPointRepository measuringPointRepository){
 		this.measuringPointRpository.add(measuringPointRepository);
 	}
 	

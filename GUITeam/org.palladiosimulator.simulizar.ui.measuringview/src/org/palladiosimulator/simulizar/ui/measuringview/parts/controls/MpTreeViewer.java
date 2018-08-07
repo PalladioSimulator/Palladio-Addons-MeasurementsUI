@@ -2,14 +2,7 @@ package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
 import java.util.List;
 
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.ICheckStateProvider;
-import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 
@@ -28,7 +21,7 @@ public abstract class MpTreeViewer {
 	
 	/*
 	 * Die Methode hier sollte aufgerufen werden, wenn im ein anderes Projekt aufgerufen wird.
-	 * Leider hat bei mir aus irgendeinem Grund die Startapplication immer null zurückgegeben,
+	 * Leider hat bei mir aus irgendeinem Grund die Startapplication immer null zurï¿½ckgegeben,
 	 * weswegen die Methode momentan noch nicht aufgerufen wird.
 	 */
 	public MpTreeViewer updateInput(Composite parent) {

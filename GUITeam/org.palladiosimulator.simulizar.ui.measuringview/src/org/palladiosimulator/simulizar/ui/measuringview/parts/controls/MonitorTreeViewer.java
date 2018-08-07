@@ -4,14 +4,9 @@ import java.io.IOException;
 import java.util.EventObject;
 import java.util.List;
 
-import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
-import org.eclipse.e4.ui.model.application.ui.basic.MPart;
-import org.eclipse.e4.ui.services.IServiceConstants;
-import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.eclipse.emf.common.command.CommandStackListener;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -20,42 +15,14 @@ import org.eclipse.emf.parsley.composite.TreeFormFactory;
 import org.eclipse.emf.parsley.edit.ui.dnd.ViewerDragAndDropHelper;
 import org.eclipse.emf.parsley.menus.ViewerContextMenuHelper;
 import org.eclipse.emf.parsley.resource.ResourceLoader;
-import org.eclipse.emf.parsley.viewers.IViewerMouseListener;
-import org.eclipse.emf.parsley.viewers.ViewerFactory;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.GroupMarker;
-import org.eclipse.jface.action.IMenuCreator;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.viewers.CheckboxTreeViewer;
-import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
-import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
-import org.eclipse.jface.viewers.ICheckStateListener;
-import org.eclipse.jface.viewers.ICheckStateProvider;
-import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.HelpListener;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
-
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Provider;
-import javax.inject.Named;
 
-import init.StartApplication;
 import mpview.MpviewInjectorProvider;
 
 public class MonitorTreeViewer extends MpTreeViewer{
@@ -94,8 +61,8 @@ public class MonitorTreeViewer extends MpTreeViewer{
 		// set context menu and drag and drop
 		contextMenuHelper.addViewerContextMenu(treeFormComposite.getViewer(), editingDomain);
 		
-		//Leider ist das Drag and Drop in Parsley für unser Projekt nicht so geeignet, da es lediglich auf EMF.Edit basiert.
-		//Wahrscheinlich müssen wir eine eigene DragandDrop Funktion programmieren. 
+		//Leider ist das Drag and Drop in Parsley fï¿½r unser Projekt nicht so geeignet, da es lediglich auf EMF.Edit basiert.
+		//Wahrscheinlich mï¿½ssen wir eine eigene DragandDrop Funktion programmieren. 
 		//Oder besser aber auf unserem eigenen ECoreModell arbeiten, wo das dann alles funktioniert :)
 		dragAndDropHelper.addDragAndDrop(treeFormComposite.getViewer(), editingDomain);
 	
@@ -104,7 +71,7 @@ public class MonitorTreeViewer extends MpTreeViewer{
 		
 		this.mpTreeViewer = (TreeViewer) treeFormComposite.getViewer();
 		
-		//Speichern der Änderungen. Funktioniert gerade leider noch nicht siehe SaveHandler.java
+		//Speichern der ï¿½nderungen. Funktioniert gerade leider noch nicht siehe SaveHandler.java
 		editingDomain.getCommandStack().addCommandStackListener(
 				new CommandStackListener() {
 					public void commandStackChanged(EventObject event) {

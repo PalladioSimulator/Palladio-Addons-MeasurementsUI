@@ -1,26 +1,23 @@
 package mptree;
 
-import dataManipulation.ResourceEditor;
-
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
-import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
-import org.palladiosimulator.monitorrepository.impl.MeasurementSpecificationImpl;
 import org.palladiosimulator.monitorrepository.impl.MonitorImpl;
+
+import dataManipulation.ResourceEditor;
 
 /**
  * Mouselistener which changes an emf attribute via a double click on an icon in the treeviewer.
  * Currently the attributes are set manually and not via parsley.
- * @author David Schütz
+ * @author David Schï¿½tz
  *
  */
 public class MpTreeDoubleClickListener implements MouseListener{
