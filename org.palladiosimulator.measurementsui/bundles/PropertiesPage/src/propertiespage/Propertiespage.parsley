@@ -1,0 +1,14 @@
+import propertiespage.PropertiespageOnSelectionFormView
+
+/* propertiespage EMF Parsley Dsl Module file */
+module propertiespage {
+	//Eigentlich nur da um zu zeigen, dass im E4 View selektierte Elemente nicht angezeigt werden,
+	//im ParsleyView jedoch schon. Hier wird bei der Imigration zu E4 ein MouseListener verloren gegangen sein.
+	parts {
+		viewpart propertiespage {
+			viewname "Mp Properties Page"
+			viewclass PropertiespageOnSelectionFormView
+		}
+	}
+	
+}

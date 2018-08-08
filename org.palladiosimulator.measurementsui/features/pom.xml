@@ -5,9 +5,7 @@
     <artifactId>org.palladiosimulator.measurementsui.root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>org.palladiosimulator</groupId>
   <artifactId>org.palladiosimulator.features</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
       <modules>
         <module>HelloWorldMenu.feature</module>

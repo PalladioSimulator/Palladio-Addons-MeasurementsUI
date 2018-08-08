@@ -5,13 +5,14 @@
     <artifactId>org.palladiosimulator.measurementsui.root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>org.palladiosimulator</groupId>
   <artifactId>org.palladiosimulator.measurementsui.bundles</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   
    <modules>
         <module>HelloWorldMenu</module>
         <module>toolbar</module>
+        <module>EmptyMeasuringpoints</module>
+        <module>mpview</module>
+        <module>PropertiesPage</module>
     </modules>
 </project>
