@@ -8,6 +8,7 @@
   	<version>0.0.1-SNAPSHOT</version>
   </parent>
   <build>
+  <pluginManagement>
   <plugins>
    <plugin>
     <groupId>org.eclipse.tycho</groupId>
@@ -37,5 +38,7 @@
     </executions>
    </plugin>
   </plugins>
+  </pluginManagement>
+  
  </build>
 </project>
