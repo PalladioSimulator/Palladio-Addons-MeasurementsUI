@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: HelloWorldMenu.tests
+Bundle-Version: 0.0.1.qualifier
+Automatic-Module-Name: HelloWorldMenu.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.palladiosimulator.measurementsui.helloworldmenu;bundle-version="0.0.1",
+ org.junit;bundle-version="4.12.0"
