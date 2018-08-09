@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/descriptor/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_BxaXACerEeWxCPrV0pAZQQ">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_EI7oACerEeWxCPrV0pAZQQ" featurename="descriptors" parentElementId="xpath:/">
+    <elements xsi:type="basic:PartDescriptor" xmi:id="_KMklcCerEeWxCPrV0pAZQQ" elementId="test.partDescFragment.ASampleE4View" label="Measuringpoint View" iconURI="platform:/plugin/org.palladiosimulator.simulizar.ui.measuringview/icons/RTEmagicC_200px-SimuLizarLogo.png.png" tooltip="" category="Sample Category" contributionURI="bundleclass://org.palladiosimulator.simulizar.ui.measuringview/org.palladiosimulator.simulizar.ui.measuringview.parts.MeasuringpointView">
+      <tags>View</tags>
+      <tags>categoryTag:Sample Category</tags>
+      <handlers xmi:id="_KyprcJY6Eei1x_LLyqRD7w" elementId="org.palladiosimulator.simulizar.ui.measuringview.handler.0" contributionURI="bundleclass://org.palladiosimulator.simulizar.ui.measuringview/org.palladiosimulator.simulizar.ui.measuringview.parts.controls.SaveHandler"/>
+    </elements>
+  </fragments>
+</fragment:ModelFragments>

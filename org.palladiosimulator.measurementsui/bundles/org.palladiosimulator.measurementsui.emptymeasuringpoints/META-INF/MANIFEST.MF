@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: EmptyMeasuringpoints
+Bundle-ManifestVersion: 2
+Bundle-Name: EmptyMeasuringpoints
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.palladiosimulator.measurementsui.emptymeasuringpoints;singleton:=true
+Bundle-Activator: emptymeasuringpoints.EmptymeasuringpointsActivator
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.emf.parsley.views,
+ org.eclipse.xtext.xbase.lib,
+ org.palladiosimulator.pcm.edp2.measuringpoint
+Import-Package: org.apache.log4j,
+ org.apache.commons.logging
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

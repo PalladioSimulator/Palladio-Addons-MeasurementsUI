@@ -9,10 +9,11 @@
   <packaging>pom</packaging>
   
    <modules>
-        <module>HelloWorldMenu</module>
-        <module>toolbar</module>
-        <module>EmptyMeasuringpoints</module>
-        <module>mpview</module>
-        <module>PropertiesPage</module>
+        <module>org.palladiosimulator.measurementsui.helloworldmenu</module>
+        <module>org.palladiosimulator.measurementsui.toolbar</module>
+        <module>org.palladiosimulator.measurementsui.emptymeasuringpoints</module>
+        <module>org.palladiosimulator.measurementsui.mpview</module>
+        <module>org.palladiosimulator.measurementsui.propertiespage</module>
+        <module>org.palladiosimulator.measurementsui.measuringview</module>
     </modules>
 </project>
