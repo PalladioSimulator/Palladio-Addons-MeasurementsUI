@@ -26,11 +26,12 @@ import com.google.inject.Injector;
 import mpview.MpviewInjectorProvider;
 
 public class MonitorTreeViewer extends MpTreeViewer{
-	@Inject
+
 	MDirtyable dirty;
 	Resource resource;
-	public MonitorTreeViewer(Composite parent) {
+	public MonitorTreeViewer(Composite parent, MDirtyable dirty) {
 		super(parent);
+		this.dirty = dirty;
 	}
 	
 	@Override
@@ -43,7 +44,7 @@ public class MonitorTreeViewer extends MpTreeViewer{
      			
      	// The EditingDomain is needed for context menu and drag and drop
      	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
-     	URI uri = URI.createFileURI("/Users/zss2/runtime-EclipseApplication/Pets.com/PetsMonitor.monitorrepository");
+     	URI uri = URI.createFileURI("/Users/zss3/runtime-EclipseApplication/Pets.com/PetsMonitor.monitorrepository");
 	
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
 		//load the resource

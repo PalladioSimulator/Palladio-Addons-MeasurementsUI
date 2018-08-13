@@ -4,7 +4,6 @@
     <elements xsi:type="basic:PartDescriptor" xmi:id="_KMklcCerEeWxCPrV0pAZQQ" elementId="test.partDescFragment.ASampleE4View" label="Measuringpoint View" iconURI="platform:/plugin/org.palladiosimulator.measurementsui.measuringview/icons/RTEmagicC_200px-SimuLizarLogo.png.png" tooltip="" category="Sample Category" contributionURI="bundleclass://org.palladiosimulator.measurementsui.measuringview/org.palladiosimulator.simulizar.ui.measuringview.parts.MeasuringpointView">
       <tags>View</tags>
       <tags>categoryTag:Sample Category</tags>
-      <handlers xmi:id="_KyprcJY6Eei1x_LLyqRD7w" elementId="org.palladiosimulator.simulizar.ui.measuringview.handler.0" contributionURI="bundleclass://org.palladiosimulator.measurementsui.measuringview/org.palladiosimulator.simulizar.ui.measuringview.parts.controls.SaveHandler"/>
     </elements>
   </fragments>
 </fragment:ModelFragments>

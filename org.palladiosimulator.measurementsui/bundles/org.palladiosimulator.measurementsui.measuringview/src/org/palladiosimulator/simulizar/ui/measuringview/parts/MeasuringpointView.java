@@ -1,9 +1,13 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts;
 
 import java.awt.Event;
+import java.io.IOException;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
+import org.eclipse.e4.ui.di.Persist;
+import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -25,6 +29,8 @@ import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeVie
 public class MeasuringpointView {
 	private ExtendedPropertySheetPage propertyPage;
 	
+	@Inject
+	MDirtyable dirty;
 	/**
 	 * Creates the control objects of the simulizar measuring point view
 	 * @param parent
@@ -58,7 +64,7 @@ public class MeasuringpointView {
 	 * @return
 	 */
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
-		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent);
+		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty);
 		return mpTreeViewer;
 	}
 	
