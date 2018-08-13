@@ -10,7 +10,6 @@
   
    <modules>
         <module>org.palladiosimulator.measurementsui.helloworldmenu</module>
-        <module>org.palladiosimulator.measurementsui.toolbar</module>
         <module>org.palladiosimulator.measurementsui.emptymeasuringpoints</module>
         <module>org.palladiosimulator.measurementsui.mpview</module>
         <module>org.palladiosimulator.measurementsui.propertiespage</module>
