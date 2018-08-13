@@ -1,5 +1,8 @@
 package dataManagement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -30,17 +33,11 @@ public class DataGathering {
 			IProject [] wsProjects = wsRoot.getProjects();
 			for (IProject project : wsProjects) {
 				if(selectedProject != null && project.getName().equals(selectedProject)) {	
-//					System.out.println("Project :"+project.getName());
 					try {
 						IResource [] allMembers = project.members();
 						for( IResource oneMember : allMembers) {
-//							System.out.println("Member: "+oneMember.getName());
-//							System.out.println("Extension : "+oneMember.getFileExtension());
 							try {
 								if( oneMember.getFileExtension().equals("aird")) {
-//									System.out.println("Path of aird File: "+ oneMember.getFullPath());
-//									System.out.println("URI of aird File: "+ oneMember.getLocationURI().toString());
-									
 									return oneMember.getFullPath().toString();
 								}
 							} catch (NullPointerException e) {
@@ -57,6 +54,73 @@ public class DataGathering {
 			}
 			return null;
 		}
+		
+		public String getAirdFile(IProject project) {
+			try {
+				IResource [] allMembers = project.members();
+				for( IResource oneMember : allMembers) {
+					try {
+						if( oneMember.getFileExtension().equals("aird")) {
+							return oneMember.getFullPath().toString();
+						}
+					} catch (NullPointerException e) {
+						//NullPointer occurs when files don't have a file ending. We can ignore it
+					}
+				}
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		public String getChosenFile(IProject project, String fileEnding) {
+			try {
+				IResource [] allMembers = project.members();
+				for( IResource oneMember : allMembers) {
+					try {
+						if( oneMember.getFileExtension().equals(fileEnding)) {
+							return oneMember.getFullPath().toString();
+						}
+					} catch (NullPointerException e) {
+						//NullPointer occurs when files don't have a file ending. We can ignore it
+					}
+				}
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+		
+		/**
+		 * Looks through each project in the workspace. If project contains an .aird file, we add it to List and return
+		 * @return List of all projects that contain an .aird file
+		 */
+		public List<IProject> getAllProjectAirdfiles() {
+			IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
+			IProject [] wsProjects = wsRoot.getProjects();
+			List<IProject> allAirdProjects = new ArrayList<IProject>();
+			for (IProject project : wsProjects) {
+				try {
+					IResource [] allMembers = project.members();
+					for(IResource oneMember : allMembers) {
+						try {
+							if(oneMember.getFileExtension().equals("aird")) {
+								allAirdProjects.add(project);
+							}
+						} catch (NullPointerException e) {
+							//NullPointer occurs when files don't have a file ending. We can ignore it
+						}
+					}
+				} catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return allAirdProjects;
+		}
+		
 		/**
 		 * @author Florian
 		 * @return the name of the selected base project
@@ -65,20 +129,9 @@ public class DataGathering {
 			IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 			try {
 				if(window != null) {
-//					System.out.println("Window: "+window.toString());
 					IStructuredSelection selection = (IStructuredSelection) window.getSelectionService().getSelection();
-//					System.out.println("Selection: "+selection.toString());
-					
 					Object firstElement = selection.getFirstElement();
-//					System.out.println("First Element: "+ firstElement.toString());
 					String projectName = firstElement.toString().split("/")[1];
-//					System.out.println("Base Project: "+ projectName);
-					
-//					if(firstElement instanceof IAdaptable) {
-//						IProject project = (IProject)((IAdaptable)firstElement).getAdapter(IProject.class);
-//						System.out.println("Project: "+ project);
-//						
-//					}
 					return projectName;
 				}
 			} catch (NullPointerException e) {
