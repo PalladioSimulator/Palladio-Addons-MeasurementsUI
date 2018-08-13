@@ -12,6 +12,7 @@ import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import dataManagement.DataGathering;
 
 import com.google.inject.Injector;
 
@@ -27,10 +28,15 @@ public class EmptyMpTreeViewer extends MpTreeViewer{
 		this.mpTreeViewer = new TreeViewer(parent);
 		// Guice injector
      	Injector injector = MpviewInjectorProvider.getInjector();
-     			
+     	
+     	//Get the Path of MeasuringPoint file of first project in Workspace that also has an .aird file
+     	//TODO: Choose which Project to use according to some sort of selection
+     	DataGathering gatherer = new DataGathering();
+     	String measuringPointPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "measuringpoint");
+     	
      	// The EditingDomain is needed for context menu and drag and drop
      	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
-     	URI uri = URI.createFileURI("/Users/zss3/runtime-EclipseApplication/Pets.com/PetsMeasuringPoint.measuringpoint");
+     	URI uri = URI.createFileURI(measuringPointPath);
      	
      	ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
      	//load the resource

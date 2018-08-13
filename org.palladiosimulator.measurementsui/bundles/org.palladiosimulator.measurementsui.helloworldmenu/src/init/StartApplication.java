@@ -34,8 +34,8 @@ public class StartApplication {
 	 * Loads all pcm Models given a project is selected and it has a .aird file(modeling Project nature).
 	 */
 	public void startApplication() {
-		
-		initializeSessionResourceURI(this.dataGathering.getAirdPath());
+		//gives airdFile of first project in Workspace that has an aird File
+		initializeSessionResourceURI(this.dataGathering.getAirdFile(this.dataGathering.getAllProjectAirdfiles().get(0)));
 		initializeSession(sessionResourceURI);
 		
 		if(session!= null ) {
@@ -54,7 +54,7 @@ public class StartApplication {
 		
 		try {
 			this.sessionResourceURI = URI.createPlatformResourceURI(
-					dataGathering.getAirdPath(), true);
+					AirdPath, true);
 		} catch (NullPointerException e) {
 			System.err.println("Make sure a project in the project explorer is selected");
 		}

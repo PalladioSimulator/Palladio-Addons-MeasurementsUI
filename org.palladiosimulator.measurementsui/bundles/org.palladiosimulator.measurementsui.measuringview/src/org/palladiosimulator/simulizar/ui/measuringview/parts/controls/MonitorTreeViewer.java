@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import dataManagement.DataGathering;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -42,9 +43,14 @@ public class MonitorTreeViewer extends MpTreeViewer{
 		// Guice injector
      	Injector injector = MpviewInjectorProvider.getInjector();
      			
+     	//Get the Path of MonitorRepository file of first project in Workspace that also has an .aird file
+     	//TODO: Choose which Project to use according to some sort of selection
+     	DataGathering gatherer = new DataGathering();
+     	String monitorRepPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "monitorrepository");
+     	
      	// The EditingDomain is needed for context menu and drag and drop
      	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
-     	URI uri = URI.createFileURI("/Users/zss3/runtime-EclipseApplication/Pets.com/PetsMonitor.monitorrepository");
+     	URI uri = URI.createFileURI(monitorRepPath);
 	
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
 		//load the resource
