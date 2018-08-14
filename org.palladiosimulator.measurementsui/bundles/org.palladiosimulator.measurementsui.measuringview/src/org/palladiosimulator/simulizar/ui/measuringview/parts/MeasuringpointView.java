@@ -44,6 +44,7 @@ public class MeasuringpointView {
 	public int getSelectionIndex() {
 		return selectionIndex;
 	}
+	
 	SashForm outerContainer;
 	MpTreeViewer monitorTreeViewer;
 	MpTreeViewer emptyMpTreeViewer;
@@ -94,13 +95,13 @@ public class MeasuringpointView {
 	 * @return
 	 */
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
-		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty,commandService);
+		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty, commandService);
 		mon = (MonitorTreeViewer) mpTreeViewer;
 		return mpTreeViewer;
 	}
 	
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
-		MpTreeViewer mpTreeViewer = new EmptyMpTreeViewer(parent);
+		MpTreeViewer mpTreeViewer = new EmptyMpTreeViewer(parent,dirty, commandService);
 		return mpTreeViewer;
 	}
 	
@@ -138,8 +139,8 @@ public class MeasuringpointView {
 				// TODO Auto-generated method stub
 				System.out.println("Selection is:" + comboDropDown.getSelectionIndex());
 				selectionIndex = comboDropDown.getSelectionIndex();
-				monitorTreeViewer.updateInput(selectionIndex);
-				emptyMpTreeViewer.updateInput(selectionIndex);
+				monitorTreeViewer.updateInput(selectionIndex, dirty);
+				emptyMpTreeViewer.updateInput(selectionIndex, dirty);
 			}
 			
 			@Override

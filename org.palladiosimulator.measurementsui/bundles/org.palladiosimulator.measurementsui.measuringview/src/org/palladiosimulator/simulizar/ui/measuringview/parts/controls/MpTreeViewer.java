@@ -1,5 +1,10 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
+import java.util.EventObject;
+
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.ui.model.application.ui.MDirtyable;
+import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -16,13 +21,17 @@ import mpview.MpviewInjectorProvider;
  *
  */
 public abstract class MpTreeViewer {
+	protected MDirtyable dirty;
 	protected TreeViewer mpTreeViewer;
+	protected ECommandService commandService;
 
 	/**
 	 * 
 	 * @param parent composite container
 	 */
-	protected MpTreeViewer(Composite parent) {
+	protected MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService) {
+		this.dirty = dirty;
+		this.commandService = commandService;
 		initParsley(parent, -1);
 	}
 
@@ -39,10 +48,11 @@ public abstract class MpTreeViewer {
 	 * Updates the tree to a resource with a certain index
 	 * @param selectionIndex Index of the resource which should be shown in the treeview
 	 */
-	public void updateInput(int selectionIndex) {
+	public void updateInput(int selectionIndex, MDirtyable dirty) {
+		this.dirty = dirty;
 		Injector injector = MpviewInjectorProvider.getInjector();
 		EditingDomain editingDomain = getEditingDomain(injector);
-		Object resource = getResource(selectionIndex, editingDomain, injector);
+		Resource resource = getResource(selectionIndex, editingDomain, injector);
 		updateTree(resource);
 	}
 
@@ -106,6 +116,15 @@ public abstract class MpTreeViewer {
 		URI uri = URI.createFileURI(measuringPointPath);
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
 		// load the resource
-		return resourceLoader.getResource(editingDomain, uri).getResource();
+		Resource resource = resourceLoader.getResource(editingDomain, uri).getResource();
+		editingDomain.getCommandStack().addCommandStackListener(new CommandStackListener() {
+			public void commandStackChanged(EventObject event) {
+				if (dirty != null) {
+					dirty.setDirty(true);
+					commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
+				}
+			}
+		});
+		return resource;
 	}
 }

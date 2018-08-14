@@ -32,16 +32,12 @@ import mpview.MpviewInjectorProvider;
 
 public class MonitorTreeViewer extends MpTreeViewer {
 
-	MDirtyable dirty;
 	Resource resource;
 	TreeFormComposite treeFormComposite;
-	ECommandService commandService;
+	
 	
 	public MonitorTreeViewer(Composite parent, MDirtyable dirty,ECommandService commandService) {
-		super(parent);
-		this.dirty = dirty;
-		this.commandService = commandService;
-		
+		super(parent, dirty, commandService);
 	}
 
 	@Override
@@ -87,14 +83,7 @@ public class MonitorTreeViewer extends MpTreeViewer {
 
 		// Speichern der �nderungen. Funktioniert gerade leider noch nicht siehe
 		// SaveHandler.java
-		editingDomain.getCommandStack().addCommandStackListener(new CommandStackListener() {
-			public void commandStackChanged(EventObject event) {
-				if (dirty != null) {
-					dirty.setDirty(true);
-					commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
-				}
-			}
-		});
+		
 
 	}
 

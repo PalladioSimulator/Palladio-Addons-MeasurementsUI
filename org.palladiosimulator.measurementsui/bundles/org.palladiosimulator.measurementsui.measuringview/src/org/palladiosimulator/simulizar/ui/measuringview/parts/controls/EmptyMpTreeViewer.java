@@ -2,6 +2,8 @@ package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
 import java.util.List;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.edit.ui.dnd.ViewerDragAndDropHelper;
@@ -23,8 +25,8 @@ import mpview.MpviewInjectorProvider;
 public class EmptyMpTreeViewer extends MpTreeViewer {
 	ViewerFactory treeFormFactory;
 
-	public EmptyMpTreeViewer(Composite parent) {
-		super(parent);
+	public EmptyMpTreeViewer(Composite parent,MDirtyable dirty,ECommandService commandService) {
+		super(parent, dirty, commandService);
 	}
 
 	@Override
