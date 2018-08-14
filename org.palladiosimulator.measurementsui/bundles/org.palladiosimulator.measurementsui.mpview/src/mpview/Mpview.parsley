@@ -21,7 +21,7 @@ module mpview {
 		resourceURI {
 			MpviewSaveableTreeFormView -> {
 				//TODO Eigener Monitorrepositorypfad angegeben. Der Pfad wird sp�ter im E4 Plugin extra gesetzt und ist nur f�r einfachen Parsley "Measuringpoint View" notwendig.
-				return URI.createFileURI("/Users/zss2/runtime-EclipseApplication/Pets.com/PetsMonitor.monitorrepository")
+				return URI.createFileURI("/Pets.com/PetsMonitor.monitorrepository")
 			}
 		}
 	}

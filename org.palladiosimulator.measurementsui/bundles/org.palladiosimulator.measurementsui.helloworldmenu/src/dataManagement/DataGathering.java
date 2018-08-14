@@ -1,5 +1,6 @@
 package dataManagement;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,14 +74,20 @@ public class DataGathering {
 			}
 			return null;
 		}
-		
+		/**
+		 * 
+		 * @param project
+		 * @param fileEnding
+		 * @return we remove the ":file" at the beginning of the URI because we cant convert java URI to EMF URI, and emf URI doesn't like the ":file" at beginning
+		 */
 		public String getChosenFile(IProject project, String fileEnding) {
 			try {
 				IResource [] allMembers = project.members();
 				for( IResource oneMember : allMembers) {
 					try {
 						if( oneMember.getFileExtension().equals(fileEnding)) {
-							return oneMember.getFullPath().toString();
+							return oneMember.getLocationURI().toString().replace("file:", "");
+							
 						}
 					} catch (NullPointerException e) {
 						//NullPointer occurs when files don't have a file ending. We can ignore it
