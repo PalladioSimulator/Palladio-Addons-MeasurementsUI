@@ -41,8 +41,9 @@ public class MeasuringpointView {
 	public int getSelectionIndex() {
 		return selectionIndex;
 	}
-
+	SashForm outerContainer;
 	MpTreeViewer monitorTreeViewer;
+	MpTreeViewer emptyMpTreeViewer;
 	MonitorTreeViewer mon;
 	SashForm treeContainer;
 	
@@ -54,7 +55,7 @@ public class MeasuringpointView {
 	 */
 	@PostConstruct
 	public void createPartControl(Composite parent) {
-        SashForm outerContainer = new SashForm(parent, SWT.HORIZONTAL);
+		outerContainer = new SashForm(parent, SWT.HORIZONTAL);
         outerContainer.setLayout(new FillLayout());
         
         treeContainer = new SashForm(outerContainer, SWT.VERTICAL);
@@ -69,7 +70,7 @@ public class MeasuringpointView {
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer); 
         
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
-        MpTreeViewer emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
+        emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
            
         createViewButtons(buttonContainer);  
 	}
@@ -125,8 +126,8 @@ public class MeasuringpointView {
 				// TODO Auto-generated method stub
 				System.out.println("Selection is:" + comboDropDown.getSelectionIndex());
 				selectionIndex = comboDropDown.getSelectionIndex();
-				monitorTreeViewer.updateInput(treeContainer, selectionIndex);
-				
+				monitorTreeViewer.updateInput(selectionIndex);
+				emptyMpTreeViewer.updateInput(selectionIndex);
 			}
 			
 			@Override

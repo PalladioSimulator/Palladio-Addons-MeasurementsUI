@@ -18,6 +18,7 @@ public class MpTreeDoubleClickListener implements MouseListener{
 
 	private Tree mpTree;
 	private TreeViewer mpTreeViewer;
+	
 	public MpTreeDoubleClickListener(TreeViewer mpTreeViewer) {
 		this.mpTreeViewer = mpTreeViewer;
 		this.mpTree = mpTreeViewer.getTree();

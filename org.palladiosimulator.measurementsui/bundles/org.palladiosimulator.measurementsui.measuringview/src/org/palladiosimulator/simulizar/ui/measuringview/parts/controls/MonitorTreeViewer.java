@@ -29,77 +29,88 @@ import com.google.inject.Injector;
 
 import mpview.MpviewInjectorProvider;
 
-public class MonitorTreeViewer extends MpTreeViewer{
+public class MonitorTreeViewer extends MpTreeViewer {
 
 	MDirtyable dirty;
 	Resource resource;
-	
+	TreeFormComposite treeFormComposite;
+
 	public MonitorTreeViewer(Composite parent, MDirtyable dirty) {
 		super(parent);
 		this.dirty = dirty;
 	}
-	
+
 	@Override
 	protected void initParsley(Composite parent, int selectionIndex) {
-		//Siehe Eclipse 4.x in der Parsley Doku. Je nach Darstellungsart(Tree, Form, Table, TreeForm,...) des Parsleyprojektes muss der Code hier
-		//leicht modifiziert werden.
-		
+		// Siehe Eclipse 4.x in der Parsley Doku. Je nach Darstellungsart(Tree, Form,
+		// Table, TreeForm,...) des Parsleyprojektes muss der Code hier
+		// leicht modifiziert werden.
+
 		// Guice injector
-     	Injector injector = MpviewInjectorProvider.getInjector();
-     			
-     	//Get the Path of MonitorRepository file of first project in Workspace that also has an .aird file
-     	//TODO: Choose which Project to use according to some sort of selection
-     	DataGathering gatherer = new DataGathering();
-     	MeasuringpointView mainView = new MeasuringpointView();
-     	String monitorRepPath;
-     	if(selectionIndex == -1) {
-     		monitorRepPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "monitorrepository");
-     	}else {
-     		monitorRepPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(selectionIndex), "monitorrepository");
-     	}
-     	
-     	
-     	// The EditingDomain is needed for context menu and drag and drop
-     	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
-     	URI uri = URI.createFileURI(monitorRepPath);
-	
+		Injector injector = MpviewInjectorProvider.getInjector();
+
+		// Get the Path of MonitorRepository file of first project in Workspace that
+		// also has an .aird file
+		// TODO: Choose which Project to use according to some sort of selection
+		DataGathering gatherer = new DataGathering();
+		MeasuringpointView mainView = new MeasuringpointView();
+		String monitorRepPath;
+		if (selectionIndex == -1) {
+			monitorRepPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "monitorrepository");
+		} else {
+			monitorRepPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(selectionIndex),
+					"monitorrepository");
+		}
+
+		// The EditingDomain is needed for context menu and drag and drop
+		EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
+		URI uri = URI.createFileURI(monitorRepPath);
+
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
-		//load the resource
+		// load the resource
 		resource = resourceLoader.getResource(editingDomain, uri).getResource();
-	
+
 		TreeFormFactory treeFormFactory = injector.getInstance(TreeFormFactory.class);
-		//create the tree-form composite
-		TreeFormComposite treeFormComposite = treeFormFactory.createTreeFormComposite(parent, SWT.BORDER);
-	
+		// create the tree-form composite
+		treeFormComposite = treeFormFactory.createTreeFormComposite(parent, SWT.BORDER);
+
 		// Guice injected viewer context menu helper
 		ViewerContextMenuHelper contextMenuHelper = injector.getInstance(ViewerContextMenuHelper.class);
 		// Guice injected viewer drag and drop helper
 		ViewerDragAndDropHelper dragAndDropHelper = injector.getInstance(ViewerDragAndDropHelper.class);
-	
+
 		// set context menu and drag and drop
 		contextMenuHelper.addViewerContextMenu(treeFormComposite.getViewer(), editingDomain);
-		
-		//Leider ist das Drag and Drop in Parsley f�r unser Projekt nicht so geeignet, da es lediglich auf EMF.Edit basiert.
-		//Wahrscheinlich m�ssen wir eine eigene DragandDrop Funktion programmieren. 
-		//Oder besser aber auf unserem eigenen ECoreModell arbeiten, wo das dann alles funktioniert :)
+
+		// Leider ist das Drag and Drop in Parsley f�r unser Projekt nicht so
+		// geeignet, da es lediglich auf EMF.Edit basiert.
+		// Wahrscheinlich m�ssen wir eine eigene DragandDrop Funktion programmieren.
+		// Oder besser aber auf unserem eigenen ECoreModell arbeiten, wo das dann alles
+		// funktioniert :)
 		dragAndDropHelper.addDragAndDrop(treeFormComposite.getViewer(), editingDomain);
-	
-		//update the composite
+
+		// update the composite
 		treeFormComposite.update(resource);
-		
+
 		this.mpTreeViewer = (TreeViewer) treeFormComposite.getViewer();
-		
-		//Speichern der �nderungen. Funktioniert gerade leider noch nicht siehe SaveHandler.java
-		editingDomain.getCommandStack().addCommandStackListener(
-				new CommandStackListener() {
-					public void commandStackChanged(EventObject event) {
-						if (dirty != null)
-							dirty.setDirty(true);
-					}
-				});
-		
+
+		// Speichern der �nderungen. Funktioniert gerade leider noch nicht siehe
+		// SaveHandler.java
+		editingDomain.getCommandStack().addCommandStackListener(new CommandStackListener() {
+			public void commandStackChanged(EventObject event) {
+				if (dirty != null) {
+					dirty.setDirty(true);
+				}
+			}
+		});
+
 	}
-	
+
+	@Override
+	protected void updateTree(Object resource) {
+		treeFormComposite.update(resource);
+	}
+
 	@Persist
 	public void save(MDirtyable dirty) throws IOException {
 		resource.save(null);
@@ -110,5 +121,20 @@ public class MonitorTreeViewer extends MpTreeViewer{
 
 	public Resource getResource() {
 		return resource;
+	}
+
+	@Override
+	public void dispose() {
+		this.treeFormComposite.dispose();
+	}
+
+	@Override
+	protected String getURIPath(int selectionIndex) {
+		DataGathering gatherer = new DataGathering();
+		if (selectionIndex == -1) {
+			return gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "monitorrepository");
+		} else {
+			return gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(selectionIndex), "monitorrepository");
+		}
 	}
 }

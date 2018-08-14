@@ -20,51 +20,54 @@ import com.google.inject.Injector;
 
 import mpview.MpviewInjectorProvider;
 
-public class EmptyMpTreeViewer extends MpTreeViewer{
+public class EmptyMpTreeViewer extends MpTreeViewer {
+	ViewerFactory treeFormFactory;
+
 	public EmptyMpTreeViewer(Composite parent) {
 		super(parent);
 	}
-	
+
 	@Override
 	protected void initParsley(Composite parent, int selectionIndex) {
 		this.mpTreeViewer = new TreeViewer(parent);
 		// Guice injector
-     	Injector injector = MpviewInjectorProvider.getInjector();
-     	
-     	//Get the Path of MeasuringPoint file of first project in Workspace that also has an .aird file
-     	//TODO: Choose which Project to use according to some sort of selection
-     	DataGathering gatherer = new DataGathering();
-     	
-     	MeasuringpointView mainView = new MeasuringpointView();
-     	String measuringPointPath;
-     	if(selectionIndex == -1) {
-     		measuringPointPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "measuringpoint");
-     	}else {
-     		measuringPointPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(selectionIndex), "measuringpoint");
-     	}
-     	
-     	// The EditingDomain is needed for context menu and drag and drop
-     	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
-     	URI uri = URI.createFileURI(measuringPointPath);
-     	
-     	
-     	
-     	ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
-     	//load the resource
-     	Object resource = resourceLoader.getResource(editingDomain, uri).getResource();
-     	
-     	ViewerFactory treeFormFactory = injector.getInstance(ViewerFactory.class);
-		//create the tree-form composite
+		Injector injector = MpviewInjectorProvider.getInjector();
+
+		treeFormFactory = injector.getInstance(ViewerFactory.class);
+		EditingDomain editingDomain = getEditingDomain(injector);
+
+		Object resource = getResource(selectionIndex, editingDomain, injector);
+		// create the tree-form composite
 		treeFormFactory.initialize(mpTreeViewer, resource);
-	
+
 		// Guice injected viewer context menu helper
 		ViewerContextMenuHelper contextMenuHelper = injector.getInstance(ViewerContextMenuHelper.class);
 		// Guice injected viewer drag and drop helper
 		ViewerDragAndDropHelper dragAndDropHelper = injector.getInstance(ViewerDragAndDropHelper.class);
 		// set context menu and drag and drop
 		ResourceSaveStrategy save = injector.getInstance(ResourceSaveStrategy.class);
-		
 		contextMenuHelper.addViewerContextMenu(mpTreeViewer, editingDomain);
 		dragAndDropHelper.addDragAndDrop(mpTreeViewer, editingDomain);
+	}
+
+	@Override
+	protected void updateTree(Object resource) {
+		treeFormFactory.initialize(mpTreeViewer, resource);
+	}
+
+	@Override
+	public void dispose() {
+		this.mpTreeViewer.getTree().dispose();
+
+	}
+
+	@Override
+	protected String getURIPath(int selectionIndex) {
+		DataGathering gatherer = new DataGathering();
+		if (selectionIndex == -1) {
+			return gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "measuringpoint");
+		} else {
+			return gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(selectionIndex), "measuringpoint");
+		}
 	}
 }
