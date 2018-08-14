@@ -8,6 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.e4.core.commands.ECommandService;
+import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
@@ -25,6 +27,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
+import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.SaveHandler;
 
 import dataManagement.DataGathering;
 
@@ -49,6 +52,13 @@ public class MeasuringpointView {
 	
 	@Inject
 	MDirtyable dirty;
+	
+	@Inject
+	ECommandService commandService;
+	
+	@Inject
+	EHandlerService handlerService;
+	
 	/**
 	 * Creates the control objects of the simulizar measuring point view
 	 * @param parent
@@ -72,7 +82,9 @@ public class MeasuringpointView {
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
            
-        createViewButtons(buttonContainer);  
+        createViewButtons(buttonContainer); 
+        
+        handlerService.activateHandler("org.eclipse.ui.file.save", new org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler());
 	}
 
 	
@@ -82,7 +94,7 @@ public class MeasuringpointView {
 	 * @return
 	 */
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
-		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty);
+		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty,commandService);
 		mon = (MonitorTreeViewer) mpTreeViewer;
 		return mpTreeViewer;
 	}
@@ -146,9 +158,6 @@ public class MeasuringpointView {
 	
 	@Persist
 	public void save(MDirtyable dirty) throws IOException {
-		mon.getResource().save(null);
-		if (dirty != null) {
-			dirty.setDirty(false);
-		}
+		((MonitorTreeViewer)monitorTreeViewer).save(dirty);
 	}
 }

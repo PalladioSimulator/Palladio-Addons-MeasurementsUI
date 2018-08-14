@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.resource.ResourceLoader;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -100,7 +101,7 @@ public abstract class MpTreeViewer {
 	 * @param injector Google guice injector to the parsley project
 	 * @return the resource at the chosen selection index
 	 */
-	protected Object getResource(int selectionIndex, EditingDomain editingDomain, Injector injector) {
+	protected Resource getResource(int selectionIndex, EditingDomain editingDomain, Injector injector) {
 		String measuringPointPath = getURIPath(selectionIndex);
 		URI uri = URI.createFileURI(measuringPointPath);
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
