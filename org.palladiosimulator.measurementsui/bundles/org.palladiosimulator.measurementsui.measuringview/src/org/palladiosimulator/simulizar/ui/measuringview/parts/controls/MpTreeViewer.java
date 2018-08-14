@@ -11,7 +11,7 @@ import init.StartApplication;
 public abstract class MpTreeViewer {
 	protected TreeViewer mpTreeViewer;
 	protected  MpTreeViewer (Composite parent) {
-		initParsley(parent, null);
+		initParsley(parent, -1);
 	}
 	
 	
@@ -24,11 +24,8 @@ public abstract class MpTreeViewer {
 	 * Leider hat bei mir aus irgendeinem Grund die Startapplication immer null zur�ckgegeben,
 	 * weswegen die Methode momentan noch nicht aufgerufen wird.
 	 */
-	public MpTreeViewer updateInput(Composite parent) {
-		StartApplication application = StartApplication.getInstance();
-        application.startApplication();
-        List<MonitorRepository> repository = application.getModelAccessor().getMonitorRepository();      
-        initParsley(parent, repository);
+	public MpTreeViewer updateInput(Composite parent, int selectionIndex) {    
+        initParsley(parent, selectionIndex);
 		return this;
 	}
 	
@@ -42,5 +39,6 @@ public abstract class MpTreeViewer {
 	/*
 	 * Schafft die Anbindung zu den jeweilgen Parsleyprojekten mit Hilfe der Google Guice Injection. Mehr dazu in den erbenden Klassen.
 	 */
-	protected abstract void initParsley(Composite parent, List<MonitorRepository> repository);
+	protected abstract void initParsley(Composite parent, int selectionIndex);
+
 }

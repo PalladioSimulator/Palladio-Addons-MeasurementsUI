@@ -12,6 +12,8 @@ import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.simulizar.ui.measuringview.parts.MeasuringpointView;
+
 import dataManagement.DataGathering;
 
 import com.google.inject.Injector;
@@ -24,7 +26,7 @@ public class EmptyMpTreeViewer extends MpTreeViewer{
 	}
 	
 	@Override
-	protected void initParsley(Composite parent, List<MonitorRepository> repository) {
+	protected void initParsley(Composite parent, int selectionIndex) {
 		this.mpTreeViewer = new TreeViewer(parent);
 		// Guice injector
      	Injector injector = MpviewInjectorProvider.getInjector();
@@ -32,7 +34,14 @@ public class EmptyMpTreeViewer extends MpTreeViewer{
      	//Get the Path of MeasuringPoint file of first project in Workspace that also has an .aird file
      	//TODO: Choose which Project to use according to some sort of selection
      	DataGathering gatherer = new DataGathering();
-     	String measuringPointPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "measuringpoint");
+     	
+     	MeasuringpointView mainView = new MeasuringpointView();
+     	String measuringPointPath;
+     	if(selectionIndex == -1) {
+     		measuringPointPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "measuringpoint");
+     	}else {
+     		measuringPointPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(selectionIndex), "measuringpoint");
+     	}
      	
      	// The EditingDomain is needed for context menu and drag and drop
      	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);

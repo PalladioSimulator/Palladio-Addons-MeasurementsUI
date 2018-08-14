@@ -20,6 +20,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.simulizar.ui.measuringview.parts.MeasuringpointView;
+
 import dataManagement.DataGathering;
 
 import com.google.inject.Inject;
@@ -31,13 +33,14 @@ public class MonitorTreeViewer extends MpTreeViewer{
 
 	MDirtyable dirty;
 	Resource resource;
+	
 	public MonitorTreeViewer(Composite parent, MDirtyable dirty) {
 		super(parent);
 		this.dirty = dirty;
 	}
 	
 	@Override
-	protected void initParsley(Composite parent, List<MonitorRepository> repository) {
+	protected void initParsley(Composite parent, int selectionIndex) {
 		//Siehe Eclipse 4.x in der Parsley Doku. Je nach Darstellungsart(Tree, Form, Table, TreeForm,...) des Parsleyprojektes muss der Code hier
 		//leicht modifiziert werden.
 		
@@ -47,7 +50,14 @@ public class MonitorTreeViewer extends MpTreeViewer{
      	//Get the Path of MonitorRepository file of first project in Workspace that also has an .aird file
      	//TODO: Choose which Project to use according to some sort of selection
      	DataGathering gatherer = new DataGathering();
-     	String monitorRepPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "monitorrepository");
+     	MeasuringpointView mainView = new MeasuringpointView();
+     	String monitorRepPath;
+     	if(selectionIndex == -1) {
+     		monitorRepPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "monitorrepository");
+     	}else {
+     		monitorRepPath = gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(selectionIndex), "monitorrepository");
+     	}
+     	
      	
      	// The EditingDomain is needed for context menu and drag and drop
      	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
@@ -96,5 +106,9 @@ public class MonitorTreeViewer extends MpTreeViewer{
 		if (dirty != null) {
 			dirty.setDirty(false);
 		}
+	}
+
+	public Resource getResource() {
+		return resource;
 	}
 }
