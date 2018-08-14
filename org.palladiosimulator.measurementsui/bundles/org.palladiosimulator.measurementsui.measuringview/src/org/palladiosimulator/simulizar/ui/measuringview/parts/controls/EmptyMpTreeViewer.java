@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
 import java.util.List;
-
+import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.edit.ui.dnd.ViewerDragAndDropHelper;
@@ -37,6 +37,8 @@ public class EmptyMpTreeViewer extends MpTreeViewer{
      	// The EditingDomain is needed for context menu and drag and drop
      	EditingDomain editingDomain = injector.getInstance(EditingDomain.class);
      	URI uri = URI.createFileURI(measuringPointPath);
+     	
+     	
      	
      	ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
      	//load the resource

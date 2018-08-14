@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.EventObject;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.common.command.CommandStackListener;
