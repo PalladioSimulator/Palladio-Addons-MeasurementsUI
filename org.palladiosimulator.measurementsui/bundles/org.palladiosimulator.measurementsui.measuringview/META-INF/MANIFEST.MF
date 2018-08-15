@@ -25,3 +25,4 @@ Import-Package: dataManagement,
  dataManipulation,
  init,
  mpview
+Export-Package: org.palladiosimulator.simulizar.ui.measuringview.parts.controls

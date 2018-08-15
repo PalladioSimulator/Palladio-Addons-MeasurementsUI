@@ -12,4 +12,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.uni-stuttgart.enpro.wizard
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- swing2swt.jar
+ lib/swing2swt.jar
