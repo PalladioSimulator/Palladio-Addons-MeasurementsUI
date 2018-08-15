@@ -1,14 +1,15 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
-import java.util.EventObject;
+import java.io.IOException;
 
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
-import org.eclipse.emf.common.command.CommandStackListener;
+import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.resource.ResourceLoader;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -22,9 +23,9 @@ import mpview.MpviewInjectorProvider;
  */
 public abstract class MpTreeViewer {
 	protected MDirtyable dirty;
-	protected TreeViewer mpTreeViewer;
+	protected TreeViewer treeViewer;
 	protected ECommandService commandService;
-
+	protected Resource resource;
 	/**
 	 * 
 	 * @param parent composite container
@@ -41,18 +42,17 @@ public abstract class MpTreeViewer {
 	 * @return The current TreeViewer
 	 */
 	public TreeViewer getTreeViewer() {
-		return mpTreeViewer;
+		return treeViewer;
 	}
 
 	/**
 	 * Updates the tree to a resource with a certain index
 	 * @param selectionIndex Index of the resource which should be shown in the treeview
 	 */
-	public void updateInput(int selectionIndex, MDirtyable dirty) {
-		this.dirty = dirty;
+	public void updateInput(int selectionIndex) {
 		Injector injector = MpviewInjectorProvider.getInjector();
 		EditingDomain editingDomain = getEditingDomain(injector);
-		Resource resource = getResource(selectionIndex, editingDomain, injector);
+		resource = getResource(selectionIndex, editingDomain, injector);
 		updateTree(resource);
 	}
 
@@ -61,7 +61,20 @@ public abstract class MpTreeViewer {
 	 * treeview is double clicked.
 	 */
 	public void addMouseListener() {
-		mpTreeViewer.getTree().addMouseListener(new MpTreeDoubleClickListener(mpTreeViewer));
+		treeViewer.getTree().addMouseListener(new MpTreeDoubleClickListener(treeViewer));
+	}
+	
+	/**
+	 * Adds a listener which connects the selected tree item to the ESelectionService.
+	 * @param selectionService
+	 */
+	public void addSelectionListener(ESelectionService selectionService) {
+		treeViewer.addSelectionChangedListener(event -> {
+			IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+			// set the selection to the service
+			selectionService
+					.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
+		});
 	}
 
 	/**
@@ -116,15 +129,30 @@ public abstract class MpTreeViewer {
 		URI uri = URI.createFileURI(measuringPointPath);
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
 		// load the resource
-		Resource resource = resourceLoader.getResource(editingDomain, uri).getResource();
-		editingDomain.getCommandStack().addCommandStackListener(new CommandStackListener() {
-			public void commandStackChanged(EventObject event) {
-				if (dirty != null) {
-					dirty.setDirty(true);
-					commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
-				}
+		resource = resourceLoader.getResource(editingDomain, uri).getResource();
+		
+		editingDomain.getCommandStack().addCommandStackListener(e -> {
+			if (dirty != null) {
+				dirty.setDirty(true);
+				commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
 			}
 		});
+
 		return resource;
+	}
+	
+	
+	
+	/**
+	 * Save the current state of the view
+	 * @param dirty
+	 * @throws IOException
+	 */
+	public void save(MDirtyable dirty) throws IOException {
+		resource.save(null);
+		if (dirty != null) {
+			dirty.setDirty(false);
+			commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
+		}
 	}
 }

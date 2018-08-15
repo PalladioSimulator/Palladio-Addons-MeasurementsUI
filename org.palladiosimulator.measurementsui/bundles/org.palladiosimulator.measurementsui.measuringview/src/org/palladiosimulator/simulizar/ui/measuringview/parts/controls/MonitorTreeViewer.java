@@ -1,41 +1,38 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
-import java.io.IOException;
-import java.util.EventObject;
-import java.util.List;
-
-import org.eclipse.core.resources.IProject;
 import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
-import org.eclipse.emf.common.command.CommandStackListener;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.composite.TreeFormComposite;
 import org.eclipse.emf.parsley.composite.TreeFormFactory;
 import org.eclipse.emf.parsley.edit.ui.dnd.ViewerDragAndDropHelper;
 import org.eclipse.emf.parsley.menus.ViewerContextMenuHelper;
-import org.eclipse.emf.parsley.resource.ResourceLoader;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.monitorrepository.MonitorRepository;
-import org.palladiosimulator.simulizar.ui.measuringview.parts.MeasuringpointView;
 
 import dataManagement.DataGathering;
 
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 import mpview.MpviewInjectorProvider;
 
+/**
+ * 
+ * @author David Schütz
+ *
+ */
 public class MonitorTreeViewer extends MpTreeViewer {
 
-	Resource resource;
 	TreeFormComposite treeFormComposite;
 	
-	
+	/**
+	 * 
+	 * @param parent
+	 * @param dirty
+	 * @param commandService
+	 */
 	public MonitorTreeViewer(Composite parent, MDirtyable dirty,ECommandService commandService) {
 		super(parent, dirty, commandService);
 	}
@@ -51,8 +48,6 @@ public class MonitorTreeViewer extends MpTreeViewer {
 
 		// Get the Path of MonitorRepository file of first project in Workspace that
 		// also has an .aird file
-		// TODO: Choose which Project to use according to some sort of selection
-		DataGathering gatherer = new DataGathering();
 		
 		EditingDomain editingDomain = getEditingDomain(injector);
 		resource = getResource(selectionIndex, editingDomain, injector);
@@ -79,7 +74,7 @@ public class MonitorTreeViewer extends MpTreeViewer {
 		// update the composite
 		treeFormComposite.update(resource);
 
-		this.mpTreeViewer = (TreeViewer) treeFormComposite.getViewer();
+		this.treeViewer = (TreeViewer) treeFormComposite.getViewer();
 
 		// Speichern der ï¿½nderungen. Funktioniert gerade leider noch nicht siehe
 		// SaveHandler.java
@@ -90,14 +85,6 @@ public class MonitorTreeViewer extends MpTreeViewer {
 	@Override
 	protected void updateTree(Object resource) {
 		treeFormComposite.update(resource);
-	}
-
-	public void save(MDirtyable dirty) throws IOException {
-		resource.save(null);
-		if (dirty != null) {
-			dirty.setDirty(false);
-			commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
-		}
 	}
 
 	public Resource getResource() {
