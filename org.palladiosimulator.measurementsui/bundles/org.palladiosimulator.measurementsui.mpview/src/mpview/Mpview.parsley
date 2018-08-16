@@ -31,7 +31,7 @@ module mpview {
 			// Optional: initialize an empty Resource
 			// 'it' is of type Resource
 			// e.g., it.getContents += myFactory.createMyClass
-			it.getContents += MonitorRepositoryFactory.eINSTANCE
+			//it.getContents += MonitorRepositoryFactory.eINSTANCE
 		}
 		
 		saveResource {

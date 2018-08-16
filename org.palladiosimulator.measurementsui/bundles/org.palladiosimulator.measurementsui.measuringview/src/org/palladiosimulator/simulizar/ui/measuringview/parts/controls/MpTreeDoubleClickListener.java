@@ -16,7 +16,7 @@ import dataManipulation.ResourceEditor;
 
 /**
  * 
- * @author David Schütz
+ * @author David Schuetz
  *
  */
 public class MpTreeDoubleClickListener implements MouseListener{
