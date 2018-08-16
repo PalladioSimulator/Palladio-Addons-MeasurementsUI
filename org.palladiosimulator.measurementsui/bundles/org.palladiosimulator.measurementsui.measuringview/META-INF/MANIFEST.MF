@@ -6,7 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: javax.inject,
  org.eclipse.osgi,
  org.eclipse.jface,
- org.eclipse.e4.ui.model.workbench,
  org.eclipse.e4.ui.di,
  org.eclipse.e4.ui.services,
  org.eclipse.e4.core.di.annotations,
@@ -16,10 +15,11 @@ Require-Bundle: javax.inject,
  org.eclipse.emf,
  org.palladiosimulator.monitorrepository,
  javax.annotation,
- org.eclipse.e4.ui.workbench,
  org.eclipse.core.resources,
  org.eclipse.e4.core.commands,
- org.eclipse.ui.views.properties.tabbed
+ org.eclipse.ui.views.properties.tabbed,
+ org.eclipse.e4.ui.model.workbench,
+ org.eclipse.e4.ui.workbench
 Automatic-Module-Name: org.palladiosimulator.simulizar.ui.measuringview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: dataManagement,

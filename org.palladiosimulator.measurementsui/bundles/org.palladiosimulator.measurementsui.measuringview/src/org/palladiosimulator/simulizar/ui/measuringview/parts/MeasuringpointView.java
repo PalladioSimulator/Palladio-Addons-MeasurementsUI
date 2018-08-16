@@ -60,7 +60,7 @@ public class MeasuringpointView {
 	@PostConstruct
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new GridLayout(1, true));
-		
+		 initializeApplication();
 		createRepositorySelectionCBox(parent);
 		SashForm outerContainer = new SashForm(parent, SWT.FILL);
         outerContainer.setLayout(new GridLayout(1,true));
@@ -79,7 +79,7 @@ public class MeasuringpointView {
         
         createViewButtons(buttonContainer); 
         
-        initializeApplication();
+      
         
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
