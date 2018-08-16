@@ -2,7 +2,7 @@ package mptree;
 
 import org.eclipse.emf.parsley.composite.TreeFormComposite;
 import org.eclipse.emf.parsley.composite.TreeFormFactory;
-
+import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.emf.parsley.views.AbstractSaveableViewerView;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -14,19 +14,23 @@ import com.google.inject.Inject;
 
 /**
  * 
- * @author David Schütz
- * Abstrakte Klasse für den MpTreeViewer. Normalerweise muss man die nicht selber schreiben, 
+ * @author David Schï¿½tz
+ * Abstrakte Klasse fï¿½r den MpTreeViewer. Normalerweise muss man die nicht selber schreiben, 
  * sondern man erbt wie einfach von import org.eclipse.emf.parsley.views.SaveableTreeFormView.
- * Ich hab das hier einfach mal gemacht, um theorethisch dem TreeViewer Checkboxen geben zu können
- * und um einen MouseListener hinzufügen. Wobei letzeres auch sicher einfacher geht.
+ * Ich hab das hier einfach mal gemacht, um theorethisch dem TreeViewer Checkboxen geben zu kï¿½nnen
+ * und um einen MouseListener hinzufï¿½gen. Wobei letzeres auch sicher einfacher geht.
  *
  */
 public abstract class AbstractMpTreeViewer extends AbstractSaveableViewerView {
 
 	@Inject
-	private TreeFormFactory treeFormFactory;
+	private ViewerFactory viewerFactory;
 
-	private TreeFormComposite treeFormComposite;
+	private TreeViewer treeViewer;
+
+	protected Object getContents() {
+		return getContents(getResource());
+	}
 
 	protected Object getContents(Resource resource) {
 		return resource;
@@ -36,26 +40,29 @@ public abstract class AbstractMpTreeViewer extends AbstractSaveableViewerView {
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
-		treeFormComposite = treeFormFactory
-				.createTreeFormComposite(parent, SWT.BORDER);
-
-		treeFormComposite.update(getContents(getResource()));
+		treeViewer = createAndInitializeTreeViewer(parent);
 
 		afterCreateViewer();
 	}
 
-	public void forceReloadResource(){
-		treeFormComposite.update(getContents(getResource()));
+	protected TreeViewer createAndInitializeTreeViewer(Composite parent) {
+		TreeViewer viewer = new TreeViewer(parent);
+		getViewerFactory().initialize(viewer, getContents());
+		return viewer;
 	}
 
+	protected ViewerFactory getViewerFactory() {
+		return viewerFactory;
+	}
+	
 	@Override
 	public void setFocus() {
-		treeFormComposite.setFocus();
+		treeViewer.getTree().setFocus();
 	}
 
 	@Override
 	public StructuredViewer getViewer() {
-		return treeFormComposite.getViewer();
+		return treeViewer;
 	}
 	
 	@Override
