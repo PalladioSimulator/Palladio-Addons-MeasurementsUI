@@ -14,7 +14,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepository;
 import DataCreation.DataMeasuringCreator;
 import dataManagement.DataGathering;
 import dataManipulation.ResourceEditor;
-import init.StartApplication;
+import init.DataApplication;
 
 
 
@@ -25,7 +25,7 @@ public class SampleHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 
-		StartApplication start = StartApplication.getInstance();
+		DataApplication start = DataApplication.getInstance();
 		ResourceEditor editor = new ResourceEditor();
 		DataMeasuringCreator creator = new DataMeasuringCreator();
 		DataGathering gatherer = new DataGathering();
@@ -38,7 +38,6 @@ public class SampleHandler extends AbstractHandler {
 		
 		System.out.println("Testing .monitorrepository return: "+ gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "monitorrepository"));
 		
-		start.startApplication();
 
 		MonitorRepository monRep = start.getModelAccessor().getMonitorRepository().get(0);
 		MeasuringPointRepository mpRep = start.getModelAccessor().getMeasuringPointRpository().get(0);

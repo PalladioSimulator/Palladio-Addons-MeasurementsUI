@@ -24,5 +24,6 @@ Automatic-Module-Name: org.palladiosimulator.simulizar.ui.measuringview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: dataManagement,
  dataManipulation,
+ emptymeasuringpoints,
  init,
  mpview

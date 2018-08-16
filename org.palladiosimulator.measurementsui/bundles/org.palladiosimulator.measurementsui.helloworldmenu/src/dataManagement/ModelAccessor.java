@@ -130,7 +130,8 @@ public class ModelAccessor {
 	 * @param session the session to which all models should be loaded
 	 */
 	public void initializeModels(Session session) {
-
+		clearModels();
+		
 		for (Resource resource : session.getSemanticResources()) {
 
 			for (EObject pcmModel: resource.getContents()) {	
@@ -155,6 +156,20 @@ public class ModelAccessor {
 		pcmEnum.createPcmInstance(this, pcmModel);
 	}
 	
+	/**
+	 * Resets the models
+	 */
+	private void clearModels() {
+		this.allocation.clear();
+		this.repository.clear();
+		this.resourceEnvironment.clear();
+		this.system.clear();
+		this.usageModel.clear();
+		
+		this.measuringPointRpository.clear();
+		this.monitorRepository.clear();
+		
+	}
 	
 	
 	

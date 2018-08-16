@@ -6,6 +6,7 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.resource.ResourceLoader;
@@ -14,6 +15,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 
 import com.google.inject.Injector;
+
+import init.DataApplication;
 import mpview.MpviewInjectorProvider;
 
 /**
@@ -25,15 +28,18 @@ public abstract class MpTreeViewer {
 	protected MDirtyable dirty;
 	protected TreeViewer treeViewer;
 	protected ECommandService commandService;
+	protected DataApplication dataApplication;
 	protected Resource resource;
+	
 	/**
 	 * 
 	 * @param parent composite container
 	 */
-	protected MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService) {
+	protected MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService, DataApplication application) {
 		this.dirty = dirty;
 		this.commandService = commandService;
-		initParsley(parent, -1);
+		this.dataApplication = application;
+		initParsley(parent);
 	}
 
 	/**
@@ -45,16 +51,7 @@ public abstract class MpTreeViewer {
 		return treeViewer;
 	}
 
-	/**
-	 * Updates the tree to a resource with a certain index
-	 * @param selectionIndex Index of the resource which should be shown in the treeview
-	 */
-	public void updateInput(int selectionIndex) {
-		Injector injector = MpviewInjectorProvider.getInjector();
-		EditingDomain editingDomain = getEditingDomain(injector);
-		resource = getResource(selectionIndex, editingDomain, injector);
-		updateTree(resource);
-	}
+
 
 	/**
 	 * Adds a DoubleClickMouseListener which changes Attributes if an icon in the
@@ -82,7 +79,7 @@ public abstract class MpTreeViewer {
 	 * @param parent composite container
 	 * @param selectionIndex of a respository which should be shown in the TreeView
 	 */
-	protected abstract void initParsley(Composite parent, int selectionIndex);
+	protected abstract void initParsley(Composite parent);
 
 	/**
 	 * Disposes of the operating system resources associated with the tree and all
@@ -95,15 +92,8 @@ public abstract class MpTreeViewer {
 	 * 
 	 * @param resource which will be shown in the updated tree
 	 */
-	protected abstract void updateTree(Object resource);
+	public abstract void updateTree();
 
-	/**
-	 * Returns the URI path to the EMF-model of the tree
-	 * 
-	 * @param selectionIndex of a respository which should be shown in the tree
-	 * @return the URI path to the EMF-model of the tree
-	 */
-	protected abstract String getURIPath(int selectionIndex);
 
 	/**
 	 * Returns the parsley EditingDomain
@@ -124,12 +114,11 @@ public abstract class MpTreeViewer {
 	 * @param injector Google guice injector to the parsley project
 	 * @return the resource at the chosen selection index
 	 */
-	protected Resource getResource(int selectionIndex, EditingDomain editingDomain, Injector injector) {
-		String measuringPointPath = getURIPath(selectionIndex);
-		URI uri = URI.createFileURI(measuringPointPath);
+	protected Resource getResource(EObject model, EditingDomain editingDomain, Injector injector) {
+		
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
 		// load the resource
-		resource = resourceLoader.getResource(editingDomain, uri).getResource();
+		resource = resourceLoader.getResource(editingDomain, model.eResource().getURI()).getResource();
 		
 		editingDomain.getCommandStack().addCommandStackListener(e -> {
 			if (dirty != null) {
