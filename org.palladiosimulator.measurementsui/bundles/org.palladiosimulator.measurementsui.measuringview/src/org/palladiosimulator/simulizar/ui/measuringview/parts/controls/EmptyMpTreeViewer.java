@@ -10,6 +10,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 
 import dataManagement.DataGathering;
+import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
+import init.DataApplication;
 
 import com.google.inject.Injector;
 
@@ -17,7 +19,7 @@ import mpview.MpviewInjectorProvider;
 
 /**
  * 
- * @author David Schütz
+ * @author David Schï¿½tz
  *
  */
 public class EmptyMpTreeViewer extends MpTreeViewer {
@@ -29,20 +31,21 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
 	 * @param dirty
 	 * @param commandService
 	 */
-	public EmptyMpTreeViewer(Composite parent,MDirtyable dirty,ECommandService commandService) {
-		super(parent, dirty, commandService);
+	public EmptyMpTreeViewer(Composite parent,MDirtyable dirty,ECommandService commandService, DataApplication application) {
+		super(parent, dirty, commandService, application);
 	}
 
 	@Override
-	protected void initParsley(Composite parent, int selectionIndex) {
+	protected void initParsley(Composite parent) {
 		this.treeViewer = new TreeViewer(parent);
 		// Guice injector
-		Injector injector = MpviewInjectorProvider.getInjector();
+		Injector injector = EmptymeasuringpointsInjectorProvider.getInjector();
 
 		treeFormFactory = injector.getInstance(ViewerFactory.class);
 		EditingDomain editingDomain = getEditingDomain(injector);
 
-		Object resource = getResource(selectionIndex, editingDomain, injector);
+
+		Object resource = getResource( dataApplication.getModelAccessor().getMeasuringPointRpository().get(0), editingDomain, injector);
 		// create the tree-form composite
 		treeFormFactory.initialize(treeViewer, resource);
 
@@ -56,7 +59,7 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
 	}
 
 	@Override
-	protected void updateTree(Object resource) {
+	public void updateTree() {
 		treeFormFactory.initialize(treeViewer, resource);
 	}
 
@@ -66,13 +69,4 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
 
 	}
 
-	@Override
-	protected String getURIPath(int selectionIndex) {
-		DataGathering gatherer = new DataGathering();
-		if (selectionIndex == -1) {
-			return gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(0), "measuringpoint");
-		} else {
-			return gatherer.getChosenFile(gatherer.getAllProjectAirdfiles().get(selectionIndex), "measuringpoint");
-		}
-	}
 }

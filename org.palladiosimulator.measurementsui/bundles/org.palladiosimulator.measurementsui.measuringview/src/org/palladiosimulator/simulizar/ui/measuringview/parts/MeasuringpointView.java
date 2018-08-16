@@ -28,6 +28,7 @@ import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTr
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
 
 import dataManagement.DataGathering;
+import init.DataApplication;
 
 /**
  * 
@@ -38,6 +39,7 @@ public class MeasuringpointView {
 	
 	private MpTreeViewer monitorTreeViewer;
 	private MpTreeViewer emptyMpTreeViewer;
+	private DataApplication dataApplication;
 	
 	@Inject
 	MDirtyable dirty;
@@ -58,7 +60,7 @@ public class MeasuringpointView {
 	@PostConstruct
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new GridLayout(1, true));
-		
+		 initializeApplication();
 		createRepositorySelectionCBox(parent);
 		SashForm outerContainer = new SashForm(parent, SWT.FILL);
         outerContainer.setLayout(new GridLayout(1,true));
@@ -75,16 +77,23 @@ public class MeasuringpointView {
         Composite monitorContainer = createTreeComposite(treeContainer);
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer); 
         
+        createViewButtons(buttonContainer); 
+        
+      
         
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
            
-        createViewButtons(buttonContainer); 
+       
         
         
         handlerService.activateHandler("org.eclipse.ui.file.save", new org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler());
 	}
 	
+	private void initializeApplication() {
+		this.dataApplication = DataApplication.getInstance();
+		dataApplication.loadData(0);	
+	}
 
 	
 	/**
@@ -93,7 +102,7 @@ public class MeasuringpointView {
 	 * @return
 	 */
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
-		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty, commandService);
+		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty,commandService, dataApplication);
 		mpTreeViewer.addMouseListener();
 		mpTreeViewer.addSelectionListener(selectionService);
 		return mpTreeViewer;
@@ -105,7 +114,7 @@ public class MeasuringpointView {
 	 * @return
 	 */
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
-		return new EmptyMpTreeViewer(parent,dirty, commandService);
+		return new EmptyMpTreeViewer(parent,dirty,commandService, dataApplication);
 	}
 	
 	/**
@@ -141,8 +150,7 @@ public class MeasuringpointView {
 	private void createRepositorySelectionCBox(Composite parent) {
 		Combo comboDropDown = new Combo(parent, SWT.DROP_DOWN);
 		comboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-        DataGathering gatherer = new DataGathering();
-        List<IProject> allProjects = gatherer.getAllProjectAirdfiles();     
+        List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();     
         for(IProject project : allProjects) {
         	comboDropDown.add(project.toString());
         }
@@ -151,8 +159,9 @@ public class MeasuringpointView {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int selectionIndex = comboDropDown.getSelectionIndex();
-				monitorTreeViewer.updateInput(selectionIndex);
-				emptyMpTreeViewer.updateInput(selectionIndex);
+				dataApplication.loadData(selectionIndex);
+				monitorTreeViewer.updateTree();
+				emptyMpTreeViewer.updateTree();
 			}
 			
 			@Override
