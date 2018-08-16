@@ -80,3 +80,7 @@ local.properties
 
 .DS_Store
 **/emfparsley-gen/**
+
+target/
+
+**/plugin.xml
