@@ -82,5 +82,3 @@ local.properties
 **/emfparsley-gen/**
 
 target/
-
-**/plugin.xml
