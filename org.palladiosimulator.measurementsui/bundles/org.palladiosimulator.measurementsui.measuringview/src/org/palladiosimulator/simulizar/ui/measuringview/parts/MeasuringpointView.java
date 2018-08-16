@@ -19,6 +19,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -56,11 +57,15 @@ public class MeasuringpointView {
 	 */
 	@PostConstruct
 	public void createPartControl(Composite parent) {
-		SashForm outerContainer = new SashForm(parent, SWT.HORIZONTAL);
-        outerContainer.setLayout(new FillLayout());
+		parent.setLayout(new GridLayout(1, true));
+		
+		createRepositorySelectionCBox(parent);
+		SashForm outerContainer = new SashForm(parent, SWT.FILL);
+        outerContainer.setLayout(new GridLayout(1,true));
+        outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         
         SashForm treeContainer = new SashForm(outerContainer, SWT.VERTICAL);
-        treeContainer.setLayout(new FillLayout());
+        treeContainer.setLayout(new GridLayout(1,true));
         
         Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
         buttonContainer.setLayout(new GridLayout(1, true));
@@ -70,10 +75,12 @@ public class MeasuringpointView {
         Composite monitorContainer = createTreeComposite(treeContainer);
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer); 
         
+        
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
            
         createViewButtons(buttonContainer); 
+        
         
         handlerService.activateHandler("org.eclipse.ui.file.save", new org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler());
 	}
@@ -123,7 +130,17 @@ public class MeasuringpointView {
         Button editMpButton = new Button(buttonContainer, SWT.PUSH);
         editMpButton.setText("Edit...");
         
-        Combo comboDropDown = new Combo(buttonContainer, SWT.DROP_DOWN);
+        Button deleteMpButton = new Button(buttonContainer, SWT.PUSH);
+        deleteMpButton.setText("Delete...");
+        Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
+        assignMonitorButton.setText("Assign to Monitor");
+        Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
+        createStandardButton.setText("Create Standard Set");     
+	}
+	
+	private void createRepositorySelectionCBox(Composite parent) {
+		Combo comboDropDown = new Combo(parent, SWT.DROP_DOWN);
+		comboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
         DataGathering gatherer = new DataGathering();
         List<IProject> allProjects = gatherer.getAllProjectAirdfiles();     
         for(IProject project : allProjects) {
@@ -144,13 +161,6 @@ public class MeasuringpointView {
 			}
 		});
         comboDropDown.select(0);
-        
-        Button deleteMpButton = new Button(buttonContainer, SWT.PUSH);
-        deleteMpButton.setText("Delete...");
-        Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
-        assignMonitorButton.setText("Assign to Monitor");
-        Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
-        createStandardButton.setText("Create Standard Set");     
 	}
 	
 	/**

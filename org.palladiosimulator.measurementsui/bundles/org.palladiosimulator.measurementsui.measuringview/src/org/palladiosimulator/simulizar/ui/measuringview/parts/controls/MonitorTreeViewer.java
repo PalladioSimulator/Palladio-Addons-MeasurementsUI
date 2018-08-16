@@ -11,6 +11,8 @@ import org.eclipse.emf.parsley.menus.ViewerContextMenuHelper;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.monitorrepository.Monitor;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
 import dataManagement.DataGathering;
 
@@ -20,7 +22,7 @@ import mpview.MpviewInjectorProvider;
 
 /**
  * 
- * @author David Schütz
+ * @author David SchÃ¼tz
  *
  */
 public class MonitorTreeViewer extends MpTreeViewer {
@@ -75,9 +77,6 @@ public class MonitorTreeViewer extends MpTreeViewer {
 		treeFormComposite.update(resource);
 
 		this.treeViewer = (TreeViewer) treeFormComposite.getViewer();
-
-		// Speichern der ï¿½nderungen. Funktioniert gerade leider noch nicht siehe
-		// SaveHandler.java
 		
 
 	}
@@ -85,6 +84,8 @@ public class MonitorTreeViewer extends MpTreeViewer {
 	@Override
 	protected void updateTree(Object resource) {
 		treeFormComposite.update(resource);
+		Monitor m = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+		m.eResource().getURI();
 	}
 
 	public Resource getResource() {
