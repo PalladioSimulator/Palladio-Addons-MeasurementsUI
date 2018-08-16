@@ -23,6 +23,11 @@ Automatic-Module-Name: org.palladiosimulator.simulizar.ui.measuringview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: dataManagement,
  dataManipulation,
+ de.unistuttgart.enpro.wizard.handlers,
+ emptymeasuringpoints,
  init,
  mpview
-Export-Package: org.palladiosimulator.simulizar.ui.measuringview.parts.controls
+Export-Package: de.unistuttgart.enpro.wizard.handlers,
+ org.palladiosimulator.simulizar.ui.measuringview.parts.controls
+Bundle-ClassPath: .,
+ lib/swing2swt.jar

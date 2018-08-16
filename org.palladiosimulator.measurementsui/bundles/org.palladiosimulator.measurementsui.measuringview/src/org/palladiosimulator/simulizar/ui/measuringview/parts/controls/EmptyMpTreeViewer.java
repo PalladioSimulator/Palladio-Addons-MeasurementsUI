@@ -22,6 +22,9 @@ import com.google.inject.Injector;
 
 import mpview.MpviewInjectorProvider;
 
+import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
+
+
 public class EmptyMpTreeViewer extends MpTreeViewer {
 	ViewerFactory treeFormFactory;
 
@@ -33,7 +36,7 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
 	protected void initParsley(Composite parent, int selectionIndex) {
 		this.mpTreeViewer = new TreeViewer(parent);
 		// Guice injector
-		Injector injector = MpviewInjectorProvider.getInjector();
+		Injector injector = EmptymeasuringpointsInjectorProvider.getInjector();
 
 		treeFormFactory = injector.getInstance(ViewerFactory.class);
 		EditingDomain editingDomain = getEditingDomain(injector);

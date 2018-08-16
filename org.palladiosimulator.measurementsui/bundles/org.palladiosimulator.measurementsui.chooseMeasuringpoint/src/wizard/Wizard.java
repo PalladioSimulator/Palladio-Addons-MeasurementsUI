@@ -1,6 +1,6 @@
 package wizard;
 
-
+import de.unistuttgart.enpro.wizard.handlers.ChooseMeasuringpointWizardPage;
 
 public class Wizard extends org.eclipse.jface.wizard.Wizard {
 

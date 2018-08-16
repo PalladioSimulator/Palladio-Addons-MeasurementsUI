@@ -1,4 +1,4 @@
-package wizard;
+package de.unistuttgart.enpro.wizard.handlers;
 
 import javax.inject.Inject;
 

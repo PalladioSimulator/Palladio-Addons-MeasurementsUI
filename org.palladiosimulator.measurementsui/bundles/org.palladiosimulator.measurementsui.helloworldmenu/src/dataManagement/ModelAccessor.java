@@ -3,7 +3,8 @@ package dataManagement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.business.api.session.Session;
@@ -88,14 +89,17 @@ public class ModelAccessor {
 	 * This method returns a list of all MeasuringPoints which are not assigned to any Monitor.
 	 * @return List of unassigned MeasuringPoints
 	 */
-	public List<MeasuringPoint> getUnassignedMeasuringPoints() {
+	public EList<MeasuringPoint> getUnassignedMeasuringPoints() {
 		
-		List<MeasuringPoint> unassignedMeasuringPoints = new ArrayList<MeasuringPoint>();
-		
+		EList<MeasuringPoint> unassignedMeasuringPoints = new BasicEList<MeasuringPoint>();
+		unassignedMeasuringPoints.clear();
+
 		for (MeasuringPointRepository measuringPointRepository : this.measuringPointRpository) {
 			for (MeasuringPoint measuringPoint : measuringPointRepository.getMeasuringPoints()) {
 				if(!checkIfMeasuringPointIsAssignedToAnyMonitor(measuringPoint)) {
-					unassignedMeasuringPoints.add(measuringPoint);
+					if(!unassignedMeasuringPoints.contains(measuringPoint)) {
+						unassignedMeasuringPoints.add(measuringPoint);
+					}
 				}
 			}
 			
@@ -113,10 +117,13 @@ public class ModelAccessor {
 		
 		for (MonitorRepository monitorRepository: this.monitorRepository) {
 			for (Monitor monitor: monitorRepository.getMonitors()) {
-				if(monitor.getMeasuringPoint().equals(measuringpoint)) {
-					return true;
-				}
 				
+				if(monitor.getMeasuringPoint()!=null) {
+					if(monitor.getMeasuringPoint().equals(measuringpoint)) {
+						return true;
+					}
+				}
+
 			}
 			
 		}
@@ -130,6 +137,7 @@ public class ModelAccessor {
 	 * @param session the session to which all models should be loaded
 	 */
 	public void initializeModels(Session session) {
+		clearModelAccess();
 
 		for (Resource resource : session.getSemanticResources()) {
 
@@ -155,7 +163,16 @@ public class ModelAccessor {
 		pcmEnum.createPcmInstance(this, pcmModel);
 	}
 	
-	
+	private void clearModelAccess() {
+		this.allocation.clear();
+		this.repository.clear();
+		this.system.clear();
+		this.resourceEnvironment.clear();
+		this.usageModel.clear();
+		
+		this.monitorRepository.clear();
+		this.measuringPointRpository.clear();
+	}
 	
 	
 	protected void addResourceEnvironment(ResourceEnvironment resourceEnvironment) {

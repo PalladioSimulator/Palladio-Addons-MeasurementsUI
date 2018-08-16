@@ -2,6 +2,7 @@ import emptymeasuringpoints.EmptymeasuringpointsSaveableTreeView
 import org.eclipse.emf.common.util.URI
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory
+import org.eclipse.jface.viewers.IContentProvider
 
 /* emptymeasuringpoints EMF Parsley Dsl Module file */
 module emptymeasuringpoints {
@@ -18,7 +19,7 @@ module emptymeasuringpoints {
 			EmptymeasuringpointsSaveableTreeView -> {
 				//TODO Link zu deinem MeasuringpointRepository. Gleich wie beim mpview wird der Code hier nicht f�r den E4 Plugin Code ben�tigt, sondern lediglich
 				//f�r den einzelnen Parsleyview "Emptymeasuringpoints"
-				return URI.createFileURI("/Pets.com/PetsMeasuringPoint.measuringpoint")
+				return URI.createFileURI("/Users/zss1/runtime-New_configuration(1)/Pets.com/PetsMeasuringPoint.measuringpoint")
 			}
 		}
 	} 
@@ -29,15 +30,7 @@ module emptymeasuringpoints {
 		}
 	}
 	
-	viewerContentProvider {
-		//Hier h�tte ich gerne, dass das MeasuringpointRepository nicht im Baum angezeigt wird.
-		//Scheint leider nicht zu funktionieren, tats�chlich wird die zugeh�rige Methode "elements" in
-		//EmptymeasuringpointsViewerContentProvider nie aufgerufen. 
-		elements {
-			MeasuringPointRepository mpf -> mpf.measuringPoints
-		}
-		children {
-			
-		}
+	bindings{
+		type IContentProvider -> CustomContentProvider
 	}
 }
