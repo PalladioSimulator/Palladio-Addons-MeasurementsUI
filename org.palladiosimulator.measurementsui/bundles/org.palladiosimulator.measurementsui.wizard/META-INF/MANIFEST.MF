@@ -7,10 +7,13 @@ Bundle-Activator: de.uni_stuttgart.enpro.wizard.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide,
- org.eclipse.epp.mpc.help.ui
+ org.eclipse.epp.mpc.help.ui,
+ org.eclipse.e4.ui.model.workbench,
+ org.eclipse.e4.core.commands
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.uni-stuttgart.enpro.wizard
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- swing2swt.jar
-Export-Package: swing2swt.layout
+ lib/swing2swt.jar
+Import-Package: wizard
+

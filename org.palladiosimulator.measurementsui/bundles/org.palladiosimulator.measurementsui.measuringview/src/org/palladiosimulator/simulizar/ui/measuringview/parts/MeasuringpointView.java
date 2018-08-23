@@ -12,6 +12,8 @@ import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.jface.wizard.WizardDialog;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
@@ -23,12 +25,18 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
+
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
 
 import dataManagement.DataGathering;
+
+import de.unistuttgart.enpro.wizard.handlers.Wizard;
 import init.DataApplication;
+
 
 /**
  * 
@@ -79,8 +87,7 @@ public class MeasuringpointView {
         
         createViewButtons(buttonContainer); 
         
-      
-        
+
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
            
@@ -136,15 +143,28 @@ public class MeasuringpointView {
 	private void createViewButtons(Composite buttonContainer) {
 		Button newMpButton = new Button(buttonContainer, SWT.PUSH);
         newMpButton.setText("Add new Measuring Point");
+
+        newMpButton.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(org.eclipse.swt.widgets.Event event) {
+				Wizard test = new Wizard();
+		        Shell parentShell = test.getShell();
+		        WizardDialog dialog = new WizardDialog(parentShell, test);
+		        dialog.open();
+				
+			}
+        });
+
         Button editMpButton = new Button(buttonContainer, SWT.PUSH);
         editMpButton.setText("Edit...");
-        
         Button deleteMpButton = new Button(buttonContainer, SWT.PUSH);
         deleteMpButton.setText("Delete...");
         Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
         assignMonitorButton.setText("Assign to Monitor");
         Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
         createStandardButton.setText("Create Standard Set");     
+        
+
 	}
 	
 	private void createRepositorySelectionCBox(Composite parent) {
@@ -167,10 +187,13 @@ public class MeasuringpointView {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				comboDropDown.select(0);
+
+				
 			}
 		});
         comboDropDown.select(0);
-	}
+        	}
+
 	
 	/**
 	 * 

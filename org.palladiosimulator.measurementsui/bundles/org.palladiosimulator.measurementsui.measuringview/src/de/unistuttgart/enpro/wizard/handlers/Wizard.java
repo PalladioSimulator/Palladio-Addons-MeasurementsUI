@@ -8,7 +8,7 @@ package de.unistuttgart.enpro.wizard.handlers;
 public class Wizard extends org.eclipse.jface.wizard.Wizard {
 
 	private AddMonitor page1 = new AddMonitor();
-//	private ChooseMeasuringpointWizardPage page2 = new ChooseMeasuringpointWizardPage();
+	private ChooseMeasuringpointWizardPage page2 = new ChooseMeasuringpointWizardPage();
 	private SelectMeasurements page3 = new SelectMeasurements();
 	private MeasurementSpecification page4 = new MeasurementSpecification();
 
@@ -20,7 +20,7 @@ public class Wizard extends org.eclipse.jface.wizard.Wizard {
 	@Override
 	public void addPages() {
 		addPage(page1);
-//		addPage(page2);
+		addPage(page2);
 		addPage(page3);
 		addPage(page4);
 	}

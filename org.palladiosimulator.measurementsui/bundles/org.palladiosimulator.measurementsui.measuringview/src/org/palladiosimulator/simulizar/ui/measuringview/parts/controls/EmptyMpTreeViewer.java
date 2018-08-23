@@ -17,6 +17,9 @@ import com.google.inject.Injector;
 
 import mpview.MpviewInjectorProvider;
 
+
+import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
+
 /**
  * 
  * @author David Sch�tz
