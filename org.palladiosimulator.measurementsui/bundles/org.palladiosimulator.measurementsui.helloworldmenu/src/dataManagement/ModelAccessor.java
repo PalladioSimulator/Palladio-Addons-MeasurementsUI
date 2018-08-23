@@ -137,6 +137,7 @@ public class ModelAccessor {
 	 * @param session the session to which all models should be loaded
 	 */
 	public void initializeModels(Session session) {
+
 		clearModelAccess();
 
 		for (Resource resource : session.getSemanticResources()) {

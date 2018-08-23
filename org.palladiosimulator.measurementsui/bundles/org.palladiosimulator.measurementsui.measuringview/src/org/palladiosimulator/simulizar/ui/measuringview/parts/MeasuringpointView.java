@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts;
 
-import java.awt.Event;
 import java.io.IOException;
 import java.util.List;
 
@@ -12,7 +11,7 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
-import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
+import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -21,15 +20,14 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
-import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.SaveHandler;
 
 import dataManagement.DataGathering;
 import de.unistuttgart.enpro.wizard.handlers.Wizard;
@@ -41,19 +39,10 @@ import de.unistuttgart.enpro.wizard.handlers.Wizard;
  *
  */
 public class MeasuringpointView {
-	private ExtendedPropertySheetPage propertyPage;
 	
-	public int selectionIndex;
-	
-	public int getSelectionIndex() {
-		return selectionIndex;
-	}
-	
-	SashForm outerContainer;
-	MpTreeViewer monitorTreeViewer;
-	MpTreeViewer emptyMpTreeViewer;
-	MonitorTreeViewer mon;
-	SashForm treeContainer;
+	private MpTreeViewer monitorTreeViewer;
+	private MpTreeViewer emptyMpTreeViewer;
+	private DataApplication dataApplication;
 	
 	@Inject
 	MDirtyable dirty;
@@ -64,17 +53,24 @@ public class MeasuringpointView {
 	@Inject
 	EHandlerService handlerService;
 	
+	@Inject
+	private ESelectionService selectionService;
+	 
 	/**
 	 * Creates the control objects of the simulizar measuring point view
 	 * @param parent
 	 */
 	@PostConstruct
 	public void createPartControl(Composite parent) {
-		outerContainer = new SashForm(parent, SWT.HORIZONTAL);
-        outerContainer.setLayout(new FillLayout());
+		parent.setLayout(new GridLayout(1, true));
+		 initializeApplication();
+		createRepositorySelectionCBox(parent);
+		SashForm outerContainer = new SashForm(parent, SWT.FILL);
+        outerContainer.setLayout(new GridLayout(1,true));
+        outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         
-        treeContainer = new SashForm(outerContainer, SWT.VERTICAL);
-        treeContainer.setLayout(new FillLayout());
+        SashForm treeContainer = new SashForm(outerContainer, SWT.VERTICAL);
+        treeContainer.setLayout(new GridLayout(1,true));
         
         Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
         buttonContainer.setLayout(new GridLayout(1, true));
@@ -84,12 +80,20 @@ public class MeasuringpointView {
         Composite monitorContainer = createTreeComposite(treeContainer);
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer); 
         
+        createViewButtons(buttonContainer); 
+        
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
            
-        createViewButtons(buttonContainer); 
+       
+        
         
         handlerService.activateHandler("org.eclipse.ui.file.save", new org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler());
+	}
+	
+	private void initializeApplication() {
+		this.dataApplication = DataApplication.getInstance();
+		dataApplication.loadData(0);	
 	}
 
 	
@@ -99,16 +103,26 @@ public class MeasuringpointView {
 	 * @return
 	 */
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
-		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty, commandService);
-		mon = (MonitorTreeViewer) mpTreeViewer;
+		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent,dirty,commandService, dataApplication);
+		mpTreeViewer.addMouseListener();
+		mpTreeViewer.addSelectionListener(selectionService);
 		return mpTreeViewer;
 	}
 	
+	/**
+	 * 
+	 * @param parent
+	 * @return
+	 */
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
-		MpTreeViewer mpTreeViewer = new EmptyMpTreeViewer(parent,dirty, commandService);
-		return mpTreeViewer;
+		return new EmptyMpTreeViewer(parent,dirty,commandService, dataApplication);
 	}
 	
+	/**
+	 * 
+	 * @param parent
+	 * @return
+	 */
 	private Composite createTreeComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout());
@@ -116,47 +130,11 @@ public class MeasuringpointView {
 		return composite;
 	}
 	
+	/**
+	 * 
+	 * @param buttonContainer
+	 */
 	private void createViewButtons(Composite buttonContainer) {
-        Combo comboDropDown = new Combo(buttonContainer, SWT.DROP_DOWN);
-        DataGathering gatherer = new DataGathering();
-        List<IProject> allProjects = gatherer.getAllProjectAirdfiles();     
-        for(IProject project : allProjects) {
-        	comboDropDown.add(project.toString());
-        }
-        comboDropDown.addSelectionListener(new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("Selection is:" + comboDropDown.getSelectionIndex());
-				selectionIndex = comboDropDown.getSelectionIndex();
-				monitorTreeViewer.updateInput(selectionIndex, dirty);
-				emptyMpTreeViewer.updateInput(selectionIndex, dirty);
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		Button newMpButton = new Button(buttonContainer, SWT.PUSH);
-        newMpButton.setText("Add new Measuring Point");
-        newMpButton.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(org.eclipse.swt.widgets.Event event) {
-				Wizard test = new Wizard();
-		        Shell parentShell = test.getShell();
-		        WizardDialog dialog = new WizardDialog(parentShell, test);
-		        dialog.open();
-				
-			}
-        });
-//
-        Button editMpButton = new Button(buttonContainer, SWT.PUSH);
-        editMpButton.setText("Edit...");
-        
-
         Button deleteMpButton = new Button(buttonContainer, SWT.PUSH);
         deleteMpButton.setText("Delete...");
         Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
@@ -165,8 +143,39 @@ public class MeasuringpointView {
         createStandardButton.setText("Create Standard Set");     
 	}
 	
+	private void createRepositorySelectionCBox(Composite parent) {
+		Combo comboDropDown = new Combo(parent, SWT.DROP_DOWN);
+		comboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+        List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();     
+        for(IProject project : allProjects) {
+        	comboDropDown.add(project.toString());
+        }
+        comboDropDown.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selectionIndex = comboDropDown.getSelectionIndex();
+				dataApplication.loadData(selectionIndex);
+				monitorTreeViewer.updateTree();
+				emptyMpTreeViewer.updateTree();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				comboDropDown.select(0);
+			}
+		});
+        	}
+	
+	/**
+	 * 
+	 * @param dirty
+	 * @throws IOException
+	 */
 	@Persist
 	public void save(MDirtyable dirty) throws IOException {
-		((MonitorTreeViewer)monitorTreeViewer).save(dirty);
+		monitorTreeViewer.save(dirty);
 	}
+	
+	
 }

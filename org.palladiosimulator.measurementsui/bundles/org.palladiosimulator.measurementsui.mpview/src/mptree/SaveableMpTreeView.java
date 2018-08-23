@@ -2,6 +2,7 @@ package mptree;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.parsley.config.Configurator;
+import org.eclipse.jface.viewers.StructuredViewer;
 
 import com.google.inject.Inject;
 

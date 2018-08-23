@@ -7,35 +7,35 @@ import org.eclipse.sirius.business.api.session.SessionManager;
 
 import dataManagement.*;
 
-public class StartApplication {
+public class DataApplication {
 	
 	private DataGathering dataGathering;
 	private ModelAccessor modelAccessor;
 	private Session session;
 	private URI sessionResourceURI;
 	
-	private static StartApplication instance;
+	private static DataApplication instance;
 
 
-	private StartApplication () {
+	private DataApplication () {
 		this.dataGathering = new DataGathering();
 		this.modelAccessor = new ModelAccessor();
 
 	}
-	public static StartApplication getInstance () {
-		if (StartApplication.instance == null) {
-			StartApplication.instance = new StartApplication ();
+	public static DataApplication getInstance () {
+		if (DataApplication.instance == null) {
+			DataApplication.instance = new DataApplication ();
 		}
-		return StartApplication.instance;
+		return DataApplication.instance;
 	}
 
 	/**
 	 * Starts the application.
 	 * Loads all pcm Models given a project is selected and it has a .aird file(modeling Project nature).
 	 */
-	public void startApplication() {
+	public void loadData(int selectionIndex) {
 		//gives airdFile of first project in Workspace that has an aird File
-		initializeSessionResourceURI(this.dataGathering.getAirdFile(this.dataGathering.getAllProjectAirdfiles().get(0)));
+		initializeSessionResourceURI(this.dataGathering.getAirdFile(this.dataGathering.getAllProjectAirdfiles().get(selectionIndex)));
 		initializeSession(sessionResourceURI);
 		
 		if(session!= null ) {
@@ -56,7 +56,7 @@ public class StartApplication {
 			this.sessionResourceURI = URI.createPlatformResourceURI(
 					AirdPath, true);
 		} catch (NullPointerException e) {
-			System.err.println("Make sure a project in the project explorer is selected");
+			System.err.println("No valid path to an air file");
 		}
 		
 	}
@@ -81,6 +81,15 @@ public class StartApplication {
 	 */
 	public ModelAccessor getModelAccessor() {
 		return modelAccessor;
+	}
+	
+	/**
+	 * Returns an instance of the DataGatherer which is responsible for getting projects and paths
+	 * in the eclipse workbench
+	 * @return DataGathering instance
+	 */
+	public DataGathering getDataGathering() {
+		return dataGathering;
 	}
 	
 	
