@@ -93,8 +93,6 @@ public class MonitorTreeViewer extends MpTreeViewer {
 		this.monitorRepository = dataApplication.getModelAccessor().getMonitorRepository().get(0);
 		resource = getResource(this.monitorRepository, getEditingDomain(injector), injector);
 		treeFormComposite.update(resource);
-		Monitor m = MonitorRepositoryFactory.eINSTANCE.createMonitor();
-		m.eResource().getURI();
 	}
 
 	public Resource getResource() {
