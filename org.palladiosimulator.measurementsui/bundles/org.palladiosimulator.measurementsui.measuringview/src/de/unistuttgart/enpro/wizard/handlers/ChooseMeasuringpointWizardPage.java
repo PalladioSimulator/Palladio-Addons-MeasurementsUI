@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
 
+import init.DataApplication;
+
 public class ChooseMeasuringpointWizardPage extends WizardPage {
 	private Text text1;
 	private Composite container;
@@ -75,7 +77,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 	}
 
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
-		MpTreeViewer mpTreeViewer = new EmptyMpTreeViewer(parent, dirty, commandService);
+		MpTreeViewer mpTreeViewer = new EmptyMpTreeViewer(parent, dirty, commandService, DataApplication.getInstance());
 		return mpTreeViewer;
 	}
 

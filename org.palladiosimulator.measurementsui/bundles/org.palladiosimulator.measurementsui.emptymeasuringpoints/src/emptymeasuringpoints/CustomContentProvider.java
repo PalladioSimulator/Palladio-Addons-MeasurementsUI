@@ -1,6 +1,6 @@
 package emptymeasuringpoints;
 
-import init.StartApplication;
+
 import javax.inject.Inject;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -10,14 +10,14 @@ import org.eclipse.emf.parsley.edit.ui.provider.ViewerContentProvider;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 
+import init.DataApplication;
+
 public class CustomContentProvider extends ViewerContentProvider {
 	
-	StartApplication app;
 	
 	@Inject
 	public CustomContentProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
-		this.app = StartApplication.getInstance();
 		
 	}
 
@@ -28,8 +28,7 @@ public class CustomContentProvider extends ViewerContentProvider {
 
 	public Object children(MeasuringPointRepository measuringPointRepository) {
 
-		app.startApplication();
-		EList<MeasuringPoint> measuringPoints = app.getModelAccessor().getUnassignedMeasuringPoints();
+		EList<MeasuringPoint> measuringPoints = DataApplication.getInstance().getModelAccessor().getUnassignedMeasuringPoints();
 		System.out.println(measuringPoints);
 			
 		
