@@ -16,3 +16,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/swing2swt.jar
 Import-Package: wizard
+

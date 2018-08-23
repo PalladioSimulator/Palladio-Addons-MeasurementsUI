@@ -138,7 +138,9 @@ public class ModelAccessor {
 	 */
 	public void initializeModels(Session session) {
 
+
 		clearModelAccess();
+
 
 		for (Resource resource : session.getSemanticResources()) {
 
@@ -164,6 +166,7 @@ public class ModelAccessor {
 		pcmEnum.createPcmInstance(this, pcmModel);
 	}
 	
+
 	private void clearModelAccess() {
 		this.allocation.clear();
 		this.repository.clear();
@@ -174,6 +177,7 @@ public class ModelAccessor {
 		this.monitorRepository.clear();
 		this.measuringPointRpository.clear();
 	}
+
 	
 	
 	protected void addResourceEnvironment(ResourceEnvironment resourceEnvironment) {

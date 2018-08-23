@@ -25,6 +25,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: dataManagement,
  dataManipulation,
  de.unistuttgart.enpro.wizard.handlers,
+
  emptymeasuringpoints,
  init,
  mpview
