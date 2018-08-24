@@ -180,7 +180,6 @@ public class MeasuringpointView {
 				int selectionIndex = comboDropDown.getSelectionIndex();
 				dataApplication.loadData(selectionIndex);
 				monitorTreeViewer.update();
-				emptyMpTreeViewer.update();
 			}
 			
 			@Override
@@ -191,7 +190,7 @@ public class MeasuringpointView {
 			}
 		});
         comboDropDown.select(0);
-        	}
+    }
 
 	
 	/**

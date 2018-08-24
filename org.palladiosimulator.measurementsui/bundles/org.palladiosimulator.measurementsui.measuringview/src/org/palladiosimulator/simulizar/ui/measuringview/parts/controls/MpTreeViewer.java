@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.listener.MpTreeDoubleClickListener;
 
 import com.google.inject.Injector;
@@ -80,7 +81,6 @@ public abstract class MpTreeViewer extends MpComponentViewer{
 		treeFactory = injector.getInstance(ViewerFactory.class);
 		EditingDomain editingDomain = getEditingDomain(injector);
 
-
 		Object resource = getResource( getModelRepository(), editingDomain, injector);
 		// create the tree-form composite
 		treeFactory.initialize(treeViewer, resource);
@@ -102,6 +102,8 @@ public abstract class MpTreeViewer extends MpComponentViewer{
 	
 	@Override
 	public void update() {
+		EObject repository = getModelRepository();
+		resource = getResource(repository, getEditingDomain(injector), injector);
 		treeFactory.initialize(treeViewer, resource);
 	}
 }

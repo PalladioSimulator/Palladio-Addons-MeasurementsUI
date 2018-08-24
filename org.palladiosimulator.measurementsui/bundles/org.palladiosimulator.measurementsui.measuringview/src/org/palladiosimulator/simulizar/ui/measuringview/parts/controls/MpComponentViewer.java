@@ -78,7 +78,6 @@ public abstract class MpComponentViewer {
 	 * @return the current Editing Domain
 	 */
 	protected EditingDomain getEditingDomain(Injector injector) {
-		// The EditingDomain is needed for context menu and drag and drop
 		return injector.getInstance(EditingDomain.class);
 	}
 

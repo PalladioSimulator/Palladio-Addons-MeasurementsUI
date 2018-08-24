@@ -51,4 +51,11 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
 		injector = EmptymeasuringpointsInjectorProvider.getInjector();
 	}
 
+
+	@Override
+	public void update() {
+		
+		
+	}
+
 }

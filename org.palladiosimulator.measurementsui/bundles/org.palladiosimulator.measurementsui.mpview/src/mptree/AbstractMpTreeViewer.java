@@ -64,11 +64,4 @@ public abstract class AbstractMpTreeViewer extends AbstractSaveableViewerView {
 	public StructuredViewer getViewer() {
 		return treeViewer;
 	}
-	
-	@Override
-	public void addMouseListenerToViewer() {
-		super.addMouseListenerToViewer();
-		getViewer().getControl().addMouseListener(new MpTreeDoubleClickListener((TreeViewer) getViewer()));
-	}
-
 }
