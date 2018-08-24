@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
+package org.palladiosimulator.simulizar.ui.measuringview.parts.controls.listener;
 
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;

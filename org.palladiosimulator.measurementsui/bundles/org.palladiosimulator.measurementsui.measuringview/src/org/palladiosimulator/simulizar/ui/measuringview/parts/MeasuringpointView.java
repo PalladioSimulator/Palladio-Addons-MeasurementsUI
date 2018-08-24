@@ -90,9 +90,6 @@ public class MeasuringpointView {
 
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
-           
-       
-        
         
         handlerService.activateHandler("org.eclipse.ui.file.save", new org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler());
 	}
@@ -121,7 +118,9 @@ public class MeasuringpointView {
 	 * @return
 	 */
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
-		return new EmptyMpTreeViewer(parent,dirty,commandService, dataApplication);
+		EmptyMpTreeViewer emptyMpTreeViewer = new EmptyMpTreeViewer(parent,dirty,commandService, dataApplication);
+		emptyMpTreeViewer.addSelectionListener(selectionService);
+		return emptyMpTreeViewer;
 	}
 	
 	/**
@@ -180,8 +179,8 @@ public class MeasuringpointView {
 			public void widgetSelected(SelectionEvent e) {
 				int selectionIndex = comboDropDown.getSelectionIndex();
 				dataApplication.loadData(selectionIndex);
-				monitorTreeViewer.updateTree();
-				emptyMpTreeViewer.updateTree();
+				monitorTreeViewer.update();
+				emptyMpTreeViewer.update();
 			}
 			
 			@Override
