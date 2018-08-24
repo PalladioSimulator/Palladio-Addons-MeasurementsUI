@@ -1,30 +1,21 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
-import java.io.IOException;
-
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.edit.ui.dnd.ViewerDragAndDropHelper;
 import org.eclipse.emf.parsley.menus.ViewerContextMenuHelper;
-import org.eclipse.emf.parsley.resource.ResourceLoader;
 import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.listener.MpTreeDoubleClickListener;
 
-import com.google.inject.Injector;
-
-import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
 import init.DataApplication;
-import mpview.MpviewInjectorProvider;
+
 
 /**
  * Creates a eclipse.swt TreeView based on a parsley TreeView project.
