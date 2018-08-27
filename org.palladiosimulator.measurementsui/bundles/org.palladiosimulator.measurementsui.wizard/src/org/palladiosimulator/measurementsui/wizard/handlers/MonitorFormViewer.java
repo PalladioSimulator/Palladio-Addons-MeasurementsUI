@@ -52,22 +52,17 @@ public class MonitorFormViewer {
                     if (!(scrolledFormChild instanceof Text)) {
                         scrolledFormChild.setBackground(new Color(Display.getCurrent(), 233, 232, 233));
                     }
-                    
-                    if (scrolledFormChild instanceof Text) {
-                        
-                        ((Text) scrolledFormChild).addModifyListener(new ModifyListener() {
 
-                            @Override
-                            public void modifyText(ModifyEvent e) {
-                                if (((Text) scrolledFormChild).getText().length() > 0) {
-                                    wizardPage.setPageComplete(true);
-                                } else {
-                                    wizardPage.setPageComplete(false);
-                                }
-                            }
-                            
-                        });
-                    }
+					if (scrolledFormChild instanceof Text) {
+						((Text) scrolledFormChild).addModifyListener(e -> {
+							if (((Text) scrolledFormChild).getText().length() > 0) {
+								wizardPage.setPageComplete(true);
+							} else {
+								wizardPage.setPageComplete(false);
+							}
+
+						});
+					}
                 }
             }
         }
