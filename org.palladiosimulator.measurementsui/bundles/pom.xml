@@ -11,10 +11,10 @@
    <modules>
         <module>org.palladiosimulator.measurementsui.helloworldmenu</module>
         <module>org.palladiosimulator.measurementsui.emptymeasuringpoints</module>
-        <module>org.palladiosimulator.measurementsui.mpview</module>
+        <module>org.palladiosimulator.measurementsui.monitorrepositoryview</module>
         <module>org.palladiosimulator.measurementsui.propertiespage</module>
         <module>org.palladiosimulator.measurementsui.measuringview</module>
-        <module>org.palladiosimulator.measurementsui.chooseMeasuringpoint</module>
-        
+        <module>org.palladiosimulator.measurementsui.measuringview.parts</module>
+        <module>org.palladiosimulator.measurementsui.wizard</module>
     </modules>
 </project>

@@ -4,13 +4,17 @@ package emptymeasuringpoints;
 import javax.inject.Inject;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.parsley.edit.ui.provider.ViewerContentProvider;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.init.DataApplication;
 
+/**
+ * 
+ * @author Lasse Merz
+ *
+ */
 public class CustomContentProvider extends ViewerContentProvider {
 	
 	

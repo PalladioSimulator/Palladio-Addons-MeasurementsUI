@@ -26,17 +26,18 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.measurementsui.init.DataApplication;
+import org.palladiosimulator.measurementsui.wizard.MeasuringPointsWizard;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
 
-import de.unistuttgart.enpro.wizard.handlers.Wizard;
 
 
 /**
  * 
  * @author David Schuetz
- *
+ * Eclipse e4 view in which the user gets an overview of all existing monitors and measuringpoints in a selected monitorrepository.
+ * 
  */
 public class MeasuringpointView {
 	
@@ -56,13 +57,13 @@ public class MeasuringpointView {
 	private ESelectionService selectionService;
 	 
 	/**
-	 * Creates the control objects of the simulizar measuring point view
-	 * @param parent
+	 * Creates the meu items and controls for the simulizar measuring point view
+	 * @param parent composite of the empty view
 	 */
 	@PostConstruct
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new GridLayout(1, true));
-		 initializeApplication();
+		initializeApplication();
 		createRepositorySelectionCBox(parent);
 		SashForm outerContainer = new SashForm(parent, SWT.FILL);
         outerContainer.setLayout(new GridLayout(1,true));
@@ -88,6 +89,9 @@ public class MeasuringpointView {
         handlerService.activateHandler("org.eclipse.ui.file.save", new SaveHandler());
 	}
 	
+	/**
+	 * Initializes the connecton to the data management and manipulation packages
+	 */
 	private void initializeApplication() {
 		this.dataApplication = DataApplication.getInstance();
 		dataApplication.loadData(0);	
@@ -95,8 +99,8 @@ public class MeasuringpointView {
 
 	
 	/**
-	 * 
-	 * @param parent
+	 * Creates a tree view which shows all existing monitors and their childs in the selected projected
+	 * @param parent composite where the tree view will be placed
 	 * @return
 	 */
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
@@ -107,8 +111,8 @@ public class MeasuringpointView {
 	}
 	
 	/**
-	 * 
-	 * @param parent
+	 * Creates a tree view which shows all empty measuring points of all projects in the workspace
+	 * @param parent composite where the tree view will be placed
 	 * @return
 	 */
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
@@ -118,8 +122,8 @@ public class MeasuringpointView {
 	}
 	
 	/**
-	 * 
-	 * @param parent
+	 * Creates the composite in which the tree view is later embedded
+	 * @param parent composite where the tree composite will be placed
 	 * @return
 	 */
 	private Composite createTreeComposite(Composite parent) {
@@ -130,7 +134,8 @@ public class MeasuringpointView {
 	}
 	
 	/**
-	 * 
+	 * Create all buttons of the view which provide different functionalities like 
+	 * editing, deleting, assigning measuringpoints to monitor or creating a standard measuring point set
 	 * @param buttonContainer
 	 */
 	private void createViewButtons(Composite buttonContainer) {
@@ -138,7 +143,7 @@ public class MeasuringpointView {
         newMpButton.setText("Add new Measuring Point");
 
 		newMpButton.addListener(SWT.Selection, e -> {
-			Wizard test = new Wizard();
+			MeasuringPointsWizard test = new MeasuringPointsWizard();
 			Shell parentShell = test.getShell();
 			WizardDialog dialog = new WizardDialog(parentShell, test);
 			dialog.open();
@@ -156,6 +161,10 @@ public class MeasuringpointView {
 
 	}
 	
+	/**
+	 * Creates a combobox at the top of the view where the user can select the monitorrepository
+	 * @param parent composite where the combobox is placed in
+	 */
 	private void createRepositorySelectionCBox(Composite parent) {
 		Combo comboDropDown = new Combo(parent, SWT.DROP_DOWN);
 		comboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
@@ -184,14 +193,14 @@ public class MeasuringpointView {
 
 	
 	/**
-	 * 
-	 * @param dirty
+	 * Saves the current data in the tree view
+	 * @param dirty states whether there were changes made
 	 * @throws IOException
 	 */
 	@Persist
 	public void save(MDirtyable dirty) throws IOException {
 		monitorTreeViewer.save(dirty);
 	}
-	
-	
 }
+	
+	

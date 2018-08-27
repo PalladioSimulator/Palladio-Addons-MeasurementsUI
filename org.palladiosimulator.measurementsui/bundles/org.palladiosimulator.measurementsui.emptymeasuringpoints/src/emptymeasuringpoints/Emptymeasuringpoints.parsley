@@ -14,16 +14,6 @@ module emptymeasuringpoints {
 		}
 	}
 	
-	configurator {
-		resourceURI {
-			EmptymeasuringpointsSaveableTreeView -> {
-				//TODO Link zu deinem MeasuringpointRepository. Gleich wie beim mpview wird der Code hier nicht f�r den E4 Plugin Code ben�tigt, sondern lediglich
-				//f�r den einzelnen Parsleyview "Emptymeasuringpoints"
-				return URI.createFileURI("/Users/zss1/runtime-New_configuration(1)/Pets.com/PetsMeasuringPoint.measuringpoint")
-			}
-		}
-	} 
-	
 	resourceManager {
 		initializeResource {
 			it.getContents += MeasuringpointFactory.eINSTANCE
