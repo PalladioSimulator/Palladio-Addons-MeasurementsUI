@@ -10,14 +10,13 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
-import org.palladiosimulator.monitorrepository.impl.MonitorImpl;
 
 import dataManipulation.ResourceEditor;
 
 /**
  * 
  * @author David Schuetz
- *
+ * DoubleClickListener which captures double clicks on the symbol of a tree item
  */
 public class MpTreeDoubleClickListener implements MouseListener{
 
@@ -26,7 +25,7 @@ public class MpTreeDoubleClickListener implements MouseListener{
 	
 	/**
 	 * 
-	 * @param mpTreeViewer
+	 * @param mpTreeViewer where the listener is attached to.
 	 */
 	public MpTreeDoubleClickListener(TreeViewer mpTreeViewer) {
 		this.mpTreeViewer = mpTreeViewer;
@@ -36,38 +35,9 @@ public class MpTreeDoubleClickListener implements MouseListener{
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		for (TreeItem item : mpTree.getSelection()) {
-			if (item.getImage() != null && (e.x > item.getImageBounds(0).x)
-					&& (e.x < (item.getImageBounds(0).x + item.getImage().getBounds().width))
-					&& (e.y > item.getImageBounds(0).y)
-					&& (e.y < (item.getImageBounds(0).y + item.getImage().getBounds().height))) {
+			if (isClickedOnTreeItemSymbol(e, item)) {
 				setChecked(item);
-
 			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param item
-	 */
-	private void setChecked(TreeItem item) {
-		Object data = item.getData();
-		ResourceEditor edit = new ResourceEditor();
-		if (data instanceof Monitor) {
-			MonitorImpl monitor = (MonitorImpl) data;
-			if (monitor.isActivated()) {
-				edit.setMonitorUnactive(monitor);
-			} else {
-				edit.setMonitorActive(monitor);
-			}
-			mpTreeViewer.update(data, null);
-		}
-
-		if (data instanceof MeasurementSpecification) {
-			MeasurementSpecification spec = (MeasurementSpecification) data;
-			EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(spec);
-			domain.getCommandStack().execute(new SetCommand(domain, spec,
-					spec.eClass().getEStructuralFeature("triggersSelfAdaptations"), !spec.isTriggersSelfAdaptations()));
 		}
 	}
 
@@ -79,6 +49,58 @@ public class MpTreeDoubleClickListener implements MouseListener{
 	@Override
 	public void mouseUp(MouseEvent e) {
 		//Do nothing on mouseUp
+	}
+	
+	/**
+	 * Depending on the previous state of Monitor change the active attribute of a monitor to true or false
+	 * @param monitor  which is set active/ inactive
+	 */
+	private void toggleMonitorActive(Monitor monitor) {
+		ResourceEditor edit = new ResourceEditor();
+		if (monitor.isActivated()) {
+			edit.setMonitorUnactive(monitor);
+		} else {
+			edit.setMonitorActive(monitor);
+		}
+	}
+	
+	/**
+	 * Depending on the previous state of MeasurementSpecification change the active attribute of a monitor to true or false
+	 * @param measurement where triggersSelfAdaptions is set
+	 */
+	private void toggleTriggersSelfAdaption(MeasurementSpecification measurement) {
+		EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(measurement);
+		domain.getCommandStack().execute(new SetCommand(domain, measurement,
+				measurement.eClass().getEStructuralFeature("triggersSelfAdaptations"), !measurement.isTriggersSelfAdaptations()));
+	}
+	
+	/**
+	 * Depending on the tree item set a Monitor active/inactive 
+	 * or set triggerSelfAdaption of a MeasurementSpecifaction to true or false.
+	 * @param item the tree item on which was clicked
+	 */
+	private void setChecked(TreeItem item) {
+		Object data = item.getData();
+		
+		if (data instanceof Monitor) {
+			toggleMonitorActive((Monitor) data);
+		}
+
+		if (data instanceof MeasurementSpecification) {
+			toggleTriggersSelfAdaption((MeasurementSpecification) data);
+		}
+	}
+	/**
+	 * 
+	 * @param e mouseevent of the click
+	 * @param item TreeItem on which was clicked
+	 * @return true if the click was inside the bounding box of the tree item symbol
+	 */
+	private boolean isClickedOnTreeItemSymbol(MouseEvent e, TreeItem item) {
+		return item.getImage() != null && (e.x > item.getImageBounds(0).x)
+				&& (e.x < (item.getImageBounds(0).x + item.getImage().getBounds().width))
+				&& (e.y > item.getImageBounds(0).y)
+				&& (e.y < (item.getImageBounds(0).y + item.getImage().getBounds().height));
 	}
 
 }

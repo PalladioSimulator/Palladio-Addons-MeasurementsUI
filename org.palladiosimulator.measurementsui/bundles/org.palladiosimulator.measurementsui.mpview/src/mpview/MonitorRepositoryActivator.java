@@ -6,15 +6,15 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class MpviewActivator extends AbstractUIPlugin {
+public class MonitorRepositoryActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "mpview"; //$NON-NLS-1$
 
 	// The shared instance
-	private static MpviewActivator plugin;
+	private static MonitorRepositoryActivator plugin;
 
-	public MpviewActivator() {
+	public MonitorRepositoryActivator() {
 	}
 
 	/*
@@ -40,7 +40,7 @@ public class MpviewActivator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static MpviewActivator getDefault() {
+	public static MonitorRepositoryActivator getDefault() {
 		return plugin;
 	}
 

@@ -5,9 +5,9 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.emf.parsley"
-            class="mpview.MpviewExecutableExtensionFactory:mpview.MpviewSaveableTreeFormView"
+            class="mpview.MpviewExecutableExtensionFactory:mpview.MonitorRepositorySaveableTreeFormView"
             id="mpview"
-            name="Measuringpoint View"
+            name="MonitorRepositoryView"
             restorable="true">
       </view>
    </extension>
