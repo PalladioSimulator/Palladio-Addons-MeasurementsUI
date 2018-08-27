@@ -29,5 +29,4 @@ Import-Package: dataManagement,
  init,
  mpview,
  org.palladiosimulator.simulizar.ui.measuringview.parts.controls
-Bundle-ClassPath: .,
- lib/swing2swt.jar
+Bundle-ClassPath: .
