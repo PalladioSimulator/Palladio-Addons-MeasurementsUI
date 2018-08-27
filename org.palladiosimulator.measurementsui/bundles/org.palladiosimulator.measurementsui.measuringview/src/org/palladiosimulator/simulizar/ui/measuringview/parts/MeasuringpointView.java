@@ -25,14 +25,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-
+import org.palladiosimulator.measurementsui.wizard.MeasuringPointsWizard;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
 
-import de.unistuttgart.enpro.wizard.handlers.Wizard;
 import init.DataApplication;
-
 
 /**
  * 
@@ -139,7 +137,7 @@ public class MeasuringpointView {
         newMpButton.setText("Add new Measuring Point");
 
 		newMpButton.addListener(SWT.Selection, e -> {
-			Wizard test = new Wizard();
+			MeasuringPointsWizard test = new MeasuringPointsWizard();
 			Shell parentShell = test.getShell();
 			WizardDialog dialog = new WizardDialog(parentShell, test);
 			dialog.open();

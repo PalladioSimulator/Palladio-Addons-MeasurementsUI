@@ -9,7 +9,7 @@
       </category>
       <wizard
             category="de.uni-stuttgart.enpro.wizard.category1"
-            class="de.unistuttgart.enpro.wizard.handlers.SampleHandler"
+            class="org.palladiosimulator.measurementsui.wizard.handlers.SampleHandler"
             id="de.uni-stuttgart.enpro.wizard.wizard2"
             name="name">
       </wizard>
@@ -29,7 +29,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="de.unistuttgart.enpro.wizard.handlers.SampleHandler"
+            class="org.palladiosimulator.measurementsui.wizard.handlers.SampleHandler"
             commandId="de.uni-stuttgart.enpro.wizard.commands.sampleCommand">
       </handler>
    </extension>
