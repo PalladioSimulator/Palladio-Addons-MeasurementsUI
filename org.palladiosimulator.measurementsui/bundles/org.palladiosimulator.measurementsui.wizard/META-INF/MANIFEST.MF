@@ -3,17 +3,19 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Wizard
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.wizard;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.uni_stuttgart.enpro.wizard.Activator
+Bundle-Activator: org.palladiosimulator.measurementsui.wizard.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide,
- org.eclipse.epp.mpc.help.ui,
  org.eclipse.e4.ui.model.workbench,
- org.eclipse.e4.core.commands
+ org.eclipse.e4.core.commands,
+ org.palladiosimulator.measurementsui.helloworldmenu,
+ org.palladiosimulator.measurementsui.measuringview.parts
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.uni-stuttgart.enpro.wizard
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/swing2swt.jar
-Import-Package: wizard
+Export-Package: org.palladiosimulator.measurementsui.wizard,
+ org.palladiosimulator.measurementsui.wizard.handlers
 
