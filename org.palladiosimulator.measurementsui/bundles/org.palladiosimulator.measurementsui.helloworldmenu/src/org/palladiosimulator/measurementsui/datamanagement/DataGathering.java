@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  */
 public class DataGathering {
 
+    private static final String DATA_GATHERING_NULL_POINTER = "Nullpointer occurs when files don't have a file ending. Can be ignored";
     private static final Logger LOGGER = Logger.getLogger(DataGathering.class.getName());
 
     /**
@@ -55,8 +56,7 @@ public class DataGathering {
                                 return oneMember.getFullPath().toString();
                             }
                         } catch (NullPointerException e) {
-                            LOGGER.log(Level.FINEST,
-                                    "Nullpointer occurs when files don't have a file ending. Can be ignored", e);
+                            LOGGER.log(Level.FINEST, DATA_GATHERING_NULL_POINTER, e);
                         }
                     }
                 } catch (CoreException e) {
@@ -85,8 +85,7 @@ public class DataGathering {
                         return oneMember.getFullPath().toString();
                     }
                 } catch (NullPointerException e) {
-                    LOGGER.log(Level.FINEST, "Nullpointer occurs when files don't have a file ending. Can be ignored",
-                            e);
+                    LOGGER.log(Level.FINEST, DATA_GATHERING_NULL_POINTER, e);
                 }
             }
         } catch (CoreException e) {
@@ -115,8 +114,7 @@ public class DataGathering {
 
                     }
                 } catch (NullPointerException e) {
-                    LOGGER.log(Level.FINEST, "Nullpointer occurs when files don't have a file ending. Can be ignored",
-                            e);
+                    LOGGER.log(Level.FINEST, DATA_GATHERING_NULL_POINTER, e);
                 }
             }
         } catch (CoreException e) {
@@ -144,8 +142,7 @@ public class DataGathering {
                             allAirdProjects.add(project);
                         }
                     } catch (NullPointerException e) {
-                        LOGGER.log(Level.FINEST,
-                                "Nullpointer occurs when files don't have a file ending. Can be ignored", e);
+                        LOGGER.log(Level.FINEST, DATA_GATHERING_NULL_POINTER, e);
                     }
                 }
             } catch (CoreException e) {
@@ -156,7 +153,7 @@ public class DataGathering {
     }
 
     /**
-     * Currently not in use. Will very likely be deleted later.
+     * Currently not in use. Will likely be deleted later.
      * 
      * @return the name of the selected base project.
      */

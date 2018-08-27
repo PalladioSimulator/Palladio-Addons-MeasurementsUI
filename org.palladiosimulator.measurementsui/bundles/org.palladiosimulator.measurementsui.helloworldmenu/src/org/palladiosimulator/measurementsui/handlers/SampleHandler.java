@@ -1,4 +1,4 @@
-package helloworldmenu.handlers;
+package org.palladiosimulator.measurementsui.handlers;
 
 import java.util.List;
 

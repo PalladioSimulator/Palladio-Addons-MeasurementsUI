@@ -7,7 +7,7 @@ import org.eclipse.sirius.business.api.session.SessionManager;
 import org.palladiosimulator.measurementsui.datamanagement.*;
 
 /**
- * 
+ * Connection class between data management and gui
  * @author Lasse
  *
  */

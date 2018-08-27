@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: HelloWorldMenu
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.data;singleton:=true
 Bundle-Version: 0.0.1.qualifier
-Bundle-Activator: helloworldmenu.Activator
+Bundle-Activator: org.palladiosimulator.measurementsui.testactivator.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -21,9 +21,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: HelloWorldMenu
 Bundle-ActivationPolicy: lazy
-Export-Package: helloworldmenu,
- helloworldmenu.handlers,
- org.palladiosimulator.measurementsui.datacreation,
+Export-Package: org.palladiosimulator.measurementsui.datacreation,
  org.palladiosimulator.measurementsui.datamanagement,
  org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.init

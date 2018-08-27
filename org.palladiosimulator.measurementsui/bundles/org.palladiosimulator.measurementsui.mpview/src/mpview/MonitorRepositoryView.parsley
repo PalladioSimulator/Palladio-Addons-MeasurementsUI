@@ -64,7 +64,6 @@ module mpview {
 			MonitorRepository mr -> #[
 				actionChange("Add new Measuringpoint",mr,
 					[
-						System.out.println("Hier kommt die Wizard anbindung");
 					]
 				)
 				
