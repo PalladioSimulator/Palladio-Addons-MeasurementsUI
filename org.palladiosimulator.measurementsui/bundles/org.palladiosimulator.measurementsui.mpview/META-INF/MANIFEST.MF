@@ -4,8 +4,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: mpview
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: org.palladiosimulator.measurementsui.mpview;singleton:=true
-Bundle-Activator: mpview.MpviewActivator
+Bundle-SymbolicName: org.palladiosimulator.measurementsui.monitorrepositoryview;singleton:=true
+Bundle-Activator: mpview.MonitorRepositoryActivator
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,

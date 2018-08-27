@@ -17,9 +17,8 @@ import com.google.inject.Injector;
 import init.DataApplication;
 
 /**
- * Creates a eclipse.swt TreeView based on a parsley TreeView project.
  * @author David Schuetz
- *
+ *  A common saveable view based on a parsley view.
  */
 public abstract class MpComponentViewer {
 	protected MDirtyable dirty;
@@ -30,7 +29,10 @@ public abstract class MpComponentViewer {
 	
 	/**
 	 * 
-	 * @param parent composite container
+	 * @param parent container where the view is embedded
+	 * @param dirty describes whether the view was edited
+	 * @param commandService eclipse command
+	 * @param application
 	 */
 	protected MpComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService, DataApplication application) {
 		this.dirty = dirty;
@@ -60,13 +62,29 @@ public abstract class MpComponentViewer {
 	 */
 	public abstract void update();
 
+	/**
+	 * 
+	 * @return the current viewer of the shown composite
+	 */
 	public abstract Viewer getViewer();
 	
+	/**
+	 * Initalizes the google guice injector attribute with the injector of the respective parsley view
+	 */
 	protected abstract void initInjector();
 	
+	/**
+	 * 
+	 * @return the repository of the current view. For Example the monitorrepository
+	 */
 	protected abstract EObject getModelRepository();
 	
+	/**
+	 * Connects the current selected item in the view with the eclipse selectionservice
+	 * @param selectionService of the eclipse project
+	 */
 	public abstract void addSelectionListener(ESelectionService selectionService);
+	
 	/**
 	 * Returns the parsley EditingDomain
 	 * 
@@ -78,12 +96,11 @@ public abstract class MpComponentViewer {
 	}
 
 	/**
-	 * Return the resource of an eobject at a certain index
 	 * 
 	 * @param selectionIndex index of the resource
 	 * @param editingDomain editingdomain of the treeview
-	 * @param injector Google guice injector to the parsley project
-	 * @return the resource at the chosen selection index
+	 * @param injector Google guice injector of the parsley project
+	 * @return the resource of an eobject at a certain index
 	 */
 	protected Resource getResource(EObject model, EditingDomain editingDomain, Injector injector) {
 		
@@ -104,7 +121,7 @@ public abstract class MpComponentViewer {
 	
 	
 	/**
-	 * Save the current state of the view
+	 * Saves the current state of the view
 	 * @param dirty
 	 * @throws IOException
 	 */

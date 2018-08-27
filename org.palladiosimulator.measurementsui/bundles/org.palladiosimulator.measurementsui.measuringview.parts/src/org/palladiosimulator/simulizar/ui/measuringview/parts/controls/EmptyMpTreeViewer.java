@@ -10,17 +10,18 @@ import init.DataApplication;
 
 /**
  * 
- * @author David Sch�tz
- *
+ * @author David Schuetz
+ * Generates a tree view where all empty measuring points from all measuringpoint repositories in the workspace are shown.
+ * Creates a connection between the parsley emptymeasuringpoints view and an eclipse e4 plugin.
  */
 public class EmptyMpTreeViewer extends MpTreeViewer {
 	
 
 	/**
 	 * 
-	 * @param parent
-	 * @param dirty
-	 * @param commandService
+	 * @param parent container where the tree viewer is placed in
+	 * @param dirty state of the e4 view
+	 * @param commandService of the eclipse application in order to make the tree view saveable
 	 */
 	public EmptyMpTreeViewer(Composite parent,MDirtyable dirty,ECommandService commandService, DataApplication application) {
 		super(parent, dirty, commandService, application);

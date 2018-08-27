@@ -1,4 +1,3 @@
-import mpview.MpviewSaveableTreeFormView
 import org.eclipse.emf.common.util.URI
 import java.util.ArrayList
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
@@ -6,47 +5,21 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint
 import org.palladiosimulator.monitorrepository.Monitor
 import org.palladiosimulator.monitorrepository.MeasurementSpecification
 import org.palladiosimulator.monitorrepository.MonitorRepository
+import mpview.MonitorRepositorySaveableTreeFormView
 
 /* mpview EMF Parsley Dsl Module file */
 module mpview {
 	
 	parts {
 		viewpart mpview {
-			viewname "Measuringpoint View"
-			viewclass MpviewSaveableTreeFormView
+			viewname "MonitorRepositoryView"
+			viewclass MonitorRepositorySaveableTreeFormView
 		}
-	}
-	
-	configurator {
-		resourceURI {
-			MpviewSaveableTreeFormView -> {
-				//TODO Eigener Monitorrepositorypfad angegeben. Der Pfad wird sp�ter im E4 Plugin extra gesetzt und ist nur f�r einfachen Parsley "Measuringpoint View" notwendig.
-				return URI.createFileURI("/Pets.com/PetsMonitor.monitorrepository")
-			}
-		}
-	}
-	
-	resourceManager {
-		initializeResource {
-			// Optional: initialize an empty Resource
-			// 'it' is of type Resource
-			// e.g., it.getContents += myFactory.createMyClass
-			//it.getContents += MonitorRepositoryFactory.eINSTANCE
-		}
-		
-		saveResource {
-			it.save(null)
-			return true
-		}
-		
 	}
 	
 	viewerContentProvider {
 		children {
 			 Monitor mon-> {
-			 	//Ein Monitor hat einen MeasuringPoint und seine MeasurementSpecifications als Kindknoten. 
-			 	//Da der MeasuringPoint im EMF- Modell nur ein Attribut von einem Monitor ist, gibt es sp�ter Probleme, wenn man einen MeasuringPoint
-			 	//�ber den TreeView bearbeitet. (Drag and Drop oder MeasuringPoint l�schen)
 				new ArrayList()=>[
 						add(mon.measuringPoint)
 						addAll(mon.measurementSpecifications)
@@ -54,7 +27,6 @@ module mpview {
 			}
 		}
 	} 
-	
 	
 	labelProvider {
 		text {
@@ -87,11 +59,9 @@ module mpview {
 		}
 	}
 	
-	//Hier m�ssen noch weitere Menupunkte spezifisch f�r das Selektierte Item angeboten werden.
 	menuBuilder {
 		menus {
 			MonitorRepository mr -> #[
-				
 				actionChange("Add new Measuringpoint",mr,
 					[
 						System.out.println("Hier kommt die Wizard anbindung");

@@ -18,18 +18,21 @@ import init.DataApplication;
 
 
 /**
- * Creates a eclipse.swt TreeView based on a parsley TreeView project.
  * @author David Schuetz
- *
+ * Creates a eclipse.swt TreeView based on a parsley TreeView project.
  */
 public abstract class MpTreeViewer extends MpComponentViewer{
 	protected TreeViewer treeViewer;
 	protected ViewerFactory treeFactory;
+	
 	/**
 	 * 
-	 * @param parent composite container
+	 * @param parent
+	 * @param dirty
+	 * @param commandService
+	 * @param application
 	 */
-	protected MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService, DataApplication application) {
+	public MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService, DataApplication application) {
 		super(parent,dirty,commandService,application);
 	}
 

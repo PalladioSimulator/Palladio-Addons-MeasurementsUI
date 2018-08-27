@@ -11,14 +11,16 @@ import mpview.MpviewInjectorProvider;
 /**
  * 
  * @author David Schütz
- *
+ * Generates a tree view where all monitors from a selected monitorrepository in the workspace are shown.
+ * Creates a connection between the parsley mpview view and an eclipse e4 plugin.
  */
 public class MonitorTreeViewer extends MpTreeViewer {
+	
 	/**
 	 * 
-	 * @param parent
-	 * @param dirty
-	 * @param commandService
+	 * @param parent composite where the tree view is embedded
+	 * @param dirty state of the tree view
+	 * @param commandService eclipse commandservice in order to save the view
 	 */
 	public MonitorTreeViewer(Composite parent, MDirtyable dirty,ECommandService commandService, DataApplication application) {
 		super(parent, dirty, commandService, application);
