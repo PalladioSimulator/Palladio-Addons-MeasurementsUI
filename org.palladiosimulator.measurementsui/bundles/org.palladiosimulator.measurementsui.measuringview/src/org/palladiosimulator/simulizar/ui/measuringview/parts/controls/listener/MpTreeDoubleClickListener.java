@@ -1,4 +1,4 @@
-package mptree;
+package org.palladiosimulator.simulizar.ui.measuringview.parts.controls.listener;
 
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -14,17 +14,20 @@ import org.palladiosimulator.monitorrepository.impl.MonitorImpl;
 
 import dataManipulation.ResourceEditor;
 
-
 /**
- * Mouselistener which changes an emf attribute via a double click on an icon in the treeviewer.
- * Currently the attributes are set manually and not via parsley.
- * @author David Sch�tz
+ * 
+ * @author David Schuetz
  *
  */
 public class MpTreeDoubleClickListener implements MouseListener{
 
 	private Tree mpTree;
 	private TreeViewer mpTreeViewer;
+	
+	/**
+	 * 
+	 * @param mpTreeViewer
+	 */
 	public MpTreeDoubleClickListener(TreeViewer mpTreeViewer) {
 		this.mpTreeViewer = mpTreeViewer;
 		this.mpTree = mpTreeViewer.getTree();
@@ -33,17 +36,20 @@ public class MpTreeDoubleClickListener implements MouseListener{
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		for (TreeItem item : mpTree.getSelection()) {
-			if (item.getImage() != null) {
-				if ((e.x > item.getImageBounds(0).x) && (e.x < (item.getImageBounds(0).x + item.getImage().getBounds().width))) {
-					if ((e.y > item.getImageBounds(0).y) 
-							&& (e.y < (item.getImageBounds(0).y + item.getImage().getBounds().height))) {
-						setChecked(item);
-					}
-				}
+			if (item.getImage() != null && (e.x > item.getImageBounds(0).x)
+					&& (e.x < (item.getImageBounds(0).x + item.getImage().getBounds().width))
+					&& (e.y > item.getImageBounds(0).y)
+					&& (e.y < (item.getImageBounds(0).y + item.getImage().getBounds().height))) {
+				setChecked(item);
+
 			}
 		}
 	}
-	
+
+	/**
+	 * 
+	 * @param item
+	 */
 	private void setChecked(TreeItem item) {
 		Object data = item.getData();
 		ResourceEditor edit = new ResourceEditor();
@@ -56,24 +62,23 @@ public class MpTreeDoubleClickListener implements MouseListener{
 			}
 			mpTreeViewer.update(data, null);
 		}
-		
+
 		if (data instanceof MeasurementSpecification) {
 			MeasurementSpecification spec = (MeasurementSpecification) data;
 			EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(spec);
-		    domain.getCommandStack().execute(new SetCommand(domain, spec, spec.eClass().getEStructuralFeature("triggersSelfAdaptations"), !spec.isTriggersSelfAdaptations()));
+			domain.getCommandStack().execute(new SetCommand(domain, spec,
+					spec.eClass().getEStructuralFeature("triggersSelfAdaptations"), !spec.isTriggersSelfAdaptations()));
 		}
 	}
 
 	@Override
 	public void mouseDown(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Do nothing on mouseDown
 	}
 
 	@Override
 	public void mouseUp(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//Do nothing on mouseUp
 	}
 
 }

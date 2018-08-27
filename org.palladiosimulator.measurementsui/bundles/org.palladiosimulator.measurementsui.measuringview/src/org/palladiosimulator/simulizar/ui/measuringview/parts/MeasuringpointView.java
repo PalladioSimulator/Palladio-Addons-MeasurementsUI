@@ -10,10 +10,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Persist;
+import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.jface.wizard.WizardDialog;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.SelectionEvent;
@@ -21,18 +21,14 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MonitorTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
-
-import dataManagement.DataGathering;
 
 import de.unistuttgart.enpro.wizard.handlers.Wizard;
 import init.DataApplication;
@@ -46,7 +42,6 @@ import init.DataApplication;
 public class MeasuringpointView {
 	
 	private MpTreeViewer monitorTreeViewer;
-	private MpTreeViewer emptyMpTreeViewer;
 	private DataApplication dataApplication;
 	
 	@Inject
@@ -89,12 +84,9 @@ public class MeasuringpointView {
         
 
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
-        emptyMpTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
-           
-       
+        createEmptyMpTreeViewer(undefinedMeasuringContainer);
         
-        
-        handlerService.activateHandler("org.eclipse.ui.file.save", new org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler());
+        handlerService.activateHandler("org.eclipse.ui.file.save", new SaveHandler());
 	}
 	
 	private void initializeApplication() {
@@ -121,7 +113,9 @@ public class MeasuringpointView {
 	 * @return
 	 */
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
-		return new EmptyMpTreeViewer(parent,dirty,commandService, dataApplication);
+		EmptyMpTreeViewer emptyMpTreeViewer = new EmptyMpTreeViewer(parent,dirty,commandService, dataApplication);
+		emptyMpTreeViewer.addSelectionListener(selectionService);
+		return emptyMpTreeViewer;
 	}
 	
 	/**
@@ -144,16 +138,12 @@ public class MeasuringpointView {
 		Button newMpButton = new Button(buttonContainer, SWT.PUSH);
         newMpButton.setText("Add new Measuring Point");
 
-        newMpButton.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(org.eclipse.swt.widgets.Event event) {
-				Wizard test = new Wizard();
-		        Shell parentShell = test.getShell();
-		        WizardDialog dialog = new WizardDialog(parentShell, test);
-		        dialog.open();
-				
-			}
-        });
+		newMpButton.addListener(SWT.Selection, e -> {
+			Wizard test = new Wizard();
+			Shell parentShell = test.getShell();
+			WizardDialog dialog = new WizardDialog(parentShell, test);
+			dialog.open();
+		});
 
         Button editMpButton = new Button(buttonContainer, SWT.PUSH);
         editMpButton.setText("Edit...");
@@ -180,8 +170,7 @@ public class MeasuringpointView {
 			public void widgetSelected(SelectionEvent e) {
 				int selectionIndex = comboDropDown.getSelectionIndex();
 				dataApplication.loadData(selectionIndex);
-				monitorTreeViewer.updateTree();
-				emptyMpTreeViewer.updateTree();
+				monitorTreeViewer.update();
 			}
 			
 			@Override
@@ -192,7 +181,7 @@ public class MeasuringpointView {
 			}
 		});
         comboDropDown.select(0);
-        	}
+    }
 
 	
 	/**
