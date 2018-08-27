@@ -8,11 +8,10 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.impl.MonitorImpl;
-
-import dataManipulation.ResourceEditor;
 
 /**
  * 
@@ -53,21 +52,16 @@ public class MpTreeDoubleClickListener implements MouseListener{
 	private void setChecked(TreeItem item) {
 		Object data = item.getData();
 		ResourceEditor edit = new ResourceEditor();
+		
 		if (data instanceof Monitor) {
 			MonitorImpl monitor = (MonitorImpl) data;
-			if (monitor.isActivated()) {
-				edit.setMonitorUnactive(monitor);
-			} else {
-				edit.setMonitorActive(monitor);
-			}
-			mpTreeViewer.update(data, null);
+			edit.changeMonitorActive(monitor, monitor.isActivated());
 		}
 
 		if (data instanceof MeasurementSpecification) {
 			MeasurementSpecification spec = (MeasurementSpecification) data;
-			EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(spec);
-			domain.getCommandStack().execute(new SetCommand(domain, spec,
-					spec.eClass().getEStructuralFeature("triggersSelfAdaptations"), !spec.isTriggersSelfAdaptations()));
+			edit.changeTriggersSelfAdapting(spec, spec.isTriggersSelfAdaptations());
+
 		}
 	}
 

@@ -22,12 +22,12 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.ui.workbench
 Automatic-Module-Name: org.palladiosimulator.simulizar.ui.measuringview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: dataManagement,
- dataManipulation,
- de.unistuttgart.enpro.wizard.handlers,
+Import-Package: de.unistuttgart.enpro.wizard.handlers,
  emptymeasuringpoints,
- init,
- mpview
+ mpview,
+ org.palladiosimulator.measurementsui.datamanagement,
+ org.palladiosimulator.measurementsui.datamanipulation,
+ org.palladiosimulator.measurementsui.init
 Export-Package: de.unistuttgart.enpro.wizard.handlers,
  org.palladiosimulator.simulizar.ui.measuringview.parts.controls
 Bundle-ClassPath: .,

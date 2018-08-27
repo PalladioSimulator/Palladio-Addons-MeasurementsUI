@@ -13,10 +13,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
+import org.palladiosimulator.measurementsui.init.DataApplication;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
-
-import init.DataApplication;
 
 public class ChooseMeasuringpointWizardPage extends WizardPage {
 	private Text text1;
