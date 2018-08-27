@@ -1,41 +1,36 @@
 package org.palladiosimulator.measurementsui.wizard.handlers;
 
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 import org.palladiosimulator.monitorrepository.Monitor;
-import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.events.HelpListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.HelpEvent;
 
 /**
+ * This class handles the first wizard page for creating a new monitor.
  * @author Birasanth Pushpanathan
  *
  */
-
 public class AddMonitor extends WizardPage {
 
+    /**
+     * This contains the form for the newly created monitor
+     */
     private Composite container;
 
+    /**
+     * the newly created monitor object
+     */
     private Monitor newMonitor;
 
+    /**
+     * Constructor
+     * @param newMonitor the newly created monitor object
+     */
     public AddMonitor(Monitor newMonitor) {
         super("First Page");
         setTitle("Create new Monitor");
@@ -50,11 +45,10 @@ public class AddMonitor extends WizardPage {
         FillLayout layout = new FillLayout();
         container.setLayout(layout);
 
-        // required to avoid an error in the system
         setControl(container);
         setPageComplete(true);
 
-        MonitorFormViewer monitorFormViewer = createMonitorFormViewer(container, this.newMonitor, this);
+        createMonitorFormViewer(container, this.newMonitor, this);
     }
 
     private MonitorFormViewer createMonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitor wizardPage) {

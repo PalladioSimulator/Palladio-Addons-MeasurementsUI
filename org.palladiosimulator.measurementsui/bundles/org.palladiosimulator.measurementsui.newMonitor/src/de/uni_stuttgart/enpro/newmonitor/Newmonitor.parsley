@@ -1,10 +1,7 @@
 import de.uni_stuttgart.enpro.newmonitor.NewmonitorFormView
 import org.eclipse.emf.common.util.URI
 import org.palladiosimulator.monitorrepository.Monitor
-import org.palladiosimulator.monitorrepository.MonitorRepository
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
-import org.eclipse.swt.graphics.Color
-import org.eclipse.swt.widgets.Display
 
 /* de.uni_stuttgart.enpro.newmonitor EMF Parsley Dsl Module file */
 module de.uni_stuttgart.enpro.newmonitor {

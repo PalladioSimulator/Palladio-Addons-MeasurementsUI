@@ -9,18 +9,42 @@ import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
 /**
+ * This class handles the wizard and its wizard pages for creating a new measuring point/monitor.
+ * 
  * @author Birasanth Pushpanathan
  *
  */
 public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
     
+    /**
+     * This is the monitor object which is created during the wizard
+     */
     private Monitor newMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
-            
+    
+    /**
+     * Represents the first wizard page, where the new monitor defined (name + activated/deactivated)
+     */
     private AddMonitor page1 = new AddMonitor(this.newMonitor);
+    
+    /**
+     * Represents the 2nd wizard page, where the user selects either an existing measuring point for the new monitor
+     * or creates a new one.
+     */
 	private ChooseMeasuringpointWizardPage page2 = new ChooseMeasuringpointWizardPage();
+	
+	/**
+	 * Represents the 3rd wizard page, where the user selects measurements which are then assigned to the monitor
+	 */
 	private SelectMeasurements page3 = new SelectMeasurements();
+	
+	/**
+	 * Represents the 4th wizard page, where the user can set properties for the selected measurements.
+	 */
 	private MeasurementSpecification page4 = new MeasurementSpecification();
 
+	/**
+	 * The constructor
+	 */
 	public MeasuringPointsWizard() {
         setWindowTitle("Add new Measuring Point");
 
