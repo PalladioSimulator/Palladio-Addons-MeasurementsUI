@@ -3,7 +3,7 @@
       id="HelloWorldMenu.feature"
       label="Feature"
       version="1.0.0.qualifier"
-      plugin="org.palladiosimulator.measurementsui.helloworldmenu">
+      plugin="org.palladiosimulator.measurementsui.data">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -38,7 +38,7 @@
    </requires>
 
    <plugin
-         id="org.palladiosimulator.measurementsui.helloworldmenu"
+         id="org.palladiosimulator.measurementsui.data"
          download-size="0"
          install-size="0"
          version="0.0.0"

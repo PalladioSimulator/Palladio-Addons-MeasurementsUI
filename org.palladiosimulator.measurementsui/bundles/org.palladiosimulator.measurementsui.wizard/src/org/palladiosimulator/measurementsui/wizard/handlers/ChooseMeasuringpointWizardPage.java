@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
-import init.DataApplication;
+import org.palladiosimulator.measurementsui.init.DataApplication;
 
 /**
  * @author Domas Mikalkinas
@@ -36,7 +36,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
     /**
      * 
-     * Creates the second page of the wizard, which shows a tabbed
+     * Creates the second page of the wizard, which shows a tabbed table of measuringpoints, either
+     * existing or those which can be created
      * 
      * @param parent
      */
@@ -73,6 +74,12 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
         setPageComplete(true);
     }
 
+    /**
+     * calls the tree viewer which is being build by parsley
+     * 
+     * @param parent
+     * @return
+     */
     private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
         return new EmptyMpTreeViewer(parent, dirty, commandService, DataApplication.getInstance());
     }

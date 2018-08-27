@@ -6,6 +6,7 @@ import org.palladiosimulator.measurementsui.wizard.handlers.MeasurementSpecifica
 import org.palladiosimulator.measurementsui.wizard.handlers.SelectMeasurements;
 
 /**
+ * This is the main wizard, which calls the single wizard subpages
  * @author Birasanth Pushpanathan
  *
  */

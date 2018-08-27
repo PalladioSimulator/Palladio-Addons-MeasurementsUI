@@ -1,4 +1,4 @@
-package helloworldmenu.handlers;
+package org.palladiosimulator.measurementsui.handlers;
 
 import java.util.List;
 
@@ -8,13 +8,12 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
+import org.palladiosimulator.measurementsui.datacreation.DataMeasuringCreator;
+import org.palladiosimulator.measurementsui.datamanagement.DataGathering;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
+import org.palladiosimulator.measurementsui.init.DataApplication;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
-
-import DataCreation.DataMeasuringCreator;
-import dataManagement.DataGathering;
-import dataManipulation.ResourceEditor;
-import init.DataApplication;
 
 
 
@@ -51,32 +50,6 @@ public class SampleHandler extends AbstractHandler {
 		for(MeasuringPoint mp : mpRep.getMeasuringPoints()) {
 			System.out.println(mp.getResourceURIRepresentation());
 		}
-
-		//		 
-		//		 System.out.println("Monitor: "+ mon1.getEntityName());
-		//		 String oldName = mon1.getEntityName();
-		//		 editor.setResourceName(mon1, "dogMonitor");
-		//		 System.out.println("Monitor: "+ mon1.getEntityName());
-		//		 editor.setResourceName(mon1, oldName);
-		//		 
-		//		 
-		//		 
-		//		 System.out.println("Status: "+mon1.isActivated());
-		//		 editor.setMonitorActive(mon1);
-		//		 System.out.println("Status: "+mon1.isActivated());
-		//		 editor.setMonitorUnactive(mon1);
-		//		 System.out.println("Status: "+mon1.isActivated());
-		//		 
-		//		 System.out.println("Measuring Point1: "+ mon1.getMeasuringPoint());
-		//		 System.out.println("Measuring Point2: "+ mon2.getMeasuringPoint());
-		//		 MeasuringPoint oldMP = mon1.getMeasuringPoint();
-		//		 editor.setMeasuringPoint(mon1, mon2.getMeasuringPoint());
-		//		 System.out.println("Measuring Point1: "+ mon1.getMeasuringPoint());
-		//		 System.out.println("Measuring Point2: "+ mon2.getMeasuringPoint());
-		//		 editor.setMeasuringPoint(mon1, oldMP);
-		//		 System.out.println("Measuring Point1: "+ mon1.getMeasuringPoint());
-		//		 System.out.println("Measuring Point2: "+ mon2.getMeasuringPoint());	 
-
 		return null;
 	}
 
