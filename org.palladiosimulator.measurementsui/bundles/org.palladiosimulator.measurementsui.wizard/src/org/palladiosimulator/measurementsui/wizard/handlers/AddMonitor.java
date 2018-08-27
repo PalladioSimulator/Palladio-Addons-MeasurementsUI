@@ -1,107 +1,73 @@
 package org.palladiosimulator.measurementsui.wizard.handlers;
 
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.HelpListener;
-import org.eclipse.swt.events.HelpEvent;
+import org.palladiosimulator.monitorrepository.Monitor;
+
 /**
+ * This class handles the first wizard page for creating a new monitor.
  * @author Birasanth Pushpanathan
  *
  */
-
 public class AddMonitor extends WizardPage {
-	private Text text1;
-	private Composite container;
-	private Button btnCheckButton;
 
-	public AddMonitor() {
-		super("First Page");
-		setTitle("Add Monitor to Measuring Point");
-		setDescription("description");
-	}
+    /**
+     * This contains the form for the newly created monitor
+     */
+    private Composite container;
 
-	@Override
-	public void createControl(Composite parent) {
-		container = new Composite(parent, SWT.NONE);
-//		container.addHelpListener(new HelpListener() {
-//			public void helpRequested(HelpEvent e) {
-//				System.out.println("help");
-//			}
-//		});
-		GridLayout layout = new GridLayout();
-		container.setLayout(layout);
-		layout.numColumns = 2;
-		Label label1 = new Label(container, SWT.NONE);
-		label1.setText("Name");
+    /**
+     * the newly created monitor object
+     */
+    private Monitor newMonitor;
 
-		text1 = new Text(container, SWT.BORDER | SWT.SINGLE);
-		text1.setMessage("Placeholder");
-		text1.addKeyListener(new KeyListener() {
+    /**
+     * Constructor
+     * @param newMonitor the newly created monitor object
+     */
+    public AddMonitor(Monitor newMonitor) {
+        super("First Page");
+        setTitle("Create new Monitor");
+        setDescription("Firstly a new Monitor is needed, please define its name. (De-)Activate it if necessary.");
+        this.newMonitor = newMonitor;
+    }
 
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
+    @Override
+    public void createControl(Composite parent) {
+        container = new Composite(parent, SWT.NONE);
 
-			@Override
-			public void keyReleased(KeyEvent e) {
-				if (!text1.getText().isEmpty()) {
-					setPageComplete(true);
-				} else {
-					setPageComplete(false);
-				}
-			}
+        FillLayout layout = new FillLayout();
+        container.setLayout(layout);
 
-		});
-		text1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		// required to avoid an error in the system
-		setControl(container);
-		new Label(container, SWT.NONE);
-		new Label(container, SWT.NONE);
-		new Label(container, SWT.NONE);
-		new Label(container, SWT.NONE);
+        setControl(container);
+        setPageComplete(true);
 
-		btnCheckButton = new Button(container, SWT.CHECK);
-		btnCheckButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-			}
-		});
-		btnCheckButton.setText("activate");
-		new Label(container, SWT.NONE);
-		setPageComplete(false);
-	}
+        createMonitorFormViewer(container, this.newMonitor, this);
+    }
 
-	public String getText1() {
-		return text1.getText();
-	}
-	
-	@Override
-	public void performHelp() 
-	{
-	    Shell shell = new Shell(getShell());
-	    shell.setText("My Custom Help !!");
-	    shell.setLayout(new GridLayout());
-	    shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+    private MonitorFormViewer createMonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitor wizardPage) {
+        MonitorFormViewer monitorFormViewer = new MonitorFormViewer(parent, newMonitor, wizardPage);
+        return monitorFormViewer;
+    }
 
-	    Browser browser = new Browser(shell, SWT.NONE);
-	    browser.setUrl("http://stackoverflow.com/questions/7322489/cant-put-content-behind-swt-wizard-help-button");
-	    browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+    @Override
+    public void performHelp() {
+        Shell shell = new Shell(getShell());
+        shell.setText("My Custom Help !!");
+        shell.setLayout(new GridLayout());
+        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-	    shell.open();
-	}
+        Browser browser = new Browser(shell, SWT.NONE);
+        browser.setUrl("http://stackoverflow.com/questions/7322489/cant-put-content-behind-swt-wizard-help-button");
+        browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        shell.open();
+    }
 
 }
