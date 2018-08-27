@@ -8,8 +8,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.parsley.edit.ui.provider.ViewerContentProvider;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
-
-import init.DataApplication;
+import org.palladiosimulator.measurementsui.init.DataApplication;
 
 /**
  * 

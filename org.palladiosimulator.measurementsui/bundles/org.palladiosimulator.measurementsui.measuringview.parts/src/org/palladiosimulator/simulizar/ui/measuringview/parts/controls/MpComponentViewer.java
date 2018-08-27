@@ -11,10 +11,9 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.resource.ResourceLoader;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.measurementsui.init.DataApplication;
 
 import com.google.inject.Injector;
-
-import init.DataApplication;
 
 /**
  * @author David Schuetz

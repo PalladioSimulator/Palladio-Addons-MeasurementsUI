@@ -9,12 +9,13 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.e4.ui.model.workbench,
  org.eclipse.e4.core.commands,
- org.palladiosimulator.measurementsui.helloworldmenu,
  org.palladiosimulator.measurementsui.measuringview.parts,
  org.palladiosimulator.monitorrepository;bundle-version="3.0.1",
  org.eclipse.emf.parsley.common,
  de.uni-stuttgart.enpro.newMonitor;bundle-version="1.0.0",
- org.eclipse.ui.forms
+ org.palladiosimulator.measurementsui.data,
+ org.palladiosimulator.measurementsui.measuringview.parts,
+ org.eclipse.ui.forms;bundle-version="3.7.200"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.uni-stuttgart.enpro.wizard
 Bundle-ActivationPolicy: lazy

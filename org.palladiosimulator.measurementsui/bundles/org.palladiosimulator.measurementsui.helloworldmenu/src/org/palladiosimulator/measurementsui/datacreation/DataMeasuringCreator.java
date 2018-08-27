@@ -1,4 +1,4 @@
-package DataCreation;
+package org.palladiosimulator.measurementsui.datacreation;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +17,11 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
 import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
-
+/**
+ * 
+ * @author Lasse
+ *
+ */
 public class DataMeasuringCreator {
 	
 	private final String MeasuringPointRepositoryfileEnding = "/default.measuringpoint";

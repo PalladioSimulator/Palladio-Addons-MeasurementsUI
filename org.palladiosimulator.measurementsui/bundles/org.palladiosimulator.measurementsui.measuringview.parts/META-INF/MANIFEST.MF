@@ -22,9 +22,9 @@ Require-Bundle: javax.inject,
  org.eclipse.ui.views.properties.tabbed,
  org.eclipse.e4.ui.model.workbench,
  org.eclipse.e4.ui.workbench
-Import-Package: dataManagement,
- dataManipulation,
- emptymeasuringpoints,
- init,
- mpview
+Import-Package: emptymeasuringpoints,
+ mpview,
+ org.palladiosimulator.measurementsui.datamanagement,
+ org.palladiosimulator.measurementsui.datamanipulation,
+ org.palladiosimulator.measurementsui.init
 Export-Package: org.palladiosimulator.simulizar.ui.measuringview.parts.controls
