@@ -31,7 +31,8 @@ public abstract class MpComponentViewer {
 	 * @param parent container where the view is embedded
 	 * @param dirty describes whether the view was edited
 	 * @param commandService eclipse command
-	 * @param application
+	 * @param application    Connection to the data binding. This is needed in order
+	 *                       to get the repository of the current project.
 	 */
 	protected MpComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService, DataApplication application) {
 		this.dirty = dirty;
@@ -44,7 +45,6 @@ public abstract class MpComponentViewer {
 	/**
 	 * Initialize the connection between the e4 plugin and the Parsley TreeView
 	 * @param parent composite container
-	 * @param selectionIndex of a respository which should be shown in the TreeView
 	 */
 	protected abstract void initParsley(Composite parent);
 
@@ -57,7 +57,6 @@ public abstract class MpComponentViewer {
 	/**
 	 * Updates the underlying resources of the tree and redraws the component
 	 * 
-	 * @param resource which will be shown in the updated tree
 	 */
 	public abstract void update();
 
@@ -96,7 +95,6 @@ public abstract class MpComponentViewer {
 
 	/**
 	 * 
-	 * @param selectionIndex index of the resource
 	 * @param editingDomain editingdomain of the treeview
 	 * @param injector Google guice injector of the parsley project
 	 * @return the resource of an eobject at a certain index

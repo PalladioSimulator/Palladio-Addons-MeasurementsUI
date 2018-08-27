@@ -26,10 +26,11 @@ public abstract class MpTreeViewer extends MpComponentViewer{
 	
 	/**
 	 * 
-	 * @param parent
-	 * @param dirty
-	 * @param commandService
-	 * @param application
+	 * @param parent container where the view is embedded
+	 * @param dirty describes whether the view was edited
+	 * @param commandService eclipse command
+	 * @param application    Connection to the data binding. This is needed in order
+	 *                       to get the repository of the current project.
 	 */
 	public MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService, DataApplication application) {
 		super(parent,dirty,commandService,application);

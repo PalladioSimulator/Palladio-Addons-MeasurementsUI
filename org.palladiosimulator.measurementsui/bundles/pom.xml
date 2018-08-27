@@ -17,5 +17,6 @@
         <module>org.palladiosimulator.measurementsui.measuringview.parts</module>
         <module>org.palladiosimulator.measurementsui.wizard</module>
         <module>org.palladiosimulator.measurementsui.newMonitor</module>
+         <module>org.palladiosimulator.measurementsui.selectmeasurement</module>
     </modules>
 </project>
