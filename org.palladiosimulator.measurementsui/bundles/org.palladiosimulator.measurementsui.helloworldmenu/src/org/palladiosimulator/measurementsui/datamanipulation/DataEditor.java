@@ -38,6 +38,13 @@ public class DataEditor {
                 .execute(new SetCommand(domain, element, element.eClass().getEStructuralFeature(attribute), status));
     }
 
+    /**
+     * alternative method to edit measuring points, if it is not possible to do it with parsley
+     * 
+     * @param element
+     * @param attribute
+     * @param mp
+     */
     public void editMeasuringPoint(EObject element, String attribute, MeasuringPoint mp) {
         // Make sure your element is attached to a resource, otherwise this will return null
         EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
@@ -45,6 +52,13 @@ public class DataEditor {
                 .execute(new SetCommand(domain, element, element.eClass().getEStructuralFeature(attribute), mp));
     }
 
+    /**
+     * alternative method to add resources, if it is not possible to do it with parsley
+     * 
+     * @param element
+     * @param attribute
+     * @param newObject
+     */
     public void addResource(EObject element, String attribute, EObject newObject) {
         EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
         domain.getCommandStack()

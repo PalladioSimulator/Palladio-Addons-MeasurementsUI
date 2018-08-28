@@ -16,7 +16,11 @@ import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
-
+/**
+ * Class for accessing all parts of the model, mainly getter methods
+ * @author Lasse
+ *
+ */
 public class ModelAccessor {
 
     private List<ResourceEnvironment> resourceEnvironment;
