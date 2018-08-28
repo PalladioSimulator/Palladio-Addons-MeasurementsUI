@@ -1,4 +1,3 @@
-import org.eclipse.emf.common.util.URI
 import java.util.ArrayList
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint
@@ -23,6 +22,7 @@ module mpview {
 				new ArrayList()=>[
 						add(mon.measuringPoint)
 						addAll(mon.measurementSpecifications)
+						
 					]
 			}
 		}

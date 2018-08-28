@@ -3,83 +3,58 @@ package org.palladiosimulator.measurementsui.wizard.handlers;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
+ * This class handles the first wizard page for creating a new monitor.
  * @author Birasanth Pushpanathan
  *
  */
-
 public class AddMonitor extends WizardPage {
-    private Text text1;
-    private Composite container;
-    private Button btnCheckButton;
 
-    public AddMonitor() {
+    /**
+     * This contains the form for the newly created monitor
+     */
+    private Composite container;
+
+    /**
+     * the newly created monitor object
+     */
+    private Monitor newMonitor;
+
+    /**
+     * Constructor
+     * @param newMonitor the newly created monitor object
+     */
+    public AddMonitor(Monitor newMonitor) {
         super("First Page");
-        setTitle("Add Monitor to Measuring Point");
-        setDescription("description");
+        setTitle("Create new Monitor");
+        setDescription("Firstly a new Monitor is needed, please define its name. (De-)Activate it if necessary.");
+        this.newMonitor = newMonitor;
     }
 
     @Override
     public void createControl(Composite parent) {
         container = new Composite(parent, SWT.NONE);
 
-        GridLayout layout = new GridLayout();
+        FillLayout layout = new FillLayout();
         container.setLayout(layout);
-        layout.numColumns = 2;
-        Label label1 = new Label(container, SWT.NONE);
-        label1.setText("Name");
 
-        text1 = new Text(container, SWT.BORDER | SWT.SINGLE);
-        text1.setMessage("Placeholder");
-        text1.addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if (!text1.getText().isEmpty()) {
-                    setPageComplete(true);
-                } else {
-                    setPageComplete(false);
-                }
-            }
-
-        });
-        text1.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        // required to avoid an error in the system
         setControl(container);
-        new Label(container, SWT.NONE);
-        new Label(container, SWT.NONE);
-        new Label(container, SWT.NONE);
-        new Label(container, SWT.NONE);
+        setPageComplete(true);
 
-        btnCheckButton = new Button(container, SWT.CHECK);
-        btnCheckButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-            }
-        });
-        btnCheckButton.setText("activate");
-        new Label(container, SWT.NONE);
-        setPageComplete(false);
+        createMonitorFormViewer(container, this.newMonitor, this);
     }
 
-    public String getText1() {
-        return text1.getText();
+    private MonitorFormViewer createMonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitor wizardPage) {
+        MonitorFormViewer monitorFormViewer = new MonitorFormViewer(parent, newMonitor, wizardPage);
+        return monitorFormViewer;
     }
 
     @Override

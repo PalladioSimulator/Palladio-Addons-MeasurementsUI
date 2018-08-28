@@ -18,64 +18,21 @@ import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.listener.
 /**
  * @author David Schuetz Creates a eclipse.swt TreeView based on a parsley TreeView project.
  */
-public abstract class MpTreeViewer extends MpComponentViewer {
-    protected TreeViewer treeViewer;
-    protected ViewerFactory treeFactory;
-
-    /**
-     * 
-     * @param parent
-     * @param dirty
-     * @param commandService
-     * @param application
-     */
-    public MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-            DataApplication application) {
-        super(parent, dirty, commandService, application);
-    }
-
-    /**
-     * Adds a DoubleClickMouseListener which changes Attributes if an icon in the treeview is double
-     * clicked.
-     */
-    public void addMouseListener() {
-        treeViewer.getTree().addMouseListener(new MpTreeDoubleClickListener(treeViewer));
-    }
-
-    /**
-     * Return the TreeViewer
-     * 
-     * @return The current TreeViewer
-     */
-    @Override
-    public Viewer getViewer() {
-        return treeViewer;
-    }
-
-    /**
-     * Adds a listener which connects the selected tree item to the ESelectionService.
-     * 
-     * @param selectionService
-     */
-    @Override
-    public void addSelectionListener(ESelectionService selectionService) {
-        treeViewer.addSelectionChangedListener(event -> {
-            IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-            // set the selection to the service
-            selectionService.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
-        });
-    }
-
-    @Override
-    protected void initParsley(Composite parent) {
-        treeViewer = new TreeViewer(parent);
-
-        treeFactory = injector.getInstance(ViewerFactory.class);
-        EditingDomain editingDomain = getEditingDomain(injector);
-
-        Object resource = getResource(getModelRepository(), editingDomain, injector);
-        // create the tree-form composite
-        treeFactory.initialize(treeViewer, resource);
+public abstract class MpTreeViewer extends MpComponentViewer{
+	protected TreeViewer treeViewer;
+	protected ViewerFactory treeFactory;
+	
+	/**
+	 * 
+	 * @param parent container where the view is embedded
+	 * @param dirty describes whether the view was edited
+	 * @param commandService eclipse command
+	 * @param application    Connection to the data binding. This is needed in order
+	 *                       to get the repository of the current project.
+	 */
+	public MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService, DataApplication application) {
+		super(parent,dirty,commandService,application);
+	}
 
         // Guice injected viewer context menu helper
         ViewerContextMenuHelper contextMenuHelper = injector.getInstance(ViewerContextMenuHelper.class);
