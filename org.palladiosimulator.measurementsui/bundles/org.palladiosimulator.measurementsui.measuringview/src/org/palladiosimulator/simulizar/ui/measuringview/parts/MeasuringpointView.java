@@ -147,12 +147,12 @@ public class MeasuringpointView {
 		Button newMpButton = new Button(buttonContainer, SWT.PUSH);
 		newMpButton.setText("Add new Measuring Point");
 
-		newMpButton.addListener(SWT.Selection, e -> {
-			MeasuringPointsWizard test = new MeasuringPointsWizard();
-			Shell parentShell = test.getShell();
-			WizardDialog dialog = new WizardDialog(parentShell, test);
-			dialog.open();
-		});
+        newMpButton.addListener(SWT.Selection, e -> {
+            MeasuringPointsWizard test = new MeasuringPointsWizard();
+            Shell parentShell = test.getShell();
+            WizardDialog dialog = new WizardDialog(parentShell, test);
+            dialog.open();
+        });
 
 		Button editMpButton = new Button(buttonContainer, SWT.PUSH);
 		editMpButton.setText("Edit...");

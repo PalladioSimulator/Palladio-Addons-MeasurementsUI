@@ -16,10 +16,10 @@ import org.palladiosimulator.measurementsui.init.DataApplication;
 import com.google.inject.Injector;
 
 /**
- * @author David Schuetz
- *  A common saveable view based on a parsley view.
+ * @author David Schuetz A common saveable view based on a parsley view.
  */
 public abstract class MpComponentViewer {
+  
 	protected MDirtyable dirty;
 	protected ECommandService commandService;
 	protected DataApplication dataApplication;

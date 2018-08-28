@@ -29,14 +29,29 @@ public class MonitorTreeViewer extends MpTreeViewer {
 		super(parent, dirty, commandService, application);
 	}
 
-	@Override
-	protected void initInjector() {
-		this.injector = MpviewInjectorProvider.getInjector();
-	}
 
-	@Override
-	protected EObject getModelRepository() {
-		return dataApplication.getModelAccessor().getMonitorRepository().get(0);
-	}
+    /**
+     * 
+     * @param parent
+     *            composite where the tree view is embedded
+     * @param dirty
+     *            state of the tree view
+     * @param commandService
+     *            eclipse commandservice in order to save the view
+     */
+    public MonitorTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
+            DataApplication application) {
+        super(parent, dirty, commandService, application);
+    }
+
+    @Override
+    protected void initInjector() {
+        this.injector = MpviewInjectorProvider.getInjector();
+    }
+
+    @Override
+    protected EObject getModelRepository() {
+        return dataApplication.getModelAccessor().getMonitorRepository().get(0);
+    }
 
 }
