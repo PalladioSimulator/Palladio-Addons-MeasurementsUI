@@ -1,4 +1,4 @@
-package mpview;
+package org.palladiosimulator.measurementsui.monitorrepositoryview;
 
 import org.eclipse.emf.parsley.views.SaveableTreeView;
 

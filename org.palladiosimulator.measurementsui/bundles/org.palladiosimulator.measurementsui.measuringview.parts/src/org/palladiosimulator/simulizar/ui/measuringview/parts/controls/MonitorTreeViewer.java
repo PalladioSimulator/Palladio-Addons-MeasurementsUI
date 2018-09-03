@@ -1,18 +1,18 @@
 package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
+import monitorrepositoryview.MonitorrepositoryviewInjectorProvider;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.init.DataApplication;
 
-import mpview.MpviewInjectorProvider;
 
 /**
  * 
- * @author David Schütz Generates a tree view where all monitors from a
+ * @author David Schï¿½tz Generates a tree view where all monitors from a
  *         selected monitorrepository in the workspace are shown. Creates a
- *         connection between the parsley mpview view and an eclipse e4 plugin.
+ *         connection between the parsley org.palladiosimulator.measurementsui.monitorrepositoryview view and an eclipse e4 plugin.
  */
 public class MonitorTreeViewer extends MpTreeViewer {
 
@@ -31,7 +31,8 @@ public class MonitorTreeViewer extends MpTreeViewer {
 
 	@Override
 	protected void initInjector() {
-		this.injector = MpviewInjectorProvider.getInjector();
+		this.injector = MonitorrepositoryviewInjectorProvider.getInjector();
+		
 	}
 
 	@Override
@@ -40,3 +41,4 @@ public class MonitorTreeViewer extends MpTreeViewer {
 	}
 
 }
+

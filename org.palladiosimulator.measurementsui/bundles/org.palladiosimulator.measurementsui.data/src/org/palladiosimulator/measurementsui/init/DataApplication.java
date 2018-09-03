@@ -54,13 +54,13 @@ public class DataApplication {
     /**
      * Creates the session URI given a path to a .aird file of a project
      * 
-     * @param AirdPath
+     * @param airdPath
      *            path to the .aird file
      */
-    private void initializeSessionResourceURI(String AirdPath) {
+    private void initializeSessionResourceURI(String airdPath) {
 
         try {
-            this.sessionResourceURI = URI.createPlatformResourceURI(AirdPath, true);
+            this.sessionResourceURI = URI.createPlatformResourceURI(airdPath, true);
         } catch (NullPointerException e) {
             System.err.println("No valid path to an air file");
         }

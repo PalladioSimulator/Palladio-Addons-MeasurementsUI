@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: mpview
+Automatic-Module-Name: monitorrepositoryview
 Bundle-ManifestVersion: 2
-Bundle-Name: mpview
+Bundle-Name: monitorrepositoryview
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.monitorrepositoryview;singleton:=true
-Bundle-Activator: mpview.MonitorRepositoryActivator
+Bundle-Activator: org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositoryActivator
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -19,4 +19,5 @@ Import-Package: org.apache.commons.logging,
  org.apache.log4j,
  org.palladiosimulator.measurementsui.datamanipulation
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: mpview
+Export-Package: monitorrepositoryview,
+ org.palladiosimulator.measurementsui.monitorrepositoryview

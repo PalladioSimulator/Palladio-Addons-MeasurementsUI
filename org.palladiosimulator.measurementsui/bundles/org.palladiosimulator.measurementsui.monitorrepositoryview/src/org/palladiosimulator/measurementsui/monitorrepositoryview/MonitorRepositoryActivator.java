@@ -1,4 +1,4 @@
-package mpview;
+package org.palladiosimulator.measurementsui.monitorrepositoryview;
 
 import org.osgi.framework.BundleContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -9,7 +9,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class MonitorRepositoryActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "mpview"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.palladiosimulator.measurementsui.monitorrepositoryview"; //$NON-NLS-1$
 
 	// The shared instance
 	private static MonitorRepositoryActivator plugin;
