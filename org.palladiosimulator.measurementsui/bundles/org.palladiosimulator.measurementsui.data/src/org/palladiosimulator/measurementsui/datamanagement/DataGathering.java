@@ -118,7 +118,7 @@ public class DataGathering {
                 }
             }
         } catch (CoreException e) {
-
+            LOGGER.log(Level.FINEST, e.toString(), e);
         }
         return null;
     }
@@ -166,7 +166,7 @@ public class DataGathering {
                 return firstElement.toString().split("/")[1];
             }
         } catch (NullPointerException e) {
-            System.out.println("Make sure a project is selected");
+            LOGGER.log(Level.FINEST, "Make sure a project is selected", e);
         }
         return null;
     }

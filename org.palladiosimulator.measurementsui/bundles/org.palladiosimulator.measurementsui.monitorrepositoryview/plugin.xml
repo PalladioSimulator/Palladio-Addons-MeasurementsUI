@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.emf.parsley"
+            class="monitorrepositoryview.MonitorrepositoryviewExecutableExtensionFactory:org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositorySaveableTreeFormView"
+            id="monitorrepositoryview"
+            name="MonitorRepositoryView"
+            restorable="true">
+      </view>
+      <view
+            category="org.eclipse.emf.parsley"
+            class="org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositorySaveableTreeFormView"
+            id="monitorrepositoryview"
+            name="MonitorRepositoryView"
+            restorable="true">
+      </view>
+      <view
+            category="org.eclipse.emf.parsley"
+            class="org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositorySaveableTreeFormView"
+            id="monitorrepositoryview"
+            name="MonitorRepositoryView"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertiesView">
+      <excludeSources
+            id="monitorrepositoryview.excludeSources1">
+      </excludeSources>
+   </extension>
+</plugin>
