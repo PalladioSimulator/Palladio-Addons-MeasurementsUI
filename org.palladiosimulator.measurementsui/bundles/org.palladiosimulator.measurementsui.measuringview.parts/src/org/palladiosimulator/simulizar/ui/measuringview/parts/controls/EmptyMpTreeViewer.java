@@ -9,11 +9,10 @@ import org.palladiosimulator.measurementsui.init.DataApplication;
 import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
 
 /**
+ * Generates a tree view where all empty measuring points from all
+ * measuringpoint repositories in the workspace are shown.
  * 
- * @author David Schuetz Generates a tree view where all empty measuring points
- *         from all measuringpoint repositories in the workspace are shown.
- *         Creates a connection between the parsley emptymeasuringpoints view
- *         and an eclipse e4 plugin.
+ * @author David Schuetz
  */
 public class EmptyMpTreeViewer extends MpTreeViewer {
 
