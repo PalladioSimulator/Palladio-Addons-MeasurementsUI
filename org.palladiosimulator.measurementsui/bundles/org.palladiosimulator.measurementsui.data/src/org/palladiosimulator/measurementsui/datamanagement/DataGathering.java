@@ -166,7 +166,7 @@ public class DataGathering {
                 return firstElement.toString().split("/")[1];
             }
         } catch (NullPointerException e) {
-            LOGGER.log(Level.FINEST, "Make sure a project is selceted", e);
+            LOGGER.log(Level.FINEST, "Make sure a project is selected", e);
         }
         return null;
     }
