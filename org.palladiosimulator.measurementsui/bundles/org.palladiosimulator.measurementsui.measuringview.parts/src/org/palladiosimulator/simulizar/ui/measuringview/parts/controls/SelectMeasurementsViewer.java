@@ -19,8 +19,8 @@ public class SelectMeasurementsViewer extends WizardTableViewer {
 	 * @param dataApplication Connection to the data binding. This is needed in
 	 *                        order to get the repository of the current project.
 	 */
-	public SelectMeasurementsViewer(Composite parent, DataApplication application) {
-		super(parent, application);
+	public SelectMeasurementsViewer(Composite parent, DataApplication dataApplication) {
+		super(parent, dataApplication);
 	}
 
 	@Override
