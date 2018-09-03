@@ -6,7 +6,6 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.monitorrepository.Monitor;
@@ -17,11 +16,6 @@ import org.palladiosimulator.monitorrepository.Monitor;
  *
  */
 public class AddMonitor extends WizardPage {
-
-    /**
-     * This contains the form for the newly created monitor
-     */
-    private Composite container;
 
     /**
      * the newly created monitor object
@@ -41,7 +35,7 @@ public class AddMonitor extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        container = new Composite(parent, SWT.NONE);
+        Composite container = new Composite(parent, SWT.NONE);
 
         FillLayout layout = new FillLayout();
         container.setLayout(layout);
@@ -51,10 +45,16 @@ public class AddMonitor extends WizardPage {
 
         createMonitorFormViewer(container, this.newMonitor, this);
     }
-
+    
+    /**
+     * Creates a form view where the user can edit different properties for the newly created monitor object.
+     * @param parent the parent composite that contains the form view
+     * @param newMonitor the newly created monitor object
+     * @param wizardPage this wizard page
+     * @return the form view 
+     */
     private MonitorFormViewer createMonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitor wizardPage) {
-        MonitorFormViewer monitorFormViewer = new MonitorFormViewer(parent, newMonitor, wizardPage);
-        return monitorFormViewer;
+        return new MonitorFormViewer(parent, newMonitor, wizardPage);
     }
 
     @Override
