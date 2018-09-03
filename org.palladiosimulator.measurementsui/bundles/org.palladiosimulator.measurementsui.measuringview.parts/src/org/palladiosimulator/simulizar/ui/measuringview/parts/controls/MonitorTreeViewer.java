@@ -10,7 +10,7 @@ import org.palladiosimulator.measurementsui.init.DataApplication;
 
 /**
  * 
- * @author David Sch�tz Generates a tree view where all monitors from a
+ * @author David Schuetz Generates a tree view where all monitors from a
  *         selected monitorrepository in the workspace are shown. Creates a
  *         connection between the parsley org.palladiosimulator.measurementsui.monitorrepositoryview view and an eclipse e4 plugin.
  */
