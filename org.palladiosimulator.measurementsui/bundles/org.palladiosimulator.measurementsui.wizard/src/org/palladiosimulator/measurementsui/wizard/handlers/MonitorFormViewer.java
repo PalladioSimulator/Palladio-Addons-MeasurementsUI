@@ -1,8 +1,5 @@
 package org.palladiosimulator.measurementsui.wizard.handlers;
 
-import javax.inject.Inject;
-
-import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.parsley.composite.FormDetailComposite;
 import org.eclipse.emf.parsley.composite.FormFactory;
 import org.eclipse.swt.SWT;
@@ -22,9 +19,6 @@ import de.uni_stuttgart.enpro.newmonitor.NewmonitorInjectorProvider;
  *
  */
 public class MonitorFormViewer {
-
-    @Inject
-    MDirtyable dirty;
 
     /**
      * Constructor
