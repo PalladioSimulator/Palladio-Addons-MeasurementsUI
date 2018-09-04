@@ -1,10 +1,10 @@
-package org.palladiosimulator.measurementsui.init;
+package org.palladiosimulator.measurementsui.dataprovider;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
-import org.palladiosimulator.measurementsui.datamanagement.*;
+import org.palladiosimulator.measurementsui.fileaccess.*;
 
 /**
  * Connection class between data management and gui
@@ -38,7 +38,7 @@ public class DataApplication {
      * file(modeling Project nature).
      */
     public void loadData(int selectionIndex) {
-        // gives airdFile of first project in Workspace that has an aird File
+        // gives airdFile of project in Workspace that has an aird File with index selectionIndex
         initializeSessionResourceURI(
                 this.dataGathering.getAirdFile(this.dataGathering.getAllProjectAirdfiles().get(selectionIndex)));
         initializeSession(sessionResourceURI);

@@ -24,9 +24,9 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.ui.workbench
 Import-Package: emptymeasuringpoints,
  monitorrepositoryview,
- org.palladiosimulator.measurementsui.datamanagement,
  org.palladiosimulator.measurementsui.datamanipulation,
- org.palladiosimulator.measurementsui.init,
+ org.palladiosimulator.measurementsui.dataprovider,
+ org.palladiosimulator.measurementsui.fileaccess,
  org.palladiosimulator.measurementsui.monitorrepositoryview,
  tableform
 Export-Package: org.palladiosimulator.simulizar.ui.measuringview.parts.controls
