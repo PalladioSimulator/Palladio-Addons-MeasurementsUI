@@ -6,7 +6,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.parsley.edit.ui.provider.ViewerContentProvider;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
-import org.palladiosimulator.measurementsui.init.DataApplication;
+import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
  * 

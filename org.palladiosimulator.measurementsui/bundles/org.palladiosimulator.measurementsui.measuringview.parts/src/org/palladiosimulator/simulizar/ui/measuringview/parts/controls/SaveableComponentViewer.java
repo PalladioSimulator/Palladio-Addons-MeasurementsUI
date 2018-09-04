@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.init.DataApplication;
+import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
  * A common saveable view based on a parsley view.

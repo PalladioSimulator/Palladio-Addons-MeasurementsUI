@@ -8,7 +8,7 @@ import org.eclipse.emf.parsley.menus.ViewerContextMenuHelper;
 import org.eclipse.emf.parsley.resource.ResourceLoader;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.init.DataApplication;
+import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 import com.google.inject.Injector;
 

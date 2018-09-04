@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
 import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
-import org.palladiosimulator.measurementsui.init.DataApplication;
+import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
  * @author Domas Mikalkinas

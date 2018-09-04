@@ -6,6 +6,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 
@@ -54,7 +55,7 @@ public class MpTreeDoubleClickListener implements MouseListener {
 	 * @param monitor which is set active/ inactive
 	 */
 	private void toggleMonitorActive(Monitor monitor) {
-		ResourceEditor edit = new ResourceEditor();
+		ResourceEditor edit = new ResourceEditorImpl();
 		edit.changeMonitorActive(monitor, monitor.isActivated());
 	}
 
@@ -65,7 +66,7 @@ public class MpTreeDoubleClickListener implements MouseListener {
 	 * @param measurement where triggersSelfAdaptions is set
 	 */
 	private void toggleTriggersSelfAdaption(MeasurementSpecification measurement) {
-		ResourceEditor edit = new ResourceEditor();
+		ResourceEditor edit = new ResourceEditorImpl();
 		edit.changeTriggersSelfAdapting(measurement, measurement.isTriggersSelfAdaptations());
 
 	}

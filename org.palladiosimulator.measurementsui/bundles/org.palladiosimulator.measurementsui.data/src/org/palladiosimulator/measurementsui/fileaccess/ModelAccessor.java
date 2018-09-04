@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.datamanagement;
+package org.palladiosimulator.measurementsui.fileaccess;
 
 import java.util.ArrayList;
 import java.util.List;

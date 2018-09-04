@@ -14,8 +14,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.pcm.edp2.measuringpoint
 Import-Package: org.apache.commons.logging,
  org.apache.log4j,
- org.palladiosimulator.measurementsui.datamanagement,
- org.palladiosimulator.measurementsui.init
+ org.palladiosimulator.measurementsui.dataprovider,
+ org.palladiosimulator.measurementsui.fileaccess
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: emptymeasuringpoints
 

@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.init.DataApplication;
+import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 import tableform.TableformInjectorProvider;
 

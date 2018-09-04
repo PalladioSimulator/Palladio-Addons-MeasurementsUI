@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.datacreation;
+package org.palladiosimulator.measurementsui.datamanipulation;
 
 import java.io.IOException;
 import java.util.HashMap;

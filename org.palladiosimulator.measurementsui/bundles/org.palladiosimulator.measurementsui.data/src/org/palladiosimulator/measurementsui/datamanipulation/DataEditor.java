@@ -10,59 +10,17 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 public class DataEditor {
 
     /**
-     * https://stackoverflow.com/questions/38114267/emf-write-transaction
-     * 
+     * Changes the EObject element's attribute to the new Value. Implementation is done in ResourceEditor class.
      * @author Florian
      * @param element
      * @param attribute
-     * @param newName
+     * @param newValue
      */
-    public void editResourceName(EObject element, String attribute, String newName) {
+    public void editResource(EObject element, String attribute, Object newValue) {
         // Make sure your element is attached to a resource, otherwise this will return null
         EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
         domain.getCommandStack()
-                .execute(new SetCommand(domain, element, element.eClass().getEStructuralFeature(attribute), newName));
-    }
-
-    /**
-     * Gets the editing domain of the element, changes the boolean attribute of the element
-     * 
-     * @param element
-     * @param attribute
-     * @param status
-     */
-    public void editResourceActivated(EObject element, String attribute, boolean status) {
-        // Make sure your element is attached to a resource, otherwise this will return null
-        EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
-        domain.getCommandStack()
-                .execute(new SetCommand(domain, element, element.eClass().getEStructuralFeature(attribute), status));
-    }
-
-    /**
-     * alternative method to edit measuring points, if it is not possible to do it with parsley
-     * 
-     * @param element
-     * @param attribute
-     * @param mp
-     */
-    public void editMeasuringPoint(EObject element, String attribute, MeasuringPoint mp) {
-        // Make sure your element is attached to a resource, otherwise this will return null
-        EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
-        domain.getCommandStack()
-                .execute(new SetCommand(domain, element, element.eClass().getEStructuralFeature(attribute), mp));
-    }
-
-    /**
-     * alternative method to add resources, if it is not possible to do it with parsley
-     * 
-     * @param element
-     * @param attribute
-     * @param newObject
-     */
-    public void addResource(EObject element, String attribute, EObject newObject) {
-        EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
-        domain.getCommandStack()
-                .execute(new AddCommand(domain, element, element.eClass().getEStructuralFeature(attribute), newObject));
+                .execute(new SetCommand(domain, element, element.eClass().getEStructuralFeature(attribute), newValue));
     }
 
 }
