@@ -1,12 +1,12 @@
-import de.uni_stuttgart.enpro.newmonitor.NewmonitorFormView
+import org.palladiosimulator.measurementsui.newMonitor.NewmonitorFormView
 import org.eclipse.emf.common.util.URI
 import org.palladiosimulator.monitorrepository.Monitor
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
 
-/* de.uni_stuttgart.enpro.newmonitor EMF Parsley Dsl Module file */
-module de.uni_stuttgart.enpro.newmonitor {
+/* org.palladiosimulator.measurementsui.newMonitor EMF Parsley Dsl Module file */
+module org.palladiosimulator.measurementsui.newMonitor {
 	parts {
-		viewpart de.uni_stuttgart.enpro.newmonitor {
+		viewpart org.palladiosimulator.measurementsui.newMonitor {
 			viewname "Newmonitor"
 			viewclass NewmonitorFormView
 		}

@@ -5,8 +5,8 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.emf.parsley"
-            class="de.uni_stuttgart.enpro.newmonitor.NewmonitorExecutableExtensionFactory:de.uni_stuttgart.enpro.newmonitor.NewmonitorFormView"
-            id="de.uni_stuttgart.enpro.newmonitor"
+            class="org.palladiosimulator.measurementsui.newMonitor.NewMonitorExecutableExtensionFactory:org.palladiosimulator.measurementsui.newMonitor.NewmonitorFormView"
+            id="org.palladiosimulator.measurementsui.newMonitor"
             name="Newmonitor"
             restorable="true">
       </view>

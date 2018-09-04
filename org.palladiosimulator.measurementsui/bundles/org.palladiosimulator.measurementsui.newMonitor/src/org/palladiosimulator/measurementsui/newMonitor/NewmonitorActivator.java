@@ -1,4 +1,4 @@
-package de.uni_stuttgart.enpro.newmonitor;
+package org.palladiosimulator.measurementsui.newMonitor;
 
 import org.osgi.framework.BundleContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -9,7 +9,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class NewmonitorActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "de.uni_stuttgart.enpro.newmonitor"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.palladiosimulator.measurementsui.newMonitor"; //$NON-NLS-1$
 
 	// The shared instance
 	private static NewmonitorActivator plugin;
