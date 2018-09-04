@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.measurementsui.measuringview.parts,
  org.palladiosimulator.monitorrepository,
  org.eclipse.emf.parsley.common,
- de.uni-stuttgart.enpro.newMonitor,
+ org.palladiosimulator.measurementsui.newMonitor,
  org.palladiosimulator.measurementsui.data,
  org.palladiosimulator.measurementsui.measuringview.parts,
  org.eclipse.ui.forms

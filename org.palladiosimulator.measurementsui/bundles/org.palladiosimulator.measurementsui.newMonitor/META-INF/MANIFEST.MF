@@ -4,8 +4,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: de.uni-stuttgart.enpro.newMonitor
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: de.uni-stuttgart.enpro.newMonitor; singleton:=true
-Bundle-Activator: de.uni_stuttgart.enpro.newmonitor.NewmonitorActivator
+Bundle-SymbolicName: org.palladiosimulator.measurementsui.newMonitor;singleton:=true
+Bundle-Activator: org.palladiosimulator.measurementsui.newMonitor.NewmonitorActivator
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -15,4 +15,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Import-Package: org.apache.log4j,
  org.apache.commons.logging
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: de.uni_stuttgart.enpro.newmonitor
+Export-Package: org.palladiosimulator.measurementsui.newMonitor
