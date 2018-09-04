@@ -22,6 +22,7 @@ public abstract class ComponentViewer {
 	protected Injector injector;
 	protected DataApplication dataApplication;
 	protected Resource resource;
+	protected EditingDomain editingDomain;
 
 	/**
 	 * 
@@ -32,6 +33,7 @@ public abstract class ComponentViewer {
 	public ComponentViewer(Composite parent, DataApplication dataApplication) {
 		this.dataApplication = dataApplication;
 		initInjector();
+		initEditingDomain();
 		initParsley(parent);
 		initDragAndDrop();
 		initContextMenu();
@@ -64,12 +66,9 @@ public abstract class ComponentViewer {
 
 	/**
 	 * Returns the parsley EditingDomain
-	 * 
-	 * @param injector Google Juice injector of the parsley project
-	 * @return the current Editing Domain
 	 */
-	protected EditingDomain getEditingDomain(Injector injector) {
-		return injector.getInstance(EditingDomain.class);
+	protected void initEditingDomain() {
+		editingDomain = injector.getInstance(EditingDomain.class);
 	}
 
 	/**
@@ -79,15 +78,12 @@ public abstract class ComponentViewer {
 	public abstract StructuredViewer getViewer();
 
 	/**
-	 * @param  
-	 * @param editingDomain editingdomain of the treeview
-	 * @param injector      Google guice injector of the parsley project
+	 * @param model      EMF Model of the shown data
 	 * @return the resource using the resource set of the editing domain
 	 */
-	protected Resource getResource(EObject model, EditingDomain editingDomain, Injector injector) {
+	protected Resource updateResource(EObject model) {
 		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
 		resource = resourceLoader.getResource(editingDomain, model.eResource().getURI()).getResource();
-
 		return resource;
 	}
 	
@@ -96,7 +92,7 @@ public abstract class ComponentViewer {
 	 */
 	private void initDragAndDrop() {
 		ViewerDragAndDropHelper dragAndDropHelper = injector.getInstance(ViewerDragAndDropHelper.class);	
-		dragAndDropHelper.addDragAndDrop(getViewer(), getEditingDomain(injector));
+		dragAndDropHelper.addDragAndDrop(getViewer(), editingDomain);
 	}
 	
 	/**
@@ -104,6 +100,6 @@ public abstract class ComponentViewer {
 	 */
 	private void initContextMenu() {
 		ViewerContextMenuHelper contextMenuHelper = injector.getInstance(ViewerContextMenuHelper.class);
-		contextMenuHelper.addViewerContextMenu(getViewer(), getEditingDomain(injector));
+		contextMenuHelper.addViewerContextMenu(getViewer(), editingDomain);
 	}
 }

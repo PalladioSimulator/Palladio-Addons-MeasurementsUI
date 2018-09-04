@@ -4,7 +4,6 @@ import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -72,16 +71,16 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 	protected void initParsley(Composite parent) {
 		treeViewer = new TreeViewer(parent);
 		treeFactory = injector.getInstance(ViewerFactory.class);
-		EditingDomain editingDomain = getEditingDomain(injector);
 
-		Object resource = getResource(getModelRepository(), editingDomain, injector);
+		Object resource = updateResource(getModelRepository());
 		treeFactory.initialize(treeViewer, resource);
 	}
 
 	@Override
 	public void update() {
 		EObject repository = getModelRepository();
-		resource = getResource(repository, getEditingDomain(injector), injector);
+		initEditingDomain();
+		resource = updateResource(repository);
 		treeFactory.initialize(treeViewer, resource);
 	}
 }

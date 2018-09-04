@@ -11,8 +11,6 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.init.DataApplication;
 
-import com.google.inject.Injector;
-
 /**
  * A common saveable view based on a parsley view.
  * 
@@ -47,24 +45,32 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
 	public abstract void addSelectionListener(ESelectionService selectionService);
 
 	@Override
-	protected Resource getResource(EObject model, EditingDomain editingDomain, Injector injector) {
-		Resource resource = super.getResource(model, editingDomain, injector);
+	protected Resource updateResource(EObject model) {
+		resource = super.updateResource(model);
+		initResourceChangedListener(editingDomain);
+		return resource;
+	}
 
+	/**
+	 * Initializes a Listener to the editing domain, which activates the dirty state
+	 * if something is changed.
+	 * 
+	 * @param editingDomain where the listener is added to
+	 */
+	private void initResourceChangedListener(EditingDomain editingDomain) {
 		editingDomain.getCommandStack().addCommandStackListener(e -> {
 			if (dirty != null) {
 				dirty.setDirty(true);
 				commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
 			}
 		});
-		
-		return resource;
 	}
 
 	/**
 	 * Saves the current state of the view
 	 * 
-	 * @param dirty
-	 * @throws IOException
+	 * @param dirty	describes whether the view was edited
+	 * @throws IOException if the save operation fails
 	 */
 	public void save(MDirtyable dirty) throws IOException {
 		resource.save(null);
