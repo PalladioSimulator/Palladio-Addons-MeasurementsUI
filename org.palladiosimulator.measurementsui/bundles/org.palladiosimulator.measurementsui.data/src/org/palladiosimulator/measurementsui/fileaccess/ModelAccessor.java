@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.net4j.util.Predicates;
 import org.eclipse.sirius.business.api.session.Session;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
+import org.palladiosimulator.measurementsui.datamanipulation.DataRepositoryCreator;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcm.allocation.Allocation;
@@ -105,6 +106,24 @@ public class ModelAccessor {
             }
         }
 
+    }
+    
+    /**
+     * This method checks if the monitor- and measuringPointRepository
+     * exists and if not it creates default versions of them.
+     * 
+     * @param project current Project
+     */
+    public void checkIfRepositoriesExist(IProject project){
+    	
+    	if(!monitorRepositoryExists()) {
+    		addMonitorRepository(DataRepositoryCreator.getInstance().createMonitorRepository(project));
+    	}
+    	
+    	if(!measuringPointRepositoryExists()) {
+    		addMeasuringPointRepository(DataRepositoryCreator.getInstance().createMeasuringPointRepository(project));
+    	}
+    		
     }
 
     /**

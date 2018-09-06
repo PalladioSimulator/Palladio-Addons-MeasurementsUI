@@ -12,8 +12,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
@@ -58,7 +60,7 @@ public class DataRepositoryCreator {
 	 * 
 	 * @param project to create the measuringPointRepository in
 	 */
-	public void createMeasuringPointRepository(IProject project) {
+	public MeasuringPointRepository createMeasuringPointRepository(IProject project) {
 		String measuringPointRepositoryfileName = project.getFullPath() + MeasuringPointRepositoryfileEnding;	
 		final URI measuringPointRepositoryfileURI = URI.createPlatformResourceURI(measuringPointRepositoryfileName, true);
 
@@ -80,7 +82,7 @@ public class DataRepositoryCreator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		return (MeasuringPointRepository) measuringPointRepositoryRootObject;
 	}
 	
 	/**
@@ -88,7 +90,7 @@ public class DataRepositoryCreator {
 	 * 
 	 * @param project to create monitorRepository in
 	 */
-	public void createMonitorRepository(IProject project) {
+	public MonitorRepository createMonitorRepository(IProject project) {
 		String monitorRepositoryfileName = project.getFullPath() + MonitorRepositoryfileEnding;	
 		final URI monitorRepositoryfileURI = URI.createPlatformResourceURI(monitorRepositoryfileName, true);
 
@@ -109,6 +111,8 @@ public class DataRepositoryCreator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		return (MonitorRepository) monitorRepositoryRootObject;
 	}
 
 }

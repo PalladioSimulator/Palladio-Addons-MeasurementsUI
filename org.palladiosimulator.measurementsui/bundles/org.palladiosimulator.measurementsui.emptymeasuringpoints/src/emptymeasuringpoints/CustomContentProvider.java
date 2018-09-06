@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.parsley.edit.ui.provider.ViewerContentProvider;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
@@ -24,6 +23,14 @@ public class CustomContentProvider extends ViewerContentProvider {
 
     }
 
+    /**
+     * As children of our MeasuringPointRepository
+     * there is a list with unassigned Measuring Points provided
+     * as content.
+     * 
+     * @param measuringPointRepository
+     * @return List of unassigned Measuring Points
+     */
     public Object children(MeasuringPointRepository measuringPointRepository) {
 
         return DataApplication.getInstance().getModelAccessor().getUnassignedMeasuringPoints();

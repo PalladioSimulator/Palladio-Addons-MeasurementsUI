@@ -49,6 +49,7 @@ public class DataApplication {
 
         if (session != null) {
             this.modelAccessor.initializeModels(session);
+            this.modelAccessor.checkIfRepositoriesExist(project);
         } else {
             System.err.println("No Models are initiated. Make sure a Session is open.");
         }
