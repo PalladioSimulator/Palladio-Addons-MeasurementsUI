@@ -1,8 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Measuringview
-Bundle-SymbolicName: org.palladiosimulator.measurementsui.measuringview;singleton:=true
+Bundle-Name: Parts
+Bundle-SymbolicName: org.palladiosimulator.measurementsui.viewer
 Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.palladiosimulator.measurementsui.measuringview.parts
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: javax.inject,
  org.eclipse.osgi,
  org.eclipse.jface,
@@ -19,14 +21,13 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.core.commands,
  org.eclipse.ui.views.properties.tabbed,
  org.eclipse.e4.ui.model.workbench,
- org.eclipse.e4.ui.workbench,
- org.palladiosimulator.measurementsui.viewer
-Automatic-Module-Name: org.palladiosimulator.simulizar.ui.measuringview
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ org.eclipse.e4.ui.workbench
 Import-Package: emptymeasuringpoints,
+ monitorrepositoryview,
  org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.dataprovider,
  org.palladiosimulator.measurementsui.fileaccess,
  org.palladiosimulator.measurementsui.monitorrepositoryview,
- org.palladiosimulator.measurementsui.wizardmain
-Bundle-ClassPath: .
+ tableform
+Export-Package: org.palladiosimulator.measurementsui.abstractviewer,
+ org.palladiosimulator.measurementsui.parsleyviewer
