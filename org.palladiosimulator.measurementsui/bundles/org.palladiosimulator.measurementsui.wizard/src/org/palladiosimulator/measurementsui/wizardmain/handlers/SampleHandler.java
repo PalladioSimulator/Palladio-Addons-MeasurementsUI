@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizard.handlers;
+package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 
@@ -6,7 +6,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.palladiosimulator.measurementsui.wizard.MeasuringPointsWizard;
+import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
 
 /**
  * @author Birasanth Pushpanathan

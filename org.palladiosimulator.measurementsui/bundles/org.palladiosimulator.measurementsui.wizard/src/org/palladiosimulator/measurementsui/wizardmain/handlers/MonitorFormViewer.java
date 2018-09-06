@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizard.handlers;
+package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 import org.eclipse.emf.parsley.composite.FormDetailComposite;
 import org.eclipse.emf.parsley.composite.FormFactory;
@@ -12,6 +12,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.palladiosimulator.monitorrepository.Monitor;
 import com.google.inject.Injector;
 import org.palladiosimulator.measurementsui.newMonitor.NewMonitorInjectorProvider;
+import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
 
 /**
  * This class handles the view for the form for the 1st wizard page where the new monitor is created.
@@ -26,7 +27,7 @@ public class MonitorFormViewer {
      * @param newMonitor the new monitor object
      * @param wizardPage the wizard page where the monitor is created
      */
-    public MonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitor wizardPage) {
+    public MonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitorWizardPage wizardPage) {
         Injector injector = NewMonitorInjectorProvider.getInjector();
 
         FormFactory formFactory = injector.getInstance(FormFactory.class);

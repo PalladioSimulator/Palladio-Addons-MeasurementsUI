@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizard.handlers;
+package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;

@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizard.handlers;
+package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 public class Measurement {
     

@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizard.handlers;
+package org.palladiosimulator.measurementsui.wizardmain.handlers;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

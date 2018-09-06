@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizard.handlers;
+package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellEditor;
@@ -10,7 +10,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.wizard.handlers.Measurement.MeasurementType;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.Measurement.MeasurementType;
 
 public final class TypeEditingSupport extends EditingSupport {
 
