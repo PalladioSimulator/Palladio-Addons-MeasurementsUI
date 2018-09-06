@@ -54,4 +54,11 @@ public class ResourceEditorImpl implements ResourceEditor {
         editor.editResource(mpRep, "measuringPoints", mp);
     }
 
+	@Override
+	public void deleteResource(EObject objToDelete) {
+		editor.deleteResource(objToDelete);
+		
+	}
+    
+
 }
