@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizard.handlers;
+package org.palladiosimulator.measurementsui.wizardpages;
 
 import javax.inject.Inject;
 
@@ -10,8 +10,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.EmptyMpTreeViewer;
-import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.MpTreeViewer;
+import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
+import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**

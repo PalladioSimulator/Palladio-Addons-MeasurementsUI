@@ -19,14 +19,15 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.core.commands,
  org.eclipse.ui.views.properties.tabbed,
  org.eclipse.e4.ui.model.workbench,
- org.eclipse.e4.ui.workbench,
- org.palladiosimulator.measurementsui.wizard
+ org.eclipse.e4.ui.workbench
 Automatic-Module-Name: org.palladiosimulator.simulizar.ui.measuringview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: emptymeasuringpoints,
+ org.palladiosimulator.measurementsui.abstractviewer,
  org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.dataprovider,
  org.palladiosimulator.measurementsui.fileaccess,
  org.palladiosimulator.measurementsui.monitorrepositoryview,
- org.palladiosimulator.simulizar.ui.measuringview.parts.controls
+ org.palladiosimulator.measurementsui.parsleyviewer,
+ org.palladiosimulator.measurementsui.wizardmain
 Bundle-ClassPath: .

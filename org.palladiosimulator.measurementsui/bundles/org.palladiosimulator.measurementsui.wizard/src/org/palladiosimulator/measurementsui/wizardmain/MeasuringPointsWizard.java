@@ -1,10 +1,9 @@
-package org.palladiosimulator.measurementsui.wizard;
+package org.palladiosimulator.measurementsui.wizardmain;
 
-import org.palladiosimulator.measurementsui.wizard.handlers.AddMonitor;
-import org.palladiosimulator.measurementsui.wizard.handlers.ChooseMeasuringpointWizardPage;
-import org.palladiosimulator.measurementsui.wizard.handlers.MeasurementSpecification;
-import org.palladiosimulator.measurementsui.wizard.handlers.SelectMeasurements;
-
+import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasurementSpecification;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.SelectMeasurements;
+import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
+import org.palladiosimulator.measurementsui.wizardpages.ChooseMeasuringpointWizardPage;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
@@ -24,7 +23,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
     /**
      * Represents the first wizard page, where the new monitor defined (name + activated/deactivated)
      */
-    private AddMonitor page1 = new AddMonitor(this.newMonitor);
+    private AddMonitorWizardPage page1 = new AddMonitorWizardPage(this.newMonitor);
     
     /**
      * Represents the 2nd wizard page, where the user selects either an existing measuring point for the new monitor

@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizard.handlers;
+package org.palladiosimulator.measurementsui.wizardpages;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -8,6 +8,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.MonitorFormViewer;
 import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
@@ -15,7 +16,7 @@ import org.palladiosimulator.monitorrepository.Monitor;
  * @author Birasanth Pushpanathan
  *
  */
-public class AddMonitor extends WizardPage {
+public class AddMonitorWizardPage extends WizardPage {
 
     /**
      * the newly created monitor object
@@ -26,7 +27,7 @@ public class AddMonitor extends WizardPage {
      * Constructor
      * @param newMonitor the newly created monitor object
      */
-    public AddMonitor(Monitor newMonitor) {
+    public AddMonitorWizardPage(Monitor newMonitor) {
         super("First Page");
         setTitle("Create new Monitor");
         setDescription("Firstly a new Monitor is needed, please define its name. (De-)Activate it if necessary.");
@@ -53,7 +54,7 @@ public class AddMonitor extends WizardPage {
      * @param wizardPage this wizard page
      * @return the form view 
      */
-    private MonitorFormViewer createMonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitor wizardPage) {
+    private MonitorFormViewer createMonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitorWizardPage wizardPage) {
         return new MonitorFormViewer(parent, newMonitor, wizardPage);
     }
 
