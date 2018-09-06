@@ -28,7 +28,7 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
 	 */
 	public EmptyMpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
 			DataApplication application) {
-		super(parent, dirty, commandService, application);
+		super(parent, dirty, commandService, application, false);
 	}
 
 	@Override

@@ -1,14 +1,13 @@
 import java.util.ArrayList
-import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint
 import org.palladiosimulator.monitorrepository.Monitor
 import org.palladiosimulator.monitorrepository.MeasurementSpecification
 import org.palladiosimulator.monitorrepository.MonitorRepository
 import org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositorySaveableTreeFormView
+import org.palladiosimulator.monitorrepository.ProcessingType
 
 /* mpview EMF Parsley Dsl Module file */
 module monitorrepositoryview {
-	 
 	parts {
 		viewpart monitorrepositoryview {
 			viewname "MonitorRepositoryView"
@@ -18,56 +17,117 @@ module monitorrepositoryview {
 	
 	viewerContentProvider {
 		children {
-			 Monitor mon-> {
-				new ArrayList()=>[
-						add(mon.measuringPoint)
-						addAll(mon.measurementSpecifications)
-						
-					]
+			Monitor mon -> {
+				new ArrayList() => [
+					add(mon.measuringPoint)
+					addAll(mon.measurementSpecifications)
+
+				]
 			}
+			MeasuringPoint -> #[]
 		}
-	} 
-	
+	}
+
 	labelProvider {
 		text {
-			Monitor mon-> {
+			Monitor mon -> {
 				mon.entityName
 			}
-			
+
 			MeasuringPoint mp -> {
 				mp.stringRepresentation
 			}
-			
+
 			MeasurementSpecification ms -> {
 				ms.name
 			}
 		}
-		
-		
+
 		image {
-			Monitor mon-> 
-				if (mon.activated) {
-					"ActiveIcon.png"
-				} else {
-					"InactiveIcon.png"
-				}
-			MeasurementSpecification ms ->
-				if (ms.isTriggersSelfAdaptations)
-					"self_adaption.png"
-				else
-					"nonself_adaption.png"
-			
+			Monitor mon -> if (mon.activated) {
+				"ActiveIcon.png"
+			} else {
+				"InactiveIcon.png"
+			}
+			MeasurementSpecification ms -> if (ms.isTriggersSelfAdaptations)
+				"self_adaption.png"
+			else
+				"nonself_adaption.png"
+
 		}
 	}
-	
+
 	menuBuilder {
 		menus {
-			MonitorRepository mr -> #[
-				actionChange("Add new Measuringpoint",mr,
-					[
-					]
+			MonitorRepository mr-> #[actionChange(
+					"Add Measuringpoint with Monitor",
+					mr,
+					[]
 				)
-				
+				,separator,
+				actionUndo,
+				actionRedo
+			]
+		}
+		emfMenus{
+			MonitorRepository mr -> #[]
+			
+			Monitor monitor -> #[
+				actionChange(
+					"Add Measuringpoint with Monitor",
+					monitor,
+					[]
+				),
+				submenu("Edit", #[
+					actionChange(
+						"Monitor",
+						monitor,
+						[]
+					),
+					actionChange(
+						"Measuringpoint",
+						monitor,
+						[]
+					),
+					actionChange(
+						"Measurement Specifications",
+						monitor,
+						[]
+					)
+				]),
+				separator]
+			
+			MeasuringPoint measuringPoint -> #[
+				actionChange(
+					"Edit Measuringpoint",
+					measuringPoint,
+					[]
+				),
+				separator
+			]
+			
+			MeasurementSpecification measurement -> #[
+				submenu("Edit", #[
+					actionChange(
+						"MeasurementSpecifications",
+						measurement,
+						[]
+					),
+					actionChange(
+						"ProcessingTypes",
+						measurement,
+						[]
+					)
+				]),
+				separator
+			]
+			
+			ProcessingType processing -> #[actionChange(
+					"Edit Processing Types",
+					processing,
+					[]
+				),
+				separator
 			]
 		}
 	}
