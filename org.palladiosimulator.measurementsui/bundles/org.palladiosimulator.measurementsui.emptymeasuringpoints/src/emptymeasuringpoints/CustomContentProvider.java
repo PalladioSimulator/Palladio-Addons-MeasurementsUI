@@ -9,6 +9,9 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
+ * This class is a custom version of the Content provider for a parsley view.
+ * In this customization only the measuring Points who are not assigened to a monitor
+ * are shown in the view.
  * 
  * @author Lasse Merz
  *
@@ -21,17 +24,9 @@ public class CustomContentProvider extends ViewerContentProvider {
 
     }
 
-    public Object elements(MeasuringPointRepository measuringPointRepository) {
-
-        return measuringPointRepository;
-    }
-
     public Object children(MeasuringPointRepository measuringPointRepository) {
 
         return DataApplication.getInstance().getModelAccessor().getUnassignedMeasuringPoints();
     }
 
-    public Object children(MeasuringPoint measuringPoint) {
-        return null;
-    }
 }
