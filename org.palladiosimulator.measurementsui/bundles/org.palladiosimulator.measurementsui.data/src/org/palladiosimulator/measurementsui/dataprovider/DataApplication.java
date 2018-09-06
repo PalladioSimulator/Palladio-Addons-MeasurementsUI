@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.dataprovider;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.sirius.business.api.session.Session;
@@ -17,6 +18,7 @@ public class DataApplication {
     private ModelAccessor modelAccessor;
     private Session session;
     private URI sessionResourceURI;
+    private IProject project;
 
     private static DataApplication instance;
 
@@ -39,8 +41,10 @@ public class DataApplication {
      */
     public void loadData(int selectionIndex) {
         // gives airdFile of project in Workspace that has an aird File with index selectionIndex
-        initializeSessionResourceURI(
-                this.dataGathering.getAirdFile(this.dataGathering.getAllProjectAirdfiles().get(selectionIndex)));
+    	
+    	this.project = this.dataGathering.getAllProjectAirdfiles().get(selectionIndex);
+    	
+        initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
         initializeSession(sessionResourceURI);
 
         if (session != null) {
@@ -101,5 +105,14 @@ public class DataApplication {
     public DataGathering getDataGathering() {
         return dataGathering;
     }
+
+    /**
+     * Returns the project to which the dataApplication is
+     * currently connected
+     * @return current Project
+     */
+	public IProject getProject() {
+		return project;
+	}
 
 }
