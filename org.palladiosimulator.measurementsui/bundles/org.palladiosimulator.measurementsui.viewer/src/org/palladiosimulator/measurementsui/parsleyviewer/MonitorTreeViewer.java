@@ -1,10 +1,12 @@
-package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
+package org.palladiosimulator.measurementsui.parsleyviewer;
 
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+
 import monitorrepositoryview.MonitorrepositoryviewInjectorProvider;
 
 /**

@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
+package org.palladiosimulator.measurementsui.abstractviewer;
 
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.listener.MpTreeDoubleClickListener;
 
 /**
  * Creates a eclipse.swt TreeView based on a parsley TreeView project.

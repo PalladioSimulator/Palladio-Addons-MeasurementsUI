@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Table;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.simulizar.ui.measuringview.parts.controls.SelectMeasurementsViewer;
+import org.palladiosimulator.measurementsui.parsleyviewer.SelectMeasurementsViewer;
 
 public class SelectMeasurements extends WizardPage {
     private Table table;

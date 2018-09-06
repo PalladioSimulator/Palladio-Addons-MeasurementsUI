@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
+package org.palladiosimulator.measurementsui.abstractviewer;
 
 import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.jface.viewers.StructuredViewer;

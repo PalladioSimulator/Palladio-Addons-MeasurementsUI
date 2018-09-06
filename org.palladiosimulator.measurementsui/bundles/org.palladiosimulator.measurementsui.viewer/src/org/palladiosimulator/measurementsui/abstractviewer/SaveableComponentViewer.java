@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.measuringview.parts.controls;
+package org.palladiosimulator.measurementsui.abstractviewer;
 
 import java.io.IOException;
 
