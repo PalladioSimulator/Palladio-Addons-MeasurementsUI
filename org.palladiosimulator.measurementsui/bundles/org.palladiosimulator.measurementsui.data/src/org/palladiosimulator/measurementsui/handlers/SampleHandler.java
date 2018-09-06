@@ -1,11 +1,21 @@
 package org.palladiosimulator.measurementsui.handlers;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
+import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
+import org.palladiosimulator.monitorrepository.Monitor;
 
 
 
@@ -19,9 +29,19 @@ public class SampleHandler extends AbstractHandler {
 
 //		DataApplication start = DataApplication.getInstance();
 //		ResourceEditor editor = new ResourceEditorImpl();
-////		DataMeasuringCreator creator = new DataMeasuringCreator();
 //		DataGathering gatherer = new DataGathering();
+//		
+//		/**
+//		 * Test of Deleting an Object
+//		 */
+//		start.loadData(0);
+//		Monitor aMon = start.getModelAccessor().getMonitorRepository().get(0).getMonitors().get(0);	
+//		System.out.println("Length: "+ start.getModelAccessor().getMonitorRepository().get(0).getMonitors().size());
+//		//EcoreUtil.delete(aMon); This leads to java.lang.IllegalStateException: Cannot modify resource set without a write transaction
+//		editor.deleteResource(aMon);
+//		System.out.println("Length: "+ start.getModelAccessor().getMonitorRepository().get(0).getMonitors().size());
 //
+		
 //		List<IProject> projects = gatherer.getAllProjectAirdfiles();
 //		for(IProject eachProject : projects) {
 //			System.out.println("Project Name: "+eachProject.getName());
