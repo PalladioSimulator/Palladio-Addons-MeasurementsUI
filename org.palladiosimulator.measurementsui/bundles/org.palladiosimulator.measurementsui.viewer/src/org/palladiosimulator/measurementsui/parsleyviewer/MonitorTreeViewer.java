@@ -27,8 +27,9 @@ public class MonitorTreeViewer extends MpTreeViewer {
 	 */
 	public MonitorTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
 			DataApplication application) {
-		super(parent, dirty, commandService, application);
+		super(parent, dirty, commandService, application, true);
 	}
+
 
 	@Override
 	protected void initInjector() {

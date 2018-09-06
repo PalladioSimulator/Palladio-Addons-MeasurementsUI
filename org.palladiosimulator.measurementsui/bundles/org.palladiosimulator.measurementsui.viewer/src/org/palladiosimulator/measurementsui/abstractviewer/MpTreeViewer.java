@@ -27,10 +27,12 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 	 * @param commandService eclipse command
 	 * @param application    Connection to the data binding. This is needed in order
 	 *                       to get the repository of the current project.
+	 * @param enableDragDrop  Specifies whether the parsley drag and drop function
+	 * 						  should be used.
 	 */
 	public MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-			DataApplication application) {
-		super(parent, dirty, commandService, application);
+			DataApplication application, boolean enableDragDrop) {
+		super(parent, dirty, commandService, application, enableDragDrop);
 	}
 
 	/**

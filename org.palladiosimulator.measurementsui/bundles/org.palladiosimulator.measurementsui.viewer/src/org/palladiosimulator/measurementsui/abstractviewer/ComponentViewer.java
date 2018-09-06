@@ -29,13 +29,17 @@ public abstract class ComponentViewer {
 	 * @param parent          container where the tree viewer is placed in
 	 * @param dataApplication Connection to the data binding. This is needed in
 	 *                        order to get the repository of the current project.
+	 * @param enableDragDrop  Specifies whether the parsley drag and drop function
+	 * 						  should be used.
 	 */
-	public ComponentViewer(Composite parent, DataApplication dataApplication) {
+	public ComponentViewer(Composite parent, DataApplication dataApplication, boolean enableDragDrop) {
 		this.dataApplication = dataApplication;
 		initInjector();
 		initEditingDomain();
 		initParsley(parent);
-		initDragAndDrop();
+		if (enableDragDrop) {
+			initDragAndDrop();
+		}
 		initContextMenu();
 	}
 

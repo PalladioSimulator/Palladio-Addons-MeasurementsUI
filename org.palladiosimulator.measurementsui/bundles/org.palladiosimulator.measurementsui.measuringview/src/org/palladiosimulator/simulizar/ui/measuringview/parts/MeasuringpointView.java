@@ -41,6 +41,7 @@ import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
 public class MeasuringpointView {
 
 	private MpTreeViewer monitorTreeViewer;
+	private MpTreeViewer measuringTreeViewer;
 	private DataApplication dataApplication;
 
 	@Inject
@@ -83,7 +84,7 @@ public class MeasuringpointView {
 		createViewButtons(buttonContainer);
 
 		monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
-		createEmptyMpTreeViewer(undefinedMeasuringContainer);
+		measuringTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
 
 		handlerService.activateHandler("org.eclipse.ui.file.save", new SaveHandler());
 	}
@@ -185,6 +186,7 @@ public class MeasuringpointView {
 				int selectionIndex = comboDropDown.getSelectionIndex();
 				dataApplication.loadData(selectionIndex);
 				monitorTreeViewer.update();
+				measuringTreeViewer.update();
 			}
 
 			@Override
