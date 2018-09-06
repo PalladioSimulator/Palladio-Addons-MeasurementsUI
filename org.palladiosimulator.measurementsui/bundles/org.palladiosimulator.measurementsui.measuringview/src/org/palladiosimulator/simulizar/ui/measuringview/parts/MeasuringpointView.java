@@ -29,7 +29,7 @@ import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
 import org.palladiosimulator.measurementsui.parsleyviewer.MonitorTreeViewer;
-import org.palladiosimulator.measurementsui.wizard.MeasuringPointsWizard;
+import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
 
 /**
  * 
