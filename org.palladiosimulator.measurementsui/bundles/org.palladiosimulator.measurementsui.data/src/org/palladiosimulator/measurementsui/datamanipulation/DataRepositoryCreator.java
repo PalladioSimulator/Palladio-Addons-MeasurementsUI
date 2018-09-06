@@ -20,7 +20,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
 /**
  * This class can be used to create monitor- and measuringPointRepositories in a given project.
- * They will be created as default models.
+ * They will be created as default emf model instances.
  * 
  * @author Lasse
  *
@@ -53,9 +53,6 @@ public class DataRepositoryCreator {
 		return DataRepositoryCreator.instance;
 	}
 	
-	
-	
-	
 	/**
 	 * Creates a measuringPointRepository named "default.measuringPoint" in a given project.
 	 * 
@@ -65,12 +62,9 @@ public class DataRepositoryCreator {
 		String measuringPointRepositoryfileName = project.getFullPath() + MeasuringPointRepositoryfileEnding;	
 		final URI measuringPointRepositoryfileURI = URI.createPlatformResourceURI(measuringPointRepositoryfileName, true);
 
-		// Create a resource for this file.
-		//
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		final Resource resource = resourceSet.createResource(measuringPointRepositoryfileURI);
 
-		// Add the initial model object to the contents.
 		EClass measuringPointRepository = this.measuringpointPackage.getMeasuringPointRepository();
 
 		final EObject measuringPointRepositoryRootObject = measuringpointFactory.create(measuringPointRepository);
@@ -83,9 +77,7 @@ public class DataRepositoryCreator {
 		options.put(XMLResource.OPTION_ENCODING, "UTF-8");
 		try {
 			resource.save(options);
-			resource.load(null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -100,14 +92,10 @@ public class DataRepositoryCreator {
 		String monitorRepositoryfileName = project.getFullPath() + MonitorRepositoryfileEnding;	
 		final URI monitorRepositoryfileURI = URI.createPlatformResourceURI(monitorRepositoryfileName, true);
 
-		// Create a resource for this file.
-		//
 		final ResourceSet resourceSet = new ResourceSetImpl();
 		final Resource resource = resourceSet.createResource(monitorRepositoryfileURI);
 
-		// Add the initial model object to the contents.
 		EClass monitorRepository = this.monitorPackage.getMonitorRepository();
-
 		final EObject monitorRepositoryRootObject = monitorFactory.create(monitorRepository);
 
 		if (monitorRepositoryRootObject != null) {
@@ -118,9 +106,7 @@ public class DataRepositoryCreator {
 		options.put(XMLResource.OPTION_ENCODING, "UTF-8");
 		try {
 			resource.save(options);
-			resource.load(null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
