@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.e4.core.commands.ECommandService;
@@ -13,6 +14,7 @@ import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -26,16 +28,18 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
 import org.palladiosimulator.measurementsui.parsleyviewer.MonitorTreeViewer;
 import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
 
 /**
+ * Eclipse e4 view in which the user gets an overview of all existing monitors
+ * and measuringpoints in a selected monitorrepository.
  * 
- * @author David Schuetz Eclipse e4 view in which the user gets an overview of
- *         all existing monitors and measuringpoints in a selected
- *         monitorrepository.
+ * @author David Schuetz
  * 
  */
 public class MeasuringpointView {
@@ -142,23 +146,30 @@ public class MeasuringpointView {
 	 * editing, deleting, assigning measuringpoints to monitor or creating a
 	 * standard measuring point set
 	 * 
-	 * @param buttonContainer  composite where the buttons will be placed
+	 * @param buttonContainer composite where the buttons will be placed
 	 */
 	private void createViewButtons(Composite buttonContainer) {
 		Button newMpButton = new Button(buttonContainer, SWT.PUSH);
 		newMpButton.setText("Add new Measuring Point");
 
-        newMpButton.addListener(SWT.Selection, e -> {
-            MeasuringPointsWizard test = new MeasuringPointsWizard();
-            Shell parentShell = test.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, test);
-            dialog.open();
-        });
+		newMpButton.addListener(SWT.Selection, e -> {
+			MeasuringPointsWizard test = new MeasuringPointsWizard();
+			Shell parentShell = test.getShell();
+			WizardDialog dialog = new WizardDialog(parentShell, test);
+			dialog.open();
+		});
 
 		Button editMpButton = new Button(buttonContainer, SWT.PUSH);
 		editMpButton.setText("Edit...");
 		Button deleteMpButton = new Button(buttonContainer, SWT.PUSH);
 		deleteMpButton.setText("Delete...");
+		deleteMpButton.addListener(SWT.Selection, e -> {
+			ResourceEditor resourceEditor = new ResourceEditorImpl();
+			Object selection = selectionService.getSelection();
+			if (selection instanceof EObject) {
+				resourceEditor.deleteResource((EObject) selection);
+			}
+		});
 		Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
 		assignMonitorButton.setText("Assign to Monitor");
 		Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
