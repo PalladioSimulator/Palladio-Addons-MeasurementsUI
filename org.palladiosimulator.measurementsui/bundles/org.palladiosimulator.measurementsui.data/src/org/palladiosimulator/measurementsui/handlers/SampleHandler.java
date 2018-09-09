@@ -9,6 +9,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
@@ -41,6 +42,10 @@ public class SampleHandler extends AbstractHandler {
 		Monitor aMon = start.getModelAccessor().getMonitorRepository().get(0).getMonitors().get(0);	
 		MeasurementSpecification aMSpec = aMon.getMeasurementSpecifications().get(0);
 		EList<MetricDescription> test = aMSpec.getMetricDescription().getRepository().getMetricDescriptions();
+//		EList<EStructuralFeature> allFeatures = aMSpec.eClass().getEAllStructuralFeatures();
+		System.out.println(aMSpec.getMetricDescription().getName());
+		editor.setMetricDescription(aMSpec, test.get(0));
+		System.out.println(aMSpec.getMetricDescription().getName());
 		for (MetricDescription aTest: test) {
 			System.out.println("Name: "+aTest.getName());
 			System.out.println("Tex Desc: "+aTest.getTextualDescription());
