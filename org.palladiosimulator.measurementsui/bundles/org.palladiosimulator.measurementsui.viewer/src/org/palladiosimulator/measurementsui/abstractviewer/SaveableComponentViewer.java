@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
@@ -29,12 +28,12 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
 	 * @param commandService eclipse command
 	 * @param application    Connection to the data binding. This is needed in order
 	 *                       to get the repository of the current project.
-	 * @param enableDragDrop  Specifies whether the parsley drag and drop function
-	 * 						  should be used.
+	 * @param enableDragDrop Specifies whether the parsley drag and drop function
+	 *                       should be used.
 	 */
 	protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
 			DataApplication application, boolean enableDragDrop) {
-		super(parent, application,enableDragDrop);
+		super(parent, application, enableDragDrop);
 		this.dirty = dirty;
 		this.commandService = commandService;
 	}
@@ -72,7 +71,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
 	/**
 	 * Saves the current state of the view
 	 * 
-	 * @param dirty	describes whether the view was edited
+	 * @param dirty describes whether the view was edited
 	 * @throws IOException if the save operation fails
 	 */
 	public void save(MDirtyable dirty) throws IOException {

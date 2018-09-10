@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.e4.core.commands.ECommandService;
@@ -106,7 +105,7 @@ public class MeasuringpointView {
 	 * selected projected
 	 * 
 	 * @param parent composite where the tree view will be placed
-	 * @return
+	 * @return TreeViewer which includes all existing monitors
 	 */
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
 		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent, dirty, commandService, dataApplication);
@@ -120,7 +119,7 @@ public class MeasuringpointView {
 	 * the workspace
 	 * 
 	 * @param parent composite where the tree view will be placed
-	 * @return
+	 * @return TreeViewer which includes all measuring points without a monitor
 	 */
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
 		EmptyMpTreeViewer emptyMpTreeViewer = new EmptyMpTreeViewer(parent, dirty, commandService, dataApplication);
@@ -132,7 +131,7 @@ public class MeasuringpointView {
 	 * Creates the composite in which the tree view is later embedded
 	 * 
 	 * @param parent composite where the tree composite will be placed
-	 * @return
+	 * @return Composite where the TreeViewers can be placed
 	 */
 	private Composite createTreeComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -149,7 +148,25 @@ public class MeasuringpointView {
 	 * @param buttonContainer composite where the buttons will be placed
 	 */
 	private void createViewButtons(Composite buttonContainer) {
-		Button newMpButton = new Button(buttonContainer, SWT.PUSH);
+		createNewMeasuringpointButton(buttonContainer);
+		createDeleteButton(buttonContainer);
+
+		Button editMpButton = new Button(buttonContainer, SWT.PUSH);
+		editMpButton.setText("Edit...");
+		
+		Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
+		assignMonitorButton.setText("Assign to Monitor");
+		Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
+		createStandardButton.setText("Create Standard Set");
+
+	}
+	
+	/**
+	 * Creates a Button which opens the Wizard in order to create a measuring point 
+	 * @param parent composite where the button will be placed
+	 */
+	private void createNewMeasuringpointButton(Composite parent) {
+		Button newMpButton = new Button(parent, SWT.PUSH);
 		newMpButton.setText("Add new Measuring Point");
 
 		newMpButton.addListener(SWT.Selection, e -> {
@@ -158,23 +175,32 @@ public class MeasuringpointView {
 			WizardDialog dialog = new WizardDialog(parentShell, test);
 			dialog.open();
 		});
-
-		Button editMpButton = new Button(buttonContainer, SWT.PUSH);
-		editMpButton.setText("Edit...");
-		Button deleteMpButton = new Button(buttonContainer, SWT.PUSH);
+	}
+	
+	/**
+	 * Creates a Button which deletes selected EObjects
+	 * @param parent composite where the button will be placed
+	 */
+	private void createDeleteButton(Composite parent) {
+		Button deleteMpButton = new Button(parent, SWT.PUSH);
 		deleteMpButton.setText("Delete...");
+		
 		deleteMpButton.addListener(SWT.Selection, e -> {
 			ResourceEditor resourceEditor = new ResourceEditorImpl();
 			Object selection = selectionService.getSelection();
 			if (selection instanceof EObject) {
 				resourceEditor.deleteResource((EObject) selection);
+				measuringTreeViewer.update();
 			}
 		});
-		Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
-		assignMonitorButton.setText("Assign to Monitor");
-		Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
-		createStandardButton.setText("Create Standard Set");
-
+	}
+	
+	/**
+	 * Updates the Monitor and Measuringpoint Tree Viewer
+	 */
+	private void updateTreeViewer() {
+		monitorTreeViewer.update();
+		measuringTreeViewer.update();
 	}
 
 	/**
@@ -196,8 +222,7 @@ public class MeasuringpointView {
 			public void widgetSelected(SelectionEvent e) {
 				int selectionIndex = comboDropDown.getSelectionIndex();
 				dataApplication.loadData(selectionIndex);
-				monitorTreeViewer.update();
-				measuringTreeViewer.update();
+				updateTreeViewer();
 			}
 
 			@Override
