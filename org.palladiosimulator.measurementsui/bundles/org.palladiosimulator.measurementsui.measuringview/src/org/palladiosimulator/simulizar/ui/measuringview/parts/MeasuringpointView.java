@@ -126,14 +126,7 @@ public class MeasuringpointView {
 				if(event.getType() != IResourceChangeEvent.POST_CHANGE) {
 					return;
 				}
-				
-				System.out.println("Something changed! " + event.getDelta().getAffectedChildren()[0].getResource());
-				IResource res = workspace.getRoot().findMember(event.getDelta().getAffectedChildren()[0].getResource().getFullPath());
-				System.out.println("found ressource: "+res);
-				System.out.println("Children " + event.getDelta().getAffectedChildren());
-				System.out.println("Ressource " + event.getResource());
-				System.out.println("Source " + event.getType());
-				
+							
 				Display.getDefault().asyncExec(new Runnable() {
 
 					   public void run() {
@@ -142,7 +135,6 @@ public class MeasuringpointView {
 					   }
 
 					  });
-				System.out.println("after change event: " +dataApplication.getProject().toString());
 			}	
 		};
 		workspace.addResourceChangeListener(listener, 1);
@@ -295,21 +287,12 @@ public class MeasuringpointView {
 		for (int i =0; i< allProjects.size();i++) {
 			IProject project = allProjects.get(i);
 			
-			System.out.println("new project " +project.toString());
 			if(project.equals(dataApplication.getProject())){
 				selectionIndex = i;
 			}
 			
 			projectsComboDropDown.add(project.toString());
 		}
-		System.out.println(dataApplication.getProject());
-		try {
-			dataApplication.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("after refresh:  " +dataApplication.getProject().toString());
 		projectsComboDropDown.select(selectionIndex);
 		
 	}
