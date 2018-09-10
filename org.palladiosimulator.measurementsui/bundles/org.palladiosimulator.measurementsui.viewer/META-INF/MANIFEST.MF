@@ -21,7 +21,9 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.core.commands,
  org.eclipse.ui.views.properties.tabbed,
  org.eclipse.e4.ui.model.workbench,
- org.eclipse.e4.ui.workbench
+ org.eclipse.e4.ui.workbench,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.edit.ui
 Import-Package: emptymeasuringpoints,
  monitorrepositoryview,
  org.palladiosimulator.measurementsui.datamanipulation,
