@@ -13,6 +13,7 @@ import org.eclipse.e4.ui.di.Persist;
 import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -26,16 +27,18 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
 import org.palladiosimulator.measurementsui.parsleyviewer.MonitorTreeViewer;
 import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
 
 /**
+ * Eclipse e4 view in which the user gets an overview of all existing monitors
+ * and measuringpoints in a selected monitorrepository.
  * 
- * @author David Schuetz Eclipse e4 view in which the user gets an overview of
- *         all existing monitors and measuringpoints in a selected
- *         monitorrepository.
+ * @author David Schuetz
  * 
  */
 public class MeasuringpointView {
@@ -102,7 +105,7 @@ public class MeasuringpointView {
 	 * selected projected
 	 * 
 	 * @param parent composite where the tree view will be placed
-	 * @return
+	 * @return TreeViewer which includes all existing monitors
 	 */
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
 		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent, dirty, commandService, dataApplication);
@@ -116,7 +119,7 @@ public class MeasuringpointView {
 	 * the workspace
 	 * 
 	 * @param parent composite where the tree view will be placed
-	 * @return
+	 * @return TreeViewer which includes all measuring points without a monitor
 	 */
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
 		EmptyMpTreeViewer emptyMpTreeViewer = new EmptyMpTreeViewer(parent, dirty, commandService, dataApplication);
@@ -128,7 +131,7 @@ public class MeasuringpointView {
 	 * Creates the composite in which the tree view is later embedded
 	 * 
 	 * @param parent composite where the tree composite will be placed
-	 * @return
+	 * @return Composite where the TreeViewers can be placed
 	 */
 	private Composite createTreeComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -142,28 +145,62 @@ public class MeasuringpointView {
 	 * editing, deleting, assigning measuringpoints to monitor or creating a
 	 * standard measuring point set
 	 * 
-	 * @param buttonContainer  composite where the buttons will be placed
+	 * @param buttonContainer composite where the buttons will be placed
 	 */
 	private void createViewButtons(Composite buttonContainer) {
-		Button newMpButton = new Button(buttonContainer, SWT.PUSH);
-		newMpButton.setText("Add new Measuring Point");
-
-        newMpButton.addListener(SWT.Selection, e -> {
-            MeasuringPointsWizard test = new MeasuringPointsWizard();
-            Shell parentShell = test.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, test);
-            dialog.open();
-        });
+		createNewMeasuringpointButton(buttonContainer);
+		createDeleteButton(buttonContainer);
 
 		Button editMpButton = new Button(buttonContainer, SWT.PUSH);
 		editMpButton.setText("Edit...");
-		Button deleteMpButton = new Button(buttonContainer, SWT.PUSH);
-		deleteMpButton.setText("Delete...");
+		
 		Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
 		assignMonitorButton.setText("Assign to Monitor");
 		Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
 		createStandardButton.setText("Create Standard Set");
 
+	}
+	
+	/**
+	 * Creates a Button which opens the Wizard in order to create a measuring point 
+	 * @param parent composite where the button will be placed
+	 */
+	private void createNewMeasuringpointButton(Composite parent) {
+		Button newMpButton = new Button(parent, SWT.PUSH);
+		newMpButton.setText("Add new Measuring Point");
+
+		newMpButton.addListener(SWT.Selection, e -> {
+			MeasuringPointsWizard test = new MeasuringPointsWizard();
+			Shell parentShell = test.getShell();
+			WizardDialog dialog = new WizardDialog(parentShell, test);
+			dialog.open();
+		});
+	}
+	
+	/**
+	 * Creates a Button which deletes selected EObjects
+	 * @param parent composite where the button will be placed
+	 */
+	private void createDeleteButton(Composite parent) {
+		Button deleteMpButton = new Button(parent, SWT.PUSH);
+		deleteMpButton.setText("Delete...");
+		
+		deleteMpButton.addListener(SWT.Selection, e -> {
+			ResourceEditor resourceEditor = new ResourceEditorImpl();
+			Object selection = selectionService.getSelection();
+			if (selection instanceof EObject) {
+				resourceEditor.deleteResource((EObject) selection);
+				measuringTreeViewer.update();
+			}
+		});
+	}
+	
+	/**
+	 * Updates the Monitor and Measuringpoint Tree Viewer
+	 */
+	private void updateTreeViewer() {
+		monitorTreeViewer.update();
+		measuringTreeViewer.update();
 	}
 
 	/**
@@ -185,8 +222,7 @@ public class MeasuringpointView {
 			public void widgetSelected(SelectionEvent e) {
 				int selectionIndex = comboDropDown.getSelectionIndex();
 				dataApplication.loadData(selectionIndex);
-				monitorTreeViewer.update();
-				measuringTreeViewer.update();
+				updateTreeViewer();
 			}
 
 			@Override

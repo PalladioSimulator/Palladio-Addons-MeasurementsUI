@@ -19,7 +19,8 @@ module monitorrepositoryview {
 		children {
 			Monitor mon -> {
 				new ArrayList() => [
-					add(mon.measuringPoint)
+					if (mon.measuringPoint !== null)
+						add(mon.measuringPoint)
 					addAll(mon.measurementSpecifications)
 
 				]
@@ -69,6 +70,7 @@ module monitorrepositoryview {
 				actionRedo
 			]
 		}
+		
 		emfMenus{
 			MonitorRepository mr -> #[]
 			

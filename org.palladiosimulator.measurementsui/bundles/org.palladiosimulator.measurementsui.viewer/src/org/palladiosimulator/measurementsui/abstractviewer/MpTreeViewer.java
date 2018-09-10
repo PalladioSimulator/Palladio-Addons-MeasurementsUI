@@ -3,7 +3,6 @@ package org.palladiosimulator.measurementsui.abstractviewer;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -73,15 +72,14 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 		treeViewer = new TreeViewer(parent);
 		treeFactory = injector.getInstance(ViewerFactory.class);
 
-		Object resource = updateResource(getModelRepository());
-		treeFactory.initialize(treeViewer, resource);
+		update();
 	}
 
 	@Override
 	public void update() {
-		EObject repository = getModelRepository();
 		initEditingDomain();
-		resource = updateResource(repository);
+		resource = updateResource(getModelRepository());
 		treeFactory.initialize(treeViewer, resource);
+		treeViewer.expandAll();
 	}
 }
