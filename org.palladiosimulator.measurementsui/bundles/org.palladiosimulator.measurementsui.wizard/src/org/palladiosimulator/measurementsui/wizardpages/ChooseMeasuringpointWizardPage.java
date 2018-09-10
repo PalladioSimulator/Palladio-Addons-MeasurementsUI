@@ -4,6 +4,8 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -13,6 +15,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsContentProvider;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsLabelProvider;
 
 /**
  * @author Domas Mikalkinas
@@ -21,7 +25,9 @@ import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
 
 public class ChooseMeasuringpointWizardPage extends WizardPage {
     MpTreeViewer emptyMpTreeViewer;
-
+    TreeViewer createTreeViewer;
+    
+    ITreeContentProvider createContentProvider;
     @Inject
     MDirtyable dirty;
 
@@ -68,7 +74,12 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
         Composite createMPcomposite = new Composite(tabFolder, SWT.SINGLE);
         createMPcomposite.setLayout(layout);
-
+        MeasuringPointsContentProvider mp = new MeasuringPointsContentProvider();
+        createContentProvider = mp;
+        createTreeViewer= new TreeViewer(createMPcomposite);
+        createTreeViewer.setContentProvider(createContentProvider);
+        createTreeViewer.setInput(mp.getAllObjects());
+        createTreeViewer.setLabelProvider(new MeasuringPointsLabelProvider());
         createMeasuringTabbedItem.setControl(createMPcomposite);
 
         setPageComplete(true);
