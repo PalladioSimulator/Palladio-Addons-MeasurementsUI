@@ -2,6 +2,7 @@ package org.palladiosimulator.measurementsui.datamanipulation;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
 /**
@@ -58,6 +59,12 @@ public class ResourceEditorImpl implements ResourceEditor {
 	public void deleteResource(EObject objToDelete) {
 		editor.deleteResource(objToDelete);
 		
+	}
+
+	@Override
+	public void setMetricDescription(EObject aMeasurementSpecification, MetricDescription aMetricDescription) {
+		// TODO Auto-generated method stub
+		editor.editResource(aMeasurementSpecification, "metricDescription", aMetricDescription);
 	}
     
 

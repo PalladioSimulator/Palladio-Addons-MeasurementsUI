@@ -2,6 +2,7 @@ package org.palladiosimulator.measurementsui.datamanipulation;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
 public interface ResourceEditor {
@@ -53,5 +54,15 @@ public interface ResourceEditor {
 	 * @param objToDelete
 	 */
 	void deleteResource(EObject objToDelete);
+
+	/**
+	 * Sets MetricDescription for a MeasurementSpecification. A List of all Metric
+	 * Descriptions can be gotten through:
+	 * aMSpec.getMetricDescription().getRepository().getMetricDescriptions()
+	 * 
+	 * @param aMeasurementSpecification
+	 * @param aMetricDescription
+	 */
+	void setMetricDescription(EObject aMeasurementSpecification, MetricDescription aMetricDescription);
 
 }

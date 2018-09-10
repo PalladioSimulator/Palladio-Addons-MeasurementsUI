@@ -9,12 +9,16 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.metricspec.MetricDescriptionRepository;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 
 
@@ -27,15 +31,28 @@ public class SampleHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 
-//		DataApplication start = DataApplication.getInstance();
-//		ResourceEditor editor = new ResourceEditorImpl();
-//		DataGathering gatherer = new DataGathering();
+		DataApplication start = DataApplication.getInstance();
+		ResourceEditor editor = new ResourceEditorImpl();
+		DataGathering gatherer = new DataGathering();
 //		
 //		/**
 //		 * Test of Deleting an Object
 //		 */
-//		start.loadData(0);
-//		Monitor aMon = start.getModelAccessor().getMonitorRepository().get(0).getMonitors().get(0);	
+		start.loadData(0);
+		Monitor aMon = start.getModelAccessor().getMonitorRepository().get(0).getMonitors().get(0);	
+		MeasurementSpecification aMSpec = aMon.getMeasurementSpecifications().get(0);
+		EList<MetricDescription> test = aMSpec.getMetricDescription().getRepository().getMetricDescriptions();
+//		EList<EStructuralFeature> allFeatures = aMSpec.eClass().getEAllStructuralFeatures();
+		System.out.println(aMSpec.getMetricDescription().getName());
+		editor.setMetricDescription(aMSpec, test.get(0));
+		System.out.println(aMSpec.getMetricDescription().getName());
+		for (MetricDescription aTest: test) {
+			System.out.println("Name: "+aTest.getName());
+			System.out.println("Tex Desc: "+aTest.getTextualDescription());
+		}
+			
+		
+		System.out.println("Test");
 //		System.out.println("Length: "+ start.getModelAccessor().getMonitorRepository().get(0).getMonitors().size());
 //		//EcoreUtil.delete(aMon); This leads to java.lang.IllegalStateException: Cannot modify resource set without a write transaction
 //		editor.deleteResource(aMon);
