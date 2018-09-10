@@ -122,11 +122,7 @@ public class MeasuringpointView {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IResourceChangeListener listener = new IResourceChangeListener() {
 			public void resourceChanged(IResourceChangeEvent event) {
-				
-				if(event.getType() != IResourceChangeEvent.POST_CHANGE) {
-					return;
-				}
-							
+						
 				Display.getDefault().asyncExec(new Runnable() {
 
 					   public void run() {
@@ -239,13 +235,7 @@ public class MeasuringpointView {
 		});
 	}
 	
-	/**
-	 * Updates the Monitor and Measuringpoint Tree Viewer
-	 */
-	private void updateTreeViewer() {
-		monitorTreeViewer.update();
-		measuringTreeViewer.update();
-	}
+	
 
 	/**
 	 * Creates a combobox at the top of the view where the user can select the
@@ -256,7 +246,7 @@ public class MeasuringpointView {
 	private void createProjectsSelectionComboBox(Composite parent) {
 		projectsComboDropDown = new Combo(parent, SWT.DROP_DOWN);
 		projectsComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-		updateProjectComboBo();
+		updateProjectComboBox();
 		projectsComboDropDown.addSelectionListener(new SelectionListener() {
 
 			@Override
@@ -279,22 +269,22 @@ public class MeasuringpointView {
 	 * Adds every project in the workspace, that has an
 	 * .aird file to the projectsComboBox
 	 */
-	private void updateProjectComboBo() {
-		
+	private void updateProjectComboBox() {
+
 		int selectionIndex = -1;
 		projectsComboDropDown.removeAll();
 		List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
 		for (int i =0; i< allProjects.size();i++) {
 			IProject project = allProjects.get(i);
-			
+
 			if(project.equals(dataApplication.getProject())){
 				selectionIndex = i;
 			}
-			
+
 			projectsComboDropDown.add(project.toString());
 		}
 		projectsComboDropDown.select(selectionIndex);
-		
+
 	}
 	
 	/**
@@ -302,7 +292,14 @@ public class MeasuringpointView {
 	 * something changed
 	 */
 	private void updateMeasuringPointView() {
-		updateProjectComboBo();
+		updateProjectComboBox();
+		updateTreeViewer();
+	}
+	
+	/**
+	 * Updates the Monitor and Measuringpoint Tree Viewer
+	 */
+	private void updateTreeViewer() {
 		monitorTreeViewer.update();
 		measuringTreeViewer.update();
 	}
