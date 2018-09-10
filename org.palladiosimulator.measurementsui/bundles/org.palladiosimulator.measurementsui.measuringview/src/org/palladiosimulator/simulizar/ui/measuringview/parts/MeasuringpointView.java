@@ -7,6 +7,13 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Persist;
@@ -25,6 +32,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
@@ -45,6 +53,7 @@ public class MeasuringpointView {
 
 	private MpTreeViewer monitorTreeViewer;
 	private MpTreeViewer measuringTreeViewer;
+	private Combo projectsComboDropDown;
 	private DataApplication dataApplication;
 
 	@Inject
@@ -68,7 +77,8 @@ public class MeasuringpointView {
 	public void createPartControl(Composite parent) {
 		parent.setLayout(new GridLayout(1, true));
 		initializeApplication();
-		createRepositorySelectionCBox(parent);
+		createWorkspaceListener();
+		createProjectsSelectionComboBox(parent);
 		SashForm outerContainer = new SashForm(parent, SWT.FILL);
 		outerContainer.setLayout(new GridLayout(1, true));
 		outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -85,6 +95,9 @@ public class MeasuringpointView {
 		Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
 
 		createViewButtons(buttonContainer);
+		
+		
+		
 
 		monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
 		measuringTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
@@ -99,6 +112,45 @@ public class MeasuringpointView {
 		this.dataApplication = DataApplication.getInstance();
 		dataApplication.loadData(0);
 	}
+	
+	/**
+	 * Adds a changeListener to the eclispe workspace
+	 * to listen to changes in it and update
+	 * our GUI accordingly
+	 */
+	private void createWorkspaceListener() {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IResourceChangeListener listener = new IResourceChangeListener() {
+			public void resourceChanged(IResourceChangeEvent event) {
+				
+				if(event.getType() != IResourceChangeEvent.POST_CHANGE) {
+					return;
+				}
+				
+				System.out.println("Something changed! " + event.getDelta().getAffectedChildren()[0].getResource());
+				IResource res = workspace.getRoot().findMember(event.getDelta().getAffectedChildren()[0].getResource().getFullPath());
+				System.out.println("found ressource: "+res);
+				System.out.println("Children " + event.getDelta().getAffectedChildren());
+				System.out.println("Ressource " + event.getResource());
+				System.out.println("Source " + event.getType());
+				
+				Display.getDefault().asyncExec(new Runnable() {
+
+					   public void run() {
+
+						   updateMeasuringPointView();
+					   }
+
+					  });
+				System.out.println("after change event: " +dataApplication.getProject().toString());
+			}	
+		};
+		workspace.addResourceChangeListener(listener, 1);
+
+	}
+	
+
+	
 
 	/**
 	 * Creates a tree view which shows all existing monitors and their childs in the
@@ -205,33 +257,71 @@ public class MeasuringpointView {
 
 	/**
 	 * Creates a combobox at the top of the view where the user can select the
-	 * monitorrepository
+	 * project
 	 * 
 	 * @param parent composite where the combobox is placed in
 	 */
-	private void createRepositorySelectionCBox(Composite parent) {
-		Combo comboDropDown = new Combo(parent, SWT.DROP_DOWN);
-		comboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-		List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
-		for (IProject project : allProjects) {
-			comboDropDown.add(project.toString());
-		}
-		comboDropDown.addSelectionListener(new SelectionListener() {
+	private void createProjectsSelectionComboBox(Composite parent) {
+		projectsComboDropDown = new Combo(parent, SWT.DROP_DOWN);
+		projectsComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+		updateProjectComboBo();
+		projectsComboDropDown.addSelectionListener(new SelectionListener() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				int selectionIndex = comboDropDown.getSelectionIndex();
+				int selectionIndex = projectsComboDropDown.getSelectionIndex();
 				dataApplication.loadData(selectionIndex);
 				updateTreeViewer();
 			}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				comboDropDown.select(0);
+				projectsComboDropDown.select(0);
 
 			}
 		});
-		comboDropDown.select(0);
+		projectsComboDropDown.select(0);
+	}
+	
+	/**
+	 * Adds every project in the workspace, that has an
+	 * .aird file to the projectsComboBox
+	 */
+	private void updateProjectComboBo() {
+		
+		int selectionIndex = -1;
+		projectsComboDropDown.removeAll();
+		List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
+		for (int i =0; i< allProjects.size();i++) {
+			IProject project = allProjects.get(i);
+			
+			System.out.println("new project " +project.toString());
+			if(project.equals(dataApplication.getProject())){
+				selectionIndex = i;
+			}
+			
+			projectsComboDropDown.add(project.toString());
+		}
+		System.out.println(dataApplication.getProject());
+		try {
+			dataApplication.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("after refresh:  " +dataApplication.getProject().toString());
+		projectsComboDropDown.select(selectionIndex);
+		
+	}
+	
+	/**
+	 * Reloads the dashboard view and updates it, if
+	 * something changed
+	 */
+	private void updateMeasuringPointView() {
+		updateProjectComboBo();
+		monitorTreeViewer.update();
+		measuringTreeViewer.update();
 	}
 
 	/**
