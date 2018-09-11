@@ -225,7 +225,7 @@ public class ModelAccessor {
         return usageModel;
     }
 
-    public List<MeasuringPointRepository> getMeasuringPointRpository() {
+    public List<MeasuringPointRepository> getMeasuringPointRepository() {
         return measuringPointRepository;
     }
 
