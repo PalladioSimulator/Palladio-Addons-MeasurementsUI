@@ -34,9 +34,9 @@ public class WizardModelManager {
 	public WizardModel getWizardModel(WizardModelType wizardModel) {
 		switch (wizardModel) {
 			case MONITOR_CREATION:
-				return new MonitorCreationWizardModel();
+				return new MonitorCreationWizardModel(monitor);
 			case MEASURING_POINT_SELECTION:
-				return new MeasuringPointSelectionWizardModel();
+				return new MeasuringPointSelectionWizardModel(monitor);
 			case METRIC_DESCRIPTION_SELECTION:
 				return new MetricDescriptionSelectionWizardModel(monitor);
 			case PROCESSING_TYPE:
