@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author zss3
+ * @author David  Schuetz
  *
  */
 package org.palladiosimulator.measurementsui.wizardmodel;

@@ -2,6 +2,11 @@ package org.palladiosimulator.measurementsui.wizardmodel.pages;
 
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 
+/**
+ * 
+ * @author David Schuetz
+ *
+ */
 public class MetricDescriptionSelectionWizardModel implements WizardModel{
 
 	@Override

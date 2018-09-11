@@ -1,5 +1,10 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
+/**
+ * 
+ * @author David Schuetz
+ *
+ */
 public interface WizardModel {
 	
 	public boolean canFinish();
