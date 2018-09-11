@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.common,
  org.eclipse.emf.edit.ui,
  org.palladiosimulator.edp2.editor,
- org.palladiosimulator.pcm.edit
+ org.palladiosimulator.pcm.edit,
+ org.palladiosimulator.pcm
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.uni-stuttgart.enpro.wizard
 Bundle-ActivationPolicy: lazy
