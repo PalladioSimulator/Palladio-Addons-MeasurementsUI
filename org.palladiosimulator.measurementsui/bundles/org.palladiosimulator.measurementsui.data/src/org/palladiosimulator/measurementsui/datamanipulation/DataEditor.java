@@ -1,15 +1,12 @@
 package org.palladiosimulator.measurementsui.datamanipulation;
 
 import java.util.Collections;
-
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
 public class DataEditor {
 
