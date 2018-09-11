@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.abstractviewer;
+package org.palladiosimulator.measurementsui.abstractviewer.listener;
 
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.events.MouseEvent;
