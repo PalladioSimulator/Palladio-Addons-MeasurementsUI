@@ -62,7 +62,6 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 	public void addSelectionListener(ESelectionService selectionService) {
 		treeViewer.addSelectionChangedListener(event -> {
 			IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-			// set the selection to the service
 			selectionService.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
 		});
 	}
