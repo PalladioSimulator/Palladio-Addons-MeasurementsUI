@@ -16,7 +16,7 @@ public class MeasurementSpecification extends WizardPage {
     private Table table;
 
     public MeasurementSpecification() {
-        super("wizardPage");
+        super("wizardPage2");
         setTitle("Measurement Specification");
         setDescription("Specify properties of measurements");
     }
