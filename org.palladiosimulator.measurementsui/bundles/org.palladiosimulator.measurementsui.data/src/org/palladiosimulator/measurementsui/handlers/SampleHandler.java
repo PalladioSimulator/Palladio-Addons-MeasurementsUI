@@ -12,6 +12,7 @@ import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
 
@@ -54,22 +55,27 @@ public class SampleHandler extends AbstractHandler {
             }
 		    
 		    System.out.println(nonMatchingMetricDesciptions.size());
-		    
-		    Monitor tempMon = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory().createMonitor();
+		    MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();
+		    Monitor tempMon = monFactory.createMonitor();
+		    EList<MeasurementSpecification> mSpecList = new BasicEList<MeasurementSpecification>();
 		    for (MetricDescription desc : nonMatchingMetricDesciptions) {
-                editor.addMeasurementSpecification(tempMon);
-                editor.setMetricDescription(tempMon.getMeasurementSpecifications().get(0), desc);
-                
+		        mSpecList.add(monFactory.createMeasurementSpecification());
+//		        tempMon.eSet(tempMon.eClass().getEStructuralFeature("measurementSpecifications"), nonMatchingMetricDesciptions);
+//                editor.addMeasurementSpecification(tempMon);
+//                editor.setMetricDescription(tempMon.getMeasurementSpecifications().get(0), desc);      
             }
+		    
+		    for (int i = 0; i<mSpecList.size(); i++) {
+		        mSpecList.get(i).setMetricDescription(nonMatchingMetricDesciptions.get(i));
+		    }
+		    
+		    tempMon.eSet(tempMon.eClass().getEStructuralFeature("measurementSpecifications"), mSpecList);
+		    
+		    System.out.println("Test");
+		    
+		    
 		}
-		
-		    
-		
-		    
 
-
-		
-		System.out.println("Test");
 		
 		
 		
