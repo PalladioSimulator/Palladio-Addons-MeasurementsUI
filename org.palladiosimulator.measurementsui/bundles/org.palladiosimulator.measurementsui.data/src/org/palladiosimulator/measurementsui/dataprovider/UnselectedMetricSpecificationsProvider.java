@@ -11,6 +11,8 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 /**
  * This class creates and manages the Monitors used for the 3rd Wizard Page
  * 
+ * @TODO: adapt moveMetricSpecificationBetweenMonitors to work with an array of selected Metric
+ *        Descriptions, to allow moving multiple selected
  * @author Florian
  *
  */
@@ -22,8 +24,9 @@ public class UnselectedMetricSpecificationsProvider {
      * 
      * @param passedMonitor
      *            The Monitor that gets passed from the previous Wizard Page
+     * @return the Monitor with the missing Metric Description<->Measurement Specification pairs
      */
-    public Monitor createMonitorWithMissingMetricSpecifications(Monitor passedMonitor) {
+    public Monitor createMonitorWithMissingMetricDescriptions(Monitor passedMonitor) {
         EList<MeasurementSpecification> mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
         if (!mSpecsOfPassedMonitor.isEmpty()) {
             EList<MetricDescription> metricDescInPassedMonitor = new BasicEList<>();
@@ -63,13 +66,24 @@ public class UnselectedMetricSpecificationsProvider {
      * @param sendingMonitor
      * @param receivingMonitor
      */
-    public void moveMeasurementSpecification(MetricDescription selectedMetricDescription, Monitor sendingMonitor,
-            Monitor receivingMonitor) {
+    public void moveMetricSpecificationBetweenMonitors(MetricDescription selectedMetricDescription,
+            Monitor sendingMonitor, Monitor receivingMonitor) {
         for (MeasurementSpecification mSpec : sendingMonitor.getMeasurementSpecifications()) {
             if (mSpec.getMetricDescription().equals(selectedMetricDescription)) {
                 receivingMonitor.getMeasurementSpecifications().add(mSpec);
             }
         }
+    }
+
+    /**
+     * Moves all Metric Descriptions from one Monitor to another. Needed for the double Arrow (move
+     * All) in the 3rd Wizard Page
+     * 
+     * @param sendingMonitor
+     * @param receivingMonitor
+     */
+    public void moveAllMetricSpecificationsBetweenMonitors(Monitor sendingMonitor, Monitor receivingMonitor) {
+        receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
     }
 
     /**
