@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
 /**
  * Class for editing resources without use of parsley
@@ -63,9 +64,18 @@ public class ResourceEditorImpl implements ResourceEditor {
 
 	@Override
 	public void setMetricDescription(EObject aMeasurementSpecification, MetricDescription aMetricDescription) {
-		// TODO Auto-generated method stub
 		editor.editResource(aMeasurementSpecification, "metricDescription", aMetricDescription);
 	}
+
+    @Override
+    public void addMeasurementSpecification(EObject monitor) {
+        MeasurementSpecification newMSpec = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory().createMeasurementSpecification();
+        newMSpec.setTriggersSelfAdaptations(true);
+        editor.addResource(monitor, "measurementSpecifications", newMSpec);
+        
+    }
+
+
     
 
 }
