@@ -27,34 +27,33 @@ public class UnselectedMetricSpecificationsProvider {
      * @return the Monitor with the missing Metric Description<->Measurement Specification pairs
      */
     public Monitor createMonitorWithMissingMetricDescriptions(Monitor passedMonitor) {
+        MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();
         EList<MeasurementSpecification> mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
         if (!mSpecsOfPassedMonitor.isEmpty()) {
-            EList<MetricDescription> metricDescInPassedMonitor = new BasicEList<>();
-            EList<MetricDescription> allMetricDescriptions = mSpecsOfPassedMonitor.get(0).getMetricDescription()
-                    .getRepository().getMetricDescriptions();
-
-            for (MeasurementSpecification aMSpec : mSpecsOfPassedMonitor) {
-                metricDescInPassedMonitor.add(aMSpec.getMetricDescription());
-            }
-
-            EList<MetricDescription> nonMatchingMetricDesciptions = new BasicEList<>();
-
-            findNonMatchingMetricDescriptions(metricDescInPassedMonitor, allMetricDescriptions,
-                    nonMatchingMetricDesciptions);
-
-            MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();
-            Monitor tempMon = monFactory.createMonitor();
-            EList<MeasurementSpecification> mSpecList = new BasicEList<>();
-            createMeasurementSpecificationsForEveryMetricDescription(nonMatchingMetricDesciptions, monFactory,
-                    mSpecList);
-
-            setMetricDescriptionForEveryMeasurementSpecification(nonMatchingMetricDesciptions, mSpecList);
-
-            tempMon.eSet(tempMon.eClass().getEStructuralFeature("measurementSpecifications"), mSpecList);
-            return tempMon;
-        } else { // passedMonitor has no MeasurementSpecification
-            return null;
+            passedMonitor.getMeasurementSpecifications().add(monFactory.createMeasurementSpecification());
+            mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
         }
+        EList<MetricDescription> metricDescInPassedMonitor = new BasicEList<>();
+        EList<MetricDescription> allMetricDescriptions = mSpecsOfPassedMonitor.get(0).getMetricDescription()
+                .getRepository().getMetricDescriptions();
+
+        for (MeasurementSpecification aMSpec : mSpecsOfPassedMonitor) {
+            metricDescInPassedMonitor.add(aMSpec.getMetricDescription());
+        }
+
+        EList<MetricDescription> nonMatchingMetricDesciptions = new BasicEList<>();
+
+        findNonMatchingMetricDescriptions(metricDescInPassedMonitor, allMetricDescriptions,
+                nonMatchingMetricDesciptions);
+
+        Monitor tempMon = monFactory.createMonitor();
+        EList<MeasurementSpecification> mSpecList = new BasicEList<>();
+        createMeasurementSpecificationsForEveryMetricDescription(nonMatchingMetricDesciptions, monFactory, mSpecList);
+
+        setMetricDescriptionForEveryMeasurementSpecification(nonMatchingMetricDesciptions, mSpecList);
+
+        tempMon.eSet(tempMon.eClass().getEStructuralFeature("measurementSpecifications"), mSpecList);
+        return tempMon;
 
     }
 

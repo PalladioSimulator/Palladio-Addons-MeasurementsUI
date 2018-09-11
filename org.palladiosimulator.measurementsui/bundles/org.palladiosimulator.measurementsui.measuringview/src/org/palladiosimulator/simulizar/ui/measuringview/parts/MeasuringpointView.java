@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
@@ -41,6 +42,11 @@ import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
 import org.palladiosimulator.measurementsui.parsleyviewer.MonitorTreeViewer;
 import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.Monitor;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.ProcessingType;
 
 /**
  * Eclipse e4 view in which the user gets an overview of all existing monitors
@@ -190,14 +196,38 @@ public class MeasuringpointView {
 	private void createViewButtons(Composite buttonContainer) {
 		createNewMeasuringpointButton(buttonContainer);
 		createDeleteButton(buttonContainer);
-
-		Button editMpButton = new Button(buttonContainer, SWT.PUSH);
-		editMpButton.setText("Edit...");
+		createEditButton(buttonContainer);
 		
 		Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
 		assignMonitorButton.setText("Assign to Monitor");
 		Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
 		createStandardButton.setText("Create Standard Set");
+
+	}
+	
+	private void createEditButton(Composite parent) {
+	    Button editButton = new Button(parent, SWT.PUSH);
+	    editButton.setText("Edit...");
+	    
+	    
+	    editButton.addListener(SWT.Selection, e -> {
+	        Object selection = selectionService.getSelection();
+//	        System.out.println(selection.toString());
+	        if(selection instanceof Monitor) {
+//	            System.out.println("Monitor");
+	        }else if (selection instanceof ProcessingType) {
+//	            System.out.println("Processing Type");
+	        }else if (selection instanceof MeasuringPoint) {
+//                System.out.println("Measuring Point");
+            }else if (selection instanceof MeasurementSpecification) {
+//                System.out.println("Measurement Specification");
+            }else if (selection instanceof MonitorRepository) {
+//                System.out.println("Monitor Repository");
+            }
+
+	        
+	    });
+	    
 
 	}
 	
