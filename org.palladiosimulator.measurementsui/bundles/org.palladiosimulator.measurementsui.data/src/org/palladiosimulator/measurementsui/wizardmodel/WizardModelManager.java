@@ -38,7 +38,7 @@ public class WizardModelManager {
 			case MEASURING_POINT_SELECTION:
 				return new MeasuringPointSelectionWizardModel();
 			case METRIC_DESCRIPTION_SELECTION:
-				return new MetricDescriptionSelectionWizardModel();
+				return new MetricDescriptionSelectionWizardModel(monitor);
 			case PROCESSING_TYPE:
 				return new ProcessingTypeSelectionWizardModel();
 			default:

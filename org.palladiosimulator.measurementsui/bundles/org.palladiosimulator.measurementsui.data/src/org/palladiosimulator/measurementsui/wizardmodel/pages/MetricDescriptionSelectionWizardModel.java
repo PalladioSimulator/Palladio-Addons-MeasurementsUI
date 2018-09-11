@@ -1,6 +1,8 @@
 package org.palladiosimulator.measurementsui.wizardmodel.pages;
 
+import org.palladiosimulator.measurementsui.dataprovider.UnselectedMetricSpecificationsProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
@@ -9,13 +11,18 @@ import org.palladiosimulator.monitorrepository.Monitor;
  *
  */
 public class MetricDescriptionSelectionWizardModel implements WizardModel {
-	private Monitor monitor;
 	private static final String STANDARD_INFORMATION_MESSAGE = "Please select all Metrics which should be measured.";
 	private static final String NO_METRIC_SELECTED_MEASSAGE = "There is currently no Metric selected. "
 			+ "In order to get Simulation results you have select at least one Metric.";
+	
+	private Monitor usedMetricsMonitor;
+	private Monitor unusedMetricsMonitor;
+	private UnselectedMetricSpecificationsProvider provider;
 
 	public MetricDescriptionSelectionWizardModel(Monitor monitor) {
-		this.monitor = monitor;
+		this.provider = new UnselectedMetricSpecificationsProvider();
+		this.usedMetricsMonitor = monitor;
+		this.unusedMetricsMonitor = provider.createMonitorWithMissingMetricDescriptions(usedMetricsMonitor);
 	}
 
 	@Override
@@ -36,10 +43,32 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 		// TODO Auto-generated method stub
 	}
 	
-	public Monitor get
+	public Monitor getUnusedMetricsMonitor() {
+		return unusedMetricsMonitor;
+	}
+	
+	public void addMetricDescription(MetricDescription selectedMetricDescription) {
+		provider.moveMetricSpecificationBetweenMonitors(selectedMetricDescription, unusedMetricsMonitor, usedMetricsMonitor);
+	}
+	
+	public void removeMetricDescription(MetricDescription selectedMetricDescription) {
+		provider.moveMetricSpecificationBetweenMonitors(selectedMetricDescription, usedMetricsMonitor, unusedMetricsMonitor);
+	}
+	
+	public void addAllMetricDescriptions() {
+		provider.moveAllMetricSpecificationsBetweenMonitors(unusedMetricsMonitor, usedMetricsMonitor);
+	}
+	
+	public void removeAllMetricDescriptions() {
+		provider.moveAllMetricSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor);
+	}
+	
+	public void addSuggestions() {
+		//TODO: Not implemented yet.
+	}
 	
 	private boolean metricListIsEmpty() {
-		return monitor.getMeasurementSpecifications().isEmpty();
+		return usedMetricsMonitor.getMeasurementSpecifications().isEmpty();
 	}
 
 }
