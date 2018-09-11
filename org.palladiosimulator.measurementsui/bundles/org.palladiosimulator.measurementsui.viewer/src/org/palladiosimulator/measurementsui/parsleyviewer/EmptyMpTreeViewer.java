@@ -3,8 +3,12 @@ package org.palladiosimulator.measurementsui.parsleyviewer;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
+import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDragListener;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
@@ -29,6 +33,9 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
 	public EmptyMpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
 			DataApplication application) {
 		super(parent, dirty, commandService, application, false);
+		int operations = DND.DROP_COPY| DND.DROP_MOVE;
+        Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance()};
+        treeViewer.addDragSupport(operations, transferTypes , new MeasuringpointDragListener(treeViewer));
 	}
 
 	@Override
