@@ -1,6 +1,8 @@
-package org.palladiosimulator.measurementsui.wizardmodel;
+package org.palladiosimulator.measurementsui.wizardmodel.pages;
 
-public class MeasuringPointSelectionWizardModel implements WizardModel {
+import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
+
+public class MonitorCreationWizardModel implements WizardModel{
 
 	@Override
 	public boolean canFinish() {
@@ -17,7 +19,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 	@Override
 	public void nextStep() {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }
