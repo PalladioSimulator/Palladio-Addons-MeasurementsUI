@@ -76,4 +76,5 @@ public interface ResourceEditor {
      */
     void addMeasurementSpecification(EObject monitor);
 
+    void addMonitorToRepository(EObject monitorRepository, EObject monitor);
 }
