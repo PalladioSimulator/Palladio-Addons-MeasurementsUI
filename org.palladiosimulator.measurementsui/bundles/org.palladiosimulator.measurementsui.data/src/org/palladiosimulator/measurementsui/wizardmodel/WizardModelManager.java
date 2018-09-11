@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
@@ -14,7 +15,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
  */
 public class WizardModelManager {
 	private Monitor monitor;
-	
+
 	public WizardModelManager() {
 		monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 	}

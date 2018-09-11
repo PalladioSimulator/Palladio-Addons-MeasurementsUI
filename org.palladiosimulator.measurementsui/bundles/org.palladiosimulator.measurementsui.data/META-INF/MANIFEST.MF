@@ -23,4 +23,5 @@ Automatic-Module-Name: HelloWorldMenu
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.dataprovider,
- org.palladiosimulator.measurementsui.fileaccess
+ org.palladiosimulator.measurementsui.fileaccess,
+ org.palladiosimulator.measurementsui.wizardmodel
