@@ -7,9 +7,9 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.fileaccess.SecondPageWizardModel;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.AdditionalMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.FinalMeasuringpointContentProvider;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 
 public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 	TreeViewer createTreeViewer;
@@ -17,11 +17,11 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 	Composite container;
 	FinalMeasuringpointContentProvider mp;
 	boolean selected;
-	SecondPageWizardModel sq = SecondPageWizardModel.getInstance();
+	MeasuringPointSelectionWizardModel selectionWizardModel = MeasuringPointSelectionWizardModel.getInstance();
 
 	public FinalModelsToMeasuringpointWizardPage() {
 		super("page2final");
-		setTitle("Select final models");
+		setTitle("Select operation signatures");
 		setDescription("description");
 	}
 
@@ -38,7 +38,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 		createContentProvider = mp;
 		createTreeViewer = new TreeViewer(container);
 		createTreeViewer.setContentProvider(mp);
-		createTreeViewer.setInput(sq.getSignatures().toArray());
+		createTreeViewer.setInput(selectionWizardModel.getSignatures().toArray());
 		createTreeViewer.setLabelProvider(new AdditionalMeasuringpointLabelProvider());
 
 	}
@@ -66,9 +66,11 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 	protected boolean nextPressed() {
 		boolean validatedNextPressed = true;
 		try {
-
+		    selectionWizardModel.setCurrentThirdStageModel(createTreeViewer.getStructuredSelection().getFirstElement());
+		    selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
+		    
 		} catch (Exception ex) {
-			System.out.println("Error validation when pressing Next: " + ex);
+			ex.printStackTrace();
 		}
 		return validatedNextPressed;
 	}

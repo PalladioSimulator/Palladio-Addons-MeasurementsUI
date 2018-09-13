@@ -1,10 +1,10 @@
 package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.palladiosimulator.measurementsui.fileaccess.SecondPageWizardModel;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 
 public class AdditionalMeasuringpointContentProvider implements ITreeContentProvider {
-	SecondPageWizardModel sq=SecondPageWizardModel.getInstance();
+    MeasuringPointSelectionWizardModel sq=MeasuringPointSelectionWizardModel.getInstance();
 	Object[] objects;
 	
 	@Override
