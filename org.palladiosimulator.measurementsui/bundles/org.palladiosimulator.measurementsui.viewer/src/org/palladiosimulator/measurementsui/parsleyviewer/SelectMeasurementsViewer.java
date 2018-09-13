@@ -4,6 +4,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.dataprovider.UnselectedMetricSpecificationsProvider;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.monitorrepository.Monitor;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
+import org.palladiosimulator.monitorrepository.impl.MonitorRepositoryFactoryImpl;
 
 import tableform.TableformInjectorProvider;
 
@@ -31,7 +37,10 @@ public class SelectMeasurementsViewer extends WizardTableViewer {
 
 	@Override
 	protected EObject getModelRepository() {
-		return dataApplication.getModelAccessor().getMonitorRepository().get(0);
+		UnselectedMetricSpecificationsProvider test = new UnselectedMetricSpecificationsProvider();
+		MonitorRepositoryFactoryImpl test1 = new MonitorRepositoryFactoryImpl();
+		Monitor aMon = test1.createMonitor();
+		return test.createMonitorWithMissingMetricDescriptions(aMon);
 	}
 
 }

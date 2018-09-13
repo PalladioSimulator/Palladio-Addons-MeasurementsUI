@@ -44,6 +44,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.custom.SashForm;
 
 public class SelectMeasurements extends WizardPage {
+	public static final String CHECKBOX_UNCHECKED = "\u2610";
+	public static final String CHECKBOX_CHECKED = "\u2611";
 	private DataApplication dataApplication;
 	// private Table table;
 	// private final FormToolkit formToolkit = new
@@ -103,9 +105,9 @@ public class SelectMeasurements extends WizardPage {
 				MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
 				if (columnIndex == 1) {
 					if (measurementSpecification.isTriggersSelfAdaptations()) {
-						result = "\u2611";
+						result = CHECKBOX_CHECKED;
 					} else {
-						result = "\u2610";
+						result = CHECKBOX_UNCHECKED;
 					}
 					return result;
 				} else {
@@ -223,13 +225,13 @@ public class SelectMeasurements extends WizardPage {
 				MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
 				if (columnIndex == 1) {
 					if (measurementSpecification.isTriggersSelfAdaptations()) {
-						result = "\u2611";
+						result = CHECKBOX_CHECKED;
 					} else {
-						result = "\u2610";
+						result = CHECKBOX_UNCHECKED;
 					}
 					return result;
 				} else {
-					result = measurementSpecification.getMetricDescription().toString();
+					result = measurementSpecification.getMetricDescription().getName();
 					return result;
 				}
 			}
