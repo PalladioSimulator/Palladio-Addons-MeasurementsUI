@@ -6,7 +6,6 @@ import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
-
 import tableform.TableformInjectorProvider;
 
 /**
@@ -40,7 +39,6 @@ public class SelectMeasurementsViewer extends WizardTableViewer {
 		} else {
 			return model.getUnusedMetricsMonitor();
 		}
-
 	}
 
 }
