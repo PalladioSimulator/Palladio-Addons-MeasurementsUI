@@ -35,7 +35,7 @@ public abstract class WizardTableViewer extends ComponentViewer {
 	protected void initParsley(Composite parent) {
 
 		tableFactory = injector.getInstance(ViewerFactory.class);
-		tableViewer = tableFactory.createTableViewer(parent, SWT.BORDER,
+		tableViewer = tableFactory.createTableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION,
 				MonitorRepositoryPackage.eINSTANCE.getMeasurementSpecification());
 		tableViewer.setInput(getModelRepository());
 	}

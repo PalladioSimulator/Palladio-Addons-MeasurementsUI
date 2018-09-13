@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -27,9 +28,6 @@ import org.palladiosimulator.measurementsui.parsleyviewer.EmptySelectMeasurement
 import org.palladiosimulator.measurementsui.parsleyviewer.SelectMeasurementsViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-
-import com.sun.javafx.collections.SetListenerHelper;
-
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.swt.widgets.Display;
@@ -48,10 +46,7 @@ public class SelectMeasurements extends WizardPage {
 	public static final String CHECKBOX_UNCHECKED = "\u2610";
 	public static final String CHECKBOX_CHECKED = "\u2611";
 	private MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel;
-	// private Table table;
-	// private final FormToolkit formToolkit = new
-	// FormToolkit(Display.getDefault());
-	// private CheckboxCellEditor cellEditor;
+
 
 	public SelectMeasurements(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
 		super("wizardPage");
@@ -176,7 +171,11 @@ public class SelectMeasurements extends WizardPage {
 			}
 
 		});
-
+		
+		Button addSuggestion = new Button(composite2, SWT.NONE);
+		addSuggestion.setBounds(500, 250, 150, 250);
+		addSuggestion.setText("Add Suggestions");	
+		
 		Composite composite3 = new Composite(container, SWT.NONE);
 		composite3.setLayout(new GridLayout(2, true));
 		composite3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -240,25 +239,13 @@ public class SelectMeasurements extends WizardPage {
 
 		});
 		
-		tableViewer1.getTable().getColumn(1).addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				IStructuredSelection selection = tableViewer1.getStructuredSelection();
-				MeasurementSpecification specification = (MeasurementSpecification) selection.getFirstElement();
-				if (specification.isTriggersSelfAdaptations()) {
-					specification.setTriggersSelfAdaptations(false);
-				} else {
-					specification.setTriggersSelfAdaptations(true);
-				}
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+		CellEditor[] cellEditor = new CellEditor[2];
+		cellEditor[0] = null;
+		cellEditor[1] = new CheckboxCellEditor(tableViewer1.getTable());
+		tableViewer1.setCellEditors(cellEditor);
+		String[] columnNames = {"Metric Description", "Self Adapting"};
+		tableViewer1.setColumnProperties(columnNames);
+		tableViewer1.setCellModifier(new CellModifier(tableViewer1));
 
 		setPageComplete(true);
 		setControl(container);
