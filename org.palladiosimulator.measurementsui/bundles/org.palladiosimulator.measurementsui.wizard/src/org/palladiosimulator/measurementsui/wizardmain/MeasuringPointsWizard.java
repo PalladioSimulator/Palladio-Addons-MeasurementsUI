@@ -2,7 +2,6 @@ package org.palladiosimulator.measurementsui.wizardmain;
 
 import org.eclipse.jface.wizard.IWizardPage;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasurementSpecification;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.SelectMeasurements;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelManager;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
@@ -13,6 +12,7 @@ import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.AdditionalModelsToMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.ChooseMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.FinalModelsToMeasuringpointWizardPage;
+import org.palladiosimulator.measurementsui.wizardpages.SelectMeasurementsWizardPage;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
@@ -46,7 +46,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 	 * Represents the 3rd wizard page, where the user selects measurements which are
 	 * then assigned to the monitor
 	 */
-	private SelectMeasurements page3;
+	private SelectMeasurementsWizardPage page3;
 
 	/**
 	 * Represents the 4th wizard page, where the user can set properties for the
@@ -87,7 +87,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 	private void createPages() {
 		page1 = new AddMonitorWizardPage((MonitorCreationWizardModel) wizardManager.getWizardModel(WizardModelType.MONITOR_CREATION));
 		page2 = new ChooseMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.MEASURING_POINT_SELECTION));
-		page3 = new SelectMeasurements((MetricDescriptionSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
+		page3 = new SelectMeasurementsWizardPage((MetricDescriptionSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
 		page4 = new MeasurementSpecification((ProcessingTypeSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.PROCESSING_TYPE));
 		
 	}

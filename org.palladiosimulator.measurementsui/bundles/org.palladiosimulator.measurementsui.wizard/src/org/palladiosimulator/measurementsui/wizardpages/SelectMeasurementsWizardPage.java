@@ -1,18 +1,10 @@
-package org.palladiosimulator.measurementsui.wizardmain.handlers;
+package org.palladiosimulator.measurementsui.wizardpages;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -20,35 +12,43 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptySelectMeasurementsViewer;
 import org.palladiosimulator.measurementsui.parsleyviewer.SelectMeasurementsViewer;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.CellModifier;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.custom.ViewForm;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.custom.SashForm;
 
-public class SelectMeasurements extends WizardPage {
+/**
+ * This class handels the GUI part of the third wizard page for selecting measurements.
+ * @author mehme
+ *
+ */
+public class SelectMeasurementsWizardPage extends WizardPage {
+	
+	/**
+	 * Used for the self adapting column for unchecked value.
+	 */
 	public static final String CHECKBOX_UNCHECKED = "\u2610";
+	
+	/**
+	 * Used for the self adapting column for checked value.
+	 */
 	public static final String CHECKBOX_CHECKED = "\u2611";
+	
+	/**
+	 * This handles the internal model.
+	 */
 	private MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel;
 
-
-	public SelectMeasurements(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
+	/**
+	 * The constructor where basic properties are set, e. g. title, description etc.
+	 * @param metricDescriptionSelectionWizardModel This handles the internal model
+	 */
+	public SelectMeasurementsWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
 		super("wizardPage");
 		setTitle("HDD Monitor: Select Measurements");
 		setDescription("Select desired Measurements to be used with the Monitor");
@@ -80,12 +80,9 @@ public class SelectMeasurements extends WizardPage {
 		tableViewer.setLabelProvider(new ITableLabelProvider() {
 
 			public void removeListener(ILabelProviderListener listener) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public Image getColumnImage(Object element, int columnIndex) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 
@@ -106,31 +103,16 @@ public class SelectMeasurements extends WizardPage {
 			}
 
 			public void addListener(ILabelProviderListener listener) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public void dispose() {
-				// TODO Auto-generated method stub
-
 			}
 
 			public boolean isLabelProperty(Object element, String property) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		});
 
-		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-
-				String sel = event.getSource().toString();
-				Object e = event.getSource().getClass();
-			}
-
-		});
 		Composite composite2 = new Composite(container, SWT.NONE);
 		composite2.setLayout(new GridLayout(1, true));
 		composite2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -143,6 +125,7 @@ public class SelectMeasurements extends WizardPage {
 				metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
 			}
 		});
+		
 		Button rightAll = new Button(composite2, SWT.NONE);
 		rightAll.setBounds(500, 150, 150, 250);
 		rightAll.setText(">");
@@ -182,18 +165,13 @@ public class SelectMeasurements extends WizardPage {
 		composite3.setLayout(fill);
 		EmptySelectMeasurementsViewer viewer2 = new EmptySelectMeasurementsViewer(composite3,
 				metricDescriptionSelectionWizardModel);
-		// SelectMeasurementsViewer viewer2 = new SelectMeasurementsViewer(composite3,
-		// metricDescriptionSelectionWizardModel, false);
 		TableViewer tableViewer1 = (TableViewer) viewer2.getViewer();
 		tableViewer1.setLabelProvider(new ITableLabelProvider() {
 
 			public void removeListener(ILabelProviderListener listener) {
-				// TODO Auto-generated method stub
-
 			}
 
 			public Image getColumnImage(Object element, int columnIndex) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 
@@ -214,16 +192,12 @@ public class SelectMeasurements extends WizardPage {
 			}
 
 			public void addListener(ILabelProviderListener listener) {
-
 			}
 
 			public void dispose() {
-				// TODO Auto-generated method stub
-
 			}
 
 			public boolean isLabelProperty(Object element, String property) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		});
@@ -249,6 +223,5 @@ public class SelectMeasurements extends WizardPage {
 
 		setPageComplete(true);
 		setControl(container);
-
 	}
 }
