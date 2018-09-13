@@ -12,6 +12,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 	private final String createMeasuringPointInfoText = "Select the element of your Models which should be monitored during a simulation run. ";
 	private final String editMeasuringPointInfoText = "Select a differnt measuring Point.";
 	
+	private final String createMeasuringPointTitel = "Create Measuring Point";
+	private final String editMeasuringPointTitel = "Edit Measuring Point";
 	
 	private Monitor monitor;
 	
@@ -61,6 +63,15 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 	public void nextStep() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public String getTitleText() {
+		if(this.monitor.getMeasuringPoint()!= null) {
+			return createMeasuringPointTitel;
+		}
+		return editMeasuringPointTitel;
+		
 	}
 
 }

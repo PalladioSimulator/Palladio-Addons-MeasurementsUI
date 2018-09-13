@@ -12,4 +12,6 @@ public interface WizardModel {
 	public String getInfoText();
 	
 	public void nextStep();
+	
+	public String getTitleText();
 }

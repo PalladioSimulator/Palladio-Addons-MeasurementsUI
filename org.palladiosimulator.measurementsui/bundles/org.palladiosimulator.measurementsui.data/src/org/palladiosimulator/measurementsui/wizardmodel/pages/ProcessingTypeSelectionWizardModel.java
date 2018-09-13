@@ -22,4 +22,10 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
 
 	}
 
+	@Override
+	public String getTitleText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

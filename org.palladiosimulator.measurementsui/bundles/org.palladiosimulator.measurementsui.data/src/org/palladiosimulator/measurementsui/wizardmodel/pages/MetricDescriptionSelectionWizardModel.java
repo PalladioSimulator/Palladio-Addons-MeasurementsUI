@@ -15,6 +15,8 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 	private static final String NO_METRIC_SELECTED_MEASSAGE = "There is currently no Metric selected. "
 			+ "In order to get Simulation results you have select at least one Metric.";
 	
+	private static final String METRIC_SELECTION_TITEL = "Select Metrics";
+	
 	private Monitor usedMetricsMonitor;
 	private Monitor unusedMetricsMonitor;
 	private UnselectedMetricSpecificationsProvider provider;
@@ -69,6 +71,12 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 	
 	private boolean metricListIsEmpty() {
 		return usedMetricsMonitor.getMeasurementSpecifications().isEmpty();
+	}
+
+	@Override
+	public String getTitleText() {
+		return METRIC_SELECTION_TITEL;
+		
 	}
 
 }
