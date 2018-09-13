@@ -209,25 +209,6 @@ public class MeasuringpointView {
 	    Button editButton = new Button(parent, SWT.PUSH);
 	    editButton.setText("Edit...");
 	    
-	    
-	    editButton.addListener(SWT.Selection, e -> {
-	        Object selection = selectionService.getSelection();
-//	        System.out.println(selection.toString());
-	        if(selection instanceof Monitor) {
-//	            System.out.println("Monitor");
-	        }else if (selection instanceof ProcessingType) {
-//	            System.out.println("Processing Type");
-	        }else if (selection instanceof MeasuringPoint) {
-//                System.out.println("Measuring Point");
-            }else if (selection instanceof MeasurementSpecification) {
-//                System.out.println("Measurement Specification");
-            }else if (selection instanceof MonitorRepository) {
-//                System.out.println("Monitor Repository");
-            }
-
-	        
-	    });
-	    
 
 	}
 	
