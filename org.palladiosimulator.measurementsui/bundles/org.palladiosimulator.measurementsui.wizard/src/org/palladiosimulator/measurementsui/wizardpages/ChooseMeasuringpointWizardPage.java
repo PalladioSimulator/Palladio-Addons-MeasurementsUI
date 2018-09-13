@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
+import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 
 /**
  * @author Domas Mikalkinas
@@ -28,7 +30,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
     @Inject
     ECommandService commandService;
 
-    public ChooseMeasuringpointWizardPage() {
+    public ChooseMeasuringpointWizardPage(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
         super("Second Page");
         setTitle("Select Measuring Point");
         setDescription("description");

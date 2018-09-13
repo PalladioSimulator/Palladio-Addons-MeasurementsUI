@@ -9,11 +9,14 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MonitorFormViewer;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
  * This class handles the first wizard page for creating a new monitor.
  * @author Birasanth Pushpanathan
+ * @author David Schuetz Added WizardModel integration
+ * @author Lasse Merz Added WizardModel integration
  *
  */
 public class AddMonitorWizardPage extends WizardPage {
@@ -21,17 +24,17 @@ public class AddMonitorWizardPage extends WizardPage {
     /**
      * the newly created monitor object
      */
-    private Monitor newMonitor;
+	private MonitorCreationWizardModel model;
 
     /**
      * Constructor
      * @param newMonitor the newly created monitor object
      */
-    public AddMonitorWizardPage(Monitor newMonitor) {
+    public AddMonitorWizardPage(MonitorCreationWizardModel model) {
         super("First Page");
-        setTitle("Create new Monitor");
-        setDescription("Firstly a new Monitor is needed, please define its name. (De-)Activate it if necessary.");
-        this.newMonitor = newMonitor;
+        this.model = model;
+        setTitle(model.getTitleText());
+        setDescription(model.getInfoText());
     }
 
     @Override
@@ -44,7 +47,7 @@ public class AddMonitorWizardPage extends WizardPage {
         setControl(container);
         setPageComplete(true);
 
-        createMonitorFormViewer(container, this.newMonitor, this);
+        createMonitorFormViewer(container, model.getMonitor(), this);
     }
     
     /**
