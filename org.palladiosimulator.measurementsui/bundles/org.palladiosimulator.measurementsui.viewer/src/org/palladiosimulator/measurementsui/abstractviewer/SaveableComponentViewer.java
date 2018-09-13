@@ -35,6 +35,8 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
 			DataApplication dataApplication, boolean enableDragDrop) {
 		super(parent, enableDragDrop);
 		this.dataApplication = dataApplication;
+		initParsley(parent);
+		initContextMenu();
 		this.dirty = dirty;
 		this.commandService = commandService;
 	}

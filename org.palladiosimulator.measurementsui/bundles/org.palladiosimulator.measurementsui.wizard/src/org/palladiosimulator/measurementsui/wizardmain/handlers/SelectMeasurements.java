@@ -35,7 +35,7 @@ public class SelectMeasurements extends WizardPage {
         
         FillLayout layout = new FillLayout();
         container.setLayout(layout);
-        SelectMeasurementsViewer measurementsViewer = new SelectMeasurementsViewer(container, dataApplication);
+        //SelectMeasurementsViewer measurementsViewer = new SelectMeasurementsViewer(container, dataApplication);
         setControl(container);
     }
 }

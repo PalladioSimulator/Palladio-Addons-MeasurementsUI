@@ -34,11 +34,9 @@ public abstract class ComponentViewer {
 	public ComponentViewer(Composite parent, boolean enableDragDrop) {
 		initInjector();
 		initEditingDomain();
-		initParsley(parent);
 		if (enableDragDrop) {
 			initDragAndDrop();
 		}
-		initContextMenu();
 	}
 
 	/**
@@ -100,7 +98,7 @@ public abstract class ComponentViewer {
 	/**
 	 * Initialize the parsley context menu
 	 */
-	private void initContextMenu() {
+	protected void initContextMenu() {
 		ViewerContextMenuHelper contextMenuHelper = injector.getInstance(ViewerContextMenuHelper.class);
 		contextMenuHelper.addViewerContextMenu(getViewer(), editingDomain);
 	}
