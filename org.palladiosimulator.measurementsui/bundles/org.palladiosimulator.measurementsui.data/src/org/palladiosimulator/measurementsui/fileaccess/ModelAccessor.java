@@ -17,8 +17,10 @@ import org.palladiosimulator.measurementsui.datamanipulation.DataRepositoryCreat
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcm.allocation.Allocation;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.pcm.subsystem.SubSystem;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 /**
  * Class for accessing all parts of the model, mainly getter methods
@@ -32,6 +34,7 @@ public class ModelAccessor {
     private List<Allocation> allocation;
     private List<Repository> repository;
     private List<UsageModel> usageModel;
+    private List<SubSystem> subsystem;
 
     private List<MeasuringPointRepository> measuringPointRepository;
     private List<MonitorRepository> monitorRepository;
@@ -42,6 +45,7 @@ public class ModelAccessor {
         this.allocation = new LinkedList<>();
         this.repository = new LinkedList<>();
         this.usageModel = new LinkedList<>();
+        this.subsystem = new LinkedList<>();
         this.measuringPointRepository = new LinkedList<>();
         this.monitorRepository = new LinkedList<>();
     }
@@ -84,6 +88,8 @@ public class ModelAccessor {
         
 
     }
+    
+
 
     /**
      * Given a sirius session this Method initializes all found pcm Models in the session.
@@ -148,7 +154,7 @@ public class ModelAccessor {
         this.system.clear();
         this.resourceEnvironment.clear();
         this.usageModel.clear();
-
+        this.subsystem.clear();
         this.monitorRepository.clear();
         this.measuringPointRepository.clear();
     }
@@ -197,6 +203,10 @@ public class ModelAccessor {
         this.usageModel.add(usageModel);
     }
 
+    protected void addSubSystem(SubSystem subsystem) {
+        this.subsystem.add(subsystem);
+    }
+    
     protected void addMonitorRepository(MonitorRepository monitorRepository) {
         this.monitorRepository.add(monitorRepository);
     }
@@ -223,6 +233,9 @@ public class ModelAccessor {
 
     public List<UsageModel> getUsageModel() {
         return usageModel;
+    }
+    public List<SubSystem> getSubSystem() {
+        return subsystem;
     }
 
     public List<MeasuringPointRepository> getMeasuringPointRepository() {

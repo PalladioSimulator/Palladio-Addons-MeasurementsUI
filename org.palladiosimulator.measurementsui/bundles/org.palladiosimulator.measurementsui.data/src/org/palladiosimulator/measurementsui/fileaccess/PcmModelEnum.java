@@ -62,6 +62,15 @@ public enum PcmModelEnum {
         }
 
     },
+    SubSystem {
+
+        @Override
+        void createPcmInstance(ModelAccessor modelAccsessor, EObject pcmModel) {
+            modelAccsessor.addSubSystem((org.palladiosimulator.pcm.subsystem.SubSystem) pcmModel);
+
+        }
+
+    },
     MeasuringPointRepository {
 
         @Override

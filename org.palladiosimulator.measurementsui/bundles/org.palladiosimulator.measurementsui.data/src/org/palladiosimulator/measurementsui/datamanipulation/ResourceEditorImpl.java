@@ -87,6 +87,12 @@ public class ResourceEditorImpl implements ResourceEditor {
         
     }
 
+	@Override
+	public void addMonitorToRepository(EObject monitorRepository, EObject monitor) {
+		editor.addResource(monitorRepository, "monitors", monitor);
+		
+	}
+
 
     
 

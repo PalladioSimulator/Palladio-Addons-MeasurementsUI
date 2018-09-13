@@ -10,7 +10,9 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionS
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
+import org.palladiosimulator.measurementsui.wizardpages.AdditionalModelsToMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.ChooseMeasuringpointWizardPage;
+import org.palladiosimulator.measurementsui.wizardpages.FinalModelsToMeasuringpointWizardPage;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
@@ -33,6 +35,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 	 */
 	private AddMonitorWizardPage page1; 
 
+
 	/**
 	 * Represents the 2nd wizard page, where the user selects either an existing
 	 * measuring point for the new monitor or creates a new one.
@@ -50,6 +53,10 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 	 * selected measurements.
 	 */
 	private MeasurementSpecification page4;
+  
+  public AdditionalModelsToMeasuringpointWizardPage page2extra = new AdditionalModelsToMeasuringpointWizardPage();
+
+	public FinalModelsToMeasuringpointWizardPage page2final = new FinalModelsToMeasuringpointWizardPage();
 	
 	public MeasuringPointsWizard() {
 		wizardManager = new WizardModelManager();
@@ -99,6 +106,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 		default:
 			return page1;
 		}
+
 	}
 
 	@Override
@@ -107,6 +115,9 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 		addPage(page2);
 		addPage(page3);
 		addPage(page4);
+		addPage(page2extra);
+		addPage(page2final);
+
 	}
 
 	@Override

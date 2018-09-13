@@ -70,5 +70,10 @@
          </toolbar>
       </menuContribution>
    </extension>
+   <extension
+         id="test"
+         name="test"
+         point="org.palladiosimulator.edp2.editor.visualizations">
+   </extension>
 
 </plugin>
