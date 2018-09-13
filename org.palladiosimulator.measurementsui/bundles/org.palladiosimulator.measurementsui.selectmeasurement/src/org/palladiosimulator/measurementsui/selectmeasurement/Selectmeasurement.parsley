@@ -41,7 +41,6 @@ module tableform {
 
 		}
 		saveResource {
-
 			it.save(options)
 			return true;
 		}
@@ -49,13 +48,14 @@ module tableform {
 
 	featuresProvider{
 		features{
-			MeasurementSpecification -> metricDescription
+			MeasurementSpecification -> metricDescription,triggersSelfAdaptations
 		}
 	}
 
 	featureCaptionProvider{
 		text{
 			MeasurementSpecification : metricDescription -> "Metric Description"
+			MeasurementSpecification : triggersSelfAdaptations -> "trigger self adapting"
 		}
 	}
 
