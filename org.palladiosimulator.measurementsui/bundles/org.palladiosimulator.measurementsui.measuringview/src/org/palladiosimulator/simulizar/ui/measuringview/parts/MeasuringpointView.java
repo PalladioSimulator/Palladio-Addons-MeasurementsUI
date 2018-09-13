@@ -7,13 +7,10 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Persist;
@@ -21,6 +18,8 @@ import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
@@ -42,9 +41,6 @@ import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
 import org.palladiosimulator.measurementsui.parsleyviewer.MonitorTreeViewer;
 import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
-import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 
@@ -61,6 +57,8 @@ public class MeasuringpointView {
 	private MpTreeViewer measuringTreeViewer;
 	private Combo projectsComboDropDown;
 	private DataApplication dataApplication;
+	private Button deleteButton;
+	private Button editButton;
 
 	@Inject
 	private MDirtyable dirty;
@@ -156,7 +154,7 @@ public class MeasuringpointView {
 	private MpTreeViewer createMonitorTreeViewer(Composite parent) {
 		MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent, dirty, commandService, dataApplication);
 		mpTreeViewer.addMouseListener();
-		mpTreeViewer.addSelectionListener(selectionService);
+		addSelectionListener(mpTreeViewer.getViewer());
 		return mpTreeViewer;
 	}
 
@@ -169,8 +167,28 @@ public class MeasuringpointView {
 	 */
 	private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
 		EmptyMpTreeViewer emptyMpTreeViewer = new EmptyMpTreeViewer(parent, dirty, commandService, dataApplication);
-		emptyMpTreeViewer.addSelectionListener(selectionService);
+		addSelectionListener(emptyMpTreeViewer.getViewer());
 		return emptyMpTreeViewer;
+	}
+	
+	private void addSelectionListener(Viewer treeViewer) {
+		treeViewer.addSelectionChangedListener(event -> {
+			IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+			selectionService.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
+			
+			Object selectionObject = selection.getFirstElement();
+			if (selectionObject instanceof MonitorRepository || selectionObject instanceof MeasuringPointRepository) {
+				editButton.setEnabled(false);
+				deleteButton.setEnabled(false);
+			} else {
+				editButton.setEnabled(true);
+				if (selectionObject instanceof ProcessingType) {
+					deleteButton.setEnabled(false);
+				} else {
+					deleteButton.setEnabled(true);
+				}
+			}
+		});
 	}
 
 	/**
@@ -205,13 +223,6 @@ public class MeasuringpointView {
 
 	}
 	
-	private void createEditButton(Composite parent) {
-	    Button editButton = new Button(parent, SWT.PUSH);
-	    editButton.setText("Edit...");
-	    
-
-	}
-	
 	/**
 	 * Creates a Button which opens the Wizard in order to create a measuring point 
 	 * @param parent composite where the button will be placed
@@ -233,10 +244,10 @@ public class MeasuringpointView {
 	 * @param parent composite where the button will be placed
 	 */
 	private void createDeleteButton(Composite parent) {
-		Button deleteMpButton = new Button(parent, SWT.PUSH);
-		deleteMpButton.setText("Delete...");
+		deleteButton = new Button(parent, SWT.PUSH);
+		deleteButton.setText("Delete...");
 		
-		deleteMpButton.addListener(SWT.Selection, e -> {
+		deleteButton.addListener(SWT.Selection, e -> {
 			ResourceEditor resourceEditor = new ResourceEditorImpl();
 			Object selection = selectionService.getSelection();
 			if (selection instanceof EObject) {
@@ -246,7 +257,18 @@ public class MeasuringpointView {
 		});
 	}
 	
-	
+	/**
+	 * Creates a Button which edits selected EObjects
+	 * @param parent composite where the button will be placed
+	 */
+	private void createEditButton(Composite parent) {
+		editButton = new Button(parent, SWT.PUSH);
+		editButton.setText("Edit...");
+		
+		deleteButton.addListener(SWT.Selection, e -> {
+			
+		});
+	}
 
 	/**
 	 * Creates a combobox at the top of the view where the user can select the
