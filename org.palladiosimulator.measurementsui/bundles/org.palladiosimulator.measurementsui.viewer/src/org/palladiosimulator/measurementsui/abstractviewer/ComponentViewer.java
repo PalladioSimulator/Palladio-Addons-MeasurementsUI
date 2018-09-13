@@ -20,7 +20,6 @@ import com.google.inject.Injector;
  */
 public abstract class ComponentViewer {
 	protected Injector injector;
-	protected DataApplication dataApplication;
 	protected Resource resource;
 	protected EditingDomain editingDomain;
 
@@ -32,8 +31,7 @@ public abstract class ComponentViewer {
 	 * @param enableDragDrop  Specifies whether the parsley drag and drop function
 	 * 						  should be used.
 	 */
-	public ComponentViewer(Composite parent, DataApplication dataApplication, boolean enableDragDrop) {
-		this.dataApplication = dataApplication;
+	public ComponentViewer(Composite parent, boolean enableDragDrop) {
 		initInjector();
 		initEditingDomain();
 		initParsley(parent);

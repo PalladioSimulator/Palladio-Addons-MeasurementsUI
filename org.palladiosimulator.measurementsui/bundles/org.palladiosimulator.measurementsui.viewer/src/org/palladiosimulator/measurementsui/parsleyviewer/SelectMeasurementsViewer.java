@@ -4,7 +4,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-
+import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import tableform.TableformInjectorProvider;
 
 /**
@@ -13,15 +14,16 @@ import tableform.TableformInjectorProvider;
  *
  */
 public class SelectMeasurementsViewer extends WizardTableViewer {
-
+	private boolean showUsedMonitor;
 	/**
 	 * 
 	 * @param parent          container where the tree viewer is placed in
 	 * @param dataApplication Connection to the data binding. This is needed in
 	 *                        order to get the repository of the current project.
 	 */
-	public SelectMeasurementsViewer(Composite parent, DataApplication dataApplication) {
-		super(parent, dataApplication);
+	public SelectMeasurementsViewer(Composite parent, WizardModel wizardModel, boolean showUsedMonitor) {
+		super(parent, wizardModel);
+		this.showUsedMonitor = showUsedMonitor;
 	}
 
 	@Override
@@ -31,7 +33,12 @@ public class SelectMeasurementsViewer extends WizardTableViewer {
 
 	@Override
 	protected EObject getModelRepository() {
-		return dataApplication.getModelAccessor().getMonitorRepository().get(0);
+		MetricDescriptionSelectionWizardModel model = (MetricDescriptionSelectionWizardModel) wizardModel;
+		if (showUsedMonitor) {
+			return model.getUsedMetricsMonitor();
+		} else {
+			return model.getUnusedMetricsMonitor();
+		}
 	}
 
 }

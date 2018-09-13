@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
 /**
@@ -17,15 +18,16 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 public abstract class WizardTableViewer extends ComponentViewer {
 	protected TableViewer tableViewer;
 	protected ViewerFactory tableFactory;
-
+	protected WizardModel wizardModel;
 	/**
 	 * 
 	 * @param parent          container where the tree viewer is placed in
 	 * @param dataApplication Connection to the data binding. This is needed in
 	 *                        order to get the repository of the current project.
 	 */
-	protected WizardTableViewer(Composite parent, DataApplication dataApplication) {
-		super(parent, dataApplication, true);
+	protected WizardTableViewer(Composite parent, WizardModel wizardModel) {
+		super(parent, true);
+		this.wizardModel = wizardModel;
 	}
 
 	@Override
