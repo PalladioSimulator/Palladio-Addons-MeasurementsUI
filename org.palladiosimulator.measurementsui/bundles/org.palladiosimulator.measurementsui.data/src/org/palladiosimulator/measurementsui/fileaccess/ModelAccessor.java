@@ -238,7 +238,7 @@ public class ModelAccessor {
         return subsystem;
     }
 
-    public List<MeasuringPointRepository> getMeasuringPointRpository() {
+    public List<MeasuringPointRepository> getMeasuringPointRepository() {
         return measuringPointRepository;
     }
 

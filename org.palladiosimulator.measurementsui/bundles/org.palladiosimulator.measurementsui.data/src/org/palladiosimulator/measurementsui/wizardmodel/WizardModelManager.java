@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
@@ -14,7 +15,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
  */
 public class WizardModelManager {
 	private Monitor monitor;
-	
+
 	public WizardModelManager() {
 		monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 	}
@@ -34,11 +35,11 @@ public class WizardModelManager {
 	public WizardModel getWizardModel(WizardModelType wizardModel) {
 		switch (wizardModel) {
 			case MONITOR_CREATION:
-				return new MonitorCreationWizardModel();
+				return new MonitorCreationWizardModel(monitor);
 			case MEASURING_POINT_SELECTION:
-				return new MeasuringPointSelectionWizardModel();
+				return new MeasuringPointSelectionWizardModel(monitor);
 			case METRIC_DESCRIPTION_SELECTION:
-				return new MetricDescriptionSelectionWizardModel();
+				return new MetricDescriptionSelectionWizardModel(monitor);
 			case PROCESSING_TYPE:
 				return new ProcessingTypeSelectionWizardModel();
 			default:

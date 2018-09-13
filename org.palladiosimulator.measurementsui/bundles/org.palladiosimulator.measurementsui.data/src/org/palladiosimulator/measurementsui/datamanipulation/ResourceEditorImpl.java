@@ -2,6 +2,9 @@ package org.palladiosimulator.measurementsui.datamanipulation;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
+import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
@@ -15,6 +18,15 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 public class ResourceEditorImpl implements ResourceEditor {
 
     private final DataEditor editor = new DataEditor();
+    
+    private static ResourceEditorImpl instance;
+
+    public static ResourceEditorImpl getInstance() {
+        if (ResourceEditorImpl.instance == null) {
+        	ResourceEditorImpl.instance = new ResourceEditorImpl();
+        }
+        return ResourceEditorImpl.instance;
+    }
 
     /* (non-Javadoc)
      * @see org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor#setResourceName(org.eclipse.emf.ecore.EObject, java.lang.String)

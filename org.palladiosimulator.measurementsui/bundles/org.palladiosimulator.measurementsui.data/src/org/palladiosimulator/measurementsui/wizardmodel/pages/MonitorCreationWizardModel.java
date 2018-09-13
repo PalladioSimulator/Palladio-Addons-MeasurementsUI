@@ -1,24 +1,58 @@
 package org.palladiosimulator.measurementsui.wizardmodel.pages;
 
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
+import org.palladiosimulator.monitorrepository.Monitor;
 
 public class MonitorCreationWizardModel implements WizardModel{
+	
+	private final String createMonitorInfoText = "A Monitor specifies which Element of your Models should be analyzed during a simulation run. In this page"
+			+ "you can give your Monitor an appropiate name and set it activated/not activated. Activated Monitors will be simulator during a SimuLizar run, not activated ones will be ignored. ";
+	private final String editMonitorInfoText = "Edit your Monitor name and set him activated/not activated.";
+	
+	private final String createMonitorTitel = "Create Monitor";
+	private final String editMonitorTitel = "Edit Monitor";
+	
+	private Monitor monitor;
+	
+	 public MonitorCreationWizardModel(Monitor monitor) {
+		 this.monitor = monitor;
+		
+	}
+	 
+	 public Monitor getMonitor() {
+		 return monitor;
+	 }
 
 	@Override
 	public boolean canFinish() {
-		// TODO Auto-generated method stub
+		if(this.monitor.getMonitorRepository() != null && this.monitor.getMeasuringPoint() != null) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public String getInfoText() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.monitor.getMonitorRepository() != null) {
+			return editMonitorInfoText;
+		}
+		
+		return createMonitorInfoText;
 	}
 
 	@Override
 	public void nextStep() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getTitleText() {
+		if(this.monitor.getMonitorRepository() != null) {
+			return createMonitorTitel;
+		}
+		
+		return editMonitorTitel;
 		
 	}
 

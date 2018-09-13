@@ -40,7 +40,7 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
 
 	@Override
 	protected EObject getModelRepository() {
-		return dataApplication.getModelAccessor().getMeasuringPointRpository().get(0);
+		return dataApplication.getModelAccessor().getMeasuringPointRepository().get(0);
 	}
 
 	@Override

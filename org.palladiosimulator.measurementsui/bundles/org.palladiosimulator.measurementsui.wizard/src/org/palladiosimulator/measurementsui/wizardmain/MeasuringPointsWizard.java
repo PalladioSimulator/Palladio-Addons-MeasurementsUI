@@ -2,6 +2,7 @@ package org.palladiosimulator.measurementsui.wizardmain;
 
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasurementSpecification;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.SelectMeasurements;
+import org.palladiosimulator.measurementsui.wizardmodel.WizardModelManager;
 import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.AdditionalModelsToMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.ChooseMeasuringpointWizardPage;
