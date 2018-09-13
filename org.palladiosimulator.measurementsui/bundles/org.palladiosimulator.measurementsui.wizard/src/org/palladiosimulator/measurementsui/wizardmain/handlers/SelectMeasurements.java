@@ -79,7 +79,8 @@ public class SelectMeasurements extends WizardPage {
 		composite1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		composite1.setLayoutData(new GridData(400, 400));
 		composite1.setLayout(fill);
-		SelectMeasurementsViewer viewer1 = new SelectMeasurementsViewer(composite1, metricDescriptionSelectionWizardModel);
+		SelectMeasurementsViewer viewer1 = new SelectMeasurementsViewer(composite1,
+				metricDescriptionSelectionWizardModel);
 		TableViewer tableViewer = (TableViewer) viewer1.getViewer();
 		tableViewer.setLabelProvider(new ITableLabelProvider() {
 
@@ -124,9 +125,9 @@ public class SelectMeasurements extends WizardPage {
 				return false;
 			}
 		});
-		
+
 		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			
+
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 
@@ -144,17 +145,7 @@ public class SelectMeasurements extends WizardPage {
 		rightOne.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				if (tableViewer.getTable().isSelected(getMessageType()) == true) {
-					// IStructuredSelection selection = tableViewer.getStructuredSelection();
-					// Object firstElement = selection.getFirstElement();
-					// MeasurementSpecification measurment = (MeasurementSpecification)
-					// firstElement;
-					// String measurmentname = measurment.getDescription();
-					// System.out.println(measurmentname);
-					// System.out.println("selected");
-				} else {
-					System.out.println("nothing has been selected");
-				}
+				metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
 			}
 		});
 		Button rightAll = new Button(composite2, SWT.NONE);
@@ -163,20 +154,17 @@ public class SelectMeasurements extends WizardPage {
 		rightAll.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				System.out.println("right All ");
-
+				IStructuredSelection selection = tableViewer.getStructuredSelection();
+				Object firstElement = selection.getFirstElement();
+				MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
+				metricDescriptionSelectionWizardModel.addMetricDescription(measurment.getMetricDescription());
 			}
 		});
+		
 		Button leftAll = new Button(composite2, SWT.NONE);
 		leftAll.setBounds(500, 250, 150, 250);
 		leftAll.setText("<");
-		leftAll.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				System.out.println("left All ");
-			}
-
-		});
+		
 		Button leftOne = new Button(composite2, SWT.NONE);
 		leftOne.setBounds(500, 200, 150, 250);
 		leftOne.setText("<--");
@@ -184,7 +172,7 @@ public class SelectMeasurements extends WizardPage {
 
 			@Override
 			public void handleEvent(Event event) {
-				System.out.println("left One ");
+				metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
 			}
 
 		});
@@ -193,8 +181,10 @@ public class SelectMeasurements extends WizardPage {
 		composite3.setLayout(new GridLayout(2, true));
 		composite3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		composite3.setLayout(fill);
-		EmptySelectMeasurementsViewer viewer2 = new EmptySelectMeasurementsViewer(composite3, metricDescriptionSelectionWizardModel);
-		//SelectMeasurementsViewer viewer2 = new SelectMeasurementsViewer(composite3, metricDescriptionSelectionWizardModel, false);
+		EmptySelectMeasurementsViewer viewer2 = new EmptySelectMeasurementsViewer(composite3,
+				metricDescriptionSelectionWizardModel);
+		// SelectMeasurementsViewer viewer2 = new SelectMeasurementsViewer(composite3,
+		// metricDescriptionSelectionWizardModel, false);
 		TableViewer tableViewer1 = (TableViewer) viewer2.getViewer();
 		tableViewer1.setLabelProvider(new ITableLabelProvider() {
 
@@ -238,8 +228,20 @@ public class SelectMeasurements extends WizardPage {
 				return false;
 			}
 		});
+		
+		leftAll.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				IStructuredSelection selection = tableViewer1.getStructuredSelection();
+				Object firstElement = selection.getFirstElement();
+				MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
+				metricDescriptionSelectionWizardModel.removeMetricDescription(measurment.getMetricDescription());
+			}
+
+		});
+		
 		tableViewer1.getTable().getColumn(1).addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				IStructuredSelection selection = tableViewer1.getStructuredSelection();
@@ -250,11 +252,11 @@ public class SelectMeasurements extends WizardPage {
 					specification.setTriggersSelfAdaptations(true);
 				}
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 
