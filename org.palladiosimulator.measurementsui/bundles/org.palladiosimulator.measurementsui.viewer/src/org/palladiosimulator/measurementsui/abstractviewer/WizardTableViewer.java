@@ -26,7 +26,7 @@ public abstract class WizardTableViewer extends ComponentViewer {
 	 *                        order to get the repository of the current project.
 	 */
 	protected WizardTableViewer(Composite parent, WizardModel wizardModel) {
-		super(parent, true);
+		super(parent, false);
 		this.wizardModel = wizardModel;
 		initParsley(parent);
 	}

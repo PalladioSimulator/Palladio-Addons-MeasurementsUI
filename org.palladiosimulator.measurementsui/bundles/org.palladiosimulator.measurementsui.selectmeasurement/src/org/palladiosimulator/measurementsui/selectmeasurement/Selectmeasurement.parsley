@@ -14,53 +14,44 @@ module tableform {
 			viewclass SelectmeasurementSaveableTableView
 		}
 	}
-	
 	configurator {
 		eClass {
 			SelectmeasurementSaveableTableView -> {
 				return MonitorRepositoryPackage.eINSTANCE.measurementSpecification
-
 			}
 		}
 		resourceURI {
 			SelectmeasurementSaveableTableView -> {
-
 				return URI.createFileURI("D:\\EnPro\\Pets\\Pets.com\\PetsMonitor.monitorrepository");
 			}
 		}
-
 	}
-
+	
 	resourceManager {
-		val monitorRepositoryPackage = MonitorRepositoryPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION;
-		val monitorRepositoryFactory = this.monitorRepositoryPackage.class
-		val Map<Object, Object> options = new HashMap<Object, Object>();
+		// val monitorRepositoryPackage = MonitorRepositoryPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION;
+		// val monitorRepositoryFactory = this.monitorRepositoryPackage.class
+		// val Map<Object, Object> options = new HashMap<Object, Object>();
 		initializeResource {
 			it.getContents += MonitorRepositoryFactory.eINSTANCE;
-			options.put(XMLResource.OPTION_ENCODING, "UTF-8");
-
+		// options.put(XMLResource.OPTION_ENCODING, "UTF-8");
 		}
 		saveResource {
-
-			it.save(options)
+			it.save(null)
 			return true;
 		}
 	}
-
 	featuresProvider{
 		features{
 			MeasurementSpecification -> metricDescription
 		}
 	}
-
 	featureCaptionProvider{
 		text{
 			MeasurementSpecification : metricDescription -> "Metric Description"
+			//MeasurementSpecification : triggersSelfAdaptations -> "trigger self adapting"
 		}
+		
 	}
+	
 
 }
-
-
-
-
