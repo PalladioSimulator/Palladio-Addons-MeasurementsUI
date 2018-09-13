@@ -6,12 +6,14 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Table;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.parsleyviewer.SelectMeasurementsViewer;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 
 public class SelectMeasurements extends WizardPage {
     private Table table;
     private Table table_1;
     private DataApplication dataApplication;
-    public SelectMeasurements() {
+    
+    public SelectMeasurements(MetricDescriptionSelectionWizardModel metricDescriptionWizardModel) {
     	super("wizardPage");
     	initializeApplication();
         setTitle("HDD Monitor: Select Measurements");

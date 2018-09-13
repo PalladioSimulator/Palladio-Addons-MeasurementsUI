@@ -16,10 +16,13 @@ import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.fileaccess.SecondPageWizardModel;
 import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
+import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsContentProvider;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsLabelProvider;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.subsystem.SubSystem;
+
 
 /**
  * @author Domas Mikalkinas
@@ -27,6 +30,7 @@ import org.palladiosimulator.pcm.subsystem.SubSystem;
  */
 
 public class ChooseMeasuringpointWizardPage extends WizardPage {
+
 	MpTreeViewer emptyMpTreeViewer;
 	TreeViewer createTreeViewer;
 	SecondPageWizardModel spwm = SecondPageWizardModel.getInstance();
@@ -39,11 +43,12 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 	@Inject
 	ECommandService commandService;
 
-	public ChooseMeasuringpointWizardPage() {
-		super("Second Page");
-		setTitle("Select Measuring Point");
-		setDescription("description");
-	}
+  public ChooseMeasuringpointWizardPage(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+       super("Second Page");
+       setTitle("Select Measuring Point");
+       setDescription("description");
+   }
+    
 
 	/**
 	 * 
@@ -145,4 +150,5 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 		}
 		return validatedNextPressed;
 	}
+
 }

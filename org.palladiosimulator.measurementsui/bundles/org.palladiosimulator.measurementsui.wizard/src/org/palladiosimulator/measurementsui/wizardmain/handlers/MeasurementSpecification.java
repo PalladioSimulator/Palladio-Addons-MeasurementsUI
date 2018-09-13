@@ -11,12 +11,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 
 public class MeasurementSpecification extends WizardPage {
     private Table table;
 
-    public MeasurementSpecification() {
-        super("wizardPage2");
+    public MeasurementSpecification(ProcessingTypeSelectionWizardModel processingTypeWizardModel) {
+        super("wizardPage");
         setTitle("Measurement Specification");
         setDescription("Specify properties of measurements");
     }

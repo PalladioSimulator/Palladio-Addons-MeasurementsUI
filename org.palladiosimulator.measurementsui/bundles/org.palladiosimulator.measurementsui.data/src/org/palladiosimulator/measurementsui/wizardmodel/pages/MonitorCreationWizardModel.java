@@ -5,12 +5,12 @@ import org.palladiosimulator.monitorrepository.Monitor;
 
 public class MonitorCreationWizardModel implements WizardModel{
 	
-	private final String createMonitorInfoText = "A Monitor specifies which Element of your Models should be analyzed during a simulation run. In this page"
-			+ "you can give your Monitor an appropiate name and set it activated/not activated. Activated Monitors will be simulator during a SimuLizar run, not activated ones will be ignored. ";
-	private final String editMonitorInfoText = "Edit your Monitor name and set him activated/not activated.";
+	private static final String createMonitorInfoText = "A Monitor specifies which Element of your Models should be analyzed during a simulation run.\n In this page"
+			+ "you can give your Monitor an appropiate name and set it activated/not activated.\n Activated Monitors will be simulator during a SimuLizar run, not activated ones will be ignored. ";
+	private static final String editMonitorInfoText = "Edit your Monitor name and set him activated/not activated.";
 	
-	private final String createMonitorTitel = "Create Monitor";
-	private final String editMonitorTitel = "Edit Monitor";
+	private static final String createMonitorTitel = "Create Monitor";
+	private static final String editMonitorTitel = "Edit Monitor";
 	
 	private Monitor monitor;
 	
@@ -49,10 +49,10 @@ public class MonitorCreationWizardModel implements WizardModel{
 	@Override
 	public String getTitleText() {
 		if(this.monitor.getMonitorRepository() != null) {
-			return createMonitorTitel;
+			return editMonitorTitel;
 		}
 		
-		return editMonitorTitel;
+		return createMonitorTitel;
 		
 	}
 
