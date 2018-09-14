@@ -192,11 +192,11 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     public void addMeasuringPointToRepository(MeasuringPoint measuringPoint) {
         MeasuringPointRepository measuringPointRepository = DataApplication.getInstance().getModelAccessor()
                 .getMeasuringPointRepository().get(0);
-        ResourceEditorImpl.getInstance().addMeasuringPoint(measuringPointRepository, measuringPoint);
+        ResourceEditorImpl.getInstance().addMeasuringPointToRepository(measuringPointRepository, measuringPoint);
     }
 
     public void setMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
-        ResourceEditorImpl.getInstance().setMeasuringPoint(this.monitor, measuringPoint);
+        ResourceEditorImpl.getInstance().setMeasuringPointToMonitor(this.monitor, measuringPoint);
 
     }
 
