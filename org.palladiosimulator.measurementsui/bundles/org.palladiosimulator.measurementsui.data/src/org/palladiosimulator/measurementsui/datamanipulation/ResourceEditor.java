@@ -37,7 +37,7 @@ public interface ResourceEditor {
 	 * @param monitor
 	 * @param mp
 	 */
-	void setMeasuringPoint(EObject monitor, MeasuringPoint mp);
+	void setMeasuringPointToMonitor(EObject monitor, MeasuringPoint mp);
 
 	/**
 	 * alternative method to add measuring points, if it is not possible with
@@ -46,7 +46,7 @@ public interface ResourceEditor {
 	 * @param mpRep
 	 * @param mp
 	 */
-	void addMeasuringPoint(EObject mpRep, EObject mp);
+	void addMeasuringPointToRepository(EObject mpRep, EObject mp);
 
 	/**
 	 * Delete the passed EObject

@@ -49,7 +49,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 
     private final String createMeasuringPointInfoText = "Select the element of your Models which should be monitored during a simulation run. ";
     private final String editMeasuringPointInfoText = "Select a different measuring Point.";
-
+  
     private final String createMeasuringPointTitel = "Create Measuring Point";
     private final String editMeasuringPointTitel = "Edit Measuring Point";
 
@@ -375,5 +375,4 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         return activeresources2;
 
     }
-
 }

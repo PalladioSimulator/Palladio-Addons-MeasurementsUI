@@ -56,7 +56,7 @@ public class ResourceEditorImpl implements ResourceEditor {
      * @see org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor#setMeasuringPoint(org.eclipse.emf.ecore.EObject, org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint)
      */
     @Override
-    public void setMeasuringPoint(EObject monitor, MeasuringPoint mp) {
+    public void setMeasuringPointToMonitor(EObject monitor, MeasuringPoint mp) {
         editor.editResource(monitor, "measuringPoint", mp);
     }
 
@@ -64,8 +64,8 @@ public class ResourceEditorImpl implements ResourceEditor {
      * @see org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor#addMeasuringPoint(org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EObject)
      */
     @Override
-    public void addMeasuringPoint(EObject mpRep, EObject mp) {
-        editor.editResource(mpRep, "measuringPoints", mp);
+    public void addMeasuringPointToRepository(EObject mpRep, EObject mp) {
+        editor.addResource(mpRep, "measuringPoints", mp);
     }
 
 	@Override
