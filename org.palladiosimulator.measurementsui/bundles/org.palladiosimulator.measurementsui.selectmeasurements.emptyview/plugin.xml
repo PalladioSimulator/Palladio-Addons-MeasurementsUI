@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.emf.parsley"
+            class="org.palladio.simulator.measurementsui.selectmeasurements.emptyview.EmptyviewExecutableExtensionFactory:org.palladio.simulator.measurementsui.selectmeasurements.emptyview.EmptyviewOnSelectionTableView"
+            id="org.palladio.simulator.measurementsui.selectmeasurements.emptyview"
+            name="Emptyview"
+            restorable="true">
+      </view>
+   </extension>
+</plugin>

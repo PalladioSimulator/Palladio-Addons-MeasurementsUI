@@ -23,13 +23,16 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.ui.model.workbench,
  org.eclipse.e4.ui.workbench,
  org.eclipse.emf.ecore,
- org.eclipse.emf.edit.ui
+ org.eclipse.emf.edit.ui,
+ org.palladiosimulator.measurementsui.selectmeasurements.emptyview
 Import-Package: emptymeasuringpoints,
  monitorrepositoryview,
  org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.dataprovider,
  org.palladiosimulator.measurementsui.fileaccess,
  org.palladiosimulator.measurementsui.monitorrepositoryview,
+ org.palladiosimulator.measurementsui.wizardmodel,
+ org.palladiosimulator.measurementsui.wizardmodel.pages,
  tableform
 Export-Package: org.palladiosimulator.measurementsui.abstractviewer,
  org.palladiosimulator.measurementsui.parsleyviewer
