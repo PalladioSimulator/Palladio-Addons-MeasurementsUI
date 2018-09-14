@@ -49,6 +49,10 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 		return unusedMetricsMonitor;
 	}
 	
+	public Monitor getUsedMetricsMonitor() {
+		return usedMetricsMonitor;
+	}
+	
 	public void addMetricDescription(MetricDescription selectedMetricDescription) {
 		provider.moveMetricSpecificationBetweenMonitors(selectedMetricDescription, unusedMetricsMonitor, usedMetricsMonitor);
 	}

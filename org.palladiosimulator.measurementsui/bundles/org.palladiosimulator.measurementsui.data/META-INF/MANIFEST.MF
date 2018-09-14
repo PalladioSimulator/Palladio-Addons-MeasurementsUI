@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.pcm;bundle-version="4.1.0",
  org.palladiosimulator.monitorrepository,
  org.eclipse.sirius;bundle-version="5.1.1",
- org.eclipse.emf.transaction
+ org.eclipse.emf.transaction,
+ org.palladiosimulator.pcm.edp2.measuringpoint
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: HelloWorldMenu
 Bundle-ActivationPolicy: lazy

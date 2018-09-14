@@ -12,6 +12,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
+import org.palladiosimulator.measurementsui.wizardpages.AdditionalModelsToMeasuringpointWizardPage;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.subsystem.SubSystem;
 
 public class MeasurementSpecification extends WizardPage {
     private Table table;
@@ -65,6 +68,11 @@ public class MeasurementSpecification extends WizardPage {
         
         EditingSupport property2EditingSupport = new Property2EditingSupport(property2Column.getViewer(), tableViewer);
         property2Column.setEditingSupport(property2EditingSupport);
+    }
+    
+    /** @override */
+    public boolean canFlipToNextPage() {
+        return false;
     }
 
 }

@@ -20,7 +20,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
 
 	protected MDirtyable dirty;
 	protected ECommandService commandService;
-
+	protected DataApplication dataApplication;
 	/**
 	 * 
 	 * @param parent         container where the view is embedded
@@ -32,8 +32,11 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
 	 *                       should be used.
 	 */
 	protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-			DataApplication application, boolean enableDragDrop) {
-		super(parent, application, enableDragDrop);
+			DataApplication dataApplication, boolean enableDragDrop) {
+		super(parent, enableDragDrop);
+		this.dataApplication = dataApplication;
+		initParsley(parent);
+		initContextMenu();
 		this.dirty = dirty;
 		this.commandService = commandService;
 	}
