@@ -22,9 +22,10 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.graphics.Image;
 
+
 /**
  * This class handels the GUI part of the third wizard page for selecting measurements.
- * @author mehme
+ * @author mehmet
  *
  */
 public class SelectMeasurementsWizardPage extends WizardPage {
@@ -69,11 +70,14 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		container.setLayout(new GridLayout(3, true));
 		container.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, true));
 		Composite composite1 = new Composite(container, SWT.NONE);
-
+		FillLayout fillLayout = new FillLayout();
+		fillLayout.marginHeight = 20;
+		fillLayout.marginWidth = 20;
+		fillLayout.spacing = 15;
 		composite1.setLayoutData(new GridLayout(1, false));
 		composite1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		composite1.setLayoutData(new GridData(400, 400));
-		composite1.setLayout(fill);
+		composite1.setLayoutData(new GridData(500, 500));
+		composite1.setLayout(fillLayout);
 		SelectMeasurementsViewer viewer1 = new SelectMeasurementsViewer(composite1,
 				metricDescriptionSelectionWizardModel);
 		TableViewer tableViewer = (TableViewer) viewer1.getViewer();
@@ -114,11 +118,21 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		});
 
 		Composite composite2 = new Composite(container, SWT.NONE);
-		composite2.setLayout(new GridLayout(1, true));
+		FillLayout fillLayout2 = new FillLayout();
+		composite2.setLayout(new FillLayout(SWT.VERTICAL));
+		fillLayout2.type = SWT.VERTICAL;
+		fillLayout2.marginHeight= 40;
+		fillLayout2.marginWidth = 80;
+		fillLayout2.spacing = 10;
+		composite2.setLayout(new GridLayout(3, true));
 		composite2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		Button rightOne = new Button(composite2, SWT.NONE);
-		rightOne.setBounds(500, 100, 150, 250);
+		composite2.setLayoutData(new GridData(350,350));
+		Button rightOne = new Button(composite2, SWT.PUSH);
+		rightOne.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,true,true));
+		rightOne.setBounds(500, 150, 150, 250);
 		rightOne.setText("-->");
+		composite2.setBounds(100,50,300,30);
+		composite2.setLayout(fillLayout2);
 		rightOne.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
