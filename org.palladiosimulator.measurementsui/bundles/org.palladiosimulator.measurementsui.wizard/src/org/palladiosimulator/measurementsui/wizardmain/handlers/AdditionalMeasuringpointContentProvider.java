@@ -2,16 +2,22 @@ package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
+import org.palladiosimulator.pcm.core.entity.NamedElement;
 
+/**
+ * 
+ * @author Domas Mikalkinas
+ *
+ */
 public class AdditionalMeasuringpointContentProvider implements ITreeContentProvider {
-    MeasuringPointSelectionWizardModel sq=MeasuringPointSelectionWizardModel.getInstance();
+	MeasuringPointSelectionWizardModel sq = MeasuringPointSelectionWizardModel.getInstance();
 	Object[] objects;
-	
+
 	@Override
 	public Object[] getElements(Object inputElement) {
 
-			objects=sq.getAllAdditionalModels();
-			return objects;
+		objects = sq.getAllAdditionalModels();
+		return objects;
 	}
 
 	@Override
@@ -32,7 +38,4 @@ public class AdditionalMeasuringpointContentProvider implements ITreeContentProv
 		return false;
 	}
 
-	public Object[] getObjects() {
-		return objects;
-	}
 }
