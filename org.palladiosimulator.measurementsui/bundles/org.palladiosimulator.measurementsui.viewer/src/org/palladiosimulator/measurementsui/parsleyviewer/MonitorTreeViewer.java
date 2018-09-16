@@ -3,6 +3,7 @@ package org.palladiosimulator.measurementsui.parsleyviewer;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
@@ -33,8 +34,9 @@ public class MonitorTreeViewer extends MpTreeViewer {
 			DataApplication application) {
 		super(parent, dirty, commandService, application, false);
 		int operations = DND.DROP_COPY| DND.DROP_MOVE;
-        Transfer[] transferTypes = new Transfer[]{TextTransfer.getInstance()};
-        treeViewer.addDropSupport(operations, transferTypes , new MeasuringpointDropListener(treeViewer));
+		final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+        Transfer[] transferTypes = new Transfer[]{transfer};
+        treeViewer.addDropSupport(operations, transferTypes , new MeasuringpointDropListener(this));
 	}
 
 

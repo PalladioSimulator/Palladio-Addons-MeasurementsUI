@@ -58,7 +58,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 	private final String editMeasuringPointTitel = "Edit Measuring Point";
 
 	private Monitor monitor;
-
+	private boolean isEditing;
 	private static MeasuringPointSelectionWizardModel instance;
 	MonitorRepositoryFactory mf = new MonitorRepositoryFactoryImpl();
 	ResourceEditorImpl editor = new ResourceEditorImpl();
@@ -81,9 +81,10 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 		instance = model;
 	}
 
-	public MeasuringPointSelectionWizardModel(Monitor monitor) {
+	public MeasuringPointSelectionWizardModel(Monitor monitor, boolean isEditing) {
 		this.monitor = monitor;
-		
+		this.isEditing = isEditing;
+
 	}
 
 	private void setMeasuringPointDependingOnEditMode(Monitor monitor, MeasuringPoint measuringPoint, boolean isEditing) {
