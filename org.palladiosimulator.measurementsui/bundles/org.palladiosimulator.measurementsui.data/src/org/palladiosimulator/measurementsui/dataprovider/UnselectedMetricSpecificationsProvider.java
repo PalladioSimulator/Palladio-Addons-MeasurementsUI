@@ -2,6 +2,7 @@ package org.palladiosimulator.measurementsui.dataprovider;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -75,30 +76,26 @@ public class UnselectedMetricSpecificationsProvider {
     }
 
     /**
-     * Moves the selected MetricDescription from one Monitor to the other. Needed for implementation
+     * Moves the selected Measurement Specification from one Monitor to the other. Needed for implementation
      * of Left/Right Buttons in Wizard Page 3
      * 
      * @param selectedMetricDescription
      * @param sendingMonitor
      * @param receivingMonitor
      */
-    public void moveMetricSpecificationBetweenMonitors(MetricDescription selectedMetricDescription,
+    public void moveMeasurementSpecificationsBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification,
             Monitor sendingMonitor, Monitor receivingMonitor) {
-        for (MeasurementSpecification mSpec : sendingMonitor.getMeasurementSpecifications()) {
-            if (mSpec.getMetricDescription().equals(selectedMetricDescription)) {
-                receivingMonitor.getMeasurementSpecifications().add(mSpec);
-            }
-        }
+    	receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
     }
 
     /**
-     * Moves all Metric Descriptions from one Monitor to another. Needed for the double Arrow (move
+     * Moves all Measurement Specifications from one Monitor to another. Needed for the double Arrow (move
      * All) in the 3rd Wizard Page
      * 
      * @param sendingMonitor
      * @param receivingMonitor
      */
-    public void moveAllMetricSpecificationsBetweenMonitors(Monitor sendingMonitor, Monitor receivingMonitor) {
+    public void moveAllMeasurementSpecificationsBetweenMonitors(Monitor sendingMonitor, Monitor receivingMonitor) {
         receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
     }
 

@@ -3,6 +3,7 @@ package org.palladiosimulator.measurementsui.wizardmodel.pages;
 import org.palladiosimulator.measurementsui.dataprovider.UnselectedMetricSpecificationsProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
@@ -53,20 +54,20 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 		return usedMetricsMonitor;
 	}
 	
-	public void addMetricDescription(MetricDescription selectedMetricDescription) {
-		provider.moveMetricSpecificationBetweenMonitors(selectedMetricDescription, unusedMetricsMonitor, usedMetricsMonitor);
+	public void addMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
+		provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, unusedMetricsMonitor, usedMetricsMonitor);
 	}
 	
-	public void removeMetricDescription(MetricDescription selectedMetricDescription) {
-		provider.moveMetricSpecificationBetweenMonitors(selectedMetricDescription, usedMetricsMonitor, unusedMetricsMonitor);
+	public void removeMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
+		provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, usedMetricsMonitor, unusedMetricsMonitor);
 	}
 	
 	public void addAllMetricDescriptions() {
-		provider.moveAllMetricSpecificationsBetweenMonitors(unusedMetricsMonitor, usedMetricsMonitor);
+		provider.moveAllMeasurementSpecificationsBetweenMonitors(unusedMetricsMonitor, usedMetricsMonitor);
 	}
 	
 	public void removeAllMetricDescriptions() {
-		provider.moveAllMetricSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor);
+		provider.moveAllMeasurementSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor);
 	}
 	
 	public void addSuggestions() {

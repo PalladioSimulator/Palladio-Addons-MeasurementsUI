@@ -37,11 +37,13 @@ public class WizardModelManager {
     }
 
     public void finish() {
-        MeasuringPoint finalMP = monitor.getMeasuringPoint();
-        // TODO: Have to see if we need to use Commands or not.
-        monitor.setMeasuringPoint(finalMP);
+    	Monitor newMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+    	editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), newMonitor);
+//        MeasuringPoint finalMP = monitor.getMeasuringPoint();
+//        // TODO: Have to see if we need to use Commands or not.
+//        monitor.setMeasuringPoint(finalMP);
         editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), monitor);
-        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0), finalMP);
+//        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0), finalMP);
     }
 
     public WizardModel getWizardModel(WizardModelType wizardModel) {
