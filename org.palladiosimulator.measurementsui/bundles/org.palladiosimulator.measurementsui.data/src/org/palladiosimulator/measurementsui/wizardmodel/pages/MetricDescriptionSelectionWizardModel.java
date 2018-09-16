@@ -26,6 +26,7 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 	public MetricDescriptionSelectionWizardModel(Monitor monitor, boolean isEditing) {
 		this.provider = new UnselectedMetricSpecificationsProvider();
 		this.usedMetricsMonitor = monitor;
+		this.isEditing = isEditing;
 		this.unusedMetricsMonitor = provider.createMonitorWithMissingMetricDescriptions(usedMetricsMonitor);
 	}
 
@@ -61,7 +62,7 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 	}
 
 	public void removeMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-		provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, unusedMetricsMonitor,
+		provider.removeMeasurementSpecificationBetweenMonitors(selectedMeasurementSpecification, unusedMetricsMonitor,
 				isEditing);
 	}
 

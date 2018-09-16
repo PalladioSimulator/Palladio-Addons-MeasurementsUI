@@ -98,6 +98,15 @@ public class UnselectedMetricSpecificationsProvider {
 			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
 		}
 	}
+	
+	public void removeMeasurementSpecificationBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification, Monitor receivingMonitor, boolean isInEditMode) {
+		if (isInEditMode) {
+			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
+			editor.deleteResource(selectedMeasurementSpecification);
+		}else {
+			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
+		}
+	}
 
 	/**
 	 * Moves all Measurement Specifications from one Monitor to another. Needed for
