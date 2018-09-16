@@ -101,8 +101,9 @@ public class UnselectedMetricSpecificationsProvider {
 	
 	public void removeMeasurementSpecificationBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification, Monitor receivingMonitor, boolean isInEditMode) {
 		if (isInEditMode) {
-			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
+
 			editor.deleteResource(selectedMeasurementSpecification);
+			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
 		}else {
 			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
 		}

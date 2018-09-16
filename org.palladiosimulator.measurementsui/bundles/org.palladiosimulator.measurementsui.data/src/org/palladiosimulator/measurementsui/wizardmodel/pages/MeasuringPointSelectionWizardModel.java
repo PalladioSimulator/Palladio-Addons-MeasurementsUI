@@ -217,7 +217,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 			mp.setStringRepresentation(((UsageScenario) model).getEntityName());
 			mp.setResourceURIRepresentation(
 					((UsageScenario) model).eResource().getURI().toString() + "#" + ((UsageScenario) model).getId());
-			monitor.setMeasuringPoint(mp);
+			setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
 
 		}
 		java.lang.System.out.println("Monitor " + monitor + "hat MP " + monitor.getMeasuringPoint());

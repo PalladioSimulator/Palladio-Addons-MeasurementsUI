@@ -29,11 +29,13 @@ public class WizardModelManager {
 		monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		this.dataApp = DataApplication.getInstance();
 		this.editor = new ResourceEditorImpl();
-		isEditing = true;
 	}
 
 	public WizardModelManager(Monitor monitor) {
 		this.monitor = monitor;
+		this.dataApp = DataApplication.getInstance();
+		this.editor = new ResourceEditorImpl();
+		isEditing = true;
 	}
 
 	public void cancel() {
