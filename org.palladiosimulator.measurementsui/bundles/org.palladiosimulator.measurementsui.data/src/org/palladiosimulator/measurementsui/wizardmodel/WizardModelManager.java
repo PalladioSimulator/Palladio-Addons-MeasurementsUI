@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
+import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -43,12 +44,6 @@ public class WizardModelManager {
 		editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
 				measuringPoint);
 		editor.setMeasuringPointToMonitor(monitor, measuringPoint);
-		// MeasuringPoint finalMP = monitor.getMeasuringPoint();
-		// // TODO: Have to see if we need to use Commands or not.
-		// monitor.setMeasuringPoint(finalMP);
-		// editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0),
-		// monitor);
-
 
 	}
 
