@@ -24,7 +24,8 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.ui.workbench,
  org.eclipse.emf.ecore,
  org.eclipse.emf.edit.ui,
- org.palladiosimulator.measurementsui.selectmeasurements.emptyview
+ org.palladiosimulator.measurementsui.selectmeasurements.emptyview,
+ org.palladiosimulator.edp2
 Import-Package: emptymeasuringpoints,
  monitorrepositoryview,
  org.palladiosimulator.measurementsui.datamanipulation,

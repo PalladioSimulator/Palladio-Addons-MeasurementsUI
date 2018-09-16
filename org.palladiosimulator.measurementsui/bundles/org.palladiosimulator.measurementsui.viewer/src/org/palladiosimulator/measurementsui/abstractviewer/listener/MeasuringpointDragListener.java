@@ -1,38 +1,24 @@
 package org.palladiosimulator.measurementsui.abstractviewer.listener;
 
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.dnd.DragSourceAdapter;
 import org.eclipse.swt.dnd.DragSourceEvent;
-import org.eclipse.swt.dnd.DragSourceListener;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 
-public class MeasuringpointDragListener implements DragSourceListener{
+public class MeasuringpointDragListener extends DragSourceAdapter {
 	private TreeViewer viewer;
-	
-	public MeasuringpointDragListener(TreeViewer viewer) {
+	private LocalSelectionTransfer transfer;
+	public MeasuringpointDragListener(TreeViewer viewer, LocalSelectionTransfer transfer) {
 		this.viewer = viewer;
+		this.transfer = transfer;
 	}
-	@Override
-	public void dragStart(DragSourceEvent event) {
-	}
-
 	@Override
 	public void dragSetData(DragSourceEvent event) {
 		IStructuredSelection selection = viewer.getStructuredSelection();
-		Object firstElement = selection.getFirstElement();
-		if (firstElement instanceof EObject && !(firstElement instanceof MeasuringPointRepository)) {
-			event.data = firstElement;
-			if (TextTransfer.getInstance().isSupportedType(event.dataType)) {
-	            event.data = firstElement.toString();
-	        }
-		}
-		
-	}
-
-	@Override
-	public void dragFinished(DragSourceEvent event) {
+		transfer.setSelection(selection);
 	}
 
 }

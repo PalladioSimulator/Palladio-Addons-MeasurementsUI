@@ -85,4 +85,17 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
 			commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
 		}
 	}
+	
+	/**
+	 * Saves the current state of the view
+	 * 
+	 * @throws IOException if the save operation fails
+	 */
+	public void save() throws IOException {
+		resource.save(null);
+		if (dirty != null) {
+			dirty.setDirty(false);
+			commandService.getCommand("org.eclipse.ui.file.save").isEnabled();
+		}
+	}
 }
