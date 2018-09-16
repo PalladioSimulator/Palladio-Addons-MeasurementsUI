@@ -29,7 +29,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 	Composite container;
 	FinalMeasuringpointContentProvider mp;
 	boolean selected;
-	MeasuringPointSelectionWizardModel selectionWizardModel = MeasuringPointSelectionWizardModel.getInstance();
+	MeasuringPointSelectionWizardModel selectionWizardModel;
 
 	public FinalModelsToMeasuringpointWizardPage() {
 		super("page2final");
@@ -53,13 +53,18 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 		createContentProvider = mp;
 		finalSelectionTreeViewer = new TreeViewer(container);
 		finalSelectionTreeViewer.setContentProvider(mp);
+		
+
+	}
+
+	public void loadData() {
+		selectionWizardModel = MeasuringPointSelectionWizardModel.getInstance();
+		System.out.println("wizard model "+selectionWizardModel.toString());
 		finalSelectionTreeViewer.setInput(selectionWizardModel.getSignatures().toArray());
 		ISelection initialSelection = new StructuredSelection(selectionWizardModel.getSignatures().get(0));
 		finalSelectionTreeViewer.setSelection(initialSelection);
 		finalSelectionTreeViewer.setLabelProvider(new AdditionalMeasuringpointLabelProvider());
-
 	}
-
 	/**
 	 * overrides the getNextPage() method of the wizard page to allow a dynamic flow
 	 * of the wizard pages

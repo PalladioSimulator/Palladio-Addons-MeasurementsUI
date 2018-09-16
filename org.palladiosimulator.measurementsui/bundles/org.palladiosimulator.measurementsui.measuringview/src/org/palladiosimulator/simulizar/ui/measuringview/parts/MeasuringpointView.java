@@ -237,6 +237,8 @@ public class MeasuringpointView {
             MeasuringPointsWizard test = new MeasuringPointsWizard();
             Shell parentShell = test.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, test);
+            dialog.setPageSize(720, 400);
+            dialog.setMinimumPageSize(720, 400);
             dialog.open();
         });
     }

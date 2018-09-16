@@ -68,15 +68,16 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 	DataApplication da = DataApplication.getInstance();
 
 	public static MeasuringPointSelectionWizardModel getInstance() {
-		if (instance == null) {
-			instance = new MeasuringPointSelectionWizardModel();
-			return instance;
-		}
+
 		return instance;
 	}
 
 	public MeasuringPointSelectionWizardModel() {
 
+	}
+
+	public void setInstance(MeasuringPointSelectionWizardModel model) {
+		instance = model;
 	}
 
 	public MeasuringPointSelectionWizardModel(Monitor monitor) {
@@ -90,82 +91,125 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 	 * @param model
 	 */
 	public void createMeasuringPoint(Object model) {
-		// needs to be deleted when real monitor is given
-		monitor = mf.createMonitor();
-		monitor.setEntityName("lol");
 
 		PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
 		PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
 
 		if (model instanceof ResourceContainer) {
-			ResourceContainerMeasuringPoint mp = pcmMeasuringPointFactory.createResourceContainerMeasuringPoint();
+			ResourceContainerMeasuringPoint mp = (ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getResourceContainerMeasuringPoint());
+
 			mp.setResourceContainer((ResourceContainer) model);
+			mp.setStringRepresentation(((ResourceContainer) model).getEntityName());
+			mp.setResourceURIRepresentation(((ResourceContainer) model).eResource().getURI().toString() + "#"
+					+ ((ResourceContainer) model).getId());
 			monitor.setMeasuringPoint(mp);
 		} else if (model instanceof ProcessingResourceSpecification) {
+			ActiveResourceMeasuringPoint mp = (ActiveResourceMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getActiveResourceMeasuringPoint());
 
-			ActiveResourceMeasuringPoint mp = pcmMeasuringPointFactory.createActiveResourceMeasuringPoint();
 			mp.setActiveResource((ProcessingResourceSpecification) model);
+			mp.setStringRepresentation(((ProcessingResourceSpecification) model)
+					.getActiveResourceType_ActiveResourceSpecification().getEntityName());
+			mp.setResourceURIRepresentation(((ProcessingResourceSpecification) model).eResource().getURI().toString()
+					+ "#" + ((ProcessingResourceSpecification) model).getId());
 			monitor.setMeasuringPoint(mp);
 
 		} else if (model instanceof AssemblyContext && currentSecondStageModel instanceof PassiveResource) {
-			AssemblyPassiveResourceMeasuringPoint mp = pcmMeasuringPointFactory
-					.createAssemblyPassiveResourceMeasuringPoint();
+			AssemblyPassiveResourceMeasuringPoint mp = (AssemblyPassiveResourceMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getAssemblyPassiveResourceMeasuringPoint());
+
 			mp.setAssembly((AssemblyContext) model);
 			mp.setPassiveResource((PassiveResource) currentSecondStageModel);
+			mp.setStringRepresentation(((PassiveResource) model).getEntityName());
+			mp.setResourceURIRepresentation(((PassiveResource) model).eResource().getURI().toString() + "#"
+					+ ((PassiveResource) model).getId());
 			monitor.setMeasuringPoint(mp);
 
 		} else if (model instanceof AssemblyContext) {
+			AssemblyOperationMeasuringPoint mp = (AssemblyOperationMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getAssemblyOperationMeasuringPoint());
 
-			AssemblyOperationMeasuringPoint mp = pcmMeasuringPointFactory.createAssemblyOperationMeasuringPoint();
 			mp.setAssembly((AssemblyContext) model);
 			mp.setOperationSignature((OperationSignature) currentThirdStageModel);
 			mp.setRole((Role) currentSecondStageModel);
+			mp.setStringRepresentation(((AssemblyContext) model).getEntityName());
+			mp.setResourceURIRepresentation(((AssemblyContext) model).eResource().getURI().toString() + "#"
+					+ ((AssemblyContext) model).getId());
 			monitor.setMeasuringPoint(mp);
 
 		} else if (model instanceof EntryLevelSystemCall) {
+			EntryLevelSystemCallMeasuringPoint mp = (EntryLevelSystemCallMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getEntryLevelSystemCallMeasuringPoint());
 
-			EntryLevelSystemCallMeasuringPoint mp = pcmMeasuringPointFactory.createEntryLevelSystemCallMeasuringPoint();
 			mp.setEntryLevelSystemCall((EntryLevelSystemCall) model);
+			mp.setStringRepresentation(((EntryLevelSystemCall) model).getEntityName());
+			mp.setResourceURIRepresentation(((EntryLevelSystemCall) model).eResource().getURI().toString() + "#"
+					+ ((EntryLevelSystemCall) model).getId());
 			monitor.setMeasuringPoint(mp);
 
 		} else if (model instanceof ExternalCallAction) {
-
-			ExternalCallActionMeasuringPoint mp = pcmMeasuringPointFactory.createExternalCallActionMeasuringPoint();
+			ExternalCallActionMeasuringPoint mp = (ExternalCallActionMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getExternalCallActionMeasuringPoint());
+			// ExternalCallActionMeasuringPoint mp =
+			// pcmMeasuringPointFactory.createExternalCallActionMeasuringPoint();
 			mp.setExternalCall((ExternalCallAction) model);
+			mp.setStringRepresentation(((ExternalCallAction) model).getEntityName());
+			mp.setResourceURIRepresentation(((ExternalCallAction) model).eResource().getURI().toString() + "#"
+					+ ((ExternalCallAction) model).getId());
 			monitor.setMeasuringPoint(mp);
 		} else if (model instanceof LinkingResource) {
+			LinkingResourceMeasuringPoint mp = (LinkingResourceMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getLinkingResourceMeasuringPoint());
 
-			LinkingResourceMeasuringPoint mp = pcmMeasuringPointFactory.createLinkingResourceMeasuringPoint();
 			mp.setLinkingResource((LinkingResource) model);
+			mp.setStringRepresentation(((LinkingResource) model).getEntityName());
+			mp.setResourceURIRepresentation(((LinkingResource) model).eResource().getURI().toString() + "#"
+					+ ((LinkingResource) model).getId());
 			monitor.setMeasuringPoint(mp);
 		} else if (model instanceof ResourceEnvironment) {
+			ResourceEnvironmentMeasuringPoint mp = (ResourceEnvironmentMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getResourceEnvironmentMeasuringPoint());
 
-			ResourceEnvironmentMeasuringPoint mp = pcmMeasuringPointFactory.createResourceEnvironmentMeasuringPoint();
 			mp.setResourceEnvironment((ResourceEnvironment) model);
+			mp.setStringRepresentation(((ResourceEnvironment) model).getEntityName());
+			mp.setResourceURIRepresentation(((ResourceEnvironment) model).eResource().getURI().toString() + "#/0");
 			monitor.setMeasuringPoint(mp);
 		} else if (model instanceof SubSystem) {
+			SubSystemOperationMeasuringPoint mp = (SubSystemOperationMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getSubSystemOperationMeasuringPoint());
 
-			SubSystemOperationMeasuringPoint mp = pcmMeasuringPointFactory.createSubSystemOperationMeasuringPoint();
 			mp.setSubsystem((SubSystem) model);
 			mp.setOperationSignature((OperationSignature) currentThirdStageModel);
 			mp.setRole((Role) currentSecondStageModel);
+			mp.setStringRepresentation(((SubSystem) model).getEntityName());
+			mp.setResourceURIRepresentation(
+					((SubSystem) model).eResource().getURI().toString() + "#" + ((SubSystem) model).getId());
 			monitor.setMeasuringPoint(mp);
 
 		} else if (model instanceof System) {
+			SystemOperationMeasuringPoint mp = (SystemOperationMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getSystemOperationMeasuringPoint());
 
-			SystemOperationMeasuringPoint mp = pcmMeasuringPointFactory.createSystemOperationMeasuringPoint();
 			mp.setSystem((System) model);
 			mp.setOperationSignature((OperationSignature) currentThirdStageModel);
 			mp.setRole((Role) currentSecondStageModel);
+			mp.setStringRepresentation(((System) model).getEntityName());
+			mp.setResourceURIRepresentation(
+					((System) model).eResource().getURI().toString() + "#" + ((System) model).getId());
 			monitor.setMeasuringPoint(mp);
 
 		} else if (model instanceof UsageScenario) {
-
-			UsageScenarioMeasuringPoint mp = pcmMeasuringPointFactory.createUsageScenarioMeasuringPoint();
+			UsageScenarioMeasuringPoint mp = (UsageScenarioMeasuringPoint) pcmMeasuringPointFactory
+					.create(PcmmeasuringpointPackage.eINSTANCE.getUsageScenarioMeasuringPoint());
 			mp.setUsageScenario((UsageScenario) model);
+			mp.setStringRepresentation(((UsageScenario) model).getEntityName());
+			mp.setResourceURIRepresentation(
+					((UsageScenario) model).eResource().getURI().toString() + "#" + ((UsageScenario) model).getId());
 			monitor.setMeasuringPoint(mp);
 
 		}
+		java.lang.System.out.println("Monitor " + monitor + "hat MP " + monitor.getMeasuringPoint());
 
 	}
 
@@ -175,8 +219,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 	 * @param measuringPoint
 	 */
 	public void addMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
-		monitor = mf.createMonitor();
-		monitor.setEntityName("lol");
 		monitor.setMeasuringPoint(measuringPoint);
 
 	}
@@ -192,15 +234,16 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 		ResourceEditorImpl.getInstance().addMeasuringPointToRepository(measuringPointRepository, measuringPoint);
 	}
 
-	/**
-	 * sets the measuringpoint to the monitor
-	 * 
-	 * @param measuringPoint
-	 */
-	public void setMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
-		ResourceEditorImpl.getInstance().setMeasuringPointToMonitor(this.monitor, measuringPoint);
-
-	}
+	// /**
+	// * sets the measuringpoint to the monitor
+	// *
+	// * @param measuringPoint
+	// */
+	// public void setMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
+	// ResourceEditorImpl.getInstance().setMeasuringPointToMonitor(this.monitor,
+	// measuringPoint);
+	//
+	// }
 
 	/**
 	 * checks whether the monitor repository and measuringpoint of a monitor is set.
