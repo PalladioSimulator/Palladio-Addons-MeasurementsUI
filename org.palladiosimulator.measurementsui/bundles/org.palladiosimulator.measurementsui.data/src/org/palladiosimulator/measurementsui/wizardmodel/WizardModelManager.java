@@ -1,6 +1,7 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
-import org.eclipse.emf.common.util.EList;
+import java.io.IOException;
+
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -8,10 +9,7 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSele
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
-import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
-import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
 /**
@@ -45,8 +43,7 @@ public class WizardModelManager {
         // TODO: Have to see if we need to use Commands or not.
         monitor.setMeasuringPoint(finalMP);
         editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), monitor);
-        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0), finalMP);       
-    
+        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0), finalMP);
     }
 
     public WizardModel getWizardModel(WizardModelType wizardModel) {

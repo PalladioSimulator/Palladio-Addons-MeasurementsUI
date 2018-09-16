@@ -71,6 +71,10 @@ public class UnselectedMetricSpecificationsProvider {
         EList<MeasurementSpecification> mSpecList = new BasicEList<>();
         createMeasurementSpecificationsForEveryMetricDescription(listOfMetricDescriptions, monFactory, mSpecList);
         setMetricDescriptionForEveryMeasurementSpecification(listOfMetricDescriptions, mSpecList);
+        for (MeasurementSpecification aMSpec : mSpecList) {
+        	//has to be adapted once the 4th screen is implemented
+        	aMSpec.setProcessingType(MonitorRepositoryFactory.eINSTANCE.createFeedThrough());
+        }
         tempMon.eSet(tempMon.eClass().getEStructuralFeature("measurementSpecifications"), mSpecList);
         return tempMon;
     }
@@ -124,6 +128,7 @@ public class UnselectedMetricSpecificationsProvider {
             EList<MeasurementSpecification> mSpecList) {
         for (MetricDescription desc : nonMatchingMetricDesciptions) {
             mSpecList.add(monFactory.createMeasurementSpecification());
+            
         }
     }
 
