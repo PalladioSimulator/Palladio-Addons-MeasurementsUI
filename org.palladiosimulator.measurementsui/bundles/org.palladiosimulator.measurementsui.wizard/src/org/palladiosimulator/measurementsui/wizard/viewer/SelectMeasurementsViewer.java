@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.parsleyviewer;
+package org.palladiosimulator.measurementsui.wizard.viewer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;

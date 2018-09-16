@@ -39,14 +39,14 @@ import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.parsleyviewer.EmptyMpTreeViewer;
-import org.palladiosimulator.measurementsui.parsleyviewer.MonitorTreeViewer;
 import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.simulizar.ui.measuringview.viewer.EmptyMpTreeViewer;
+import org.palladiosimulator.simulizar.ui.measuringview.viewer.MonitorTreeViewer;
 
 /**
  * Eclipse e4 view in which the user gets an overview of all existing monitors and measuringpoints
@@ -127,14 +127,10 @@ public class MeasuringpointView {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
         IResourceChangeListener listener = new IResourceChangeListener() {
             public void resourceChanged(IResourceChangeEvent event) {
-
                 Display.getDefault().asyncExec(new Runnable() {
-
                     public void run() {
-
                         updateMeasuringPointView();
                     }
-
                 });
             }
         };
@@ -234,9 +230,9 @@ public class MeasuringpointView {
         newMpButton.setText("Add new Measuring Point");
 
         newMpButton.addListener(SWT.Selection, e -> {
-            MeasuringPointsWizard test = new MeasuringPointsWizard();
-            Shell parentShell = test.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, test);
+            MeasuringPointsWizard wizard = new MeasuringPointsWizard();
+            Shell parentShell = wizard.getShell();
+            WizardDialog dialog = new WizardDialog(parentShell, wizard);
             dialog.setPageSize(720, 400);
             dialog.setMinimumPageSize(720, 400);
             dialog.open();
@@ -273,12 +269,10 @@ public class MeasuringpointView {
         editButton.setText("Edit...");
 
         editButton.addListener(SWT.Selection, e -> {
-            Object selection = selectionService.getSelection();
-            MeasuringPointsWizard test = new MeasuringPointsWizard();
-            
+            Object selection = selectionService.getSelection();   
             if (selection instanceof Monitor) {
                 MeasuringPointsWizard wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
-                Shell parentShell = test.getShell();
+                Shell parentShell = wizard.getShell();
                 WizardDialog dialog = new WizardDialog(parentShell, wizard);
                 dialog.open();
 //             System.out.println("Monitor");      
