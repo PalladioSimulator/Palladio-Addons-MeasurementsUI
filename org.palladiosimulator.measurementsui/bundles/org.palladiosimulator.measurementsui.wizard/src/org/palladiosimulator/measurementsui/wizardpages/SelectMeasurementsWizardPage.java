@@ -131,7 +131,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		rightOne.setLayoutData(new GridData(SWT.RIGHT,SWT.CENTER,true,true));
 		rightOne.setBounds(500, 150, 150, 250);
 		rightOne.setText("-->");
-		composite2.setBounds(100,50,300,30);
+		composite2.setBounds(100,50,300,40);
 		composite2.setLayout(fillLayout2);
 		rightOne.addListener(SWT.Selection, new Listener() {
 			@Override
