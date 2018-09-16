@@ -23,12 +23,13 @@ public class WizardModelManager {
 	private MeasuringPoint measuringPoint;
 	private ResourceEditorImpl editor;
 	private DataApplication dataApp;
-
+	private boolean isEditing;
+	
 	public WizardModelManager() {
 		monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		this.dataApp = DataApplication.getInstance();
 		this.editor = new ResourceEditorImpl();
-
+		isEditing = true;
 	}
 
 	public WizardModelManager(Monitor monitor) {
@@ -61,12 +62,11 @@ public class WizardModelManager {
 		case MONITOR_CREATION:
 			return new MonitorCreationWizardModel(monitor);
 		case MEASURING_POINT_SELECTION:
-			MeasuringPointSelectionWizardModel model = new MeasuringPointSelectionWizardModel(monitor);
+			MeasuringPointSelectionWizardModel model = new MeasuringPointSelectionWizardModel(monitor, isEditing);
 			model.setInstance(model);
 			return model;
-
 		case METRIC_DESCRIPTION_SELECTION:
-			return new MetricDescriptionSelectionWizardModel(monitor);
+			return new MetricDescriptionSelectionWizardModel(monitor, isEditing);
 		case PROCESSING_TYPE:
 			return new ProcessingTypeSelectionWizardModel();
 		default:
