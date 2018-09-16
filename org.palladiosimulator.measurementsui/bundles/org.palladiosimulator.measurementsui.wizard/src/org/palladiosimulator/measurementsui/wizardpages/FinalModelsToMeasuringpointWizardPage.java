@@ -1,6 +1,8 @@
 package org.palladiosimulator.measurementsui.wizardpages;
 
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
@@ -11,8 +13,18 @@ import org.palladiosimulator.measurementsui.wizardmain.handlers.AdditionalMeasur
 import org.palladiosimulator.measurementsui.wizardmain.handlers.FinalMeasuringpointContentProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 
+/**
+ * 
+ * This is the wizard page for the third and final step of the creation of a
+ * wizard page. It needs to be shown if and only if certain elements are
+ * selected in the first and second step of the measuring point creation
+ * workflow. It creates all necessary ui elements.
+ * 
+ * @author Domas Mikalkinas
+ *
+ */
 public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
-	TreeViewer createTreeViewer;
+	TreeViewer finalSelectionTreeViewer;
 	ITreeContentProvider createContentProvider;
 	Composite container;
 	FinalMeasuringpointContentProvider mp;
@@ -21,10 +33,13 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 
 	public FinalModelsToMeasuringpointWizardPage() {
 		super("page2final");
-		setTitle("Select operation signatures");
-		setDescription("description");
+		setTitle("Select an operation signature");
+		// setDescription("description");
 	}
 
+	/**
+	 * creates the wizard page to choose the operation signature
+	 */
 	@Override
 	public void createControl(Composite parent) {
 		container = new Composite(parent, SWT.NONE);
@@ -36,14 +51,20 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 		setControl(container);
 		mp = new FinalMeasuringpointContentProvider();
 		createContentProvider = mp;
-		createTreeViewer = new TreeViewer(container);
-		createTreeViewer.setContentProvider(mp);
-		createTreeViewer.setInput(selectionWizardModel.getSignatures().toArray());
-		createTreeViewer.setLabelProvider(new AdditionalMeasuringpointLabelProvider());
+		finalSelectionTreeViewer = new TreeViewer(container);
+		finalSelectionTreeViewer.setContentProvider(mp);
+		finalSelectionTreeViewer.setInput(selectionWizardModel.getSignatures().toArray());
+		ISelection initialSelection = new StructuredSelection(selectionWizardModel.getSignatures().get(0));
+		finalSelectionTreeViewer.setSelection(initialSelection);
+		finalSelectionTreeViewer.setLabelProvider(new AdditionalMeasuringpointLabelProvider());
 
 	}
 
-	/** @override */
+	/**
+	 * overrides the getNextPage() method of the wizard page to allow a dynamic flow
+	 * of the wizard pages
+	 */
+	@Override
 	public org.eclipse.jface.wizard.IWizardPage getNextPage() {
 		boolean isNextPressed = "nextPressed"
 				.equalsIgnoreCase(Thread.currentThread().getStackTrace()[2].getMethodName());
@@ -66,9 +87,10 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 	protected boolean nextPressed() {
 		boolean validatedNextPressed = true;
 		try {
-		    selectionWizardModel.setCurrentThirdStageModel(createTreeViewer.getStructuredSelection().getFirstElement());
-		    selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
-		    
+			selectionWizardModel
+					.setCurrentThirdStageModel(finalSelectionTreeViewer.getStructuredSelection().getFirstElement());
+			selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

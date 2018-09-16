@@ -1,42 +1,56 @@
 package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
+import java.util.LinkedList;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 
-public class MeasuringPointsContentProvider implements ITreeContentProvider{
+/**
+ * 
+ * @author Domas Mikalkinas
+ *
+ */
+public class MeasuringPointsContentProvider implements ITreeContentProvider {
 
-    Object[] models;
-    DataApplication da = DataApplication.getInstance();
-    MeasuringPointSelectionWizardModel spwm = MeasuringPointSelectionWizardModel.getInstance();
-    @Override
-    public Object[] getElements(Object inputElement) {
+	Object[] models;
+	DataApplication da = DataApplication.getInstance();
+	MeasuringPointSelectionWizardModel spwm = MeasuringPointSelectionWizardModel.getInstance();
 
-        return spwm.getAllSecondPageObjects();
-        
-        
-    }
+	@Override
+	public Object[] getElements(Object inputElement) {
 
-    @Override
-    public Object[] getChildren(Object parentElement) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+		return spwm.getAllSecondPageObjects();
 
-    @Override
-    public Object getParent(Object element) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	}
 
-    @Override
-    public boolean hasChildren(Object element) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public Object[] getChildren(Object parentElement) {
+		if (parentElement instanceof LinkedList) {
+			return ((LinkedList) parentElement).toArray();
+		}
+		return null;
+	}
 
- 
-    
+	@Override
+	public Object getParent(Object element) {
+		if (element instanceof LinkedList) {
+			if (!((LinkedList) element).isEmpty()) {
+				return element;
+			}
 
+		}
+		return null;
+		// return ((NamedElement) element).getClass();
+	}
+
+	@Override
+	public boolean hasChildren(Object element) {
+		if (element instanceof LinkedList) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 }
