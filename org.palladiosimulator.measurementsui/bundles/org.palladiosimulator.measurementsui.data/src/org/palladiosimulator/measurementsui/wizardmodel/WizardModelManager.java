@@ -1,6 +1,7 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
-import org.eclipse.emf.common.util.EList;
+import java.io.IOException;
+
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
