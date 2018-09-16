@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Image;
  * This class handels the GUI part of the third wizard page for selecting
  * measurements.
  * 
- * @author mehmet
+ * @author mehmet, Ba
  *
  */
 public class SelectMeasurementsWizardPage extends WizardPage {
@@ -53,6 +53,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 	 */
 	public SelectMeasurementsWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
 		super("wizardPage");
+		//TODO: Change titles of wizard page (according to selected measuring point from previous page???)
 		setTitle("HDD Monitor: Select Measurements");
 		setDescription("Select desired Measurements to be used with the Monitor");
 		this.metricDescriptionSelectionWizardModel = metricDescriptionSelectionWizardModel;
@@ -61,31 +62,18 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.FILL);
-		FillLayout fill = new FillLayout();
-		fill.marginHeight = 20;
-		fill.marginWidth = 20;
-		fill.spacing = 15;
-
-		container.setLayout(fill);
-		setControl(container);
-
-		container.setLayout(new GridLayout(3, true));
-		container.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, true));
-		Composite composite1 = new Composite(container, SWT.NONE);
-		FillLayout fillLayout = new FillLayout();
-		fillLayout.marginHeight = 20;
-		fillLayout.marginWidth = 20;
-		fillLayout.spacing = 15;
-		composite1.setLayoutData(new GridLayout(1, false));
-		composite1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		composite1.setLayoutData(new GridData(500, 500));
-		composite1.setLayout(fillLayout);
-		SelectMeasurementsViewer viewer1 = new SelectMeasurementsViewer(composite1,
+		FillLayout fillLayoutParentContainer = new FillLayout();
+		container.setLayout(fillLayoutParentContainer);
+		
+		Composite compositeLeft = new Composite(container, SWT.NONE);
+		FillLayout fillLayoutLeft = new FillLayout();
+		SelectMeasurementsViewer selectMeasurementsViewerLeft = new SelectMeasurementsViewer(compositeLeft,
 				metricDescriptionSelectionWizardModel);
-		TableViewer tableViewer = (TableViewer) viewer1.getViewer();
-		tableViewer.setLabelProvider(new ITableLabelProvider() {
-
+		TableViewer tableViewerLeft = (TableViewer) selectMeasurementsViewerLeft.getViewer();
+		tableViewerLeft.setLabelProvider(new ITableLabelProvider() {
+		    
 			public void removeListener(ILabelProviderListener listener) {
+			    // not used
 			}
 
 			public Image getColumnImage(Object element, int columnIndex) {
@@ -109,32 +97,29 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			}
 
 			public void addListener(ILabelProviderListener listener) {
+			    // not used
 			}
 
 			public void dispose() {
+			    // not used
 			}
 
 			public boolean isLabelProperty(Object element, String property) {
 				return false;
 			}
 		});
+		compositeLeft.setLayout(fillLayoutLeft);
 
-		Composite composite2 = new Composite(container, SWT.NONE);
-		FillLayout fillLayout2 = new FillLayout();
-		composite2.setLayout(new FillLayout(SWT.VERTICAL));
-		fillLayout2.type = SWT.VERTICAL;
-		fillLayout2.marginHeight = 40;
-		fillLayout2.marginWidth = 80;
-		fillLayout2.spacing = 10;
-		composite2.setLayout(new GridLayout(3, true));
-		composite2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		composite2.setLayoutData(new GridData(350, 350));
-		Button rightAll = new Button(composite2, SWT.PUSH);
-		rightAll.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, true));
-		rightAll.setBounds(500, 150, 150, 250);
+		Composite compositeMiddle = new Composite(container, SWT.NONE);
+		FillLayout fillLayoutMiddle = new FillLayout();
+		fillLayoutMiddle.type = SWT.CENTER;
+		fillLayoutMiddle.marginHeight = 100;
+		fillLayoutMiddle.marginWidth = 40;
+		fillLayoutMiddle.spacing = 10;
+		compositeMiddle.setLayout(fillLayoutMiddle);
+		
+		Button rightAll = new Button(compositeMiddle, SWT.PUSH);
 		rightAll.setText("-->");
-		composite2.setBounds(100, 50, 300, 40);
-		composite2.setLayout(fillLayout2);
 		rightAll.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
@@ -142,29 +127,27 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			}
 		});
 
-		Button rightOne = new Button(composite2, SWT.NONE);
-		rightOne.setBounds(500, 150, 150, 250);
+		Button rightOne = new Button(compositeMiddle, SWT.NONE);
 		rightOne.setText(">");
 		rightOne.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				IStructuredSelection selection = tableViewer.getStructuredSelection();
+				IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
 				Object firstElement = selection.getFirstElement();
 				MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
 				metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurment);
 			}
 		});
 
-		Composite composite3 = new Composite(container, SWT.NONE);
-		composite3.setLayout(new GridLayout(2, true));
-		composite3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		composite3.setLayout(fill);
-		EmptySelectMeasurementsViewer viewer2 = new EmptySelectMeasurementsViewer(composite3,
+		Composite compositeRight = new Composite(container, SWT.NONE);
+		FillLayout fillLayoutRight = new FillLayout();
+		EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(compositeRight,
 				metricDescriptionSelectionWizardModel);
-		TableViewer tableViewer1 = (TableViewer) viewer2.getViewer();
-		tableViewer1.setLabelProvider(new ITableLabelProvider() {
+		TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
+		tableViewerRight.setLabelProvider(new ITableLabelProvider() {
 
 			public void removeListener(ILabelProviderListener listener) {
+			    // not used
 			}
 
 			public Image getColumnImage(Object element, int columnIndex) {
@@ -188,23 +171,26 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			}
 
 			public void addListener(ILabelProviderListener listener) {
+			    // not used
 			}
 
 			public void dispose() {
+			    // not used
 			}
 
 			public boolean isLabelProperty(Object element, String property) {
 				return false;
 			}
 		});
+		compositeRight.setLayout(fillLayoutRight);
+		tableViewerRight.getTable().getColumn(1).setWidth(75);
 
-		Button leftAllOld = new Button(composite2, SWT.NONE);
-		leftAllOld.setBounds(500, 250, 150, 250);
-		leftAllOld.setText("<");
-		leftAllOld.addListener(SWT.Selection, new Listener() {
+		Button leftOne = new Button(compositeMiddle, SWT.NONE);
+		leftOne.setText("<");
+		leftOne.addListener(SWT.Selection, new Listener() {
 			@Override
 			public void handleEvent(Event event) {
-				IStructuredSelection selection = tableViewer1.getStructuredSelection();
+				IStructuredSelection selection = tableViewerRight.getStructuredSelection();
 				Object firstElement = selection.getFirstElement();
 				MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
 				metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurment);
@@ -212,29 +198,25 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 
 		});
 
-		Button leftAll = new Button(composite2, SWT.NONE);
-		leftAll.setBounds(500, 200, 150, 250);
+		Button leftAll = new Button(compositeMiddle, SWT.NONE);
 		leftAll.setText("<--");
 		leftAll.addListener(SWT.Selection, new Listener() {
-
 			@Override
 			public void handleEvent(Event event) {
 				metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
 			}
-
 		});
 
-		Button addSuggestion = new Button(composite2, SWT.NONE);
-		addSuggestion.setBounds(500, 250, 150, 250);
+		Button addSuggestion = new Button(compositeMiddle, SWT.NONE);
 		addSuggestion.setText("Add Suggestions");
 
 		CellEditor[] cellEditor = new CellEditor[2];
 		cellEditor[0] = null;
-		cellEditor[1] = new CheckboxCellEditor(tableViewer1.getTable());
-		tableViewer1.setCellEditors(cellEditor);
+		cellEditor[1] = new CheckboxCellEditor(tableViewerRight.getTable());
+		tableViewerRight.setCellEditors(cellEditor);
 		String[] columnNames = { "Metric Description", "Self Adapting" };
-		tableViewer1.setColumnProperties(columnNames);
-		tableViewer1.setCellModifier(new CellModifier(tableViewer1));
+		tableViewerRight.setColumnProperties(columnNames);
+		tableViewerRight.setCellModifier(new CellModifier(tableViewerRight));
 
 		setPageComplete(true);
 		setControl(container);
