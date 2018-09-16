@@ -71,7 +71,6 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 	protected void initParsley(Composite parent) {
 		treeViewer = new TreeViewer(parent);
 		treeFactory = injector.getInstance(ViewerFactory.class);
-
 		update();
 	}
 

@@ -256,7 +256,6 @@ public class MeasuringpointView {
             Object selection = selectionService.getSelection();
             if (selection instanceof EObject) {
                 resourceEditor.deleteResource((EObject) selection);
-                measuringTreeViewer.update();
             }
         });
     }
@@ -276,9 +275,9 @@ public class MeasuringpointView {
             MeasuringPointsWizard test = new MeasuringPointsWizard();
             
             if (selection instanceof Monitor) {
-                MeasuringPointsWizard wiz = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION);
+                MeasuringPointsWizard wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
                 Shell parentShell = test.getShell();
-                WizardDialog dialog = new WizardDialog(parentShell, wiz);
+                WizardDialog dialog = new WizardDialog(parentShell, wizard);
                 dialog.open();
 //             System.out.println("Monitor");      
             } else if (selection instanceof ProcessingType) {

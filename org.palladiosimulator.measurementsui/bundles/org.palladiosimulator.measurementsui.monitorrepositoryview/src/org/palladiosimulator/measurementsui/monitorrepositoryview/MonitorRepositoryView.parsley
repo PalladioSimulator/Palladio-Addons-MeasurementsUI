@@ -19,10 +19,7 @@ module monitorrepositoryview {
 		children {
 			Monitor mon -> {
 				new ArrayList() => [
-					if (mon.measuringPoint !== null)
-						add(mon.measuringPoint)
 					addAll(mon.measurementSpecifications)
-
 				]
 			}
 			MeasuringPoint -> #[]
@@ -33,10 +30,6 @@ module monitorrepositoryview {
 		text {
 			Monitor mon -> {
 				mon.entityName
-			}
-
-			MeasuringPoint mp -> {
-				mp.stringRepresentation
 			}
 
 			MeasurementSpecification ms -> {
