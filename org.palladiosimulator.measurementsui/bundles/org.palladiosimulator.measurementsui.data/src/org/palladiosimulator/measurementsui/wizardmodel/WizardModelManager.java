@@ -18,46 +18,51 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
  *
  */
 public class WizardModelManager {
-    private Monitor monitor;
-    private MeasuringPoint measuringPoint;
-    private ResourceEditorImpl editor;
-    private DataApplication dataApp;
+	private Monitor monitor;
+	private MeasuringPoint measuringPoint;
+	private ResourceEditorImpl editor;
+	private DataApplication dataApp;
 
-    public WizardModelManager() {
-        monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
-        this.dataApp = DataApplication.getInstance();
-        this.editor = new ResourceEditorImpl();
+	public WizardModelManager() {
+		monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+		this.dataApp = DataApplication.getInstance();
+		this.editor = new ResourceEditorImpl();
 
-    }
+	}
 
-    public WizardModelManager(Monitor monitor) {
-        this.monitor = monitor;
-    }
+	public WizardModelManager(Monitor monitor) {
+		this.monitor = monitor;
+	}
 
-    public void cancel() {
+	public void cancel() {
 
-    }
+	}
 
-    public void finish() {
-        MeasuringPoint finalMP = monitor.getMeasuringPoint();
-        // TODO: Have to see if we need to use Commands or not.
-        monitor.setMeasuringPoint(finalMP);
-        editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), monitor);
-        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0), finalMP);
-    }
+	public void finish() {
+		measuringPoint = monitor.getMeasuringPoint();
 
-    public WizardModel getWizardModel(WizardModelType wizardModel) {
-        switch (wizardModel) {
-        case MONITOR_CREATION:
-            return new MonitorCreationWizardModel(monitor);
-        case MEASURING_POINT_SELECTION:
-            return new MeasuringPointSelectionWizardModel(monitor);
-        case METRIC_DESCRIPTION_SELECTION:
-            return new MetricDescriptionSelectionWizardModel(monitor);
-        case PROCESSING_TYPE:
-            return new ProcessingTypeSelectionWizardModel();
-        default:
-            return null;
-        }
-    }
+		editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), monitor);
+		editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
+				measuringPoint);
+		editor.setMeasuringPointToMonitor(monitor, measuringPoint);
+
+	}
+
+	public WizardModel getWizardModel(WizardModelType wizardModel) {
+		switch (wizardModel) {
+		case MONITOR_CREATION:
+			return new MonitorCreationWizardModel(monitor);
+		case MEASURING_POINT_SELECTION:
+			MeasuringPointSelectionWizardModel model = new MeasuringPointSelectionWizardModel(monitor);
+			model.setInstance(model);
+			return model;
+
+		case METRIC_DESCRIPTION_SELECTION:
+			return new MetricDescriptionSelectionWizardModel(monitor);
+		case PROCESSING_TYPE:
+			return new ProcessingTypeSelectionWizardModel();
+		default:
+			return null;
+		}
+	}
 }
