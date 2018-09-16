@@ -28,6 +28,7 @@ public abstract class WizardTableViewer extends ComponentViewer {
 	protected WizardTableViewer(Composite parent, WizardModel wizardModel) {
 		super(parent, false);
 		this.wizardModel = wizardModel;
+		initEditingDomain();
 		initParsley(parent);
 	}
 
