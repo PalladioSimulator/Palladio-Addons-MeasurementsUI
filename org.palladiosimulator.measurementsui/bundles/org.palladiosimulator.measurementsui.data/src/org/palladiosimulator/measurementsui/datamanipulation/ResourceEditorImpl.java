@@ -7,6 +7,7 @@ import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
 import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
 /**
@@ -80,10 +81,8 @@ public class ResourceEditorImpl implements ResourceEditor {
 	}
 
     @Override
-    public void addMeasurementSpecification(EObject monitor) {
-        MeasurementSpecification newMSpec = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory().createMeasurementSpecification();
-        newMSpec.setTriggersSelfAdaptations(true);
-        editor.addResource(monitor, "measurementSpecifications", newMSpec);
+    public void addMeasurementSpecificationToMonitor(EObject monitor, MeasurementSpecification mspec) {
+        editor.addResource(monitor, "measurementSpecifications", mspec);
         
     }
 

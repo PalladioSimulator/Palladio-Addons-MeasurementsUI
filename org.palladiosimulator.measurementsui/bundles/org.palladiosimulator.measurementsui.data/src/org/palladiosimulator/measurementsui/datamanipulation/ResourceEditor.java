@@ -71,7 +71,7 @@ public interface ResourceEditor {
 	 * 
 	 * @param monitor The Monitor to which the new specification is added
 	 */
-	void addMeasurementSpecification(EObject monitor);
+	void addMeasurementSpecificationToMonitor(EObject monitor, MeasurementSpecification mspec);
 
 	/**
 	 * adds a Monitor to a Monitor Repository through AddCommands
@@ -80,4 +80,6 @@ public interface ResourceEditor {
 	 * @param monitor
 	 */
 	void addMonitorToRepository(EObject monitorRepository, EObject monitor);
+
+	
 }
