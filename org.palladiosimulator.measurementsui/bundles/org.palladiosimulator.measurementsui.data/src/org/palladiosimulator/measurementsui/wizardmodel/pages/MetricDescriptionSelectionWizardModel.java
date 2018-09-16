@@ -15,16 +15,18 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 	private static final String STANDARD_INFORMATION_MESSAGE = "Please select all Metrics which should be measured.";
 	private static final String NO_METRIC_SELECTED_MEASSAGE = "There is currently no Metric selected. "
 			+ "In order to get Simulation results you have select at least one Metric.";
-	
+
 	private static final String METRIC_SELECTION_TITEL = "Select Metrics";
-	
+
 	private Monitor usedMetricsMonitor;
 	private Monitor unusedMetricsMonitor;
 	private UnselectedMetricSpecificationsProvider provider;
+	private boolean isEditing;
 
-	public MetricDescriptionSelectionWizardModel(Monitor monitor) {
+	public MetricDescriptionSelectionWizardModel(Monitor monitor, boolean isEditing) {
 		this.provider = new UnselectedMetricSpecificationsProvider();
 		this.usedMetricsMonitor = monitor;
+		this.isEditing = isEditing;
 		this.unusedMetricsMonitor = provider.createMonitorWithMissingMetricDescriptions(usedMetricsMonitor);
 	}
 
@@ -45,35 +47,37 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 	public void nextStep() {
 		// TODO Auto-generated method stub
 	}
-	
+
 	public Monitor getUnusedMetricsMonitor() {
 		return unusedMetricsMonitor;
 	}
-	
+
 	public Monitor getUsedMetricsMonitor() {
 		return usedMetricsMonitor;
 	}
-	
+
 	public void addMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-		provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, unusedMetricsMonitor, usedMetricsMonitor);
+		provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, usedMetricsMonitor,
+				isEditing);
 	}
-	
+
 	public void removeMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-		provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, usedMetricsMonitor, unusedMetricsMonitor);
+		provider.removeMeasurementSpecificationBetweenMonitors(selectedMeasurementSpecification, unusedMetricsMonitor,
+				isEditing);
 	}
-	
+
 	public void addAllMetricDescriptions() {
-		provider.moveAllMeasurementSpecificationsBetweenMonitors(unusedMetricsMonitor, usedMetricsMonitor);
+		provider.moveAllMeasurementSpecificationsBetweenMonitors(unusedMetricsMonitor, usedMetricsMonitor, isEditing);
 	}
-	
+
 	public void removeAllMetricDescriptions() {
-		provider.moveAllMeasurementSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor);
+		provider.moveAllMeasurementSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
 	}
-	
+
 	public void addSuggestions() {
-		//TODO: Not implemented yet.
+		// TODO: Not implemented yet.
 	}
-	
+
 	private boolean metricListIsEmpty() {
 		return usedMetricsMonitor.getMeasurementSpecifications().isEmpty();
 	}
@@ -81,7 +85,7 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 	@Override
 	public String getTitleText() {
 		return METRIC_SELECTION_TITEL;
-		
+
 	}
 
 }

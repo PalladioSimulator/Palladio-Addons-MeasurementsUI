@@ -91,8 +91,22 @@ public class UnselectedMetricSpecificationsProvider {
 	 * @param receivingMonitor
 	 */
 	public void moveMeasurementSpecificationsBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification,
-			Monitor sendingMonitor, Monitor receivingMonitor) {
-		receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
+			Monitor receivingMonitor, boolean isInEditMode) {
+		if (isInEditMode) {
+			editor.addMeasurementSpecificationToMonitor(receivingMonitor, selectedMeasurementSpecification);
+		} else {
+			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
+		}
+	}
+	
+	public void removeMeasurementSpecificationBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification, Monitor receivingMonitor, boolean isInEditMode) {
+		if (isInEditMode) {
+
+			editor.deleteResource(selectedMeasurementSpecification);
+			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
+		}else {
+			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
+		}
 	}
 
 	/**
@@ -102,8 +116,16 @@ public class UnselectedMetricSpecificationsProvider {
 	 * @param sendingMonitor
 	 * @param receivingMonitor
 	 */
-	public void moveAllMeasurementSpecificationsBetweenMonitors(Monitor sendingMonitor, Monitor receivingMonitor) {
-		receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
+	public void moveAllMeasurementSpecificationsBetweenMonitors(Monitor sendingMonitor, Monitor receivingMonitor,
+			boolean isInEditMode) {
+		if (isInEditMode) {
+			for (MeasurementSpecification aMSpec : sendingMonitor.getMeasurementSpecifications()) {
+				editor.addMeasurementSpecificationToMonitor(receivingMonitor, aMSpec);
+			}
+		} else {
+			receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
+		}
+
 	}
 
 	/**
