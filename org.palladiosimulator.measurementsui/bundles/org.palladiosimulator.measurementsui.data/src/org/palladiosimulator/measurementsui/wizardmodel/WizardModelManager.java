@@ -45,6 +45,13 @@ public class WizardModelManager {
 		editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
 				measuringPoint);
 		editor.setMeasuringPointToMonitor(monitor, measuringPoint);
+		try {
+			dataApp.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
+			dataApp.getModelAccessor().getMonitorRepository().get(0).eResource().save(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
