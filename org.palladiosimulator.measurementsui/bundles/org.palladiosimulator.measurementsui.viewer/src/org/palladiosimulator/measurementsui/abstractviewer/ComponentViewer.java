@@ -2,6 +2,7 @@ package org.palladiosimulator.measurementsui.abstractviewer;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.parsley.edit.ui.dnd.ViewerDragAndDropHelper;
 import org.eclipse.emf.parsley.menus.ViewerContextMenuHelper;
@@ -33,7 +34,6 @@ public abstract class ComponentViewer {
 	 */
 	public ComponentViewer(Composite parent, boolean enableDragDrop) {
 		initInjector();
-		initEditingDomain();
 		if (enableDragDrop) {
 			initDragAndDrop();
 		}
@@ -68,7 +68,7 @@ public abstract class ComponentViewer {
 	 * Returns the parsley EditingDomain
 	 */
 	protected void initEditingDomain() {
-		editingDomain = injector.getInstance(EditingDomain.class);
+		editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository());
 	}
 
 	/**

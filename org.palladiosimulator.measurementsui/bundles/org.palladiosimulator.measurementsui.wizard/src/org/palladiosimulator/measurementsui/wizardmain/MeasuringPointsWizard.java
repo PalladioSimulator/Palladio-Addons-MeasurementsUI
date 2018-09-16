@@ -122,7 +122,8 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 
 	@Override
 	public boolean performFinish() {
-		return false;
+		wizardManager.finish();
+		return true;
 	}
 
 	@Override
