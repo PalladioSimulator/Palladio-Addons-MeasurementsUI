@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -29,7 +30,8 @@ public class WizardModelManager {
     }
 
     public WizardModelManager(Monitor monitor) {
-        this.monitor = monitor;
+        this.monitor = EcoreUtil.copy(monitor);
+        System.out.println(monitor);
     }
 
     public void cancel() {
@@ -37,13 +39,7 @@ public class WizardModelManager {
     }
 
     public void finish() {
-    	Monitor newMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
-    	editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), newMonitor);
-//        MeasuringPoint finalMP = monitor.getMeasuringPoint();
-//        // TODO: Have to see if we need to use Commands or not.
-//        monitor.setMeasuringPoint(finalMP);
         editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), monitor);
-//        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0), finalMP);
     }
 
     public WizardModel getWizardModel(WizardModelType wizardModel) {
