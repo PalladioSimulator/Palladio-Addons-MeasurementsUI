@@ -27,7 +27,9 @@ module emptymeasuringpoints {
 					mpr,
 					[]
 				),
-				separator
+				separator,
+				actionUndo,
+				actionRedo
 			]
 		}
 		

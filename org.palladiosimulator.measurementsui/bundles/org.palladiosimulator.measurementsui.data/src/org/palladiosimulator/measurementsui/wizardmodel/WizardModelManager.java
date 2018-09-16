@@ -1,7 +1,7 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import java.io.IOException;
-
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -18,6 +18,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
  *
  */
 public class WizardModelManager {
+
 	private Monitor monitor;
 	private MeasuringPoint measuringPoint;
 	private ResourceEditorImpl editor;

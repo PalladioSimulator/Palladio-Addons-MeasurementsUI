@@ -33,6 +33,7 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 	public MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
 			DataApplication application, boolean enableDragDrop) {
 		super(parent, dirty, commandService, application, enableDragDrop);
+		treeViewer.expandAll();
 	}
 
 	/**
@@ -71,15 +72,16 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 	protected void initParsley(Composite parent) {
 		treeViewer = new TreeViewer(parent);
 		treeFactory = injector.getInstance(ViewerFactory.class);
-
 		update();
 	}
 
 	@Override
 	public void update() {
+		Object[] expandedElements = treeViewer.getExpandedElements();
 		initEditingDomain();
 		resource = updateResource(getModelRepository());
 		treeFactory.initialize(treeViewer, resource);
-		treeViewer.expandAll();
+		treeViewer.setExpandedElements(expandedElements);
+		treeViewer.refresh();
 	}
 }
