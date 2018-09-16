@@ -29,7 +29,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
 	Composite container;
 	AdditionalMeasuringpointContentProvider mp;
 	boolean selected = false;
-	MeasuringPointSelectionWizardModel selectionWizardModel = MeasuringPointSelectionWizardModel.getInstance();
+	MeasuringPointSelectionWizardModel selectionWizardModel;
 
 	public AdditionalModelsToMeasuringpointWizardPage() {
 		super("page2extra");
@@ -62,6 +62,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
 	 * depending on the chosen element from the ChooseMeasuringpointWizardpage
 	 */
 	public void loadData() {
+		selectionWizardModel= MeasuringPointSelectionWizardModel.getInstance();
 		secondModelTreeViewer.setContentProvider(mp);
 		secondModelTreeViewer.setInput(selectionWizardModel.getAllAdditionalModels());
 		IStructuredSelection initialSelection = new StructuredSelection(
@@ -87,7 +88,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
 		if (selected) {
 			FinalModelsToMeasuringpointWizardPage page = (FinalModelsToMeasuringpointWizardPage) super.getWizard()
 					.getPage("page2final");
-
+			page.loadData();
 			return page;
 
 		} else {
