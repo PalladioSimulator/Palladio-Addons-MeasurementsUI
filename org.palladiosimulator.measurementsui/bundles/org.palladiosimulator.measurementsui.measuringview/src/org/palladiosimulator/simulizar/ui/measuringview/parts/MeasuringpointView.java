@@ -274,6 +274,8 @@ public class MeasuringpointView {
                 MeasuringPointsWizard wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
                 Shell parentShell = wizard.getShell();
                 WizardDialog dialog = new WizardDialog(parentShell, wizard);
+                dialog.setPageSize(720, 400);
+                dialog.setMinimumPageSize(720, 400);
                 dialog.open();
 //             System.out.println("Monitor");      
             } else if (selection instanceof ProcessingType) {
