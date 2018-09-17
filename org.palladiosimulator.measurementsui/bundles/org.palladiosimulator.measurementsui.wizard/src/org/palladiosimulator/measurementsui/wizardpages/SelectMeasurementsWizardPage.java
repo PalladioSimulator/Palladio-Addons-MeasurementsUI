@@ -124,6 +124,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			@Override
 			public void handleEvent(Event event) {
 				metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
+				getContainer().updateButtons();
 			}
 		});
 
@@ -136,6 +137,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 				Object firstElement = selection.getFirstElement();
 				MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
 				metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurment);
+				getContainer().updateButtons();
 			}
 		});
 
@@ -194,6 +196,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 				Object firstElement = selection.getFirstElement();
 				MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
 				metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurment);
+				getContainer().updateButtons();
 			}
 
 		});
@@ -204,6 +207,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			@Override
 			public void handleEvent(Event event) {
 				metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
+				getContainer().updateButtons();
 			}
 		});
 

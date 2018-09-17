@@ -58,6 +58,10 @@ public class WizardModelManager {
 		}
 
 	}
+	
+	public boolean canFinish() {
+		return !monitor.getMeasurementSpecifications().isEmpty();
+	}
 
 	public WizardModel getWizardModel(WizardModelType wizardModel) {
 		switch (wizardModel) {
