@@ -18,7 +18,9 @@ import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
@@ -267,24 +269,26 @@ public class MeasuringpointView {
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
         editButton.setText("Edit...");
-        MeasuringPointsWizard wizard;
+        
         editButton.addListener(SWT.Selection, e -> {
+        	MeasuringPointsWizard wizard;
             Object selection = selectionService.getSelection();   
+            ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
             if (selection instanceof Monitor) {
-                //MeasuringPointsWizard wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
-//             System.out.println("Monitor");      
-            } else if (selection instanceof ProcessingType) {
-//             System.out.println("Processing Type");      
+                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);    
             } else if (selection instanceof MeasuringPoint) {
-//                System.out.println("Measuring Point");       
-            } else if (selection instanceof MeasurementSpecification) {
-//                System.out.println("Measurement Specification");     
-            } else if (selection instanceof MonitorRepository) {
-//                System.out.println("Monitor Repository");        
+            	wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION, (Monitor) provider.getParent(selection));   
+            } else if (selection instanceof MeasurementSpecification) { 
+            	wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, (Monitor) provider.getParent(selection));   
+            } else {
+            	wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION);   
             }
-            /*Shell parentShell = wizard.getShell();
+            
+            Shell parentShell = wizard.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.open();*/
+            dialog.setPageSize(720, 400);
+            dialog.setMinimumPageSize(720, 400);
+            dialog.open();
         });
     }
 
