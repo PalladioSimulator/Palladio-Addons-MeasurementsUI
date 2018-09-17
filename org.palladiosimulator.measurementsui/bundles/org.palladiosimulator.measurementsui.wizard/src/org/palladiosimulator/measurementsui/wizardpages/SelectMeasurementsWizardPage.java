@@ -216,8 +216,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		tableViewerRight.setCellEditors(cellEditor);
 		String[] columnNames = { "Metric Description", "Self Adapting" };
 		tableViewerRight.setColumnProperties(columnNames);
-		tableViewerRight.setCellModifier(new CellModifier(tableViewerRight));
-
+		tableViewerRight.setCellModifier(new CellModifier(tableViewerRight, metricDescriptionSelectionWizardModel));
 		setPageComplete(true);
 		setControl(container);
 	}
