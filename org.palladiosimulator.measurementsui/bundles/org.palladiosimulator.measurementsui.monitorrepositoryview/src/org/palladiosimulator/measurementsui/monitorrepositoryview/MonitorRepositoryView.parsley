@@ -5,6 +5,9 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification
 import org.palladiosimulator.monitorrepository.MonitorRepository
 import org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositorySaveableTreeFormView
 import org.palladiosimulator.monitorrepository.ProcessingType
+import org.eclipse.jface.wizard.WizardDialog
+import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard
+import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType
 
 /* mpview EMF Parsley Dsl Module file */
 module monitorrepositoryview {
@@ -20,6 +23,8 @@ module monitorrepositoryview {
 			Monitor mon -> {
 				new ArrayList() => [
 					addAll(mon.measurementSpecifications)
+					if (mon.measuringPoint !== null)
+						add(mon.measuringPoint)
 				]
 			}
 			MeasuringPoint -> #[]
@@ -53,45 +58,68 @@ module monitorrepositoryview {
 
 	menuBuilder {
 		menus {
-			MonitorRepository mr-> #[actionChange(
+			MonitorRepository mr -> #[
+				actionChange(
 					"Add Measuringpoint with Monitor",
 					mr,
-					[]
-				)
-				,separator,
+					[
+						val wizard = new MeasuringPointsWizard();
+						val parentShell = wizard.getShell();
+						val dialog = new WizardDialog(parentShell, wizard);
+						dialog.open();
+					]
+				),
+				separator,
 				actionUndo,
 				actionRedo
 			]
 		}
-		
+
 		emfMenus{
 			MonitorRepository mr -> #[]
-			
-			Monitor monitor -> #[
+
+			Monitor monitor -> #[actionChange(
+				"Add Measuringpoint with Monitor",
+				monitor,
+				[
+					val wizard = new MeasuringPointsWizard();
+					val parentShell = wizard.getShell();
+					val dialog = new WizardDialog(parentShell, wizard);
+					dialog.open();
+				]
+			), submenu("Edit", #[
 				actionChange(
-					"Add Measuringpoint with Monitor",
+					"Monitor",
 					monitor,
-					[]
+					[
+						val wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, monitor);
+                		val parentShell = wizard.getShell();
+                		val dialog = new WizardDialog(parentShell, wizard);
+                		dialog.open();
+					]
 				),
-				submenu("Edit", #[
-					actionChange(
-						"Monitor",
-						monitor,
-						[]
-					),
-					actionChange(
-						"Measuringpoint",
-						monitor,
-						[]
-					),
-					actionChange(
-						"Measurement Specifications",
-						monitor,
-						[]
-					)
-				]),
-				separator]
-			
+				actionChange(
+					"Measuringpoint",
+					monitor,
+					[
+						val wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION, monitor);
+                		val parentShell = wizard.getShell();
+                		val dialog = new WizardDialog(parentShell, wizard);
+                		dialog.open();
+					]
+				),
+				actionChange(
+					"Measurement Specifications",
+					monitor,
+					[
+						val wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
+                		val parentShell = wizard.getShell();
+                		val dialog = new WizardDialog(parentShell, wizard);
+                		dialog.open();
+					]
+				)
+			]), separator]
+
 			MeasuringPoint measuringPoint -> #[
 				actionChange(
 					"Edit Measuringpoint",
@@ -100,13 +128,20 @@ module monitorrepositoryview {
 				),
 				separator
 			]
-			
+
 			MeasurementSpecification measurement -> #[
 				submenu("Edit", #[
 					actionChange(
 						"MeasurementSpecifications",
 						measurement,
-						[]
+						[
+							val monitor = measurement.eContainer as Monitor
+							val wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
+                			val parentShell = wizard.getShell();
+                			val dialog = new WizardDialog(parentShell, wizard);
+                			dialog.open();
+							
+						]
 					),
 					actionChange(
 						"ProcessingTypes",
@@ -116,8 +151,9 @@ module monitorrepositoryview {
 				]),
 				separator
 			]
-			
-			ProcessingType processing -> #[actionChange(
+
+			ProcessingType processing -> #[
+				actionChange(
 					"Edit Processing Types",
 					processing,
 					[]

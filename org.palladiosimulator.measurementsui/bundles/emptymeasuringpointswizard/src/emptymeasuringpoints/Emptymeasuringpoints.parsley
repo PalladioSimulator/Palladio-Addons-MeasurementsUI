@@ -41,12 +41,19 @@ module emptymeasuringpoints {
 					"Create Standard Set",
 					mp,
 					[]
-				)/* ,
+				),
 				actionChange(
 					"Assign to Monitor",
 					mp,
 					[]
-				)	*/	
+				),
+				actionChange(
+					"Delete",
+					mp.eContainer as MeasuringPointRepository,
+					[repository|
+						repository.measuringPoints.remove(mp)
+					]
+				)			
 			]
 		}
 	}

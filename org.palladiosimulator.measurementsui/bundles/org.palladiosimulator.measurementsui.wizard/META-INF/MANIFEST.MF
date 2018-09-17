@@ -9,12 +9,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.e4.ui.model.workbench,
  org.eclipse.e4.core.commands,
- org.palladiosimulator.measurementsui.viewer,
  org.palladiosimulator.monitorrepository,
  org.eclipse.emf.parsley.common,
  org.palladiosimulator.measurementsui.newMonitor,
  org.palladiosimulator.measurementsui.data,
- org.palladiosimulator.measurementsui.viewer,
  org.eclipse.ui.forms,
  org.eclipse.emf.ecore,
  org.eclipse.emf.common,
@@ -22,11 +20,15 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.edp2.editor,
  org.palladiosimulator.pcm.edit,
  org.palladiosimulator.pcm,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.palladiosimulator.measurementsui.viewer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.uni-stuttgart.enpro.wizard
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: org.palladiosimulator.measurementsui.wizardmain,
  org.palladiosimulator.measurementsui.wizardmain.handlers
+Import-Package: emptymeasuringpoints,
+ org.palladio.simulator.measurementsui.selectmeasurements.emptyview,
+ tableform
 

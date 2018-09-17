@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.parsleyviewer;
+package org.palladiosimulator.simulizar.ui.measuringview.viewer;
 
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
