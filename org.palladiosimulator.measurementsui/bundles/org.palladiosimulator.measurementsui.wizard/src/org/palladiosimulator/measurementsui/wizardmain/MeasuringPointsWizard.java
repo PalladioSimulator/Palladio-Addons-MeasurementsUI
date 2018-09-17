@@ -129,7 +129,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 
     @Override
     public boolean canFinish() {
-        if (getContainer().getCurrentPage() == page1 || getContainer().getCurrentPage() == page2) {
+        if (getContainer().getCurrentPage() == page1 || getContainer().getCurrentPage() == page2 || !wizardManager.canFinish()) {
             return false;
         } else {
             return true;

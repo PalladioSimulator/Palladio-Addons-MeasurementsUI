@@ -123,6 +123,7 @@ public class UnselectedMetricSpecificationsProvider {
 				editor.addMeasurementSpecificationToMonitor(receivingMonitor, aMSpec);
 			}
 		} else {
+			
 			receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
 		}
 
