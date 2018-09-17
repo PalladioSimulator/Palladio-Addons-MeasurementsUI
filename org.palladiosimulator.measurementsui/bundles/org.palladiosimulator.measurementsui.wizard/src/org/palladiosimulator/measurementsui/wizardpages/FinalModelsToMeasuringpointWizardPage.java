@@ -59,7 +59,6 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 
 	public void loadData() {
 		selectionWizardModel = MeasuringPointSelectionWizardModel.getInstance();
-		System.out.println("wizard model "+selectionWizardModel.toString());
 		finalSelectionTreeViewer.setInput(selectionWizardModel.getSignatures().toArray());
 		ISelection initialSelection = new StructuredSelection(selectionWizardModel.getSignatures().get(0));
 		finalSelectionTreeViewer.setSelection(initialSelection);

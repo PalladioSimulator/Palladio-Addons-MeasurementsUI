@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TreeItem;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizard.viewer.EmptyMpTreeViewer;
@@ -238,7 +239,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 	protected boolean nextPressed() {
 		boolean validatedNextPressed = true;
 		try {
-			if (emptyMpTreeViewer.getViewer().getStructuredSelection().getFirstElement() instanceof LinkedList
+			if (emptyMpTreeViewer.getViewer().getStructuredSelection().getFirstElement() instanceof MeasuringPointRepository
 					|| createTreeViewer.getStructuredSelection().getFirstElement() instanceof LinkedList) {
 				this.setErrorMessage("Choose a model for which a measuring point will be created.");
 				validatedNextPressed = false;
