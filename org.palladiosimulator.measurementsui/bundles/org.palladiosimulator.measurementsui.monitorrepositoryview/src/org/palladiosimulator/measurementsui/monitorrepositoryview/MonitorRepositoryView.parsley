@@ -23,6 +23,8 @@ module monitorrepositoryview {
 			Monitor mon -> {
 				new ArrayList() => [
 					addAll(mon.measurementSpecifications)
+					if (mon.measuringPoint !== null)
+						add(mon.measuringPoint)
 				]
 			}
 			MeasuringPoint -> #[]
