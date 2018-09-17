@@ -220,7 +220,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 			setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
 
 		}
-		java.lang.System.out.println("Monitor " + monitor + "hat MP " + monitor.getMeasuringPoint());
 
 	}
 
