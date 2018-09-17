@@ -13,7 +13,9 @@ import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDragListener;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
-import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
+import emptymeasuringpointswizard.EmptymeasuringpointsInjectorProvider;
+
+
 
 /**
  * Generates a tree view where all empty measuring points from all
