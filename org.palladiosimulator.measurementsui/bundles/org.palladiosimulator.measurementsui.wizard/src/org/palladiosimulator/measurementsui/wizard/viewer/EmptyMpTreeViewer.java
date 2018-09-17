@@ -1,21 +1,17 @@
 package org.palladiosimulator.measurementsui.wizard.viewer;
 
-import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.util.LocalSelectionTransfer;
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.abstractviewer.ComponentViewer;
-import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDragListener;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+
+import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
+
 
 /**
  * Generates a tree view where all empty measuring points from all

@@ -18,5 +18,6 @@
         <module>org.palladiosimulator.measurementsui.wizard</module>
         <module>org.palladiosimulator.measurementsui.newMonitor</module>
          <module>org.palladiosimulator.measurementsui.selectmeasurement</module>
+         <module>org.palladiosimulator.measurementsui.emptymeasuringpointswizard</module>
     </modules>
 </project>

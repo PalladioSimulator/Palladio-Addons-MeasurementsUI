@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
@@ -14,6 +13,9 @@ import org.palladiosimulator.measurementsui.abstractviewer.listener.Measuringpoi
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
+
+
+
 
 /**
  * Generates a tree view where all empty measuring points from all

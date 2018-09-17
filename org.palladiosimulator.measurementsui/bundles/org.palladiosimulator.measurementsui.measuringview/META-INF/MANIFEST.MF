@@ -24,6 +24,7 @@ Require-Bundle: javax.inject,
 Automatic-Module-Name: org.palladiosimulator.simulizar.ui.measuringview
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: emptymeasuringpoints,
+ emptymeasuringpointswizard,
  monitorrepositoryview,
  org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.dataprovider,
