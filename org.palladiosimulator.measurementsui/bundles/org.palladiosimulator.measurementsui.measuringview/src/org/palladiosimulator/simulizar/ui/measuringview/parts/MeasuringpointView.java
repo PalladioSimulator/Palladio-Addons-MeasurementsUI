@@ -267,13 +267,15 @@ public class MeasuringpointView {
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
         editButton.setText("Edit...");
-
+        
         editButton.addListener(SWT.Selection, e -> {
             Object selection = selectionService.getSelection();   
             if (selection instanceof Monitor) {
                 MeasuringPointsWizard wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
                 Shell parentShell = wizard.getShell();
                 WizardDialog dialog = new WizardDialog(parentShell, wizard);
+                dialog.setPageSize(720, 400);
+                dialog.setMinimumPageSize(720, 400);
                 dialog.open();
 //             System.out.println("Monitor");      
             } else if (selection instanceof ProcessingType) {
