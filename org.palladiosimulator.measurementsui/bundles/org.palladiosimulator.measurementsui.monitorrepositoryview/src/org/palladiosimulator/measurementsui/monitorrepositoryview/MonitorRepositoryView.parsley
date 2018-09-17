@@ -23,8 +23,6 @@ module monitorrepositoryview {
 			Monitor mon -> {
 				new ArrayList() => [
 					addAll(mon.measurementSpecifications)
-					if (mon.measuringPoint !== null)
-						add(mon.measuringPoint)
 				]
 			}
 			MeasuringPoint -> #[]
@@ -66,6 +64,8 @@ module monitorrepositoryview {
 						val wizard = new MeasuringPointsWizard();
 						val parentShell = wizard.getShell();
 						val dialog = new WizardDialog(parentShell, wizard);
+						dialog.setPageSize(720, 400);
+            			dialog.setMinimumPageSize(720, 400);
 						dialog.open();
 					]
 				),
@@ -85,6 +85,8 @@ module monitorrepositoryview {
 					val wizard = new MeasuringPointsWizard();
 					val parentShell = wizard.getShell();
 					val dialog = new WizardDialog(parentShell, wizard);
+					dialog.setPageSize(720, 400);
+            		dialog.setMinimumPageSize(720, 400);
 					dialog.open();
 				]
 			), submenu("Edit", #[
@@ -95,6 +97,8 @@ module monitorrepositoryview {
 						val wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, monitor);
                 		val parentShell = wizard.getShell();
                 		val dialog = new WizardDialog(parentShell, wizard);
+                		dialog.setPageSize(720, 400);
+            			dialog.setMinimumPageSize(720, 400);
                 		dialog.open();
 					]
 				),
@@ -105,6 +109,8 @@ module monitorrepositoryview {
 						val wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION, monitor);
                 		val parentShell = wizard.getShell();
                 		val dialog = new WizardDialog(parentShell, wizard);
+                		dialog.setPageSize(720, 400);
+            			dialog.setMinimumPageSize(720, 400);
                 		dialog.open();
 					]
 				),
@@ -115,6 +121,8 @@ module monitorrepositoryview {
 						val wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
                 		val parentShell = wizard.getShell();
                 		val dialog = new WizardDialog(parentShell, wizard);
+                		dialog.setPageSize(720, 400);
+            			dialog.setMinimumPageSize(720, 400);
                 		dialog.open();
 					]
 				)
@@ -139,6 +147,8 @@ module monitorrepositoryview {
 							val wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
                 			val parentShell = wizard.getShell();
                 			val dialog = new WizardDialog(parentShell, wizard);
+                			dialog.setPageSize(720, 400);
+            				dialog.setMinimumPageSize(720, 400);
                 			dialog.open();
 							
 						]
