@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmodel.pages;
 
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.UnselectedMetricSpecificationsProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -74,6 +75,14 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 		provider.moveAllMeasurementSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
 	}
 
+	public void switchTriggerSelfAdapting(boolean currentValue, MeasurementSpecification mspec) {
+	    if(isEditing) {
+	        ResourceEditorImpl.getInstance().changeTriggersSelfAdapting(mspec, currentValue);
+	    }else {
+	        mspec.setTriggersSelfAdaptations(!currentValue);
+	    }
+	}
+	
 	public void addSuggestions() {
 		// TODO: Not implemented yet.
 	}

@@ -69,6 +69,7 @@ public class WizardModelManager {
 			return model;
 		case METRIC_DESCRIPTION_SELECTION:
 			return new MetricDescriptionSelectionWizardModel(monitor, isEditing);
+			
 		case PROCESSING_TYPE:
 			return new ProcessingTypeSelectionWizardModel();
 		default:

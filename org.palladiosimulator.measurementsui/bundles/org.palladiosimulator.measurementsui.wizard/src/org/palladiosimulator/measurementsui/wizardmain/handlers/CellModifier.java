@@ -3,6 +3,9 @@ package org.palladiosimulator.measurementsui.wizardmain.handlers;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.palladiosimulator.measurementsui.wizardmodel.WizardModelManager;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
+import org.palladiosimulator.measurementsui.wizardpages.SelectMeasurementsWizardPage;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
 /**
@@ -11,22 +14,27 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
  *
  */
 public class CellModifier implements ICellModifier {
-
+    
+    
+    
 	/**
 	 * The table viewer of the according table
 	 */
 	private TableViewer tableViewer;
+    private MetricDescriptionSelectionWizardModel model;
 
 	/**
 	 * The constructor where basic attributes are set, e. g. the tableViewer
 	 * @param tableViewer the given tableViewer of the according table
 	 */
-	public CellModifier(TableViewer tableViewer) {
+	public CellModifier(TableViewer tableViewer, MetricDescriptionSelectionWizardModel model) {
 		super();
+		this.model = model;
 		this.tableViewer = tableViewer;
 	}
 
-	@Override
+
+    @Override
 	public boolean canModify(Object element, String property) {
 		return true;
 	}
@@ -41,10 +49,6 @@ public class CellModifier implements ICellModifier {
 	public void modify(Object element, String property, Object value) {
 		IStructuredSelection selection = tableViewer.getStructuredSelection();
 		MeasurementSpecification specification = (MeasurementSpecification) selection.getFirstElement();
-		if (specification.isTriggersSelfAdaptations()) {
-			specification.setTriggersSelfAdaptations(false);
-		} else {
-			specification.setTriggersSelfAdaptations(true);
-		}
+		model.switchTriggerSelfAdapting(specification.isTriggersSelfAdaptations(), specification);
 	}
 }
