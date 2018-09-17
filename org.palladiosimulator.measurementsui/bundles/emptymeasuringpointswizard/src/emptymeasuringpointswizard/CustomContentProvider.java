@@ -1,4 +1,4 @@
-package emptymeasuringpoints;
+package emptymeasuringpointswizard;
 
 import javax.inject.Inject;
 

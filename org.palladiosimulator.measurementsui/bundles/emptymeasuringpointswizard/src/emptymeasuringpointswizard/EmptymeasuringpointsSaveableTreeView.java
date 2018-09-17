@@ -1,4 +1,4 @@
-package emptymeasuringpoints;
+package emptymeasuringpointswizard;
 /**
  * Parsley tree view which contains all empty measuringpoints of a palladio
  * project.

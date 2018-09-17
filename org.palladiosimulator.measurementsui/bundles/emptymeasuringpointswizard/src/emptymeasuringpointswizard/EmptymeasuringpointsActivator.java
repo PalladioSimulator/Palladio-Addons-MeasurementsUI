@@ -1,4 +1,4 @@
-package emptymeasuringpoints;
+package emptymeasuringpointswizard;
 
 import org.osgi.framework.BundleContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
