@@ -49,8 +49,8 @@ import org.palladiosimulator.simulizar.ui.measuringview.viewer.EmptyMpTreeViewer
 import org.palladiosimulator.simulizar.ui.measuringview.viewer.MonitorTreeViewer;
 
 /**
- * Eclipse e4 view in which the user gets an overview of all existing monitors and measuringpoints
- * in a selected monitorrepository.
+ * Eclipse e4 view which gives the user an overview of all existing Monitors and MeasuringPoints
+ * in a selected MonitorRepository.
  * 
  * @author David Schuetz
  * 
@@ -77,10 +77,10 @@ public class MeasuringpointView {
     private ESelectionService selectionService;
 
     /**
-     * Creates the meu items and controls for the simulizar measuring point view
+     * Creates the menu items and controls for the simulizar measuring point view
      * 
      * @param parent
-     *            composite of the empty view
+     *            the composite of the empty view
      */
     @PostConstruct
     public void createPartControl(Composite parent) {
@@ -112,7 +112,7 @@ public class MeasuringpointView {
     }
 
     /**
-     * Initializes the connecton to the data management and manipulation packages
+     * Initializes the connecton to the data management and manipulation package
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
@@ -135,7 +135,7 @@ public class MeasuringpointView {
      * projected
      * 
      * @param parent
-     *            composite where the tree view will be placed
+     *            a composite where the tree view will be placed
      * @return TreeViewer which includes all existing monitors
      */
     private MpTreeViewer createMonitorTreeViewer(Composite parent) {
@@ -149,7 +149,7 @@ public class MeasuringpointView {
      * Creates a tree view which shows all empty measuring points of all projects in the workspace
      * 
      * @param parent
-     *            composite where the tree view will be placed
+     *            a composite where the tree view will be placed
      * @return TreeViewer which includes all measuring points without a monitor
      */
     private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
@@ -162,7 +162,7 @@ public class MeasuringpointView {
      * Adds a SelectionListener which enables/disables Buttons based on which TreeItem is selected
      * 
      * @param treeViewer
-     *            Viewer where the SelectionListener will be added to.
+     *            a viewer where the SelectionListener will be added to.
      */
     private void addSelectionListener(Viewer treeViewer) {
         treeViewer.addSelectionChangedListener(event -> {
@@ -188,7 +188,7 @@ public class MeasuringpointView {
      * Creates the composite in which the tree view is later embedded
      * 
      * @param parent
-     *            composite where the tree composite will be placed
+     *            a composite where the tree composite will be placed
      * @return Composite where the TreeViewers can be placed
      */
     private Composite createTreeComposite(Composite parent) {
@@ -203,7 +203,7 @@ public class MeasuringpointView {
      * deleting, assigning measuringpoints to monitor or creating a standard measuring point set
      * 
      * @param buttonContainer
-     *            composite where the buttons will be placed
+     *            a composite where the buttons will be placed
      */
     private void createViewButtons(Composite buttonContainer) {
         createNewMeasuringpointButton(buttonContainer);
@@ -221,7 +221,7 @@ public class MeasuringpointView {
      * Creates a Button which opens the Wizard in order to create a measuring point
      * 
      * @param parent
-     *            composite where the button will be placed
+     *            a composite where the button will be placed
      */
     private void createNewMeasuringpointButton(Composite parent) {
         Button newMpButton = new Button(parent, SWT.PUSH);
@@ -241,7 +241,7 @@ public class MeasuringpointView {
      * Creates a Button which deletes selected EObjects
      * 
      * @param parent
-     *            composite where the button will be placed
+     *            a composite where the button will be placed
      */
     private void createDeleteButton(Composite parent) {
         deleteButton = new Button(parent, SWT.PUSH);
@@ -260,7 +260,7 @@ public class MeasuringpointView {
      * Creates a Button which edits selected EObjects
      * 
      * @param parent
-     *            composite where the button will be placed
+     *            a composite where the button will be placed
      */
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
@@ -294,7 +294,7 @@ public class MeasuringpointView {
      * Creates a combobox at the top of the view where the user can select the project
      * 
      * @param parent
-     *            composite where the combobox is placed in
+     *            a composite where the combobox is placed in
      */
     private void createProjectsSelectionComboBox(Composite parent) {
         projectsComboDropDown = new Combo(parent, SWT.DROP_DOWN);
@@ -319,7 +319,7 @@ public class MeasuringpointView {
     }
 
     /**
-     * Adds every project in the workspace, that has an .aird file to the projectsComboBox
+     * Adds every project in the workspace that has an .aird file to the projectsComboBox
      */
     private void updateProjectComboBox() {
 
@@ -359,7 +359,7 @@ public class MeasuringpointView {
      * Saves the current data in the tree view
      * 
      * @param dirty
-     *            states whether there were changes made
+     *            the dirty state which indicates whether there were changes made
      * @throws IOException if the save command fails
      */
     @Persist

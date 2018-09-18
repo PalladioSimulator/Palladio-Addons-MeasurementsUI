@@ -25,13 +25,13 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
     /**
      * 
      * @param parent
-     *            container where the tree viewer is placed in
+     *            the container where the tree viewer is placed in
      * @param dirty
-     *            state of the e4 view
+     *            the dirty state which indicates whether there were changes made
      * @param commandService
-     *            of the eclipse application in order to make the tree view saveable
+     *            a service of the eclipse application in order to make the tree view saveable
      * @param application
-     *            Connection to the data binding. This is needed in order to get the repository of
+     *            the connection to the data binding. This is needed in order to get the repository of
      *            the current project.
      */
     public EmptyMpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,

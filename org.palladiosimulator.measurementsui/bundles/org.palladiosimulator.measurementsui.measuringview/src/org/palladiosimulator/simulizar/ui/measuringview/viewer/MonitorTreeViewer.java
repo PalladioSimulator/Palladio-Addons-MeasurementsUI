@@ -26,11 +26,11 @@ public class MonitorTreeViewer extends MpTreeViewer {
      * @param parent
      *            composite where the tree view is embedded
      * @param dirty
-     *            state of the tree view
+     *            the dirty state which indicates whether there were changes made
      * @param commandService
-     *            eclipse commandservice in order to save the view
+     *            the eclipse commandservice in order to save the view
      * @param application
-     *            Connection to the data binding. This is needed in order to get the repository of
+     *            the connection to the data binding. This is needed in order to get the repository of
      *            the current project.
      */
     public MonitorTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
