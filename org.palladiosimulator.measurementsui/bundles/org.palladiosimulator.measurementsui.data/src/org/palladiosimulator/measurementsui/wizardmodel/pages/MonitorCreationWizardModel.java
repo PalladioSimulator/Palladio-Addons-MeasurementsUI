@@ -25,10 +25,7 @@ public class MonitorCreationWizardModel implements WizardModel{
 
 	@Override
 	public boolean canFinish() {
-		if(this.monitor.getMonitorRepository() != null && this.monitor.getMeasuringPoint() != null) {
-			return true;
-		}
-		return false;
+		return !monitor.getEntityName().isEmpty();
 	}
 
 	@Override

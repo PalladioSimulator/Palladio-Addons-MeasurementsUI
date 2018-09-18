@@ -7,7 +7,7 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
 	@Override
 	public boolean canFinish() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override

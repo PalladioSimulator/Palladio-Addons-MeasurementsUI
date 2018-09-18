@@ -68,19 +68,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 
 	DataApplication da = DataApplication.getInstance();
 
-	public static MeasuringPointSelectionWizardModel getInstance() {
-
-		return instance;
-	}
-
-	public MeasuringPointSelectionWizardModel() {
-
-	}
-
-	public void setInstance(MeasuringPointSelectionWizardModel model) {
-		instance = model;
-	}
-
 	public MeasuringPointSelectionWizardModel(Monitor monitor, boolean isEditing) {
 		this.monitor = monitor;
 		this.isEditing = isEditing;
@@ -261,10 +248,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 	 */
 	@Override
 	public boolean canFinish() {
-		if (this.monitor.getMonitorRepository() != null && this.monitor.getMeasuringPoint() != null) {
-			return true;
-		}
-		return false;
+		return monitor.getMeasuringPoint() != null;
 	}
 
 	/**

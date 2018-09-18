@@ -51,9 +51,9 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
      */
     private MeasurementSpecification page4;
 
-    public AdditionalModelsToMeasuringpointWizardPage page2extra = new AdditionalModelsToMeasuringpointWizardPage();
+    private AdditionalModelsToMeasuringpointWizardPage page2extra;
 
-    public FinalModelsToMeasuringpointWizardPage page2final = new FinalModelsToMeasuringpointWizardPage();
+    private FinalModelsToMeasuringpointWizardPage page2final;
 
     public MeasuringPointsWizard() {
         wizardManager = new WizardModelManager();
@@ -84,8 +84,14 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
     private void createPages() {
         page1 = new AddMonitorWizardPage(
                 (MonitorCreationWizardModel) wizardManager.getWizardModel(WizardModelType.MONITOR_CREATION));
+        
         page2 = new ChooseMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.MEASURING_POINT_SELECTION));
+        page2extra = new AdditionalModelsToMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
+                .getWizardModel(WizardModelType.MEASURING_POINT_SELECTION));
+        page2final = new FinalModelsToMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
+                .getWizardModel(WizardModelType.MEASURING_POINT_SELECTION));
+        
         page3 = new SelectMeasurementsWizardPage((MetricDescriptionSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
         page4 = new MeasurementSpecification(
@@ -129,10 +135,6 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 
     @Override
     public boolean canFinish() {
-        if (getContainer().getCurrentPage() == page1 || getContainer().getCurrentPage() == page2 || !wizardManager.canFinish()) {
-            return false;
-        } else {
-            return true;
-        }
+        return wizardManager.canFinish();
     }
 }
