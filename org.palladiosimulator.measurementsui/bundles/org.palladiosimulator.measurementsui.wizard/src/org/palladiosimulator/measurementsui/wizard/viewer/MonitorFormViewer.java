@@ -14,6 +14,7 @@ import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
 
 /**
  * This class handles the view for the form for the 1st wizard page where the new monitor is created.
+ * 
  * @author Ba
  *
  */
