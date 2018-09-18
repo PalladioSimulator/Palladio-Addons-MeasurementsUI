@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.fileaccess;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -10,20 +11,31 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.business.api.session.Session;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
 import org.palladiosimulator.measurementsui.datamanipulation.DataRepositoryCreator;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.allocation.Allocation;
-import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.allocation.AllocationPackage;
 import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcm.subsystem.SubSystem;
+import org.palladiosimulator.pcm.subsystem.SubsystemPackage;
+import org.palladiosimulator.pcm.system.System;
+import org.palladiosimulator.pcm.system.SystemPackage;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
+import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 /**
- * Class for accessing all parts of the model, mainly getter methods
+ * Class for accessing all Palladio models of a Modelling Project (.aird file available)
+ * Offers access to each model.
+ * 
  * @author Lasse
  *
  */
@@ -39,6 +51,9 @@ public class ModelAccessor {
     private List<MeasuringPointRepository> measuringPointRepository;
     private List<MonitorRepository> monitorRepository;
 
+    /**
+     * Constructor
+     */
     public ModelAccessor() {
         this.resourceEnvironment = new LinkedList<>();
         this.system = new LinkedList<>();
@@ -57,7 +72,8 @@ public class ModelAccessor {
      * NOTE: with java 11 this will be implemented in the java.util.function package
      * so Predicate.not(Predicate<T> t) will be usable from there
      * 
-     * @param t Predicate to negate
+     * @param t predicate to negate
+     * @param <T> 
      * @return negated Predicate
      */
     public static <T> Predicate<T> not(Predicate<T> t) {
@@ -68,16 +84,16 @@ public class ModelAccessor {
     /**
      * This method returns a list of all MeasuringPoints which are not assigned to any Monitor.
      * 
-     * @return List of unassigned MeasuringPoints
+     * @return EList of unassigned MeasuringPoints
      */
     public EList<MeasuringPoint> getUnassignedMeasuringPoints() {
      
         List<MeasuringPoint> measuringPointsFromAllRepositories = this.measuringPointRepository.stream()
-                .flatMap(e->e.getMeasuringPoints().stream())
+                .flatMap(e -> e.getMeasuringPoints().stream())
                 .collect(Collectors.toList());
         
         List<MeasuringPoint> measuringPointsFromMonitors = this.monitorRepository.stream()
-                .flatMap(e->e.getMonitors().stream().map(Monitor::getMeasuringPoint))
+                .flatMap(e -> e.getMonitors().stream().map(Monitor::getMeasuringPoint))
                 .collect(Collectors.toList());
         
         List<MeasuringPoint> intersectionOfMeasuringPoints = measuringPointsFromAllRepositories.stream()
@@ -92,7 +108,9 @@ public class ModelAccessor {
 
 
     /**
-     * Given a sirius session this Method initializes all found pcm Models in the session.
+     * Given a sirius session this Method initializes all five palladio component
+     * models(+SubSystems), monitor- and measuringPoint-Repositories
+     * that are found in this session.
      * 
      * @param session
      *            the session to which all models should be loaded
@@ -101,16 +119,41 @@ public class ModelAccessor {
 
         clearModelAccess();
 
-        for (Resource modelResource : session.getSemanticResources()) {
+        List<Resource> resourcesAllModelsInSession = session.getSemanticResources().stream().collect(Collectors.toList());
+        List<EObject> allModelObjectsInSession = resourcesAllModelsInSession.stream().flatMap(e -> e.getContents().stream())
+                .collect(Collectors.toList());
 
-            for (EObject model : modelResource.getContents()) {
+        
+        Collection<MeasuringPointRepository> measuringPointRepositorys = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                MeasuringpointPackage.eINSTANCE.getMeasuringPointRepository());
+        this.measuringPointRepository.addAll(measuringPointRepositorys);
 
-                if (PcmModelEnum.checkName(model.eClass().getName()) != null) {
+        Collection<MonitorRepository> monitorRepositories = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
+        this.monitorRepository.addAll(monitorRepositories);
 
-                    checkPcmModels(model, PcmModelEnum.valueOf(model.eClass().getName()));
-                }
-            }
-        }
+        Collection<ResourceEnvironment> resourceEnvironments = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                ResourceenvironmentPackage.eINSTANCE.getResourceEnvironment());
+        this.resourceEnvironment.addAll(resourceEnvironments);
+
+        Collection<System> systems = EcoreUtil.getObjectsByType(allModelObjectsInSession, SystemPackage.eINSTANCE.getSystem());
+        this.system.addAll(systems);
+
+        Collection<Allocation> allocations = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                AllocationPackage.eINSTANCE.getAllocation());
+        this.allocation.addAll(allocations);
+
+        Collection<Repository> repositorys = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                RepositoryPackage.eINSTANCE.getRepository());
+        this.repository.addAll(repositorys);
+
+        Collection<UsageModel> usageModels = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                UsagemodelPackage.eINSTANCE.getUsageModel());
+        this.usageModel.addAll(usageModels);
+
+        Collection<SubSystem> subSystems = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                SubsystemPackage.eINSTANCE.getSubSystem());
+        this.subsystem.addAll(subSystems);
 
     }
     
@@ -120,29 +163,16 @@ public class ModelAccessor {
      * 
      * @param project current Project
      */
-    public void checkIfRepositoriesExist(IProject project){
+    public void checkIfRepositoriesExist(IProject project) {
     	
-    	if(!monitorRepositoryExists()) {
+    	if (!monitorRepositoryExists()) {
     		addMonitorRepository(DataRepositoryCreator.getInstance().createMonitorRepository(project));
     	}
     	
-    	if(!measuringPointRepositoryExists()) {
+    	if (!measuringPointRepositoryExists()) {
     		addMeasuringPointRepository(DataRepositoryCreator.getInstance().createMeasuringPointRepository(project));
     	}
     		
-    }
-
-    /**
-     * This method initializes the pcm Model from the given EObject
-     * 
-     * @param pcmModel
-     *            the EObject of the model
-     * @param pcmEnum
-     *            the Enum of the model eClass
-     */
-    private void checkPcmModels(EObject pcmModel, PcmModelEnum pcmEnum) {
-
-        pcmEnum.createPcmInstance(this, pcmModel);
     }
 
     /**
@@ -160,88 +190,149 @@ public class ModelAccessor {
     }
     
     /**
-     * Checks whether there exists an MonitorRepository
+     * Checks whether there exists a MonitorRepository
      * 
      * @return boolean whether a monitorRepository exists
      */
     public boolean monitorRepositoryExists() {
-        if (this.monitorRepository != null && !this.monitorRepository.isEmpty()) {
-            return true;
-        }
-        return false;
+       return (this.monitorRepository != null && !this.monitorRepository.isEmpty());
+         
     }
     
     /**
-     * Checks whether there exists an MonitorRepository
+     * Checks whether there exists a MonitorRepository
      * 
      * @return boolean whether a monitorRepository exists
      */
     public boolean measuringPointRepositoryExists() {
-        if (this.measuringPointRepository != null && !this.measuringPointRepository.isEmpty()) {
-            return true;
-        }
-        return false;
+      
+        return (this.measuringPointRepository != null && !this.measuringPointRepository.isEmpty());
     }
 
+    /**
+     * Adds a ResourceEnvironment to the ResourceEnvironment list
+     * @param resourceEnvironment to add
+     */
     protected void addResourceEnvironment(ResourceEnvironment resourceEnvironment) {
         this.resourceEnvironment.add(resourceEnvironment);
     }
 
+    /**
+     * Adds a System to the System list
+     * @param system to add
+     */
     protected void addSystem(org.palladiosimulator.pcm.system.System system) {
         this.system.add(system);
     }
 
+    /**
+     * Adds an Allocation to the Allocation list
+     * @param allocation to add
+     */
     protected void addAllocation(Allocation allocation) {
         this.allocation.add(allocation);
     }
 
+    /**
+     * Adds a Repository to the Repository list
+     * @param repository to add
+     */
     protected void addRepository(Repository repository) {
         this.repository.add(repository);
     }
 
+    /**
+     * Adds a UsageModel to the UsageModel list
+     * @param usageModel to add
+     */
     protected void addUsageModel(UsageModel usageModel) {
         this.usageModel.add(usageModel);
     }
 
+    /**
+     * Adds a SubSystem to the SubSystem list
+     * @param subsystem to add
+     */
     protected void addSubSystem(SubSystem subsystem) {
         this.subsystem.add(subsystem);
     }
     
+    /**
+     * Adds a MonitorRepository to the MonitorRepository list
+     * @param monitorRepository to add
+     */
     protected void addMonitorRepository(MonitorRepository monitorRepository) {
         this.monitorRepository.add(monitorRepository);
     }
 
+    /**
+     * Adds a MeasuringPointRepository to the MeasuringPointRepository list
+     * @param measuringPointRepository to add
+     */
     protected void addMeasuringPointRepository(MeasuringPointRepository measuringPointRepository) {
         this.measuringPointRepository.add(measuringPointRepository);
     }
     
+    /**
+     * Returns the list of ResourceEnvironments
+     * @return list of ResourceEnvironments
+     */
     public List<ResourceEnvironment> getResourceEnvironment() {
         return resourceEnvironment;
     }
 
+    /**
+     * Returns the list of Systems
+     * @return list of Systems
+     */
     public List<org.palladiosimulator.pcm.system.System> getSystem() {
         return system;
     }
 
+    /**
+     * Returns the list of Allocations
+     * @return list of Allocations
+     */
     public List<Allocation> getAllocation() {
         return allocation;
     }
 
+    /**
+     * Returns the list of Repositorys
+     * @return list of Repositorys
+     */
     public List<Repository> getRepository() {
         return repository;
     }
 
+    /**
+     * Returns the list of UsageModels
+     * @return list of UsageModels
+     */
     public List<UsageModel> getUsageModel() {
         return usageModel;
     }
+    
+    /**
+     * Returns the list of SubSystems
+     * @return list of SubSystems
+     */
     public List<SubSystem> getSubSystem() {
         return subsystem;
     }
 
+    /**
+     * Returns the list of MeasuringPointRepositorys
+     * @return list of MeasuringPointRepositorys
+     */
     public List<MeasuringPointRepository> getMeasuringPointRepository() {
         return measuringPointRepository;
     }
 
+    /**
+     * Returns the list of MonitorRepositorys
+     * @return list of MonitorRepositorys
+     */
     public List<MonitorRepository> getMonitorRepository() {
         return monitorRepository;
     }

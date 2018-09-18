@@ -5,14 +5,18 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
-import org.palladiosimulator.measurementsui.fileaccess.*;
+import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
+import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
+
 
 /**
- * Connection class between data management and gui
+ * This class manages the current project of the workspace which is
+ * selected and provides access to all necessary data from this
+ * project.
  * @author Lasse
  *
  */
-public class DataApplication {
+public final class DataApplication {
 
     private DataGathering dataGathering;
     private ModelAccessor modelAccessor;
@@ -21,13 +25,23 @@ public class DataApplication {
     private IProject project;
 
     private static DataApplication instance;
+    
+    
 
+
+    /**
+     * private constructor
+     */
     private DataApplication() {
         this.dataGathering = new DataGathering();
         this.modelAccessor = new ModelAccessor();
 
     }
 
+    /**
+     * Get the instance of DataApplication
+     * @return instance of DataApplication
+     */
     public static DataApplication getInstance() {
         if (DataApplication.instance == null) {
             DataApplication.instance = new DataApplication();
@@ -36,12 +50,14 @@ public class DataApplication {
     }
 
     /**
-     * Starts the application. Loads all pcm Models given a project is selected and it has a .aird
+     * Loads all palladio component models Models given a project is selected and it has a .aird
      * file(modeling Project nature).
+     * Initializes a session correspondig to the project, which is used to load the models.
+     * Checks for Monitor-/MeasuringPoint-Repositories and creates them if none exist.
+     * 
+     * @param selectionIndex index of selected project
      */
     public void loadData(int selectionIndex) {
-        // gives airdFile of project in Workspace that has an aird File with index selectionIndex
-    	
     	this.project = this.dataGathering.getAllProjectAirdfiles().get(selectionIndex);
     	
         initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
