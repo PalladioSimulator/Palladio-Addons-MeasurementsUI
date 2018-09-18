@@ -30,7 +30,8 @@ public final class DataApplication {
 
 
     /**
-     * private constructor
+     * Private constructor for singelton pattern
+     * initializes DataGathering and ModelAccesor
      */
     private DataApplication() {
         this.dataGathering = new DataGathering();
