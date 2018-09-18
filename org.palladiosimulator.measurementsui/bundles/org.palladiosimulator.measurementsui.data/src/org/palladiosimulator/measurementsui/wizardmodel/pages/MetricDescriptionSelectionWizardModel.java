@@ -3,98 +3,144 @@ package org.palladiosimulator.measurementsui.wizardmodel.pages;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.UnselectedMetricSpecificationsProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
-import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
+ * Provides all methods to edit the MeasurementSpecifications of a monitor in the wizard
  * 
  * @author David Schuetz
  *
  */
 public class MetricDescriptionSelectionWizardModel implements WizardModel {
-	private static final String STANDARD_INFORMATION_MESSAGE = "Please select all Metrics which should be measured.";
-	private static final String NO_METRIC_SELECTED_MEASSAGE = "There is currently no Metric selected. "
-			+ "In order to get Simulation results you have select at least one Metric.";
+    private static final String STANDARD_INFORMATION_MESSAGE = "Please select all Metrics which should be measured.";
+    private static final String NO_METRIC_SELECTED_MEASSAGE = "There is currently no Metric selected. "
+            + "In order to get Simulation results you have select at least one Metric.";
 
-	private static final String METRIC_SELECTION_TITEL = "Select Metrics";
+    private static final String METRIC_SELECTION_TITEL = "Select Metrics";
 
-	private Monitor usedMetricsMonitor;
-	private Monitor unusedMetricsMonitor;
-	private UnselectedMetricSpecificationsProvider provider;
-	private boolean isEditing;
+    private Monitor usedMetricsMonitor;
+    private Monitor unusedMetricsMonitor;
+    private UnselectedMetricSpecificationsProvider provider;
+    private boolean isEditing;
 
-	public MetricDescriptionSelectionWizardModel(Monitor monitor, boolean isEditing) {
-		this.provider = new UnselectedMetricSpecificationsProvider();
-		this.usedMetricsMonitor = monitor;
-		this.isEditing = isEditing;
-		this.unusedMetricsMonitor = provider.createMonitorWithMissingMetricDescriptions(usedMetricsMonitor);
-	}
+    /**
+     * 
+     * @param monitor
+     *            the monitor where metricDescriptions will be added or removed
+     * @param isEditing
+     *            states whether the model edits an existing monitor or creates a new one.
+     */
+    public MetricDescriptionSelectionWizardModel(Monitor monitor, boolean isEditing) {
+        this.provider = new UnselectedMetricSpecificationsProvider();
+        this.usedMetricsMonitor = monitor;
+        this.isEditing = isEditing;
+        this.unusedMetricsMonitor = provider.createMonitorWithMissingMetricDescriptions(usedMetricsMonitor);
+    }
 
-	@Override
-	public boolean canFinish() {
-		return !metricListIsEmpty();
-	}
+    @Override
+    public boolean canFinish() {
+        return !metricListIsEmpty();
+    }
 
-	@Override
-	public String getInfoText() {
-		if (metricListIsEmpty()) {
-			return NO_METRIC_SELECTED_MEASSAGE;
-		}
-		return STANDARD_INFORMATION_MESSAGE;
-	}
+    @Override
+    public String getInfoText() {
+        if (metricListIsEmpty()) {
+            return NO_METRIC_SELECTED_MEASSAGE;
+        }
+        return STANDARD_INFORMATION_MESSAGE;
+    }
 
-	@Override
-	public void nextStep() {
-		// TODO Auto-generated method stub
-	}
+    @Override
+    public boolean nextStep() {
+        return true;
+    }
 
-	public Monitor getUnusedMetricsMonitor() {
-		return unusedMetricsMonitor;
-	}
+    /**
+     * 
+     * @return a monitor with all unused metric descriptions
+     */
+    public Monitor getUnusedMetricsMonitor() {
+        return unusedMetricsMonitor;
+    }
 
-	public Monitor getUsedMetricsMonitor() {
-		return usedMetricsMonitor;
-	}
+    /**
+     * 
+     * @return a monitor with all used metric descriptions
+     */
+    public Monitor getUsedMetricsMonitor() {
+        return usedMetricsMonitor;
+    }
 
-	public void addMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-		provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, usedMetricsMonitor,
-				isEditing);
-	}
+    /**
+     * Adds a MeasurementSpecification with a MetricDescription to the monitor
+     * 
+     * @param selectedMeasurementSpecification
+     *            the specification which will be added to the monitor
+     */
+    public void addMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
+        provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, usedMetricsMonitor,
+                isEditing);
+    }
 
-	public void removeMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-		provider.removeMeasurementSpecificationBetweenMonitors(selectedMeasurementSpecification, unusedMetricsMonitor,
-				isEditing);
-	}
+    /**
+     * Removes a MeasurementSpecifcation with a MetricDescription from the monitor
+     * 
+     * @param selectedMeasurementSpecification
+     *            the specification which will be added to the monitor
+     */
+    public void removeMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
+        provider.removeMeasurementSpecificationBetweenMonitors(selectedMeasurementSpecification, unusedMetricsMonitor,
+                isEditing);
+    }
 
-	public void addAllMetricDescriptions() {
-		provider.moveAllMeasurementSpecificationsBetweenMonitors(unusedMetricsMonitor, usedMetricsMonitor, isEditing);
-	}
+    /**
+     * Add all unused MetricDescriptions to the monitor
+     */
+    public void addAllMetricDescriptions() {
+        provider.moveAllMeasurementSpecificationsBetweenMonitors(unusedMetricsMonitor, usedMetricsMonitor, isEditing);
+    }
 
-	public void removeAllMetricDescriptions() {
-		provider.moveAllMeasurementSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
-	}
+    /**
+     * Remove all MetricDescriptions from the monitor
+     */
+    public void removeAllMetricDescriptions() {
+        provider.moveAllMeasurementSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
+    }
 
-	public void switchTriggerSelfAdapting(boolean currentValue, MeasurementSpecification mspec) {
-	    if(isEditing) {
-	        ResourceEditorImpl.getInstance().changeTriggersSelfAdapting(mspec, currentValue);
-	    }else {
-	        mspec.setTriggersSelfAdaptations(!currentValue);
-	    }
-	}
-	
-	public void addSuggestions() {
-		// TODO: Not implemented yet.
-	}
+    /**
+     * Switches the attribute triggerSelfAdaption of a specific measurementSpecification
+     * 
+     * @param currentValue
+     * @param mspec the MeasurementSpecification where the triggerSelfAdaptiong attribute will be changed
+     */
+    public void switchTriggerSelfAdapting(boolean currentValue, MeasurementSpecification mspec) {
+        if (isEditing) {
+            ResourceEditorImpl.getInstance().changeTriggersSelfAdapting(mspec, currentValue);
+        } else {
+            mspec.setTriggersSelfAdaptations(!currentValue);
+        }
+    }
 
-	private boolean metricListIsEmpty() {
-		return usedMetricsMonitor.getMeasurementSpecifications().isEmpty();
-	}
+    /**
+     * Add all suggested MetricDescriptions to the monitor
+     */
+    public void addSuggestions() {
+        // TODO: Not implemented yet.
+    }
 
-	@Override
-	public String getTitleText() {
-		return METRIC_SELECTION_TITEL;
+    /**
+     * 
+     * @return true if the list of used MeasurementSpecifications is empty
+     */
+    private boolean metricListIsEmpty() {
+        return usedMetricsMonitor.getMeasurementSpecifications().isEmpty();
+    }
 
-	}
+    @Override
+    public String getTitleText() {
+        return METRIC_SELECTION_TITEL;
+
+    }
 
 }
