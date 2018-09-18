@@ -7,7 +7,7 @@
             category="org.eclipse.emf.parsley"
             class="propertiespage.PropertiespageExecutableExtensionFactory:propertiespage.PropertiespageOnSelectionFormView"
             id="propertiespage"
-            name="Mp Properties Page"
+            name="Measurement Properties"
             restorable="true">
       </view>
    </extension>
