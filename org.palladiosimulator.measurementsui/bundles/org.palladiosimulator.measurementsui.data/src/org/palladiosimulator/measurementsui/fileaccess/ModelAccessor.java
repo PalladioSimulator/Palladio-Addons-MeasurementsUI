@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.fileaccess;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -10,18 +11,27 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.business.api.session.Session;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
 import org.palladiosimulator.measurementsui.datamanipulation.DataRepositoryCreator;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.allocation.Allocation;
-import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.allocation.AllocationPackage;
 import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcm.subsystem.SubSystem;
+import org.palladiosimulator.pcm.subsystem.SubsystemPackage;
+import org.palladiosimulator.pcm.system.System;
+import org.palladiosimulator.pcm.system.SystemPackage;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
+import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 /**
  * Class for accessing all Palladio models of a Modelling Project (.aird file available)
  * Offers access to each model.
@@ -109,16 +119,41 @@ public class ModelAccessor {
 
         clearModelAccess();
 
-        for (Resource modelResource : session.getSemanticResources()) {
+        List<Resource> resourcesAllModelsInSession = session.getSemanticResources().stream().collect(Collectors.toList());
+        List<EObject> allModelObjectsInSession = resourcesAllModelsInSession.stream().flatMap(e -> e.getContents().stream())
+                .collect(Collectors.toList());
 
-            for (EObject model : modelResource.getContents()) {
+        
+        Collection<MeasuringPointRepository> measuringPointRepositorys = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                MeasuringpointPackage.eINSTANCE.getMeasuringPointRepository());
+        this.measuringPointRepository.addAll(measuringPointRepositorys);
 
-                if (PcmModelEnum.checkName(model.eClass().getName()) != null) {
+        Collection<MonitorRepository> monitorRepositories = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
+        this.monitorRepository.addAll(monitorRepositories);
 
-                    checkPcmModels(model, PcmModelEnum.valueOf(model.eClass().getName()));
-                }
-            }
-        }
+        Collection<ResourceEnvironment> resourceEnvironments = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                ResourceenvironmentPackage.eINSTANCE.getResourceEnvironment());
+        this.resourceEnvironment.addAll(resourceEnvironments);
+
+        Collection<System> systems = EcoreUtil.getObjectsByType(allModelObjectsInSession, SystemPackage.eINSTANCE.getSystem());
+        this.system.addAll(systems);
+
+        Collection<Allocation> allocations = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                AllocationPackage.eINSTANCE.getAllocation());
+        this.allocation.addAll(allocations);
+
+        Collection<Repository> repositorys = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                RepositoryPackage.eINSTANCE.getRepository());
+        this.repository.addAll(repositorys);
+
+        Collection<UsageModel> usageModels = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                UsagemodelPackage.eINSTANCE.getUsageModel());
+        this.usageModel.addAll(usageModels);
+
+        Collection<SubSystem> subSystems = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                SubsystemPackage.eINSTANCE.getSubSystem());
+        this.subsystem.addAll(subSystems);
 
     }
     
@@ -138,19 +173,6 @@ public class ModelAccessor {
     		addMeasuringPointRepository(DataRepositoryCreator.getInstance().createMeasuringPointRepository(project));
     	}
     		
-    }
-
-    /**
-     * This method initializes the pcm Model from the given EObject
-     * 
-     * @param pcmModel
-     *            the EObject of the model
-     * @param pcmEnum
-     *            the Enum of the model eClass
-     */
-    private void checkPcmModels(EObject pcmModel, PcmModelEnum pcmEnum) {
-
-        pcmEnum.createPcmInstance(this, pcmModel);
     }
 
     /**
