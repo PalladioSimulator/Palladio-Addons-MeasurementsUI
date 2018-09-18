@@ -3,7 +3,7 @@ import propertiespage.PropertiespageOnSelectionFormView
 module propertiespage {
 	parts {
 		viewpart propertiespage {
-			viewname "Mp Properties Page"
+			viewname "Measurement Properties"
 			viewclass PropertiespageOnSelectionFormView
 		}
 	}
