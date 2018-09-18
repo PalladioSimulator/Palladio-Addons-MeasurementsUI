@@ -8,7 +8,9 @@ import org.eclipse.sirius.business.api.session.SessionManager;
 import org.palladiosimulator.measurementsui.fileaccess.*;
 
 /**
- * Connection class between data management and gui
+ * This class manages the current project of the workspace which is
+ * selected and provides access to all necessary data from this
+ * project.
  * @author Lasse
  *
  */
@@ -36,11 +38,12 @@ public class DataApplication {
     }
 
     /**
-     * Starts the application. Loads all pcm Models given a project is selected and it has a .aird
+     * Loads all palladio component models Models given a project is selected and it has a .aird
      * file(modeling Project nature).
+     * Initializes a session correspondig to the project, which is used to load the models.
+     * Checks for Monitor-/MeasuringPoint-Repositories and creates them if none exist.
      */
     public void loadData(int selectionIndex) {
-        // gives airdFile of project in Workspace that has an aird File with index selectionIndex
     	
     	this.project = this.dataGathering.getAllProjectAirdfiles().get(selectionIndex);
     	

@@ -3,6 +3,13 @@ package org.palladiosimulator.measurementsui.wizardmodel.pages;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 
+/**
+ * This class provides provides all necessary data for the first
+ * Wizard page, to create or Edit a Monitor.
+ * 
+ * @author Lasse
+ *
+ */
 public class MonitorCreationWizardModel implements WizardModel{
 	
 	private static final String createMonitorInfoText = "A Monitor specifies which element of your Models should be analyzed during a simulation run.\n In this page "

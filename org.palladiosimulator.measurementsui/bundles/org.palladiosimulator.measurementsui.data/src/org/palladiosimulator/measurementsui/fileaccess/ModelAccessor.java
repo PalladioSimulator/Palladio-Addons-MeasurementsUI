@@ -23,7 +23,9 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.subsystem.SubSystem;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 /**
- * Class for accessing all parts of the model, mainly getter methods
+ * Class for accessing all Palladio models of a Modelling Project (.aird file available)
+ * Offers access to each model.
+ * 
  * @author Lasse
  *
  */
@@ -68,7 +70,7 @@ public class ModelAccessor {
     /**
      * This method returns a list of all MeasuringPoints which are not assigned to any Monitor.
      * 
-     * @return List of unassigned MeasuringPoints
+     * @return EList of unassigned MeasuringPoints
      */
     public EList<MeasuringPoint> getUnassignedMeasuringPoints() {
      
@@ -92,7 +94,9 @@ public class ModelAccessor {
 
 
     /**
-     * Given a sirius session this Method initializes all found pcm Models in the session.
+     * Given a sirius session this Method initializes all five palladio component
+     * models(+SubSystems), monitor- and measuringPoint-Repositories
+     * that are found in this session.
      * 
      * @param session
      *            the session to which all models should be loaded
@@ -160,7 +164,7 @@ public class ModelAccessor {
     }
     
     /**
-     * Checks whether there exists an MonitorRepository
+     * Checks whether there exists a MonitorRepository
      * 
      * @return boolean whether a monitorRepository exists
      */
@@ -172,7 +176,7 @@ public class ModelAccessor {
     }
     
     /**
-     * Checks whether there exists an MonitorRepository
+     * Checks whether there exists a MonitorRepository
      * 
      * @return boolean whether a monitorRepository exists
      */
