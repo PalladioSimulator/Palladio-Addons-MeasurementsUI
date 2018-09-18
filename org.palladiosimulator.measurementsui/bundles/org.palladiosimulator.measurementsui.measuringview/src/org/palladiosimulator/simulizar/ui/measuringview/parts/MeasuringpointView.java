@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -18,7 +17,6 @@ import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -51,8 +49,8 @@ import org.palladiosimulator.simulizar.ui.measuringview.viewer.EmptyMpTreeViewer
 import org.palladiosimulator.simulizar.ui.measuringview.viewer.MonitorTreeViewer;
 
 /**
- * Eclipse e4 view in which the user gets an overview of all existing monitors and measuringpoints
- * in a selected monitorrepository.
+ * Eclipse e4 view which gives the user an overview of all existing Monitors and MeasuringPoints
+ * in a selected MonitorRepository.
  * 
  * @author David Schuetz
  * 
@@ -79,10 +77,10 @@ public class MeasuringpointView {
     private ESelectionService selectionService;
 
     /**
-     * Creates the meu items and controls for the simulizar measuring point view
+     * Creates the menu items and controls for the simulizar measuring point view
      * 
      * @param parent
-     *            composite of the empty view
+     *            the composite of the empty view
      */
     @PostConstruct
     public void createPartControl(Composite parent) {
@@ -114,7 +112,7 @@ public class MeasuringpointView {
     }
 
     /**
-     * Initializes the connecton to the data management and manipulation packages
+     * Initializes the connecton to the data management and manipulation package
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
@@ -127,17 +125,9 @@ public class MeasuringpointView {
      */
     private void createWorkspaceListener() {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IResourceChangeListener listener = new IResourceChangeListener() {
-            public void resourceChanged(IResourceChangeEvent event) {
-                Display.getDefault().asyncExec(new Runnable() {
-                    public void run() {
-                        updateMeasuringPointView();
-                    }
-                });
-            }
-        };
-        workspace.addResourceChangeListener(listener, 1);
+        IResourceChangeListener listener = e -> Display.getDefault().asyncExec(this::updateMeasuringPointView);
 
+        workspace.addResourceChangeListener(listener, 1);
     }
 
     /**
@@ -145,7 +135,7 @@ public class MeasuringpointView {
      * projected
      * 
      * @param parent
-     *            composite where the tree view will be placed
+     *            a composite where the tree view will be placed
      * @return TreeViewer which includes all existing monitors
      */
     private MpTreeViewer createMonitorTreeViewer(Composite parent) {
@@ -159,7 +149,7 @@ public class MeasuringpointView {
      * Creates a tree view which shows all empty measuring points of all projects in the workspace
      * 
      * @param parent
-     *            composite where the tree view will be placed
+     *            a composite where the tree view will be placed
      * @return TreeViewer which includes all measuring points without a monitor
      */
     private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
@@ -168,6 +158,12 @@ public class MeasuringpointView {
         return emptyMpTreeViewer;
     }
 
+    /**
+     * Adds a SelectionListener which enables/disables Buttons based on which TreeItem is selected
+     * 
+     * @param treeViewer
+     *            a viewer where the SelectionListener will be added to.
+     */
     private void addSelectionListener(Viewer treeViewer) {
         treeViewer.addSelectionChangedListener(event -> {
             IStructuredSelection selection = (IStructuredSelection) event.getSelection();
@@ -192,7 +188,7 @@ public class MeasuringpointView {
      * Creates the composite in which the tree view is later embedded
      * 
      * @param parent
-     *            composite where the tree composite will be placed
+     *            a composite where the tree composite will be placed
      * @return Composite where the TreeViewers can be placed
      */
     private Composite createTreeComposite(Composite parent) {
@@ -207,7 +203,7 @@ public class MeasuringpointView {
      * deleting, assigning measuringpoints to monitor or creating a standard measuring point set
      * 
      * @param buttonContainer
-     *            composite where the buttons will be placed
+     *            a composite where the buttons will be placed
      */
     private void createViewButtons(Composite buttonContainer) {
         createNewMeasuringpointButton(buttonContainer);
@@ -225,7 +221,7 @@ public class MeasuringpointView {
      * Creates a Button which opens the Wizard in order to create a measuring point
      * 
      * @param parent
-     *            composite where the button will be placed
+     *            a composite where the button will be placed
      */
     private void createNewMeasuringpointButton(Composite parent) {
         Button newMpButton = new Button(parent, SWT.PUSH);
@@ -245,7 +241,7 @@ public class MeasuringpointView {
      * Creates a Button which deletes selected EObjects
      * 
      * @param parent
-     *            composite where the button will be placed
+     *            a composite where the button will be placed
      */
     private void createDeleteButton(Composite parent) {
         deleteButton = new Button(parent, SWT.PUSH);
@@ -264,26 +260,28 @@ public class MeasuringpointView {
      * Creates a Button which edits selected EObjects
      * 
      * @param parent
-     *            composite where the button will be placed
+     *            a composite where the button will be placed
      */
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
         editButton.setText("Edit...");
-        
+
         editButton.addListener(SWT.Selection, e -> {
-        	MeasuringPointsWizard wizard;
-            Object selection = selectionService.getSelection();   
+            MeasuringPointsWizard wizard;
+            Object selection = selectionService.getSelection();
             ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
             if (selection instanceof Monitor) {
-                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);    
+                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
             } else if (selection instanceof MeasuringPoint) {
-            	wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION, (Monitor) provider.getParent(selection));   
-            } else if (selection instanceof MeasurementSpecification) { 
-            	wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, (Monitor) provider.getParent(selection));   
+                wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION,
+                        (Monitor) provider.getParent(selection));
+            } else if (selection instanceof MeasurementSpecification) {
+                wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
+                        (Monitor) provider.getParent(selection));
             } else {
-            	wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION);   
+                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION);
             }
-            
+
             Shell parentShell = wizard.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, wizard);
             dialog.setPageSize(720, 400);
@@ -296,7 +294,7 @@ public class MeasuringpointView {
      * Creates a combobox at the top of the view where the user can select the project
      * 
      * @param parent
-     *            composite where the combobox is placed in
+     *            a composite where the combobox is placed in
      */
     private void createProjectsSelectionComboBox(Composite parent) {
         projectsComboDropDown = new Combo(parent, SWT.DROP_DOWN);
@@ -321,7 +319,7 @@ public class MeasuringpointView {
     }
 
     /**
-     * Adds every project in the workspace, that has an .aird file to the projectsComboBox
+     * Adds every project in the workspace that has an .aird file to the projectsComboBox
      */
     private void updateProjectComboBox() {
 
@@ -361,8 +359,8 @@ public class MeasuringpointView {
      * Saves the current data in the tree view
      * 
      * @param dirty
-     *            states whether there were changes made
-     * @throws IOException
+     *            the dirty state which indicates whether there were changes made
+     * @throws IOException if the save command fails
      */
     @Persist
     public void save(MDirtyable dirty) throws IOException {
