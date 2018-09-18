@@ -5,9 +5,9 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.emf.parsley"
-            class="emptymeasuringpoints.EmptymeasuringpointsExecutableExtensionFactory:emptymeasuringpoints.EmptymeasuringpointsSaveableTreeView"
-            id="emptymeasuringpoints"
-            name="Emptymeasuringpoints"
+            class="measurementspecification.MeasurementspecificationExecutableExtensionFactory:measurementspecification.MeasurementspecificationSaveableTableView"
+            id="measurementspecification"
+            name="Measurementspecification"
             restorable="true">
       </view>
    </extension>
