@@ -49,8 +49,8 @@ import org.palladiosimulator.simulizar.ui.measuringview.viewer.EmptyMpTreeViewer
 import org.palladiosimulator.simulizar.ui.measuringview.viewer.MonitorTreeViewer;
 
 /**
- * Eclipse e4 view which gives the user an overview of all existing Monitors and MeasuringPoints
- * in a selected MonitorRepository.
+ * Eclipse e4 view which gives the user an overview of all existing Monitors and MeasuringPoints in
+ * a selected MonitorRepository.
  * 
  * @author David Schuetz
  * 
@@ -173,12 +173,22 @@ public class MeasuringpointView {
             if (selectionObject instanceof MonitorRepository || selectionObject instanceof MeasuringPointRepository) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
+                editButton.setText("Edit...");
             } else {
                 editButton.setEnabled(true);
                 if (selectionObject instanceof ProcessingType) {
                     deleteButton.setEnabled(false);
+                    editButton.setText("Edit ProcessingType");
+                    deleteButton.setText("Delete...");
                 } else {
                     deleteButton.setEnabled(true);
+                    if (selectionObject instanceof Monitor) {
+                        editButton.setText("Edit Monitor");
+                        deleteButton.setText("Delete Monitor");
+                    } else if (selectionObject instanceof MeasurementSpecification) {
+                        editButton.setText("Edit Measurement");
+                        deleteButton.setText("Delete Measurement");
+                    }
                 }
             }
         });
@@ -212,8 +222,11 @@ public class MeasuringpointView {
 
         Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
         assignMonitorButton.setText("Assign to Monitor");
+        assignMonitorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
         Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
         createStandardButton.setText("Create Standard Set");
+        createStandardButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
     }
 
@@ -226,7 +239,7 @@ public class MeasuringpointView {
     private void createNewMeasuringpointButton(Composite parent) {
         Button newMpButton = new Button(parent, SWT.PUSH);
         newMpButton.setText("Add new Measuring Point");
-
+        newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         newMpButton.addListener(SWT.Selection, e -> {
             MeasuringPointsWizard wizard = new MeasuringPointsWizard();
             Shell parentShell = wizard.getShell();
@@ -246,6 +259,7 @@ public class MeasuringpointView {
     private void createDeleteButton(Composite parent) {
         deleteButton = new Button(parent, SWT.PUSH);
         deleteButton.setText("Delete...");
+        deleteButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         deleteButton.addListener(SWT.Selection, e -> {
             ResourceEditor resourceEditor = new ResourceEditorImpl();
@@ -265,7 +279,7 @@ public class MeasuringpointView {
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
         editButton.setText("Edit...");
-
+        editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         editButton.addListener(SWT.Selection, e -> {
             MeasuringPointsWizard wizard;
             Object selection = selectionService.getSelection();
@@ -360,7 +374,8 @@ public class MeasuringpointView {
      * 
      * @param dirty
      *            the dirty state which indicates whether there were changes made
-     * @throws IOException if the save command fails
+     * @throws IOException
+     *             if the save command fails
      */
     @Persist
     public void save(MDirtyable dirty) throws IOException {
