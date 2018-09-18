@@ -10,13 +10,17 @@ import org.palladiosimulator.pcm.core.entity.NamedElement;
  *
  */
 public class AdditionalMeasuringpointContentProvider implements ITreeContentProvider {
-	MeasuringPointSelectionWizardModel sq = MeasuringPointSelectionWizardModel.getInstance();
+	MeasuringPointSelectionWizardModel measuringPointWizardModel;
 	Object[] objects;
-
+	
+	public void AdditionalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+	    this.measuringPointWizardModel = measuringPointWizardModel;
+	}
+	
 	@Override
 	public Object[] getElements(Object inputElement) {
 
-		objects = sq.getAllAdditionalModels();
+		objects = measuringPointWizardModel.getAllAdditionalModels();
 		return objects;
 	}
 

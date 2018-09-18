@@ -9,12 +9,15 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSele
  *
  */
 public class FinalMeasuringpointContentProvider implements ITreeContentProvider {
-	MeasuringPointSelectionWizardModel sq = MeasuringPointSelectionWizardModel.getInstance();
-
+    MeasuringPointSelectionWizardModel measuringPointWizardModel;
+    
+    public void AdditionalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+        this.measuringPointWizardModel = measuringPointWizardModel;
+    }
 	@Override
 	public Object[] getElements(Object inputElement) {
 		// TODO Auto-generated method stub
-		return sq.getSignatures().toArray();
+		return measuringPointWizardModel.getSignatures().toArray();
 	}
 
 	@Override
