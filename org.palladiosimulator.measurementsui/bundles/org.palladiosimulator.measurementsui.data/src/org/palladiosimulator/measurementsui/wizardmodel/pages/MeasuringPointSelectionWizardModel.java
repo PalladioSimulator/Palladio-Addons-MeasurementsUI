@@ -263,8 +263,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         ResourceEditorImpl.getInstance().addMeasuringPointToRepository(measuringPointRepository, measuringPoint);
     }
 
-
-
     /**
      * checks whether the monitor repository and measuringpoint of a monitor is set. If this is the
      * case the wizard can be finished
@@ -312,11 +310,10 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * @return List<AssemblyContext>
      */
     public List<AssemblyContext> getAssemblyContexts() {
-        List<AssemblyContext> assemblyContexts = da.getModelAccessor().getSystem().stream()
+
+        return da.getModelAccessor().getSystem().stream()
                 .flatMap(e -> e.getAssemblyContexts__ComposedStructure().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
-
-        return assemblyContexts;
     }
 
     /**
@@ -326,11 +323,11 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<ResourceContainer> getResourceContainer() {
 
-        List<ResourceContainer> resourceContainer = da.getModelAccessor().getResourceEnvironment().stream()
+      
+
+        return da.getModelAccessor().getResourceEnvironment().stream()
                 .flatMap(e -> e.getResourceContainer_ResourceEnvironment().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
-
-        return resourceContainer;
     }
 
     /**
@@ -340,11 +337,9 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<ProcessingResourceSpecification> getActiveResources() {
 
-        List<ProcessingResourceSpecification> activeresources = getResourceContainer().stream()
+        return getResourceContainer().stream()
                 .flatMap(e -> e.getActiveResourceSpecifications_ResourceContainer().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
-
-        return activeresources;
     }
 
     /**
@@ -354,11 +349,11 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<LinkingResource> getLinkingResources() {
 
-        List<LinkingResource> activeresources = da.getModelAccessor().getResourceEnvironment().stream()
+    
+
+        return da.getModelAccessor().getResourceEnvironment().stream()
                 .flatMap(e -> e.getLinkingResources__ResourceEnvironment().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
-
-        return activeresources;
     }
 
     /**
@@ -368,11 +363,10 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<UsageScenario> getUsageScenarios() {
 
-        List<UsageScenario> activeresources = da.getModelAccessor().getUsageModel().stream()
+
+        return da.getModelAccessor().getUsageModel().stream()
                 .flatMap(e -> e.getUsageScenario_UsageModel().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
-
-        return activeresources;
     }
 
     /**
@@ -382,11 +376,10 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<AbstractUserAction> getEntryLevelSystemCalls() {
 
-        List<AbstractUserAction> activeresources = getUsageScenarios().stream()
+
+        return getUsageScenarios().stream()
                 .flatMap(e -> e.getScenarioBehaviour_UsageScenario().getActions_ScenarioBehaviour().stream())
                 .filter(e -> e instanceof EntryLevelSystemCall).collect(Collectors.toCollection(LinkedList::new));
-
-        return activeresources;
     }
 
     /**
@@ -396,10 +389,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<EObject> getExternalCallActions() {
 
-        List<EObject> activeresources = getSeffs().stream().flatMap(e -> e.eContents().stream())
-                .filter(e -> e instanceof ExternalCallAction).collect(Collectors.toCollection(LinkedList::new));
-
-        return activeresources;
+        return getSeffs().stream().flatMap(e -> e.eContents().stream()).filter(e -> e instanceof ExternalCallAction)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -409,11 +400,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<EObject> getComponents() {
 
-        List<EObject> activeresources = da.getModelAccessor().getRepository().stream()
-                .flatMap(e -> e.eContents().stream()).filter(e -> e instanceof BasicComponent)
-                .collect(Collectors.toCollection(LinkedList::new));
-
-        return activeresources;
+        return da.getModelAccessor().getRepository().stream().flatMap(e -> e.eContents().stream())
+                .filter(e -> e instanceof BasicComponent).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -423,10 +411,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<EObject> getSeffs() {
 
-        List<EObject> activeresources = getComponents().stream().flatMap(e -> e.eContents().stream())
+        return getComponents().stream().flatMap(e -> e.eContents().stream())
                 .filter(e -> e instanceof ResourceDemandingSEFF).collect(Collectors.toCollection(LinkedList::new));
-
-        return activeresources;
     }
 
     /**
@@ -440,10 +426,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
                 .flatMap(e -> e.eContents().stream()).filter(e -> e instanceof OperationInterface)
                 .collect(Collectors.toList());
 
-        List<EObject> activeresources2 = activeresources.stream().flatMap(e -> e.eContents().stream())
+        return activeresources.stream().flatMap(e -> e.eContents().stream())
                 .filter(e -> e instanceof OperationSignature).collect(Collectors.toList());
-
-        return activeresources2;
 
     }
 
@@ -522,7 +506,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             elements.addAll(context.getRequiredRoles_InterfaceRequiringEntity());
             return elements.toArray();
         }
-        return null;
+        return elements.toArray();
 
     }
 
