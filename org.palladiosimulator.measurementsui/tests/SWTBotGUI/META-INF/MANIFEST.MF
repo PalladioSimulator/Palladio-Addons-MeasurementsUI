@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Swtbot
+Bundle-SymbolicName: org.palladiosimulator.swtbot
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.palladiosimulator.swtbot.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.swtbot.eclipse.finder,
+ org.eclipse.swtbot.junit4_x,
+ org.hamcrest.core,
+ org.apache.commons.collections15,
+ org.junit,
+ org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-10
+Automatic-Module-Name: org.palladiosimulator.swtbot
+Bundle-ActivationPolicy: lazy

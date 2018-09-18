@@ -58,7 +58,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		setDescription("Select desired Measurements to be used with the Monitor");
 		this.metricDescriptionSelectionWizardModel = metricDescriptionSelectionWizardModel;
 	}
-
+	
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.FILL);
