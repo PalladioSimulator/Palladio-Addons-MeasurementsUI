@@ -271,9 +271,9 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     }
 
     @Override
-    public void nextStep() {
+    public boolean nextStep() {
         // TODO Auto-generated method stub
-
+        return false;
     }
 
     /**

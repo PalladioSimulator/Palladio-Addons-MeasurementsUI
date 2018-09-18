@@ -67,10 +67,11 @@ public class MeasuringPointsLabelProvider implements ILabelProvider {
     @Override
     public Image getImage(Object element) {
         PcmItemProviderAdapterFactory factory = new PcmItemProviderAdapterFactory();
-        EObject object = (EObject) element;
+
         if (element instanceof LinkedList) {
             return null;
         } else {
+            EObject object = (EObject) element;
             if (object instanceof UsageScenario) {
                 UsageModelItemProvider mod = new UsageModelItemProvider(factory);
                 return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
