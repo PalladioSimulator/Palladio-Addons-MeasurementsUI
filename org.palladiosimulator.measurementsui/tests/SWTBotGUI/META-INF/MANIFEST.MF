@@ -11,6 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.hamcrest.core,
  org.apache.commons.collections15,
  org.junit,
+ org.eclipse.swt,
  org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-10
 Automatic-Module-Name: org.palladiosimulator.swtbot
