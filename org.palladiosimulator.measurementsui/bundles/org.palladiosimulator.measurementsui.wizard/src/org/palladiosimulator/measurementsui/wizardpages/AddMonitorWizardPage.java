@@ -3,12 +3,14 @@ package org.palladiosimulator.measurementsui.wizardpages;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.MonitorFormViewer;
+import org.palladiosimulator.measurementsui.wizard.viewer.MonitorFormViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 
@@ -27,8 +29,8 @@ public class AddMonitorWizardPage extends WizardPage {
 	private MonitorCreationWizardModel model;
 
     /**
-     * Constructor
-     * @param newMonitor the newly created monitor object
+     * Constructor, sets basic attributes for the wizard page like title, description etc.
+     * @param model the model object which manages the internal model for this wizard page
      */
     public AddMonitorWizardPage(MonitorCreationWizardModel model) {
         super("First Page");
@@ -40,7 +42,9 @@ public class AddMonitorWizardPage extends WizardPage {
     @Override
     public void createControl(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);
-
+        
+        parent.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+        
         FillLayout layout = new FillLayout();
         container.setLayout(layout);
 

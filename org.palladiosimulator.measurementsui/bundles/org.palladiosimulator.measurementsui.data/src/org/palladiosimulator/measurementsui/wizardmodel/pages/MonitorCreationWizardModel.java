@@ -19,6 +19,7 @@ public class MonitorCreationWizardModel implements WizardModel {
 	
 	private static final String CREATE_MONITOR_TITEL = "Create Monitor";
 	private static final String EDIT_MONITOR_TITEL = "Edit Monitor";
+
 	
 	private Monitor monitor;
 	
@@ -55,9 +56,8 @@ public class MonitorCreationWizardModel implements WizardModel {
 	}
 
 	@Override
-	public void nextStep() {
-		// TODO Auto-generated method stub
-		
+	public boolean nextStep() {
+		return true;
 	}
 
 	@Override
@@ -67,6 +67,7 @@ public class MonitorCreationWizardModel implements WizardModel {
 		}
 		
 		return CREATE_MONITOR_TITEL;
+
 		
 	}
 
