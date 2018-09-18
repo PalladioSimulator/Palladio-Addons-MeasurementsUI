@@ -71,6 +71,20 @@ public final class DataApplication {
         }
 
     }
+    
+    /**
+     * Updates the models by reloading them
+     * through a new session
+     */
+    public void updateData() {  
+        initializeSession(sessionResourceURI);
+        if (session != null) {
+            this.modelAccessor.initializeModels(session);
+            this.modelAccessor.checkIfRepositoriesExist(project);
+        } else {
+            System.err.println("No Models are initiated. Make sure a Session is open.");
+        }
+    }
 
     /**
      * Creates the session URI given a path to a .aird file of a project

@@ -358,6 +358,7 @@ public class MeasuringpointView {
      */
     private void updateMeasuringPointView() {
         updateProjectComboBox();
+        dataApplication.updateData();
         updateTreeViewer();
     }
 
