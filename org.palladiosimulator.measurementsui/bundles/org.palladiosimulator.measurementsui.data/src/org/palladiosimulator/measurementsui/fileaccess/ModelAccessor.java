@@ -41,6 +41,9 @@ public class ModelAccessor {
     private List<MeasuringPointRepository> measuringPointRepository;
     private List<MonitorRepository> monitorRepository;
 
+    /**
+     * Constructor
+     */
     public ModelAccessor() {
         this.resourceEnvironment = new LinkedList<>();
         this.system = new LinkedList<>();
@@ -59,7 +62,8 @@ public class ModelAccessor {
      * NOTE: with java 11 this will be implemented in the java.util.function package
      * so Predicate.not(Predicate<T> t) will be usable from there
      * 
-     * @param t Predicate to negate
+     * @param t predicate to negate
+     * @param <T> 
      * @return negated Predicate
      */
     public static <T> Predicate<T> not(Predicate<T> t) {
@@ -75,11 +79,11 @@ public class ModelAccessor {
     public EList<MeasuringPoint> getUnassignedMeasuringPoints() {
      
         List<MeasuringPoint> measuringPointsFromAllRepositories = this.measuringPointRepository.stream()
-                .flatMap(e->e.getMeasuringPoints().stream())
+                .flatMap(e -> e.getMeasuringPoints().stream())
                 .collect(Collectors.toList());
         
         List<MeasuringPoint> measuringPointsFromMonitors = this.monitorRepository.stream()
-                .flatMap(e->e.getMonitors().stream().map(Monitor::getMeasuringPoint))
+                .flatMap(e -> e.getMonitors().stream().map(Monitor::getMeasuringPoint))
                 .collect(Collectors.toList());
         
         List<MeasuringPoint> intersectionOfMeasuringPoints = measuringPointsFromAllRepositories.stream()
@@ -124,13 +128,13 @@ public class ModelAccessor {
      * 
      * @param project current Project
      */
-    public void checkIfRepositoriesExist(IProject project){
+    public void checkIfRepositoriesExist(IProject project) {
     	
-    	if(!monitorRepositoryExists()) {
+    	if (!monitorRepositoryExists()) {
     		addMonitorRepository(DataRepositoryCreator.getInstance().createMonitorRepository(project));
     	}
     	
-    	if(!measuringPointRepositoryExists()) {
+    	if (!measuringPointRepositoryExists()) {
     		addMeasuringPointRepository(DataRepositoryCreator.getInstance().createMeasuringPointRepository(project));
     	}
     		
@@ -169,10 +173,8 @@ public class ModelAccessor {
      * @return boolean whether a monitorRepository exists
      */
     public boolean monitorRepositoryExists() {
-        if (this.monitorRepository != null && !this.monitorRepository.isEmpty()) {
-            return true;
-        }
-        return false;
+       return (this.monitorRepository != null && !this.monitorRepository.isEmpty());
+         
     }
     
     /**
@@ -181,71 +183,134 @@ public class ModelAccessor {
      * @return boolean whether a monitorRepository exists
      */
     public boolean measuringPointRepositoryExists() {
-        if (this.measuringPointRepository != null && !this.measuringPointRepository.isEmpty()) {
-            return true;
-        }
-        return false;
+      
+        return (this.measuringPointRepository != null && !this.measuringPointRepository.isEmpty());
     }
 
+    /**
+     * Adds a ResourceEnvironment to the ResourceEnvironment list
+     * @param resourceEnvironment to add
+     */
     protected void addResourceEnvironment(ResourceEnvironment resourceEnvironment) {
         this.resourceEnvironment.add(resourceEnvironment);
     }
 
+    /**
+     * Adds a System to the System list
+     * @param system to add
+     */
     protected void addSystem(org.palladiosimulator.pcm.system.System system) {
         this.system.add(system);
     }
 
+    /**
+     * Adds an Allocation to the Allocation list
+     * @param allocation to add
+     */
     protected void addAllocation(Allocation allocation) {
         this.allocation.add(allocation);
     }
 
+    /**
+     * Adds a Repository to the Repository list
+     * @param repository to add
+     */
     protected void addRepository(Repository repository) {
         this.repository.add(repository);
     }
 
+    /**
+     * Adds a UsageModel to the UsageModel list
+     * @param usageModel to add
+     */
     protected void addUsageModel(UsageModel usageModel) {
         this.usageModel.add(usageModel);
     }
 
+    /**
+     * Adds a SubSystem to the SubSystem list
+     * @param subsystem to add
+     */
     protected void addSubSystem(SubSystem subsystem) {
         this.subsystem.add(subsystem);
     }
     
+    /**
+     * Adds a MonitorRepository to the MonitorRepository list
+     * @param monitorRepository to add
+     */
     protected void addMonitorRepository(MonitorRepository monitorRepository) {
         this.monitorRepository.add(monitorRepository);
     }
 
+    /**
+     * Adds a MeasuringPointRepository to the MeasuringPointRepository list
+     * @param measuringPointRepository to add
+     */
     protected void addMeasuringPointRepository(MeasuringPointRepository measuringPointRepository) {
         this.measuringPointRepository.add(measuringPointRepository);
     }
     
+    /**
+     * Returns the list of ResourceEnvironments
+     * @return list of ResourceEnvironments
+     */
     public List<ResourceEnvironment> getResourceEnvironment() {
         return resourceEnvironment;
     }
 
+    /**
+     * Returns the list of Systems
+     * @return list of Systems
+     */
     public List<org.palladiosimulator.pcm.system.System> getSystem() {
         return system;
     }
 
+    /**
+     * Returns the list of Allocations
+     * @return list of Allocations
+     */
     public List<Allocation> getAllocation() {
         return allocation;
     }
 
+    /**
+     * Returns the list of Repositorys
+     * @return list of Repositorys
+     */
     public List<Repository> getRepository() {
         return repository;
     }
 
+    /**
+     * Returns the list of UsageModels
+     * @return list of UsageModels
+     */
     public List<UsageModel> getUsageModel() {
         return usageModel;
     }
+    
+    /**
+     * Returns the list of SubSystems
+     * @return list of SubSystems
+     */
     public List<SubSystem> getSubSystem() {
         return subsystem;
     }
 
+    /**
+     * Returns the list of MeasuringPointRepositorys
+     * @return list of MeasuringPointRepositorys
+     */
     public List<MeasuringPointRepository> getMeasuringPointRepository() {
         return measuringPointRepository;
     }
 
+    /**
+     * Returns the list of MonitorRepositorys
+     * @return list of MonitorRepositorys
+     */
     public List<MonitorRepository> getMonitorRepository() {
         return monitorRepository;
     }

@@ -1,11 +1,15 @@
 package org.palladiosimulator.measurementsui.dataprovider;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
-import org.palladiosimulator.measurementsui.fileaccess.*;
+import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
+import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
+
 
 /**
  * This class manages the current project of the workspace which is
@@ -14,7 +18,7 @@ import org.palladiosimulator.measurementsui.fileaccess.*;
  * @author Lasse
  *
  */
-public class DataApplication {
+public final class DataApplication {
 
     private DataGathering dataGathering;
     private ModelAccessor modelAccessor;
@@ -23,13 +27,23 @@ public class DataApplication {
     private IProject project;
 
     private static DataApplication instance;
+    
+    
 
+
+    /**
+     * private constructor
+     */
     private DataApplication() {
         this.dataGathering = new DataGathering();
         this.modelAccessor = new ModelAccessor();
 
     }
 
+    /**
+     * Get the instance of DataApplication
+     * @return instance of DataApplication
+     */
     public static DataApplication getInstance() {
         if (DataApplication.instance == null) {
             DataApplication.instance = new DataApplication();
@@ -42,9 +56,10 @@ public class DataApplication {
      * file(modeling Project nature).
      * Initializes a session correspondig to the project, which is used to load the models.
      * Checks for Monitor-/MeasuringPoint-Repositories and creates them if none exist.
+     * 
+     * @param selectionIndex index of selected project
      */
     public void loadData(int selectionIndex) {
-    	
     	this.project = this.dataGathering.getAllProjectAirdfiles().get(selectionIndex);
     	
         initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
