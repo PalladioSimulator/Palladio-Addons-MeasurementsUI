@@ -1,7 +1,7 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
 /**
- * 
+ * Allocates a WizardModel to one of the four wizard pages
  * @author David Schuetz
  *
  */

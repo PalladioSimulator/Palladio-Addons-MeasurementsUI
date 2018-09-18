@@ -49,7 +49,7 @@ public class WizardModelManager {
      * Discards all changes made
      */
     public void cancel() {
-
+        //TODO Do nothing on cancel right now. This probably has to change if commands are used.
     }
 
     /**
