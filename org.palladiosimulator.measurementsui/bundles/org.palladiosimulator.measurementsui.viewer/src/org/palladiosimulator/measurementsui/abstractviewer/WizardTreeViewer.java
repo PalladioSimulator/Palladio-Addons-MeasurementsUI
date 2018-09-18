@@ -5,46 +5,60 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
+
+/**
+ * Generates a eclipse swt tree viewer based on an eclipse parsley tableview
+ * 
+ * @author David Schuetz
+ *
+ */
 public abstract class WizardTreeViewer extends ComponentViewer {
-	protected TreeViewer treeViewer;
-	protected ViewerFactory treeFactory;
-	protected DataApplication application;
-	/**
-	 * 
-	 * @param parent          container where the tree viewer is placed in
-	 * @param dataApplication Connection to the data binding. This is needed in
-	 *                        order to get the repository of the current project.
-	 */
-	protected WizardTreeViewer(Composite parent, DataApplication application) {
-		super(parent, false);
-		this.application = application;
-		initEditingDomain();
-		initParsley(parent);
-		treeViewer.expandAll();
-	}
+    protected TreeViewer treeViewer;
+    protected ViewerFactory treeFactory;
+    protected DataApplication dataApplication;
 
-	@Override
-	protected void initParsley(Composite parent) {
+    /**
+     * 
+     * @param parent
+     *            container where the tree viewer is placed in
+     * @param dataApplication
+     *            Connection to the data binding. This is needed in order to get the repository of
+     *            the current project.
+     */
+    protected WizardTreeViewer(Composite parent, DataApplication dataApplication) {
+        super(parent);
+        this.dataApplication = dataApplication;
+        initEditingDomain();
+        initParsley(parent);
+        treeViewer.expandAll();
+    }
 
-		treeViewer = new TreeViewer(parent);
-		treeFactory = injector.getInstance(ViewerFactory.class);
-		update();
-	}
+    @Override
+    protected void initParsley(Composite parent) {
 
-	@Override
-	public void update() {
-		Object[] expandedElements = treeViewer.getExpandedElements();
-		initEditingDomain();
-		resource = updateResource(getModelRepository());
-		treeFactory.initialize(treeViewer, resource);
-		treeViewer.setExpandedElements(expandedElements);
-		treeViewer.refresh();
-	}
+        treeViewer = new TreeViewer(parent);
+        treeFactory = injector.getInstance(ViewerFactory.class);
+        update();
+    }
 
-	@Override
-	public StructuredViewer getViewer() {
-		return treeViewer;
-	}
+    @Override
+    public void update() {
+        Object[] expandedElements = treeViewer.getExpandedElements();
+        initEditingDomain();
+        resource = updateResource(getModelRepository());
+        treeFactory.initialize(treeViewer, resource);
+        treeViewer.setExpandedElements(expandedElements);
+        treeViewer.refresh();
+    }
+
+    @Override
+    public StructuredViewer getViewer() {
+        return treeViewer;
+    }
+
+    @Override
+    protected void initDragAndDrop() {
+        // Do not support Drag and Drop
+    }
 
 }

@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.abstractviewer.listener.MpTreeDoubleClickListener;
+import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasurementTreeDoubleClickListener;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
@@ -21,18 +21,20 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 	protected ViewerFactory treeFactory;
 
 	/**
-	 * 
-	 * @param parent         container where the view is embedded
-	 * @param dirty          describes whether the view was edited
-	 * @param commandService eclipse command
-	 * @param application    Connection to the data binding. This is needed in order
-	 *                       to get the repository of the current project.
-	 * @param enableDragDrop  Specifies whether the parsley drag and drop function
-	 * 						  should be used.
-	 */
+     * 
+     * @param parent
+     *            container where the view is embedded
+     * @param dirty
+     *            describes whether the view was edited
+     * @param commandService
+     *            eclipse command
+     * @param dataApplication
+     *            Connection to the data binding. This is needed in order to get the repository of
+     *            the current project.
+     */
 	public MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-			DataApplication application, boolean enableDragDrop) {
-		super(parent, dirty, commandService, application, enableDragDrop);
+			DataApplication dataApplication) {
+		super(parent, dirty, commandService, dataApplication);
 		treeViewer.expandAll();
 	}
 
@@ -41,7 +43,7 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 	 * treeview is double clicked.
 	 */
 	public void addMouseListener() {
-		treeViewer.getTree().addMouseListener(new MpTreeDoubleClickListener(treeViewer));
+		treeViewer.getTree().addMouseListener(new MeasurementTreeDoubleClickListener(treeViewer));
 	}
 
 	/**
@@ -81,6 +83,7 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
 		initEditingDomain();
 		resource = updateResource(getModelRepository());
 		treeFactory.initialize(treeViewer, resource);
+		treeViewer.setAutoExpandLevel(1);
 		treeViewer.setExpandedElements(expandedElements);
 		treeViewer.refresh();
 	}

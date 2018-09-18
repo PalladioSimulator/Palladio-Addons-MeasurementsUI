@@ -5,9 +5,8 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification
 import org.palladiosimulator.monitorrepository.MonitorRepository
 import org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositorySaveableTreeFormView
 import org.palladiosimulator.monitorrepository.ProcessingType
-import org.eclipse.jface.wizard.WizardDialog
-import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType
+
 
 /* mpview EMF Parsley Dsl Module file */
 module monitorrepositoryview {
@@ -61,12 +60,7 @@ module monitorrepositoryview {
 					"Add Measuringpoint with Monitor",
 					mr,
 					[
-						val wizard = new MeasuringPointsWizard();
-						val parentShell = wizard.getShell();
-						val dialog = new WizardDialog(parentShell, wizard);
-						dialog.setPageSize(720, 400);
-            			dialog.setMinimumPageSize(720, 400);
-						dialog.open();
+						MonitorRepositorySaveableTreeFormView.openWizard();
 					]
 				),
 				separator,
@@ -82,48 +76,28 @@ module monitorrepositoryview {
 				"Add Measuringpoint with Monitor",
 				monitor,
 				[
-					val wizard = new MeasuringPointsWizard();
-					val parentShell = wizard.getShell();
-					val dialog = new WizardDialog(parentShell, wizard);
-					dialog.setPageSize(720, 400);
-            		dialog.setMinimumPageSize(720, 400);
-					dialog.open();
+					MonitorRepositorySaveableTreeFormView.openWizard();
 				]
 			), submenu("Edit", #[
 				actionChange(
 					"Monitor",
 					monitor,
 					[
-						val wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, monitor);
-                		val parentShell = wizard.getShell();
-                		val dialog = new WizardDialog(parentShell, wizard);
-                		dialog.setPageSize(720, 400);
-            			dialog.setMinimumPageSize(720, 400);
-                		dialog.open();
+						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.MONITOR_CREATION, monitor);
 					]
 				),
 				actionChange(
 					"Measuringpoint",
 					monitor,
 					[
-						val wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION, monitor);
-                		val parentShell = wizard.getShell();
-                		val dialog = new WizardDialog(parentShell, wizard);
-                		dialog.setPageSize(720, 400);
-            			dialog.setMinimumPageSize(720, 400);
-                		dialog.open();
+						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.MEASURING_POINT_SELECTION, monitor);
 					]
 				),
 				actionChange(
 					"Measurement Specifications",
 					monitor,
 					[
-						val wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
-                		val parentShell = wizard.getShell();
-                		val dialog = new WizardDialog(parentShell, wizard);
-                		dialog.setPageSize(720, 400);
-            			dialog.setMinimumPageSize(720, 400);
-                		dialog.open();
+						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
 					]
 				)
 			]), separator]
@@ -144,12 +118,7 @@ module monitorrepositoryview {
 						measurement,
 						[
 							val monitor = measurement.eContainer as Monitor
-							val wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
-                			val parentShell = wizard.getShell();
-                			val dialog = new WizardDialog(parentShell, wizard);
-                			dialog.setPageSize(720, 400);
-            				dialog.setMinimumPageSize(720, 400);
-                			dialog.open();
+							MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
 							
 						]
 					),

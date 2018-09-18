@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -18,7 +17,6 @@ import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -127,17 +125,9 @@ public class MeasuringpointView {
      */
     private void createWorkspaceListener() {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IResourceChangeListener listener = new IResourceChangeListener() {
-            public void resourceChanged(IResourceChangeEvent event) {
-                Display.getDefault().asyncExec(new Runnable() {
-                    public void run() {
-                        updateMeasuringPointView();
-                    }
-                });
-            }
-        };
-        workspace.addResourceChangeListener(listener, 1);
+        IResourceChangeListener listener = e -> Display.getDefault().asyncExec(this::updateMeasuringPointView);
 
+        workspace.addResourceChangeListener(listener, 1);
     }
 
     /**
@@ -168,6 +158,12 @@ public class MeasuringpointView {
         return emptyMpTreeViewer;
     }
 
+    /**
+     * Adds a SelectionListener which enables/disables Buttons based on which TreeItem is selected
+     * 
+     * @param treeViewer
+     *            Viewer where the SelectionListener will be added to.
+     */
     private void addSelectionListener(Viewer treeViewer) {
         treeViewer.addSelectionChangedListener(event -> {
             IStructuredSelection selection = (IStructuredSelection) event.getSelection();
@@ -269,21 +265,23 @@ public class MeasuringpointView {
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
         editButton.setText("Edit...");
-        
+
         editButton.addListener(SWT.Selection, e -> {
-        	MeasuringPointsWizard wizard;
-            Object selection = selectionService.getSelection();   
+            MeasuringPointsWizard wizard;
+            Object selection = selectionService.getSelection();
             ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
             if (selection instanceof Monitor) {
-                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);    
+                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
             } else if (selection instanceof MeasuringPoint) {
-            	wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION, (Monitor) provider.getParent(selection));   
-            } else if (selection instanceof MeasurementSpecification) { 
-            	wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, (Monitor) provider.getParent(selection));   
+                wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION,
+                        (Monitor) provider.getParent(selection));
+            } else if (selection instanceof MeasurementSpecification) {
+                wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
+                        (Monitor) provider.getParent(selection));
             } else {
-            	wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION);   
+                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION);
             }
-            
+
             Shell parentShell = wizard.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, wizard);
             dialog.setPageSize(720, 400);
@@ -362,7 +360,7 @@ public class MeasuringpointView {
      * 
      * @param dirty
      *            states whether there were changes made
-     * @throws IOException
+     * @throws IOException if the save command fails
      */
     @Persist
     public void save(MDirtyable dirty) throws IOException {

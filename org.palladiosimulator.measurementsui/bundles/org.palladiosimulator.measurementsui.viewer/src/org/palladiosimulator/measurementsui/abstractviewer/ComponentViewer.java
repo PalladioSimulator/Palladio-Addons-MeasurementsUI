@@ -19,86 +19,81 @@ import com.google.inject.Injector;
  *
  */
 public abstract class ComponentViewer {
-	protected Injector injector;
-	protected Resource resource;
-	protected EditingDomain editingDomain;
+    protected Injector injector;
+    protected Resource resource;
+    protected EditingDomain editingDomain;
 
-	/**
-	 * 
-	 * @param parent          container where the tree viewer is placed in
-	 * @param dataApplication Connection to the data binding. This is needed in
-	 *                        order to get the repository of the current project.
-	 * @param enableDragDrop  Specifies whether the parsley drag and drop function
-	 * 						  should be used.
-	 */
-	public ComponentViewer(Composite parent, boolean enableDragDrop) {
-		initInjector();
-		if (enableDragDrop) {
-			initDragAndDrop();
-		}
-	}
+    /**
+     * @param parent
+     *            container where the tree viewer is placed in
+     */
+    protected ComponentViewer(Composite parent) {
+        initInjector();
+    }
 
-	/**
-	 * Initalizes the google guice injector attribute with the injector of the
-	 * respective parsley view
-	 */
-	protected abstract void initInjector();
+    /**
+     * Initalizes the google guice injector attribute with the injector of the respective parsley
+     * view
+     */
+    protected abstract void initInjector();
 
-	/**
-	 * 
-	 * @return the repository of the current view. For Example the monitorrepository
-	 */
-	protected abstract EObject getModelRepository();
+    /**
+     * 
+     * @return the repository of the current view. For Example the monitorrepository
+     */
+    protected abstract EObject getModelRepository();
 
-	/**
-	 * Initialize the connection between the e4 plugin and the Parsley TreeView
-	 * 
-	 * @param parent composite container
-	 */
-	protected abstract void initParsley(Composite parent);
+    /**
+     * Initialize the connection between the e4 plugin and the Parsley TreeView
+     * 
+     * @param parent
+     *            composite container
+     */
+    protected abstract void initParsley(Composite parent);
 
-	/**
-	 * Updates the underlying resources of the tree and redraws the component
-	 * 
-	 */
-	public abstract void update();
+    /**
+     * Updates the underlying resources of the tree and redraws the component
+     * 
+     */
+    public abstract void update();
 
-	/**
-	 * Returns the parsley EditingDomain
-	 */
-	protected void initEditingDomain() {
-		editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository());
-	}
+    /**
+     * Returns the parsley EditingDomain
+     */
+    protected void initEditingDomain() {
+        editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository());
+    }
 
-	/**
-	 * 
-	 * @return the current viewer of the shown composite
-	 */
-	public abstract StructuredViewer getViewer();
+    /**
+     * 
+     * @return the current viewer of the shown composite
+     */
+    public abstract StructuredViewer getViewer();
 
-	/**
-	 * @param model      EMF Model of the shown data
-	 * @return the resource using the resource set of the editing domain
-	 */
-	protected Resource updateResource(EObject model) {
-		ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
-		resource = resourceLoader.getResource(editingDomain, model.eResource().getURI()).getResource();
-		return resource;
-	}
-	
-	/**
-	 * Initialize the parsley drag and drop function
-	 */
-	private void initDragAndDrop() {
-		ViewerDragAndDropHelper dragAndDropHelper = injector.getInstance(ViewerDragAndDropHelper.class);	
-		dragAndDropHelper.addDragAndDrop(getViewer(), editingDomain);
-	}
-	
-	/**
-	 * Initialize the parsley context menu
-	 */
-	protected void initContextMenu() {
-		ViewerContextMenuHelper contextMenuHelper = injector.getInstance(ViewerContextMenuHelper.class);
-		contextMenuHelper.addViewerContextMenu(getViewer(), editingDomain);
-	}
+    /**
+     * @param model
+     *            EMF Model of the shown data
+     * @return the resource using the resource set of the editing domain
+     */
+    protected Resource updateResource(EObject model) {
+        ResourceLoader resourceLoader = injector.getInstance(ResourceLoader.class);
+        resource = resourceLoader.getResource(editingDomain, model.eResource().getURI()).getResource();
+        return resource;
+    }
+
+    /**
+     * Initialize the parsley drag and drop function
+     */
+    protected void initDragAndDrop() {
+        ViewerDragAndDropHelper dragAndDropHelper = injector.getInstance(ViewerDragAndDropHelper.class);
+        dragAndDropHelper.addDragAndDrop(getViewer(), editingDomain);
+    }
+
+    /**
+     * Initialize the parsley context menu
+     */
+    protected void initContextMenu() {
+        ViewerContextMenuHelper contextMenuHelper = injector.getInstance(ViewerContextMenuHelper.class);
+        contextMenuHelper.addViewerContextMenu(getViewer(), editingDomain);
+    }
 }
