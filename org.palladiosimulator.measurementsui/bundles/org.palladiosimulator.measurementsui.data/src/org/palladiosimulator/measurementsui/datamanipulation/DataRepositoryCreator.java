@@ -27,20 +27,22 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
  * @author Lasse
  *
  */
-public class DataRepositoryCreator {
+public final class DataRepositoryCreator {
 
-	private final String MeasuringPointRepositoryfileEnding = "/default.measuringpoint";
+	private static final String MEASURINGPOINT_REPOSITORY_FILE_ENDING = "/default.measuringpoint";
 	private MeasuringpointPackage measuringpointPackage;
 	private MeasuringpointFactory measuringpointFactory;
 	
-	private final String MonitorRepositoryfileEnding = "/default.monitorrepository";
+	private static final String MONITORREPOSITORY_FILE_ENDING = "/default.monitorrepository";
 	private MonitorRepositoryFactory monitorFactory;
 	private MonitorRepositoryPackage monitorPackage;
 	
 	private static DataRepositoryCreator instance;
 
-	
-	public DataRepositoryCreator() {
+	/**
+	 * private Constructor for singelton pattern
+	 */
+	private DataRepositoryCreator() {
 		 this.measuringpointPackage = MeasuringpointPackage.eINSTANCE;
 		 this.measuringpointFactory = this.measuringpointPackage.getMeasuringpointFactory();	
 		 
@@ -48,7 +50,11 @@ public class DataRepositoryCreator {
 		 this.monitorFactory = this.monitorPackage.getMonitorRepositoryFactory();
 	}
 
-	public static DataRepositoryCreator getInstance () {
+	/**
+	 * Returns instance of DataRepositoryCreator
+	 * @return instance of DataRepositoryCreator
+	 */
+	public static DataRepositoryCreator getInstance() {
 		if (DataRepositoryCreator.instance == null) {
 			DataRepositoryCreator.instance = new DataRepositoryCreator();
 		}
@@ -59,9 +65,10 @@ public class DataRepositoryCreator {
 	 * Creates a measuringPointRepository named "default.measuringPoint" in a given project.
 	 * 
 	 * @param project to create the measuringPointRepository in
+	 * @return created MeasuringPointRepository
 	 */
 	public MeasuringPointRepository createMeasuringPointRepository(IProject project) {
-		String measuringPointRepositoryfileName = project.getFullPath() + MeasuringPointRepositoryfileEnding;	
+		String measuringPointRepositoryfileName = project.getFullPath() + MEASURINGPOINT_REPOSITORY_FILE_ENDING;	
 		final URI measuringPointRepositoryfileURI = URI.createPlatformResourceURI(measuringPointRepositoryfileName, true);
 
 		final ResourceSet resourceSet = new ResourceSetImpl();
@@ -89,9 +96,10 @@ public class DataRepositoryCreator {
 	 * Creates a monitorRepository named "default.monitorrepository" in the given project.
 	 * 
 	 * @param project to create monitorRepository in
+	 * @return created MonitorRepository
 	 */
 	public MonitorRepository createMonitorRepository(IProject project) {
-		String monitorRepositoryfileName = project.getFullPath() + MonitorRepositoryfileEnding;	
+		String monitorRepositoryfileName = project.getFullPath() + MONITORREPOSITORY_FILE_ENDING;	
 		final URI monitorRepositoryfileURI = URI.createPlatformResourceURI(monitorRepositoryfileName, true);
 
 		final ResourceSet resourceSet = new ResourceSetImpl();
