@@ -23,7 +23,7 @@ public class MeasuringpointDropListener extends ViewerDropAdapter {
     /**
      * 
      * @param measurementTreeViewer
-     *            where the MeasuringPoint is dropped in.
+     *            MeasurementTreeViewer where the MeasuringPoint is dropped in.
      */
     public MeasuringpointDropListener(MpTreeViewer measurementTreeViewer) {
         super(measurementTreeViewer.getViewer());

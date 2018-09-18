@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
- * Generates a eclipse swt tree viewer based on an eclipse parsley tableview
+ * Generates a Eclipse SWT TreeViewer based on an Eclipse Parsley TreeViewer
  * 
  * @author David Schuetz
  *
@@ -20,9 +20,9 @@ public abstract class WizardTreeViewer extends ComponentViewer {
     /**
      * 
      * @param parent
-     *            container where the tree viewer is placed in
+     *            the container where the tree viewer is placed in
      * @param dataApplication
-     *            Connection to the data binding. This is needed in order to get the repository of
+     *            the connection to the data binding. This is needed in order to get the repository of
      *            the current project.
      */
     protected WizardTreeViewer(Composite parent, DataApplication dataApplication) {

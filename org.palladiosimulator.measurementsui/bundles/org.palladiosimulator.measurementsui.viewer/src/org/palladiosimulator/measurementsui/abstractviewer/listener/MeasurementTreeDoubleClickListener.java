@@ -22,7 +22,7 @@ public class MeasurementTreeDoubleClickListener implements MouseListener {
     /**
      * 
      * @param mpTreeViewer
-     *            where the listener is attached to.
+     *            the MeasurementTreeViewer where the listener is attached to.
      */
     public MeasurementTreeDoubleClickListener(TreeViewer mpTreeViewer) {
         this.mpTree = mpTreeViewer.getTree();
@@ -52,7 +52,7 @@ public class MeasurementTreeDoubleClickListener implements MouseListener {
      * or false
      * 
      * @param monitor
-     *            which is set active/ inactive
+     *            the monitor which is set active/ inactive
      */
     private void toggleMonitorActive(Monitor monitor) {
         ResourceEditor edit = new ResourceEditorImpl();
@@ -64,7 +64,7 @@ public class MeasurementTreeDoubleClickListener implements MouseListener {
      * monitor to true or false
      * 
      * @param measurement
-     *            where triggersSelfAdaptions is set
+     *            the measurement where the attribute triggersSelfAdaptions is set
      */
     private void toggleTriggersSelfAdaption(MeasurementSpecification measurement) {
         ResourceEditor edit = new ResourceEditorImpl();
@@ -94,9 +94,9 @@ public class MeasurementTreeDoubleClickListener implements MouseListener {
     /**
      * 
      * @param e
-     *            mouseevent of the click
+     *            the MouseEvent of the click
      * @param item
-     *            TreeItem on which was clicked
+     *            the TreeItem on which was clicked
      * @return true if the click was inside the bounding box of the tree item symbol
      */
     private boolean isClickedOnTreeItemSymbol(MouseEvent e, TreeItem item) {

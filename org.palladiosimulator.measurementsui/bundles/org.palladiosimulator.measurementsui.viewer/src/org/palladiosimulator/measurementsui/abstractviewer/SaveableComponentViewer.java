@@ -25,13 +25,13 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
     /**
      * 
      * @param parent
-     *            container where the view is embedded
+     *            the container where the view is embedded
      * @param dirty
-     *            describes whether the view was edited
+     *            the dirty state which indicates whether there were changes made in the viewer
      * @param commandService
-     *            eclipse command
+     *            a service of the eclipse application in order to make the tree view saveable
      * @param dataApplication
-     *            Connection to the data binding. This is needed in order to get the repository of
+     *            the connection to the data binding. This is needed in order to get the repository of
      *            the current project.
      */
     protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
