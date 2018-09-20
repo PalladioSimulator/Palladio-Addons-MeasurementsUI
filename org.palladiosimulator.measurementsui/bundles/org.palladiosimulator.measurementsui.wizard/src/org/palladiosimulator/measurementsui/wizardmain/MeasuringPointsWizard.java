@@ -1,7 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmain;
 
 import org.eclipse.jface.wizard.IWizardPage;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasurementSpecification;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelManager;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
@@ -12,6 +11,7 @@ import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.AdditionalModelsToMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.ChooseMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.FinalModelsToMeasuringpointWizardPage;
+import org.palladiosimulator.measurementsui.wizardpages.MeasurementSpecificationWizardPage;
 import org.palladiosimulator.measurementsui.wizardpages.SelectMeasurementsWizardPage;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
@@ -49,7 +49,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
      * Represents the 4th wizard page, where the user can set properties for the selected
      * measurements.
      */
-    private MeasurementSpecification page4;
+    private MeasurementSpecificationWizardPage page4;
 
     private AdditionalModelsToMeasuringpointWizardPage page2extra;
 
@@ -94,8 +94,12 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
         
         page3 = new SelectMeasurementsWizardPage((MetricDescriptionSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
-        page4 = new MeasurementSpecification(
-                (ProcessingTypeSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.PROCESSING_TYPE));
+        
+      //TODO: replace with correct model
+//        page4 = new MeasurementSpecificationWizardPage(
+//                (ProcessingTypeSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.PROCESSING_TYPE));
+        page4 = new MeasurementSpecificationWizardPage(
+                (MetricDescriptionSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
 
     }
 

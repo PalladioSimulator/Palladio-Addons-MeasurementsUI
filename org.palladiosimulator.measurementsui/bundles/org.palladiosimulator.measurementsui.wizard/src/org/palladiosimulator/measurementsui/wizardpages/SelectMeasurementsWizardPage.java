@@ -10,8 +10,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.palladiosimulator.measurementsui.wizard.viewer.EmptySelectMeasurementsViewer;
 import org.palladiosimulator.measurementsui.wizard.viewer.SelectMeasurementsViewer;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.CellModifier;
@@ -23,7 +21,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * This class handels the GUI part of the third wizard page for selecting
+ * This class handles the GUI part of the third wizard page for selecting
  * measurements.
  * 
  * @author mehmet, Ba

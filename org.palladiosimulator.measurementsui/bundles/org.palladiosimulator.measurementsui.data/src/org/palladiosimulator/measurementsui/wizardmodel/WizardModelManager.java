@@ -112,7 +112,7 @@ public class WizardModelManager {
             newWizardModel = new MetricDescriptionSelectionWizardModel(monitor, isEditing);
             break;
         case PROCESSING_TYPE:
-            newWizardModel = new ProcessingTypeSelectionWizardModel();
+            newWizardModel = new ProcessingTypeSelectionWizardModel(monitor, isEditing);
             break;
         default:
             return null;
