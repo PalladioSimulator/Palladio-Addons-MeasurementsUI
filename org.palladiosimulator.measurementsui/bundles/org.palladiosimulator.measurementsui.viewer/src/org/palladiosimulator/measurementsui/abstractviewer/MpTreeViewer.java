@@ -85,6 +85,9 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
         treeFactory.initialize(treeViewer, resource);
         treeViewer.setAutoExpandLevel(1);
         treeViewer.setExpandedElements(expandedElements);
+        if (treeViewer.getExpandedElements().length == 0) {
+            treeViewer.expandToLevel(1);
+        }
         treeViewer.refresh();
     }
 }

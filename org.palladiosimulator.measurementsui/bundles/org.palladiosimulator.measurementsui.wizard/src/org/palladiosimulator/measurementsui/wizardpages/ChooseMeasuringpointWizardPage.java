@@ -53,7 +53,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 	EmptyMpTreeViewer emptyMpTreeViewer;
 	TreeViewer createTreeViewer;
 	Composite container;
-	MeasuringPointSelectionWizardModel selectionWizardModel = MeasuringPointSelectionWizardModel.getInstance();
+	MeasuringPointSelectionWizardModel selectionWizardModel;
 	public static Object currentSelection;
 	boolean selected = false;
 	ITreeContentProvider createContentProvider;
@@ -74,10 +74,11 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 		setDescription("description");
 	}
 
-	public ChooseMeasuringpointWizardPage(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+	public ChooseMeasuringpointWizardPage(MeasuringPointSelectionWizardModel selectionWizardModel) {
 		super("Second Page");
-		setTitle(measuringPointWizardModel.getTitleText());
-		setDescription(measuringPointWizardModel.getInfoText());
+		this.selectionWizardModel = selectionWizardModel;
+		setTitle(selectionWizardModel.getTitleText());
+		setDescription(selectionWizardModel.getInfoText());
 	}
 
 	/**
@@ -116,7 +117,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
 		Composite createMPcomposite = new Composite(tabFolder, SWT.SINGLE);
 		createMPcomposite.setLayout(layout);
-		MeasuringPointsContentProvider mp = new MeasuringPointsContentProvider();
+		MeasuringPointsContentProvider mp = new MeasuringPointsContentProvider(selectionWizardModel);
 		createContentProvider = mp;
 		createTreeViewer = new TreeViewer(createMPcomposite);
 		createTreeViewer.setContentProvider(createContentProvider);

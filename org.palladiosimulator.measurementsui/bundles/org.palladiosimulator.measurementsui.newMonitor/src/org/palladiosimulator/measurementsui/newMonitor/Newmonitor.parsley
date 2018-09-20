@@ -2,6 +2,7 @@ import org.palladiosimulator.measurementsui.newMonitor.NewmonitorFormView
 import org.eclipse.emf.common.util.URI
 import org.palladiosimulator.monitorrepository.Monitor
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
+import org.eclipse.jface.viewers.ILabelProvider
 
 /* org.palladiosimulator.measurementsui.newMonitor EMF Parsley Dsl Module file */
 module org.palladiosimulator.measurementsui.newMonitor {
@@ -38,4 +39,7 @@ module org.palladiosimulator.measurementsui.newMonitor {
 		}
 	}
 
+	bindings {
+		type ILabelProvider -> NewmonitorCustomLabelProvider
+	}
 }

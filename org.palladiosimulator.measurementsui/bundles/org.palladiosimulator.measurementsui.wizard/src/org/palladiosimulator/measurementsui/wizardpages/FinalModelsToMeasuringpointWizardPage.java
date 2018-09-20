@@ -31,8 +31,9 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 	boolean selected;
 	MeasuringPointSelectionWizardModel selectionWizardModel;
 
-	public FinalModelsToMeasuringpointWizardPage() {
+	public FinalModelsToMeasuringpointWizardPage(MeasuringPointSelectionWizardModel selectionWizardModel) {
 		super("page2final");
+		this.selectionWizardModel = selectionWizardModel;
 		setTitle("Select an operation signature");
 		// setDescription("description");
 	}
@@ -58,7 +59,6 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 	}
 
 	public void loadData() {
-		selectionWizardModel = MeasuringPointSelectionWizardModel.getInstance();
 		finalSelectionTreeViewer.setInput(selectionWizardModel.getSignatures().toArray());
 		ISelection initialSelection = new StructuredSelection(selectionWizardModel.getSignatures().get(0));
 		finalSelectionTreeViewer.setSelection(initialSelection);

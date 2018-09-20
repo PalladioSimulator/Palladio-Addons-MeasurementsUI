@@ -31,8 +31,9 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
 	boolean selected = false;
 	MeasuringPointSelectionWizardModel selectionWizardModel;
 
-	public AdditionalModelsToMeasuringpointWizardPage() {
+	public AdditionalModelsToMeasuringpointWizardPage(MeasuringPointSelectionWizardModel selectionWizardModel) {
 		super("page2extra");
+		this.selectionWizardModel = selectionWizardModel;
 		setTitle("Select an operation role or passive resource");
 		setDescription("");
 	}
@@ -62,7 +63,6 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
 	 * depending on the chosen element from the ChooseMeasuringpointWizardpage
 	 */
 	public void loadData() {
-		selectionWizardModel= MeasuringPointSelectionWizardModel.getInstance();
 		secondModelTreeViewer.setContentProvider(mp);
 		secondModelTreeViewer.setInput(selectionWizardModel.getAllAdditionalModels());
 		IStructuredSelection initialSelection = new StructuredSelection(

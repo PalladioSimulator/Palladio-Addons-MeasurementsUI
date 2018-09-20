@@ -15,13 +15,15 @@ public class MeasuringPointsContentProvider implements ITreeContentProvider {
 
 	Object[] models;
 	DataApplication da = DataApplication.getInstance();
-	MeasuringPointSelectionWizardModel spwm = MeasuringPointSelectionWizardModel.getInstance();
+	MeasuringPointSelectionWizardModel measuringPointWizardModel;
 
+    public MeasuringPointsContentProvider (MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+	    this.measuringPointWizardModel = measuringPointWizardModel;
+	}
+	
 	@Override
 	public Object[] getElements(Object inputElement) {
-
-		return spwm.getAllSecondPageObjects();
-
+		return measuringPointWizardModel.getAllSecondPageObjects();
 	}
 
 	@Override
