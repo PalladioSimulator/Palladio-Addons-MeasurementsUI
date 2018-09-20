@@ -7,6 +7,7 @@ import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.extensionpoint.definition.EvaluateExtensions;
 import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
@@ -15,10 +16,49 @@ import org.palladiosimulator.monitorrepository.Monitor;
 
 
 public class SampleHandler extends AbstractHandler {
+    
+    private static final String ID = "org.palladiosimulator.measurementsui."
+            + "extensionpoint.definition.PossibleMetricDescription";
+             
+        
+
 
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
+	    
+        EvaluateExtensions  ex = new EvaluateExtensions ();
+        Object o = ex.getElement();
+        
+        
+
+//          IExtensionRegistry registry = Platform.getExtensionRegistry();
+//
+//          IConfigurationElement[] config =
+//          registry.getConfigurationElementsFor(ID);
+//          try {
+//              for (IConfigurationElement e : config) {
+//                  System.out.println("Evaluating extension");
+//                  final Object o =
+//                          e.createExecutableExtension("class");
+//                  
+//                  System.out.println(o);
+//                  
+//                  if(o instanceof ITest) {
+//                      ((ITest) o).greet();
+//                  }
+//                  
+//                  if(o instanceof IMetrics) {
+//                      System.out.println(((IMetrics) o).getmetrics().getName());
+//                      System.out.println(((IMetrics) o).getmetrics().getTextualDescription());
+//                  }
+//
+//              }
+//
+//          } catch (CoreException ex) {
+//              System.out.println(ex.getMessage());
+//          }
+    
 
 
 		DataApplication start = DataApplication.getInstance();
