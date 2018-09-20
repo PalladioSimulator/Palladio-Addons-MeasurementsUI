@@ -18,19 +18,28 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.measurementsui.wizard.viewer.MeasurementSpecificationViewer;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeEditingSupport;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.eclipse.jface.util.Policy;
 
 public class MeasurementSpecificationWizardPage extends WizardPage {
 
-	private ProcessingTypeSelectionWizardModel processingTypeWizardModel;
+	//TODO: replace with correct model
+//	private ProcessingTypeSelectionWizardModel processingTypeWizardModel;
+	private MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel;
 
-	public MeasurementSpecificationWizardPage(ProcessingTypeSelectionWizardModel processingTypeWizardModel) {
+	//TODO: replace with correct model
+//	public MeasurementSpecificationWizardPage(ProcessingTypeSelectionWizardModel processingTypeWizardModel) {
+	public MeasurementSpecificationWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
 		super("wizardPage");
 		setTitle("Measurement Specification");
 		setDescription("Specify properties of measurements");
-		this.processingTypeWizardModel = processingTypeWizardModel;
+		
+		//TODO: replace with correct model
+//		this.processingTypeWizardModel = processingTypeWizardModel;
+		this.metricDescriptionSelectionWizardModel = metricDescriptionSelectionWizardModel;
 	}
 
 	@Override
@@ -41,8 +50,11 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 
 		setControl(container);
 
+		//TODO: replace with correct model
+//		MeasurementSpecificationViewer measurementSpecificationViewer = new MeasurementSpecificationViewer(container,
+//				this.processingTypeWizardModel);
 		MeasurementSpecificationViewer measurementSpecificationViewer = new MeasurementSpecificationViewer(container,
-				this.processingTypeWizardModel);
+				this.metricDescriptionSelectionWizardModel);
 		TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
 		tableViewer.setLabelProvider(new ITableLabelProvider() {
 
@@ -60,7 +72,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 				if (columnIndex == 0) {
 					result = measurementSpecification.getMetricDescription().getName();
 				} else if (columnIndex == 1) {
-
+					result = " hahahahaa";
 				} else if (columnIndex == 2) {
 
 				} else if (columnIndex == 3) {
@@ -81,51 +93,14 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 				return false;
 			}
 		});
+		
+		tableViewer.getTable().getColumn(0).setText("Metric Description");
+		tableViewer.getTable().getColumn(1).setText("Processing Type");
+		tableViewer.getTable().getColumn(2).setText("Property Value 1");
+		tableViewer.getTable().getColumn(3).setText("Property Value 2");
+		
 		TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
-		tableViewerColumns[1].setEditingSupport(new EditingSupport(tableViewer) {
-			@Override
-			protected boolean canEdit(Object element) {
-				if (element instanceof MeasurementSpecification) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-
-			@Override
-			protected CellEditor getCellEditor(Object element) {
-				final ComboBoxCellEditor editor = new ComboBoxCellEditor(tableViewer.getTable(),
-						getPossibleProcessingTypeNames(), SWT.READ_ONLY);
-				((CCombo) editor.getControl()).addModifyListener(new ModifyListener() {
-					public void modifyText(ModifyEvent e) {
-						IStructuredSelection sel = (IStructuredSelection) tableViewer.getSelection();
-						MeasurementSpecification filterValue = (MeasurementSpecification) sel.getFirstElement();
-						// .. update the filter on your TableViewer
-					}
-				});
-				return editor;
-			}
-
-			private String[] getPossibleProcessingTypeNames() {
-				return null;
-			}
-
-			@Override
-			protected Object getValue(Object element) {
-				if (element instanceof MeasurementSpecification) {
-					return null;
-				} else {
-					return null;
-				}
-			}
-
-			@Override
-			protected void setValue(Object element, Object value) {
-				if (element instanceof MeasurementSpecification) {
-					// update your FilterDataObject
-				}
-			}
-		});
+		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), tableViewer));
 	}
 
 	/**

@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationInjectorProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 
 public class MeasurementSpecificationViewer extends WizardTableViewer {
 	/**
@@ -26,7 +27,9 @@ public class MeasurementSpecificationViewer extends WizardTableViewer {
 
 	@Override
 	protected EObject getModelRepository() {
-		return null;
+		//TODO: replace with correct model
+		MetricDescriptionSelectionWizardModel model = (MetricDescriptionSelectionWizardModel) wizardModel;
+        return model.getUsedMetricsMonitor();
 	}
 	
 	
