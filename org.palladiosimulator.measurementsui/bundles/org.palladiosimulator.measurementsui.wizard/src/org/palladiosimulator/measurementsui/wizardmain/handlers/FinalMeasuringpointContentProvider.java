@@ -11,7 +11,7 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSele
 public class FinalMeasuringpointContentProvider implements ITreeContentProvider {
     MeasuringPointSelectionWizardModel measuringPointWizardModel;
     
-    public void AdditionalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+    public FinalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
         this.measuringPointWizardModel = measuringPointWizardModel;
     }
 	@Override

@@ -13,7 +13,7 @@ public class AdditionalMeasuringpointContentProvider implements ITreeContentProv
 	MeasuringPointSelectionWizardModel measuringPointWizardModel;
 	Object[] objects;
 	
-	public void AdditionalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+	public AdditionalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
 	    this.measuringPointWizardModel = measuringPointWizardModel;
 	}
 	

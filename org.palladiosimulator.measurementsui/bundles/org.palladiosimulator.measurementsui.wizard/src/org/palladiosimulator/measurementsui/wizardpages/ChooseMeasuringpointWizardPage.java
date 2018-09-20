@@ -25,6 +25,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository
 import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizard.viewer.EmptyMpTreeViewer;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.AlternativeMeasuringPointContentProvider;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsContentProvider;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
@@ -117,9 +118,10 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
 		Composite createMPcomposite = new Composite(tabFolder, SWT.SINGLE);
 		createMPcomposite.setLayout(layout);
-		MeasuringPointsContentProvider mp = new MeasuringPointsContentProvider(selectionWizardModel);
+		AlternativeMeasuringPointContentProvider mp = new AlternativeMeasuringPointContentProvider();
+//		MeasuringPointsContentProvider mp = new MeasuringPointsContentProvider(selectionWizardModel);
 		createContentProvider = mp;
-		createTreeViewer = new TreeViewer(createMPcomposite);
+		createTreeViewer = new TreeViewer(createMPcomposite, SWT.SINGLE);
 		createTreeViewer.setContentProvider(createContentProvider);
 		createTreeViewer.setInput(selectionWizardModel.getAllSecondPageObjects());
 		createTreeViewer.setLabelProvider(new MeasuringPointsLabelProvider());

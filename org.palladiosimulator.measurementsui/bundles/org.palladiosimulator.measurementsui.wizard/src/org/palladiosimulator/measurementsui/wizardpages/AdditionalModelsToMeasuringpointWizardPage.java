@@ -52,7 +52,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
 		layout.marginWidth = 0;
 		container.setLayout(layout);
 		setControl(container);
-		mp = new AdditionalMeasuringpointContentProvider();
+		mp = new AdditionalMeasuringpointContentProvider(selectionWizardModel);
 		createContentProvider = mp;
 		secondModelTreeViewer = new TreeViewer(container);
 

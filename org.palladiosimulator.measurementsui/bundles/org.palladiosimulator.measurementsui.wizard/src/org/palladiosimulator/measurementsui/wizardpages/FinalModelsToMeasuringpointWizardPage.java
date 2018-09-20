@@ -50,7 +50,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
 		layout.marginWidth = 0;
 		container.setLayout(layout);
 		setControl(container);
-		mp = new FinalMeasuringpointContentProvider();
+		mp = new FinalMeasuringpointContentProvider(selectionWizardModel);
 		createContentProvider = mp;
 		finalSelectionTreeViewer = new TreeViewer(container);
 		finalSelectionTreeViewer.setContentProvider(mp);
