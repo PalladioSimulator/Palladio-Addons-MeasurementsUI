@@ -68,7 +68,7 @@ public class MeasurementTreeDoubleClickListener implements MouseListener {
      */
     private void toggleTriggersSelfAdaption(MeasurementSpecification measurement) {
         ResourceEditor edit = new ResourceEditorImpl();
-        edit.changeTriggersSelfAdapting(measurement, measurement.isTriggersSelfAdaptations());
+        edit.changeTriggersSelfAdapting(measurement);
 
     }
 
