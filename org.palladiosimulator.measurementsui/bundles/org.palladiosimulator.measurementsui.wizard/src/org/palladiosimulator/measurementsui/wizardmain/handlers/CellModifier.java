@@ -3,9 +3,7 @@ package org.palladiosimulator.measurementsui.wizardmain.handlers;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.palladiosimulator.measurementsui.wizardmodel.WizardModelManager;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
-import org.palladiosimulator.measurementsui.wizardpages.SelectMeasurementsWizardPage;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
 /**

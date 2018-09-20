@@ -1,4 +1,4 @@
-package measurementspecification;
+package org.palladiosimulator.measurementsui.measurementspecification;
 
 import org.osgi.framework.BundleContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -9,7 +9,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class MeasurementspecificationActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "measurementspecification"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.palladiosimulator.measurementsui.measurementspecification"; //$NON-NLS-1$
 
 	// The shared instance
 	private static MeasurementspecificationActivator plugin;
