@@ -1,12 +1,15 @@
 package org.palladiosimulator.swtbot;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotViewMenu;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,13 +22,14 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(SWTBotJunit4ClassRunner.class)
-public class CreateNewMonitor {
+public class CheckView {
 
     public static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
     @BeforeClass
     public static void beforeClass() throws Exception {
         bot = new SWTWorkbenchBot();
+        bot.viewByTitle("Welcome").close();
         bot.menu("File").menu("Import...").click();
         SWTBotShell importshell = bot.shell("Import");
         importshell.activate();
@@ -54,15 +58,37 @@ public class CreateNewMonitor {
     }
     
     @Test
-    public void canAddNewMonitor()throws Exception{
+    public void checkButtons()throws Exception{
         bot = new SWTWorkbenchBot();
-//        SWTBotView measuringpointView = bot.viewByPartName("Measurements Overview");
         SWTBotView measuringpointView =  bot.viewById("test.partDescFragment.ASampleE4View");
         Widget measuringpointViewWidget = measuringpointView.getWidget();
         bot.activeView();
         bot.button("Add new Measuring Point");
-        SWTBotView addMonitorView = bot.activeView();
-        Composite measurmentViewComposite = (Composite) addMonitorView.getWidget();
+        bot.button("Delete...");
+        bot.button("Edit...");
+        bot.button("Assign to Monitor");
+        bot.button("Create Standard Set");
+    }
+    
+    @Test
+    public void checkMonitorTree() throws Exception{
+        bot = new SWTWorkbenchBot();
+        SWTBotView measuringpointView =  bot.viewById("test.partDescFragment.ASampleE4View");
+        Widget measuringpointViewWidget = measuringpointView.getWidget();
+        Composite measuringpointViewComposite = (Composite) measuringpointView.getWidget();
+        Tree monitorTree = (Tree)bot.widget(WidgetMatcherFactory.widgetOfType(Tree.class),measuringpointViewComposite);
+        SWTBotTree tree = new SWTBotTree(monitorTree);
+        tree.select("Monitor Repository PetsMonitore");
+        tree.expandNode("Monitor Repository PetsMonitore");
+    }
+    @Test
+    public void checkEmptyMeasurementsTree() throws Exception {
+        bot = new SWTWorkbenchBot();
+        SWTBotView measurmentView =  bot.viewById("test.partDescFragment.ASampleE4View");
+        Widget measurmentViewWidget = measurmentView.getWidget();
+        Composite measurmentViewComposite = (Composite) measurmentView.getWidget();
+        Tree measurmentTree = (Tree)bot.widget(WidgetMatcherFactory.widgetOfType(Tree.class),measurmentViewComposite);
+        SWTBotTree mtree = new SWTBotTree(measurmentTree);
     }
     
     @AfterClass
