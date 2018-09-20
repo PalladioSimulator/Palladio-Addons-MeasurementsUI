@@ -6,7 +6,7 @@
          <meta.schema plugin="org.palladiosimulator.measurementsui.extensionpoint.definition" id="org.palladiosimulator.measurementsui.extensionpoint.definition.PossibleMetricDescription" name="PossibleMetricDescription"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         This extension Point is used to define which Metric Descriptions are implemented to measure which Measuring Point during a SimuLizar simulation run.
       </documentation>
    </annotation>
 

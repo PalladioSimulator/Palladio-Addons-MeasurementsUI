@@ -7,7 +7,7 @@ import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.extensionpoint.definition.EvaluateExtensions;
+import org.palladiosimulator.measurementsui.extensionpoint.evaluation.EvaluateExtensions;
 import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;

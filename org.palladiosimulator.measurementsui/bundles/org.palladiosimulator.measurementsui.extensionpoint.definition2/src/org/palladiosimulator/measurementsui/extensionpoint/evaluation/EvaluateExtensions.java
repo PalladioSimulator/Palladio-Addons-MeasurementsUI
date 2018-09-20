@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.extensionpoint.definition;
+package org.palladiosimulator.measurementsui.extensionpoint.evaluation;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
