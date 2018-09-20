@@ -47,6 +47,6 @@ public class CellModifier implements ICellModifier {
 	public void modify(Object element, String property, Object value) {
 		IStructuredSelection selection = tableViewer.getStructuredSelection();
 		MeasurementSpecification specification = (MeasurementSpecification) selection.getFirstElement();
-		model.switchTriggerSelfAdapting(specification.isTriggersSelfAdaptations(), specification);
+		model.switchTriggerSelfAdapting(specification);
 	}
 }
