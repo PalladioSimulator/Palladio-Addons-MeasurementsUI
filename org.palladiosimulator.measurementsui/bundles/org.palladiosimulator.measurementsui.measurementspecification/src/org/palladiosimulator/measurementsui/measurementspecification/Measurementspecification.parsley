@@ -38,7 +38,7 @@ module org.palladiosimulator.measurementsui.measurementspecification {
 	}
 	featuresProvider{
 		features{
-			MeasurementSpecification -> metricDescription
+			MeasurementSpecification -> metricDescription, metricDescription, metricDescription, metricDescription
 		}
 	}
 }
