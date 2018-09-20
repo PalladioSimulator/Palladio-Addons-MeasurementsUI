@@ -1,6 +1,5 @@
 import org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationSaveableTableView
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage
-import org.eclipse.emf.common.util.URI
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
 import org.palladiosimulator.monitorrepository.MeasurementSpecification
 
@@ -18,11 +17,6 @@ module org.palladiosimulator.measurementsui.measurementspecification {
 		eClass {
 			MeasurementspecificationSaveableTableView -> {
 				return MonitorRepositoryPackage.eINSTANCE.measurementSpecification
-			}
-		}
-		resourceURI {
-			MeasurementspecificationSaveableTableView -> {
-			 return URI.createFileURI("D:\\EnPro\\Pets\\Pets.com\\PetsMonitor.monitorrepository");
 			}
 		}
 	}
