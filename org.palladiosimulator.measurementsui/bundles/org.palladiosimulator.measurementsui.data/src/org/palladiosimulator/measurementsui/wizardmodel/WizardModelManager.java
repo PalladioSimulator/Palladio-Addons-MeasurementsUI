@@ -1,7 +1,8 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import java.io.IOException;
+import java.util.EnumMap;
+
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -13,71 +14,111 @@ import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
 /**
+ * This class manages all WizardModels used in the wizard
  * 
  * @author David Schuetz
  *
  */
 public class WizardModelManager {
 
-	private Monitor monitor;
-	private MeasuringPoint measuringPoint;
-	private ResourceEditorImpl editor;
-	private DataApplication dataApp;
-	private boolean isEditing;
-	
-	public WizardModelManager() {
-		monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
-		this.dataApp = DataApplication.getInstance();
-		this.editor = new ResourceEditorImpl();
-	}
+    private Monitor monitor;
 
-	public WizardModelManager(Monitor monitor) {
-		this.monitor = monitor;
-		this.dataApp = DataApplication.getInstance();
-		this.editor = new ResourceEditorImpl();
-		isEditing = true;
-	}
+    private ResourceEditorImpl editor;
+    private DataApplication dataApp;
+    private boolean isEditing;
 
-	public void cancel() {
+    private EnumMap<WizardModelType, WizardModel> wizardModels = new EnumMap<WizardModelType, WizardModel>(
+            WizardModelType.class);
 
-	}
+    /**
+     * Creates a new empty monitor which will be edited in the wizard pages
+     */
+    public WizardModelManager() {
+        monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+        this.dataApp = DataApplication.getInstance();
+        this.editor = new ResourceEditorImpl();
+    }
 
-	public void finish() {
-		measuringPoint = monitor.getMeasuringPoint();
+    /**
+     * @param monitor
+     *            an existing monitor which will be edited in the wizard pages
+     */
+    public WizardModelManager(Monitor monitor) {
+        this.monitor = monitor;
+        this.dataApp = DataApplication.getInstance();
+        this.editor = new ResourceEditorImpl();
+        isEditing = true;
+    }
 
-		editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), monitor);
-		editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
-				measuringPoint);
-		editor.setMeasuringPointToMonitor(monitor, measuringPoint);
-		try {
-			dataApp.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
-			dataApp.getModelAccessor().getMonitorRepository().get(0).eResource().save(null);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    /**
+     * Discards all changes made
+     */
+    public void cancel() {
+        // TODO Do nothing on cancel right now. This probably has to change if commands are used.
+    }
 
-	}
-	
-	public boolean canFinish() {
-		return !monitor.getMeasurementSpecifications().isEmpty();
-	}
+    /**
+     * Saves the changes made in the wizard pages in the Monitor and MeasuringPoint.
+     */
+    public void finish() {
+        MeasuringPoint measuringPoint = monitor.getMeasuringPoint();
 
-	public WizardModel getWizardModel(WizardModelType wizardModel) {
-		switch (wizardModel) {
-		case MONITOR_CREATION:
-			return new MonitorCreationWizardModel(monitor);
-		case MEASURING_POINT_SELECTION:
-			MeasuringPointSelectionWizardModel model = new MeasuringPointSelectionWizardModel(monitor, isEditing);
-			model.setInstance(model);
-			return model;
-		case METRIC_DESCRIPTION_SELECTION:
-			return new MetricDescriptionSelectionWizardModel(monitor, isEditing);
-			
-		case PROCESSING_TYPE:
-			return new ProcessingTypeSelectionWizardModel();
-		default:
-			return null;
-		}
-	}
+        editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), monitor);
+        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
+                measuringPoint);
+        editor.setMeasuringPointToMonitor(monitor, measuringPoint);
+        try {
+            dataApp.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
+            dataApp.getModelAccessor().getMonitorRepository().get(0).eResource().save(null);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 
+     * @return true if all necessary attributes of the monitor are set and the wizard can finish
+     */
+    public boolean canFinish() {
+        return getWizardModel(WizardModelType.MONITOR_CREATION).canFinish()
+                && getWizardModel(WizardModelType.MEASURING_POINT_SELECTION).canFinish()
+                && getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION).canFinish()
+                && getWizardModel(WizardModelType.PROCESSING_TYPE).canFinish();
+    }
+
+    /**
+     * 
+     * @param wizardModelType
+     *            an enum which indicates which wizardmodel should be returned
+     * @return a wizardmodel which allows to use data methods for a specific wizardpage
+     */
+    public WizardModel getWizardModel(WizardModelType wizardModelType) {
+
+        if (wizardModels.containsKey(wizardModelType)) {
+            return wizardModels.get(wizardModelType);
+        }
+
+        WizardModel newWizardModel;
+        switch (wizardModelType) {
+        case MONITOR_CREATION:
+            newWizardModel = new MonitorCreationWizardModel(monitor);
+            break;
+        case MEASURING_POINT_SELECTION:
+            newWizardModel = new MeasuringPointSelectionWizardModel(monitor, isEditing);
+            break;
+        case METRIC_DESCRIPTION_SELECTION:
+            newWizardModel = new MetricDescriptionSelectionWizardModel(monitor, isEditing);
+            break;
+        case PROCESSING_TYPE:
+            newWizardModel = new ProcessingTypeSelectionWizardModel();
+            break;
+        default:
+            return null;
+        }
+
+        wizardModels.put(wizardModelType, newWizardModel);
+        return newWizardModel;
+    }
 }

@@ -1,5 +1,4 @@
 import emptymeasuringpoints.EmptymeasuringpointsSaveableTreeView
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory
 import org.eclipse.jface.viewers.IContentProvider
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository
