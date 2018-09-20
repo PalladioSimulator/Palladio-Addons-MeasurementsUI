@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.measurementsui.wizard.viewer.MeasurementSpecificationViewer;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeEditingSupport;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty1EditingSupport;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -74,7 +75,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 				} else if (columnIndex == 1) {
 					result = " hahahahaa";
 				} else if (columnIndex == 2) {
-
+					result = String.valueOf(ProcessingTypeProperty1EditingSupport.test);
 				} else if (columnIndex == 3) {
 
 				}
@@ -101,6 +102,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		
 		TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
 		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), tableViewer));
+		tableViewerColumns[2].setEditingSupport(new ProcessingTypeProperty1EditingSupport(tableViewerColumns[2].getViewer(), tableViewer));
 	}
 
 	/**
