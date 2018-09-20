@@ -31,5 +31,6 @@ Export-Package: org.palladiosimulator.measurementsui.wizardmain,
 Import-Package: emptymeasuringpoints,
  emptymeasuringpointswizard,
  org.palladio.simulator.measurementsui.selectmeasurements.emptyview,
+ org.palladiosimulator.measurementsui.measurementspecification,
  tableform
 

@@ -1,0 +1,44 @@
+import org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationSaveableTableView
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage
+import org.eclipse.emf.common.util.URI
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
+import org.palladiosimulator.monitorrepository.MeasurementSpecification
+
+/* org.palladiosimulator.measurementsui.measurementspecification EMF Parsley Dsl Module file */
+module org.palladiosimulator.measurementsui.measurementspecification {
+	
+	parts {
+		viewpart org.palladiosimulator.measurementsui.measurementspecification {
+			viewname "Measurementspecification"
+			viewclass MeasurementspecificationSaveableTableView
+		}
+	}
+	
+	configurator {
+		eClass {
+			MeasurementspecificationSaveableTableView -> {
+				return MonitorRepositoryPackage.eINSTANCE.measurementSpecification
+			}
+		}
+		resourceURI {
+			MeasurementspecificationSaveableTableView -> {
+			 return URI.createFileURI("D:\\EnPro\\Pets\\Pets.com\\PetsMonitor.monitorrepository");
+			}
+		}
+	}
+	
+	resourceManager {
+		initializeResource {
+		it.getContents += MonitorRepositoryFactory.eINSTANCE; 
+		}
+		saveResource{
+			it.save(null) 
+			return true; 
+		}
+	}
+	featuresProvider{
+		features{
+			MeasurementSpecification -> metricDescription, metricDescription, metricDescription, metricDescription
+		}
+	}
+}
