@@ -83,3 +83,7 @@ local.properties
 
 target/
 .checkstyle
+
+org\.palladiosimulator\.measurementsui/bundles/org\.palladiosimulator\.measurementsui\.viewer/plugin\.xml
+
+org\.palladiosimulator\.measurementsui/bundles/org\.palladiosimulator\.measurementsui\.viewer/build\.properties

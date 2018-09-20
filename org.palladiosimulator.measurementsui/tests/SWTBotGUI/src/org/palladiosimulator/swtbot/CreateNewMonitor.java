@@ -11,9 +11,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * 
+ * @author Birasanth Pushpanathan
+ * 
+ */
 
 @RunWith(SWTBotJunit4ClassRunner.class)
-public class FirstTest {
+public class CreateNewMonitor {
 
     public static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
@@ -50,7 +55,11 @@ public class FirstTest {
     @Test
     public void canAddNewMonitor()throws Exception{
         bot = new SWTWorkbenchBot();
-        SWTBotView measuringpointView = bot.viewByPartName("Measurements Overview");
+//        SWTBotView measuringpointView = bot.viewByPartName("Measurements Overview");
+        SWTBotView measuringpointView =  bot.viewById("test.partDescFragment.ASampleE4View");
+        Widget measuringpointViewWidget = measuringpointView.getWidget();
+        bot.activeView();
+        bot.button("Add new Measuring Point");
     }
     
     @AfterClass
