@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.palladiosimulator.measurementsui.extensionpoint.definition.PossibleMetricDescription">
+      <client
+            class="org.palladiosimulator.measurementsui.extension.contributions.ResponseTime">
+      </client>
+   </extension>
+   <extension
+         point="org.palladiosimulator.measurementsui.extensionpoint.definition.PossibleMetricDescription">
+      <client
+            class="&#x0A;         point=&quot;org.palladiosimulator.measurementsui.extensionpoint.definition.PossibleMetricDescription&quot;&gt;&#x0A;      &lt;client&gt;&lt;/client&gt;&#x0A;   &lt;/extension&gt;">
+      </client>
+   </extension>
+   <extension
+         point="extensionpoint.test">
+      <client
+            class="test">
+      </client>
+   </extension>
+   <extension
+         point="extensionpoint.metrics">
+      <client
+       		boolean = "true"
+            class="metrics"
+            id=" blubb"
+            resource="/">
+           
+      </client>
+      <client
+            boolean="true"
+            id="org.palladiosimulator.measurementsui.extension.contributions.client2"
+            resource="org.palladiosimulator.measurementsui.extension.contributions.client2">
+      </client>
+   </extension>
+
+</plugin>
