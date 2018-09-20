@@ -40,6 +40,7 @@ public class UnselectedMetricSpecificationsProvider {
 		EList<MetricDescription> allMetricDescriptions = dummyMetricDesc.getRepository().getMetricDescriptions();
 
 		EList<MeasurementSpecification> mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
+
 		if (!mSpecsOfPassedMonitor.isEmpty()) {
 			mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
 			EList<MetricDescription> metricDescriptionsInPassedMonitor = new BasicEList<>();
@@ -98,13 +99,23 @@ public class UnselectedMetricSpecificationsProvider {
 			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
 		}
 	}
-	
-	public void removeMeasurementSpecificationBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification, Monitor receivingMonitor, boolean isInEditMode) {
+
+	/**
+	 * Removes the measurement specification from the receiving monitor. If in edit
+	 * mode the resource needs to be deleted through emf command to avoid write
+	 * transaction errors
+	 * 
+	 * @param selectedMeasurementSpecification
+	 * @param receivingMonitor
+	 * @param isInEditMode
+	 */
+	public void removeMeasurementSpecificationBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification,
+			Monitor receivingMonitor, boolean isInEditMode) {
 		if (isInEditMode) {
 
 			editor.deleteResource(selectedMeasurementSpecification);
 			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
-		}else {
+		} else {
 			receivingMonitor.getMeasurementSpecifications().add(selectedMeasurementSpecification);
 		}
 	}
@@ -123,7 +134,7 @@ public class UnselectedMetricSpecificationsProvider {
 				editor.addMeasurementSpecificationToMonitor(receivingMonitor, aMSpec);
 			}
 		} else {
-			
+
 			receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
 		}
 

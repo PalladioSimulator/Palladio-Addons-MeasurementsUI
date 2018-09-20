@@ -75,11 +75,11 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 		provider.moveAllMeasurementSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
 	}
 
-	public void switchTriggerSelfAdapting(boolean currentValue, MeasurementSpecification mspec) {
+	public void switchTriggerSelfAdapting(MeasurementSpecification mspec) {
 	    if(isEditing) {
-	        ResourceEditorImpl.getInstance().changeTriggersSelfAdapting(mspec, currentValue);
+	        ResourceEditorImpl.getInstance().changeTriggersSelfAdapting(mspec);
 	    }else {
-	        mspec.setTriggersSelfAdaptations(!currentValue);
+	        mspec.setTriggersSelfAdaptations(!mspec.isTriggersSelfAdaptations());
 	    }
 	}
 	

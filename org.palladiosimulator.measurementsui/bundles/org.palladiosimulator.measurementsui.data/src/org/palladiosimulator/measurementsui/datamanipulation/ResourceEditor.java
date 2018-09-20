@@ -4,10 +4,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-
+/**
+ * Interface for editing Resources through {@link DataEditor}
+ * @author Florian Nieuwenhuizen
+ *
+ */
 public interface ResourceEditor {
 	/**
-	 * Changes the EntityName of a resource
+	 * Changes the EntityName of a resource through EMF Commands
 	 * 
 	 * @param resource The resource to change the name
 	 * @param newName  The new name of the resource
@@ -15,7 +19,8 @@ public interface ResourceEditor {
 	void setResourceName(EObject resource, String newName);
 
 	/**
-	 * Changes the current status of "activated" to its negative
+	 * Changes the current status of "activated" to its negative through EMF
+	 * Commands
 	 * 
 	 * @param monitor     the monitor to change
 	 * @param currentBool the value to change
@@ -23,16 +28,17 @@ public interface ResourceEditor {
 	void changeMonitorActive(EObject monitor, boolean currentBool);
 
 	/**
-	 * Changes current bool triggers self adapting to its negative
+	 * Changes current bool triggers self adapting to its negative through EMF
+	 * Commands
 	 * 
 	 * @param mspec       the measurement specification to change
 	 * @param currentBool current value of triggersSelfAdaptions
 	 */
-	void changeTriggersSelfAdapting(MeasurementSpecification mspec, boolean currentBool);
+	void changeTriggersSelfAdapting(MeasurementSpecification mspec);
 
 	/**
 	 * alternative method to set measuring points, if it is not possible with
-	 * parsley
+	 * parsley. Current MP is overwritten through new MP.
 	 * 
 	 * @param monitor
 	 * @param mp
@@ -41,7 +47,7 @@ public interface ResourceEditor {
 
 	/**
 	 * alternative method to add measuring points, if it is not possible with
-	 * parsley
+	 * parsley. New MP is appended to MPRepository.
 	 * 
 	 * @param mpRep
 	 * @param mp
@@ -56,9 +62,7 @@ public interface ResourceEditor {
 	void deleteResource(EObject objToDelete);
 
 	/**
-	 * Sets MetricDescription for a MeasurementSpecification. A List of all Metric
-	 * Descriptions can be gotten through:
-	 * aMSpec.getMetricDescription().getRepository().getMetricDescriptions()
+	 * Sets MetricDescription for a MeasurementSpecification using EMF Commands.
 	 * 
 	 * @param aMeasurementSpecification
 	 * @param aMetricDescription
@@ -66,15 +70,15 @@ public interface ResourceEditor {
 	void setMetricDescription(EObject aMeasurementSpecification, MetricDescription aMetricDescription);
 
 	/**
-	 * Adds a new MeasurementSpecification to the list of MeasurementSpecifications
-	 * for the monitor
+	 * Appends a new MeasurementSpecification to the list of
+	 * MeasurementSpecifications for the monitor
 	 * 
 	 * @param monitor The Monitor to which the new specification is added
 	 */
 	void addMeasurementSpecificationToMonitor(EObject monitor, MeasurementSpecification mspec);
 
 	/**
-	 * adds a Monitor to a Monitor Repository through AddCommands
+	 * Appends a Monitor to a Monitor Repository through AddCommands
 	 * 
 	 * @param monitorRepository
 	 * @param monitor
@@ -82,4 +86,5 @@ public interface ResourceEditor {
 	void addMonitorToRepository(EObject monitorRepository, EObject monitor);
 
 	
+
 }
