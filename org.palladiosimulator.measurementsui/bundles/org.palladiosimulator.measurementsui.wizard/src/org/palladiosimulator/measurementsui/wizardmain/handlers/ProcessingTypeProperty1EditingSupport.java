@@ -9,14 +9,31 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
+/**
+ * This class enables editing support for the 3nd column on the 4th wizard page (for ProcessingTypes).
+ * @author Mehmet, Ba
+ *
+ */
 public final class ProcessingTypeProperty1EditingSupport extends EditingSupport {
 
+	/**
+	 * The Editor object for the table cells.
+	 */
     private TextCellEditor cellEditor = null;
+    
+    /**
+     * The according TableViewer object.
+     */
     private TableViewer tableViewer;
     
     // TODO: remove this test variable
     public static int test = 7;
 
+    /**
+     * Constructor, where basic attributes are set for further use, e. g. the according ColumnViewer, TableViewer.
+     * @param columnViewer the given ColumnViewer
+     * @param tableViewer the given TableViewer
+     */
     public ProcessingTypeProperty1EditingSupport(ColumnViewer columnViewer, TableViewer tableViewer) {
         super(columnViewer);
         cellEditor = new TextCellEditor((Composite) getViewer().getControl()) {
@@ -29,25 +46,20 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
         this.tableViewer = tableViewer;
 
         cellEditor.addListener(new ICellEditorListener() {
-
             @Override
             public void applyEditorValue() {
-                // TODO Auto-generated method stub
-
+            	//not used here
             }
 
             @Override
             public void cancelEditor() {
-                // TODO Auto-generated method stub
-
+            	//not used here
             }
 
             @Override
             public void editorValueChanged(boolean oldValidState, boolean newValidState) {
-                // TODO Auto-generated method stub
-
+            	//not used here
             }
-
         });
     }
 

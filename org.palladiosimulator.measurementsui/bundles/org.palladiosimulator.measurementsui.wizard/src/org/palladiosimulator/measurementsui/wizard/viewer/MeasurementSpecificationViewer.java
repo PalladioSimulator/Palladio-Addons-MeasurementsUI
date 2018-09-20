@@ -7,7 +7,15 @@ import org.palladiosimulator.measurementsui.measurementspecification.Measurement
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 
+/**
+ * Generates a table view where all selected metrics from the 3rd wizard page are shown 
+ * and where further properties can be specified.
+ * 
+ * @author Mehmet, Ba
+ *
+ */
 public class MeasurementSpecificationViewer extends WizardTableViewer {
+	
 	/**
 	 * 
 	 * @param parent          container where the table viewer is placed in
@@ -32,6 +40,4 @@ public class MeasurementSpecificationViewer extends WizardTableViewer {
         return model.getUsedMetricsMonitor();
 	}
 	
-	
-
 }

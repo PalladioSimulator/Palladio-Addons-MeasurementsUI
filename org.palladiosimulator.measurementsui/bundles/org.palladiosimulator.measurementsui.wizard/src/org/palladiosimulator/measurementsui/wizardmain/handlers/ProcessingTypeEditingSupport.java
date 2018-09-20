@@ -12,44 +12,56 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
+/**
+ * This class enables editing support for the 2nd column on the 4th wizard page (for ProcessingTypes).
+ * @author Mehmet, Ba
+ *
+ */
 public final class ProcessingTypeEditingSupport extends EditingSupport {
 	
+	//TODO: only used for testing
 	enum MeasurementType {
 		type1, type2, type3, type4
 	}
 
+	/**
+	 * The Editor object for the table cells.
+	 */
     private ComboBoxViewerCellEditor cellEditor;
+    
+    /**
+     * The according TableViewer object.
+     */
     private TableViewer tableViewer;
 
+    /**
+     * Constructor, where basic attributes are set for further use, e. g. the according ColumnViewer, TableViewer.
+     * @param columnViewer the given ColumnViewer
+     * @param tableViewer the given TableViewer
+     */
     public ProcessingTypeEditingSupport(ColumnViewer columnViewer, TableViewer tableViewer) {
         super(columnViewer);
         this.cellEditor = new ComboBoxViewerCellEditor((Composite) getViewer().getControl(), SWT.READ_ONLY);
-        this.cellEditor.setLabelProvider(new LabelProvider());
         this.cellEditor.setContenProvider(new ArrayContentProvider());
         this.cellEditor.setInput(MeasurementType.values());
         
         this.tableViewer = tableViewer;
         
         this.cellEditor.addListener(new ICellEditorListener() {
-
             @Override
             public void applyEditorValue() {
-                // TODO Auto-generated method stub
-                
+                //not used here
             }
 
             @Override
             public void cancelEditor() {
-                // TODO Auto-generated method stub
-                
+            	//not used here
             }
 
             @Override
             public void editorValueChanged(boolean oldValidState, boolean newValidState) {
-                // TODO Auto-generated method stub
-                
+            	//not used here
             }
-            
         });
     }
 

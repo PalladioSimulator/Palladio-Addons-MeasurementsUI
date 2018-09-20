@@ -25,13 +25,27 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSele
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.eclipse.jface.util.Policy;
 
+/**
+ * This class handles the GUI part of the fourth wizard page for measurement specification.
+ * 
+ * @author Mehmet, Ba
+ *
+ */
 public class MeasurementSpecificationWizardPage extends WizardPage {
 
 	//TODO: replace with correct model
+	/**
+	 * This handles the internal model.
+	 */
 //	private ProcessingTypeSelectionWizardModel processingTypeWizardModel;
 	private MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel;
 
 	//TODO: replace with correct model
+	/**
+	 * The constructor where basic properties are set, e. g. title, description etc.
+	 * 
+	 * @param processingTypeWizardModel This handles the internal model
+	 */
 //	public MeasurementSpecificationWizardPage(ProcessingTypeSelectionWizardModel processingTypeWizardModel) {
 	public MeasurementSpecificationWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
 		super("wizardPage");
@@ -124,7 +138,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		return viewerColumns;
 	}
 
-	/** @override */
+	@Override
 	public boolean canFlipToNextPage() {
 		return false;
 	}
