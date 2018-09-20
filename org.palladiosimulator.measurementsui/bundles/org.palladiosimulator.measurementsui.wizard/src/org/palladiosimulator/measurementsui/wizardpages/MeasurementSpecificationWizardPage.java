@@ -87,7 +87,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 				if (columnIndex == 0) {
 					result = measurementSpecification.getMetricDescription().getName();
 				} else if (columnIndex == 1) {
-					result = " hahahahaa";
+					result = "TestProcessingType";
 				} else if (columnIndex == 2) {
 					result = String.valueOf(ProcessingTypeProperty1EditingSupport.test);
 				} else if (columnIndex == 3) {
