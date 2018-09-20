@@ -2,13 +2,8 @@ package org.palladiosimulator.measurementsui.datamanipulation;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
-import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.monitorrepository.Monitor;
-import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
 /**
  * Class for editing resources without use of parsley
@@ -49,8 +44,8 @@ public class ResourceEditorImpl implements ResourceEditor {
      * @see org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor#changeTriggersSelfAdapting(org.palladiosimulator.monitorrepository.MeasurementSpecification, boolean)
      */
     @Override
-    public void changeTriggersSelfAdapting(MeasurementSpecification mspec, boolean currentBool) {
-        editor.editResource(mspec, "triggersSelfAdaptations", !currentBool);
+    public void changeTriggersSelfAdapting(MeasurementSpecification mspec) {
+        editor.editResource(mspec, "triggersSelfAdaptations", !mspec.isTriggersSelfAdaptations());
     }
 
     /* (non-Javadoc)
