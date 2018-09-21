@@ -19,13 +19,13 @@ import org.palladiosimulator.monitorrepository.impl.TimeDrivenImpl;
 import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
 
 /**
- * This class enables editing support for the 3rd column on the 4th wizard page (for
+ * This class enables editing support for the 4th column on the 4th wizard page (for
  * ProcessingTypes).
  * 
  * @author Mehmet, Ba
  *
  */
-public final class ProcessingTypeProperty1EditingSupport extends EditingSupport {
+public final class ProcessingTypeProperty2EditingSupport extends EditingSupport {
 
     /**
      * This handles the internal model.
@@ -51,7 +51,7 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
      * @param tableViewer
      *            the given TableViewer
      */
-    public ProcessingTypeProperty1EditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
+    public ProcessingTypeProperty2EditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
             ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
         super(columnViewer);
         this.processingTypeSelectionWizardModel = processingTypeSelectionWizardModel;
@@ -96,7 +96,7 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
-        if (processingTypeProperties.size() > 0) {
+        if (processingTypeProperties.size() > 1) {
             return true;
         } else {
             return false;
@@ -112,22 +112,22 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
-        if (processingTypeProperties.size() > 0) {
+        if (processingTypeProperties.size() > 1) {
             String result = "";
             
             if (selectedProcessingType instanceof FeedThroughImpl) {
 
             } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-                result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
-//                ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
+//                result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
+                result += ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
 
             } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-                result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
-//                ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
+//                result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
+                result += ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
 
             } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-                result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
-//                ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
+//                result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
+                result += ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
             }
 
             return result;
@@ -146,21 +146,21 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
-        if (processingTypeProperties.size() > 0) {
+        if (processingTypeProperties.size() > 1) {
             
             if (selectedProcessingType instanceof FeedThroughImpl) {
 
             } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-                ((FixedSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
-//                ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
+//                ((FixedSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
+                ((FixedSizeAggregationImpl) selectedProcessingType).setNumberOfMeasurements(Integer.valueOf(valueString));
 
             } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-                ((TimeDrivenImpl) selectedProcessingType).setWindowIncrement(Double.valueOf(valueString));
-//                ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
+//                ((TimeDrivenImpl) selectedProcessingType).setWindowIncrement(Double.valueOf(valueString));
+                ((TimeDrivenImpl) selectedProcessingType).setWindowLength(Double.valueOf(valueString));
 
             } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-                ((VariableSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
-//                ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
+//                ((VariableSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
+                ((VariableSizeAggregationImpl) selectedProcessingType).setRetrospectionLength(Double.valueOf(valueString));
             }
 
         }

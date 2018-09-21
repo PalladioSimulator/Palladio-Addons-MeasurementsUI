@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.measurementsui.wizard.viewer.MeasurementSpecificationViewer;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeEditingSupport;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty1EditingSupport;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty2EditingSupport;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -118,6 +119,31 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 				    
 				} else if (columnIndex == 3) {
 
+				    ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
+                    String selectedProcessingTypeString = MeasurementSpecificationWizardPage
+                            .getProcessingTypeString(selectedProcessingType);
+
+                    List<String> processingTypeProperties = processingTypeSelectionWizardModel
+                            .fieldsForThisProcessingType(selectedProcessingTypeString);
+                    if (processingTypeProperties.size() > 1) {
+                        result += processingTypeProperties.get(1) + ": ";
+                        
+                        if (selectedProcessingType instanceof FeedThroughImpl) {
+
+                        } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
+//                            result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
+                            result += ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
+
+                        } else if (selectedProcessingType instanceof TimeDrivenImpl) {
+//                            result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
+                            result += ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
+
+                        } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
+//                            result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
+                            result += ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
+                        }
+                    }
+				    
 				}
 				return result;
 			}
@@ -145,6 +171,8 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		        tableViewer, this.processingTypeSelectionWizardModel));
 		tableViewerColumns[2].setEditingSupport(new ProcessingTypeProperty1EditingSupport(tableViewerColumns[2].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel));
+		tableViewerColumns[3].setEditingSupport(new ProcessingTypeProperty2EditingSupport(tableViewerColumns[3].getViewer(), 
+                tableViewer, this.processingTypeSelectionWizardModel));
 	}
 
 	/**
