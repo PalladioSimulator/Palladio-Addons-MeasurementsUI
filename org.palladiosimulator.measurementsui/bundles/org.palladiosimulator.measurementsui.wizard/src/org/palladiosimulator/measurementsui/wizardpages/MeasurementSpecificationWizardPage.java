@@ -23,11 +23,15 @@ import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypePr
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.monitorrepository.impl.FeedThroughImpl;
 import org.palladiosimulator.monitorrepository.impl.FixedSizeAggregationImpl;
 import org.palladiosimulator.monitorrepository.impl.TimeDrivenAggregationImpl;
 import org.palladiosimulator.monitorrepository.impl.TimeDrivenImpl;
 import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
+
+import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.util.Policy;
 
@@ -86,7 +90,32 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 				} else if (columnIndex == 1) {
 					result = getProcessingTypeString(measurementSpecification.getProcessingType());
 				} else if (columnIndex == 2) {
-					result = String.valueOf(ProcessingTypeProperty1EditingSupport.test);
+				    
+				    ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
+			        String selectedProcessingTypeString = MeasurementSpecificationWizardPage
+			                .getProcessingTypeString(selectedProcessingType);
+
+			        List<String> processingTypeProperties = processingTypeSelectionWizardModel
+			                .fieldsForThisProcessingType(selectedProcessingTypeString);
+			        if (processingTypeProperties.size() > 0) {
+			            result += processingTypeProperties.get(0) + ": ";
+			            
+			            if (selectedProcessingType instanceof FeedThroughImpl) {
+
+			            } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
+			                result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
+//			                ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
+
+			            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
+			                result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
+//			                ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
+
+			            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
+			                result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
+//			                ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
+			            }
+			        }
+				    
 				} else if (columnIndex == 3) {
 
 				}
@@ -112,9 +141,10 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		tableViewer.getTable().getColumn(3).setText("Property Value 2");
 		
 		TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
-		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), tableViewer, 
-		        this.processingTypeSelectionWizardModel));
-		tableViewerColumns[2].setEditingSupport(new ProcessingTypeProperty1EditingSupport(tableViewerColumns[2].getViewer(), tableViewer));
+		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), 
+		        tableViewer, this.processingTypeSelectionWizardModel));
+		tableViewerColumns[2].setEditingSupport(new ProcessingTypeProperty1EditingSupport(tableViewerColumns[2].getViewer(), 
+		        tableViewer, this.processingTypeSelectionWizardModel));
 	}
 
 	/**

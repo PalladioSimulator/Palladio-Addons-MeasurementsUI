@@ -1,5 +1,7 @@
 package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -7,35 +9,52 @@ import org.eclipse.jface.viewers.ICellEditorListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
+import org.palladiosimulator.measurementsui.wizardpages.MeasurementSpecificationWizardPage;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.monitorrepository.impl.FeedThroughImpl;
+import org.palladiosimulator.monitorrepository.impl.FixedSizeAggregationImpl;
+import org.palladiosimulator.monitorrepository.impl.TimeDrivenImpl;
+import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
 
 /**
- * This class enables editing support for the 3nd column on the 4th wizard page (for ProcessingTypes).
+ * This class enables editing support for the 3nd column on the 4th wizard page (for
+ * ProcessingTypes).
+ * 
  * @author Mehmet, Ba
  *
  */
 public final class ProcessingTypeProperty1EditingSupport extends EditingSupport {
 
-	/**
-	 * The Editor object for the table cells.
-	 */
-    private TextCellEditor cellEditor = null;
-    
+    /**
+     * This handles the internal model.
+     */
+    private ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel;
+
+    /**
+     * The Editor object for the table cells.
+     */
+    private TextCellEditor cellEditor;
+
     /**
      * The according TableViewer object.
      */
     private TableViewer tableViewer;
-    
-    // TODO: remove this test variable
-    public static int test = 7;
 
     /**
-     * Constructor, where basic attributes are set for further use, e. g. the according ColumnViewer, TableViewer.
-     * @param columnViewer the given ColumnViewer
-     * @param tableViewer the given TableViewer
+     * Constructor, where basic attributes are set for further use, e. g. the according
+     * ColumnViewer, TableViewer.
+     * 
+     * @param columnViewer
+     *            the given ColumnViewer
+     * @param tableViewer
+     *            the given TableViewer
      */
-    public ProcessingTypeProperty1EditingSupport(ColumnViewer columnViewer, TableViewer tableViewer) {
+    public ProcessingTypeProperty1EditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
+            ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
         super(columnViewer);
+        this.processingTypeSelectionWizardModel = processingTypeSelectionWizardModel;
         cellEditor = new TextCellEditor((Composite) getViewer().getControl()) {
             @Override
             protected void doSetValue(Object value) {
@@ -48,17 +67,17 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
         cellEditor.addListener(new ICellEditorListener() {
             @Override
             public void applyEditorValue() {
-            	//not used here
+                // not used here
             }
 
             @Override
             public void cancelEditor() {
-            	//not used here
+                // not used here
             }
 
             @Override
             public void editorValueChanged(boolean oldValidState, boolean newValidState) {
-            	//not used here
+                // not used here
             }
         });
     }
@@ -70,31 +89,83 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
 
     @Override
     protected boolean canEdit(Object element) {
-        return true;
+        MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
+        ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
+        String selectedProcessingTypeString = MeasurementSpecificationWizardPage
+                .getProcessingTypeString(selectedProcessingType);
+
+        List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
+                .fieldsForThisProcessingType(selectedProcessingTypeString);
+        if (processingTypeProperties.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     protected Object getValue(Object element) {
-//        if (element instanceof MeasurementSpecification) {
-//        	MeasurementSpecification data = (MeasurementSpecification) element;
-//            return data.getProperty1();
-//        }
-//        return null;
-    	return test;
+        MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
+        ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
+        String selectedProcessingTypeString = MeasurementSpecificationWizardPage
+                .getProcessingTypeString(selectedProcessingType);
+
+        List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
+                .fieldsForThisProcessingType(selectedProcessingTypeString);
+        if (processingTypeProperties.size() > 0) {
+            String result = "";
+            
+            if (selectedProcessingType instanceof FeedThroughImpl) {
+
+            } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
+                result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
+//                ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
+
+            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
+                result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
+//                ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
+
+            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
+                result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
+//                ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
+            }
+
+            return result;
+        } else {
+            return null;
+        }
     }
 
     @Override
     protected void setValue(Object element, Object value) {
-//    	MeasurementSpecification data = (MeasurementSpecification) element;
-//        int newValue = Integer.valueOf((String) value);
-//        /* only set new value if it differs from old one */
-//        if (data.getProperty1() != newValue) {
-//            data.setProperty1(newValue);
-//            this.tableViewer.refresh();
-//        }
-    	int newValue = Integer.valueOf((String) value);
-    	test = newValue;
-    	this.tableViewer.refresh();
+        String valueString = (String) value;
+        MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
+        ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
+        String selectedProcessingTypeString = MeasurementSpecificationWizardPage
+                .getProcessingTypeString(selectedProcessingType);
+
+        List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
+                .fieldsForThisProcessingType(selectedProcessingTypeString);
+        if (processingTypeProperties.size() > 0) {
+            
+            if (selectedProcessingType instanceof FeedThroughImpl) {
+
+            } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
+                ((FixedSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
+//                ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
+
+            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
+                ((TimeDrivenImpl) selectedProcessingType).setWindowIncrement(Double.valueOf(valueString));
+//                ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
+
+            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
+                ((VariableSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
+//                ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
+            }
+
+        }
+        
+        this.tableViewer.refresh();
     }
 
 }

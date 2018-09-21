@@ -98,6 +98,7 @@ public final class ProcessingTypeEditingSupport extends EditingSupport {
         String selectedProcessingTypeString = (String) value;
         
         this.processingTypeSelectionWizardModel.assignProcessingType(measurementSpecification, selectedProcessingTypeString);
+        this.tableViewer.refresh();
     }
 
 }
