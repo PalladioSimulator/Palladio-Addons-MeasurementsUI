@@ -23,6 +23,12 @@ import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypePr
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.impl.FeedThroughImpl;
+import org.palladiosimulator.monitorrepository.impl.FixedSizeAggregationImpl;
+import org.palladiosimulator.monitorrepository.impl.TimeDrivenAggregationImpl;
+import org.palladiosimulator.monitorrepository.impl.TimeDrivenImpl;
+import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.util.Policy;
 
 /**
@@ -33,28 +39,22 @@ import org.eclipse.jface.util.Policy;
  */
 public class MeasurementSpecificationWizardPage extends WizardPage {
 
-	//TODO: replace with correct model
 	/**
 	 * This handles the internal model.
 	 */
-//	private ProcessingTypeSelectionWizardModel processingTypeWizardModel;
-	private MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel;
+	private ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel;
 
-	//TODO: replace with correct model
 	/**
 	 * The constructor where basic properties are set, e. g. title, description etc.
 	 * 
-	 * @param processingTypeWizardModel This handles the internal model
+	 * @param processingTypeSelectionWizardModel This handles the internal model
 	 */
-//	public MeasurementSpecificationWizardPage(ProcessingTypeSelectionWizardModel processingTypeWizardModel) {
-	public MeasurementSpecificationWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
+	public MeasurementSpecificationWizardPage(ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
 		super("wizardPage");
 		setTitle("Measurement Specification");
-		setDescription("Specify properties of measurements");
+		setDescription("Specify the properties of the selected measurements.");
 		
-		//TODO: replace with correct model
-//		this.processingTypeWizardModel = processingTypeWizardModel;
-		this.metricDescriptionSelectionWizardModel = metricDescriptionSelectionWizardModel;
+		this.processingTypeSelectionWizardModel = processingTypeSelectionWizardModel;
 	}
 
 	@Override
@@ -65,11 +65,8 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 
 		setControl(container);
 
-		//TODO: replace with correct model
-//		MeasurementSpecificationViewer measurementSpecificationViewer = new MeasurementSpecificationViewer(container,
-//				this.processingTypeWizardModel);
 		MeasurementSpecificationViewer measurementSpecificationViewer = new MeasurementSpecificationViewer(container,
-				this.metricDescriptionSelectionWizardModel);
+				this.processingTypeSelectionWizardModel);
 		TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
 		tableViewer.setLabelProvider(new ITableLabelProvider() {
 
@@ -87,7 +84,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 				if (columnIndex == 0) {
 					result = measurementSpecification.getMetricDescription().getName();
 				} else if (columnIndex == 1) {
-					result = "TestProcessingType";
+					result = getProcessingTypeString(measurementSpecification.getProcessingType());
 				} else if (columnIndex == 2) {
 					result = String.valueOf(ProcessingTypeProperty1EditingSupport.test);
 				} else if (columnIndex == 3) {
@@ -115,7 +112,8 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		tableViewer.getTable().getColumn(3).setText("Property Value 2");
 		
 		TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
-		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), tableViewer));
+		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), tableViewer, 
+		        this.processingTypeSelectionWizardModel));
 		tableViewerColumns[2].setEditingSupport(new ProcessingTypeProperty1EditingSupport(tableViewerColumns[2].getViewer(), tableViewer));
 	}
 
@@ -143,4 +141,33 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		return false;
 	}
 
+	//TODO: move this method to an appropriate model class
+	/**
+     * Returns the correct name of a given ProcessingType.
+     * @param aProcessingType the given ProcessingType
+     * @return the correct name of a given ProcessingType
+     */
+    public static String getProcessingTypeString(EObject aProcessingType) {
+        String result;
+        if (aProcessingType instanceof FeedThroughImpl) {
+            result = "FeedThrough";
+            
+        } else if (aProcessingType instanceof FixedSizeAggregationImpl) {
+            result = "FixedSizeAggregation";
+
+        } else if (aProcessingType instanceof TimeDrivenImpl) {
+            if (aProcessingType instanceof TimeDrivenAggregationImpl) {
+                result = "TimeDrivenAggregation";
+
+            } else {
+                result = "TimeDriven";
+            }
+
+        } else if (aProcessingType instanceof VariableSizeAggregationImpl) {
+            result = "VariableSizeAggregation";
+        } else {
+            throw new IllegalArgumentException();
+        }
+        return result;
+    }
 }
