@@ -10,10 +10,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
-import org.palladiosimulator.measurementsui.wizardpages.MeasurementSpecificationWizardPage;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.ProcessingType;
-import org.palladiosimulator.monitorrepository.impl.FeedThroughImpl;
 import org.palladiosimulator.monitorrepository.impl.FixedSizeAggregationImpl;
 import org.palladiosimulator.monitorrepository.impl.TimeDrivenImpl;
 import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
@@ -91,23 +89,19 @@ public final class ProcessingTypeProperty2EditingSupport extends EditingSupport 
     protected boolean canEdit(Object element) {
         MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
         ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
-        String selectedProcessingTypeString = MeasurementSpecificationWizardPage
+        String selectedProcessingTypeString = MeasurementSpecificationLabelProvider
                 .getProcessingTypeString(selectedProcessingType);
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
-        if (processingTypeProperties.size() > 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return (processingTypeProperties.size() > 1);
     }
 
     @Override
     protected Object getValue(Object element) {
         MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
         ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
-        String selectedProcessingTypeString = MeasurementSpecificationWizardPage
+        String selectedProcessingTypeString = MeasurementSpecificationLabelProvider
                 .getProcessingTypeString(selectedProcessingType);
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
@@ -115,18 +109,13 @@ public final class ProcessingTypeProperty2EditingSupport extends EditingSupport 
         if (processingTypeProperties.size() > 1) {
             String result = "";
             
-            if (selectedProcessingType instanceof FeedThroughImpl) {
-
-            } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-//                result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
+            if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
                 result += ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
 
             } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-//                result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
                 result += ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
 
             } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-//                result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
                 result += ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
             }
 
@@ -141,25 +130,20 @@ public final class ProcessingTypeProperty2EditingSupport extends EditingSupport 
         String valueString = (String) value;
         MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
         ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
-        String selectedProcessingTypeString = MeasurementSpecificationWizardPage
+        String selectedProcessingTypeString = MeasurementSpecificationLabelProvider
                 .getProcessingTypeString(selectedProcessingType);
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
         if (processingTypeProperties.size() > 1) {
             
-            if (selectedProcessingType instanceof FeedThroughImpl) {
-
-            } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-//                ((FixedSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
+            if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
                 ((FixedSizeAggregationImpl) selectedProcessingType).setNumberOfMeasurements(Integer.valueOf(valueString));
 
             } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-//                ((TimeDrivenImpl) selectedProcessingType).setWindowIncrement(Double.valueOf(valueString));
                 ((TimeDrivenImpl) selectedProcessingType).setWindowLength(Double.valueOf(valueString));
 
             } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-//                ((VariableSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
                 ((VariableSizeAggregationImpl) selectedProcessingType).setRetrospectionLength(Double.valueOf(valueString));
             }
 

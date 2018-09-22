@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
-import org.palladiosimulator.measurementsui.wizardpages.MeasurementSpecificationWizardPage;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
 /**
@@ -89,7 +88,7 @@ public final class ProcessingTypeEditingSupport extends EditingSupport {
     @Override
     protected Object getValue(Object element) {
         MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
-        return MeasurementSpecificationWizardPage.getProcessingTypeString(measurementSpecification.getProcessingType());
+        return MeasurementSpecificationLabelProvider.getProcessingTypeString(measurementSpecification.getProcessingType());
     }
 
     @Override

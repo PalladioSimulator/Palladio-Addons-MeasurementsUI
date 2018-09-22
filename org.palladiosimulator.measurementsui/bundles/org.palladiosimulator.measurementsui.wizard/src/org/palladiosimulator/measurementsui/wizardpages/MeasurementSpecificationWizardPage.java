@@ -18,6 +18,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.measurementsui.wizard.viewer.MeasurementSpecificationViewer;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasurementSpecificationLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeEditingSupport;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty1EditingSupport;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty2EditingSupport;
@@ -73,93 +74,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		MeasurementSpecificationViewer measurementSpecificationViewer = new MeasurementSpecificationViewer(container,
 				this.processingTypeSelectionWizardModel);
 		TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
-		tableViewer.setLabelProvider(new ITableLabelProvider() {
-
-			public void removeListener(ILabelProviderListener listener) {
-				// not used
-			}
-
-			public Image getColumnImage(Object element, int columnIndex) {
-				return null;
-			}
-
-			public String getColumnText(Object element, int columnIndex) {
-				String result = "";
-				MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
-				if (columnIndex == 0) {
-					result = measurementSpecification.getMetricDescription().getName();
-				} else if (columnIndex == 1) {
-					result = getProcessingTypeString(measurementSpecification.getProcessingType());
-				} else if (columnIndex == 2) {
-				    
-				    ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
-			        String selectedProcessingTypeString = MeasurementSpecificationWizardPage
-			                .getProcessingTypeString(selectedProcessingType);
-
-			        List<String> processingTypeProperties = processingTypeSelectionWizardModel
-			                .fieldsForThisProcessingType(selectedProcessingTypeString);
-			        if (processingTypeProperties.size() > 0) {
-			            result += processingTypeProperties.get(0) + ": ";
-			            
-			            if (selectedProcessingType instanceof FeedThroughImpl) {
-
-			            } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-			                result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
-//			                ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
-
-			            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-			                result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
-//			                ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
-
-			            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-			                result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
-//			                ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
-			            }
-			        }
-				    
-				} else if (columnIndex == 3) {
-
-				    ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
-                    String selectedProcessingTypeString = MeasurementSpecificationWizardPage
-                            .getProcessingTypeString(selectedProcessingType);
-
-                    List<String> processingTypeProperties = processingTypeSelectionWizardModel
-                            .fieldsForThisProcessingType(selectedProcessingTypeString);
-                    if (processingTypeProperties.size() > 1) {
-                        result += processingTypeProperties.get(1) + ": ";
-                        
-                        if (selectedProcessingType instanceof FeedThroughImpl) {
-
-                        } else if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-//                            result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
-                            result += ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
-
-                        } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-//                            result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
-                            result += ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
-
-                        } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-//                            result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
-                            result += ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
-                        }
-                    }
-				    
-				}
-				return result;
-			}
-
-			public void addListener(ILabelProviderListener listener) {
-				// not used
-			}
-
-			public void dispose() {
-				// not used
-			}
-
-			public boolean isLabelProperty(Object element, String property) {
-				return false;
-			}
-		});
+		tableViewer.setLabelProvider(new MeasurementSpecificationLabelProvider(this.processingTypeSelectionWizardModel));
 		
 		tableViewer.getTable().getColumn(0).setText("Metric Description");
 		tableViewer.getTable().getColumn(1).setText("Processing Type");
@@ -199,33 +114,4 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		return false;
 	}
 
-	//TODO: move this method to an appropriate model class
-	/**
-     * Returns the correct name of a given ProcessingType.
-     * @param aProcessingType the given ProcessingType
-     * @return the correct name of a given ProcessingType
-     */
-    public static String getProcessingTypeString(EObject aProcessingType) {
-        String result;
-        if (aProcessingType instanceof FeedThroughImpl) {
-            result = "FeedThrough";
-            
-        } else if (aProcessingType instanceof FixedSizeAggregationImpl) {
-            result = "FixedSizeAggregation";
-
-        } else if (aProcessingType instanceof TimeDrivenImpl) {
-            if (aProcessingType instanceof TimeDrivenAggregationImpl) {
-                result = "TimeDrivenAggregation";
-
-            } else {
-                result = "TimeDriven";
-            }
-
-        } else if (aProcessingType instanceof VariableSizeAggregationImpl) {
-            result = "VariableSizeAggregation";
-        } else {
-            throw new IllegalArgumentException();
-        }
-        return result;
-    }
 }
