@@ -99,5 +99,15 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
         provider.setProcessingTypeAttributes(aMeasurementSpecification, floatValues, isEditing);
 
     }
+    /**
+     * Sets the value for a single ProcessingTypeAttribute.
+     * @param aMeasurementSpecification
+     * @param aProcessingType
+     * @param value
+     */
+    public void editAProcessingTypeAttribute(MeasurementSpecification aMeasurementSpecification, String aProcessingTypeAttribute,
+            double value) {
+        provider.setAProcessingTypeAttribute(aMeasurementSpecification, aProcessingTypeAttribute, value, isEditing);
+    }
 
 }

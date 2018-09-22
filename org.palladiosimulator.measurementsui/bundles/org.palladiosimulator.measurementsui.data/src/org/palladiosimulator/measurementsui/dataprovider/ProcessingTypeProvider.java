@@ -158,4 +158,22 @@ public class ProcessingTypeProvider {
         }
 
     }
+
+    public void setAProcessingTypeAttribute(MeasurementSpecification measurementSpecification,
+            String processingTypeProperty, Double value, boolean isEditing) {
+        ProcessingType processingType = measurementSpecification.getProcessingType();
+        if (processingType instanceof FixedSizeAggregationImpl) {
+            if (isEditing) {
+
+            } else {
+                if (processingTypeProperty == "Frequency") {
+                    ((FixedSizeAggregationImpl) processingType).setFrequency(value.intValue());
+                }
+                if (processingTypeProperty == "Number of Measurements") {
+                    ((FixedSizeAggregationImpl) processingType).setNumberOfMeasurements(value.intValue());
+                }
+            }
+        }
+
+    }
 }
