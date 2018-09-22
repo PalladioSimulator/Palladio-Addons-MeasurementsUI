@@ -95,11 +95,8 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
         page3 = new SelectMeasurementsWizardPage((MetricDescriptionSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
         
-      //TODO: replace with correct model
-//        page4 = new MeasurementSpecificationWizardPage(
-//                (ProcessingTypeSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.PROCESSING_TYPE));
         page4 = new MeasurementSpecificationWizardPage(
-                (MetricDescriptionSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
+                (ProcessingTypeSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.PROCESSING_TYPE));
 
     }
 

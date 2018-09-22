@@ -29,6 +29,10 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
         this.provider = new ProcessingTypeProvider();
     }
 
+    public Monitor getUsedMetricsMonitor() {
+        return usedMetricsMonitor;
+    }
+
     @Override
     public boolean canFinish() {
         // TODO Auto-generated method stub

@@ -10,6 +10,12 @@
             name="Measurementspecification"
             restorable="true">
       </view>
+      <view
+            category="org.eclipse.emf.parsley"
+            class="measurementspecification.MeasurementspecificationExecutableExtensionFactory:measurementspecification.MeasurementspecificationSaveableTableView"
+            id="measurementspecification"
+            name="Measurementspecification"
+            restorable="true">
+      </view>
    </extension>
 </plugin>
-

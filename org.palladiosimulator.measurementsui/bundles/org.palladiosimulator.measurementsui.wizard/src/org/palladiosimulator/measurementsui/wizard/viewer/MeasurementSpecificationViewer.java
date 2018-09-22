@@ -6,6 +6,7 @@ import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationInjectorProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 
 /**
  * Generates a table view where all selected metrics from the 3rd wizard page are shown 
@@ -35,8 +36,7 @@ public class MeasurementSpecificationViewer extends WizardTableViewer {
 
 	@Override
 	protected EObject getModelRepository() {
-		//TODO: replace with correct model
-		MetricDescriptionSelectionWizardModel model = (MetricDescriptionSelectionWizardModel) wizardModel;
+	    ProcessingTypeSelectionWizardModel model = (ProcessingTypeSelectionWizardModel) wizardModel;
         return model.getUsedMetricsMonitor();
 	}
 	
