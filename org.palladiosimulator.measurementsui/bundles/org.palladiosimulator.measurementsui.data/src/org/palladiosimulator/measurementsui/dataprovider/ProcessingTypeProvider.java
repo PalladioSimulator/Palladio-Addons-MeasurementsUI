@@ -166,14 +166,37 @@ public class ProcessingTypeProvider {
             if (isEditing) {
 
             } else {
-                if (processingTypeProperty == "Frequency") {
+                if (processingTypeProperty.equals("Frequency"))
                     ((FixedSizeAggregationImpl) processingType).setFrequency(value.intValue());
-                }
-                if (processingTypeProperty == "Number of Measurements") {
-                    ((FixedSizeAggregationImpl) processingType).setNumberOfMeasurements(value.intValue());
-                }
-            }
-        }
 
+                if (processingTypeProperty.equals("Number of Measurements"))
+                    ((FixedSizeAggregationImpl) processingType).setNumberOfMeasurements(value.intValue());
+
+            }
+        } else if (processingType instanceof TimeDrivenImpl) {
+            if (isEditing) {
+
+            } else {
+                if (processingTypeProperty.equals("Window Increment"))
+                    ((TimeDrivenImpl) processingType).setWindowIncrement(value);
+
+                if (processingTypeProperty.equals("Window Length"))
+                    ((TimeDrivenImpl) processingType).setWindowLength(value);
+
+            }
+
+        } else if (processingType instanceof VariableSizeAggregationImpl) {
+            if (isEditing) {
+
+            } else {
+                if (processingTypeProperty.equals("Frequency"))
+                    ((VariableSizeAggregationImpl) processingType).setFrequency(value.intValue());
+
+                if (processingTypeProperty.equals("Retrospection Length"))
+                    ((VariableSizeAggregationImpl) processingType).setRetrospectionLength(value.intValue());
+
+            }
+
+        }
     }
 }
