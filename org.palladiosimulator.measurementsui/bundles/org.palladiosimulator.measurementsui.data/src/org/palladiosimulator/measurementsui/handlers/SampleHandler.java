@@ -28,7 +28,9 @@ public class SampleHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 	    
         EvaluateExtensions  ex = new EvaluateExtensions ();
-        Object o = ex.getElement();
+        ex.loadExtensions();
+        Object o = ex.getMeasuringPointmetricsCombinations().getUsageScenarioMeasuringPointMetrics().keySet();
+        System.out.println(o);
         
         
 

@@ -8,6 +8,7 @@ import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.MetricSpecFactory;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 
 
 public class ResponseTime implements IPossibleMetricDescription {
@@ -25,7 +26,7 @@ public class ResponseTime implements IPossibleMetricDescription {
 
     @Override
     public MeasuringPoint getMeasuringPoint() {
-       return MeasuringpointFactory.eINSTANCE.createStringMeasuringPoint();
+       return PcmmeasuringpointFactory.eINSTANCE.createUsageScenarioMeasuringPoint();
       
     }
 

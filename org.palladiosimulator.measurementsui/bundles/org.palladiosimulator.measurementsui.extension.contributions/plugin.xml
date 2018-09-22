@@ -8,26 +8,5 @@
             class="org.palladiosimulator.measurementsui.extension.contributions.ResponseTime">
       </client>
    </extension>
-   <extension
-         point="extensionpoint.test">
-      <client
-            class="test">
-      </client>
-   </extension>
-   <extension
-         point="extensionpoint.metrics">
-      <client
-       		boolean = "true"
-            class="metrics"
-            id=" blubb"
-            resource="/">
-           
-      </client>
-      <client
-            boolean="true"
-            id="org.palladiosimulator.measurementsui.extension.contributions.client2"
-            resource="org.palladiosimulator.measurementsui.extension.contributions.client2">
-      </client>
-   </extension>
 
 </plugin>

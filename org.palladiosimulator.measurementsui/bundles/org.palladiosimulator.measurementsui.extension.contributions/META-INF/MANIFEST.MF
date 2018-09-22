@@ -10,4 +10,5 @@ Require-Bundle: org.palladiosimulator.measurementsui.extensionpoint.definition;b
  org.palladiosimulator.measurementsui.data;bundle-version="0.0.1"
 Import-Package: org.palladiosimulator.edp2.models.measuringpoint,
  org.palladiosimulator.metricspec,
- org.palladiosimulator.metricspec.constants
+ org.palladiosimulator.metricspec.constants,
+ org.palladiosimulator.pcmmeasuringpoint

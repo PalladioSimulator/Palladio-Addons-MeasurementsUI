@@ -120,8 +120,8 @@ public class ModelAccessor {
 
         clearModelAccess();
 
-        List<Resource> resourcesAllModelsInSession = session.getSemanticResources().stream().collect(Collectors.toList());
-        List<EObject> allModelObjectsInSession = resourcesAllModelsInSession.stream().flatMap(e -> e.getContents().stream())
+        List<Resource> allModelResourcesInSession = session.getSemanticResources().stream().collect(Collectors.toList());
+        List<EObject> allModelObjectsInSession = allModelResourcesInSession.stream().flatMap(e -> e.getContents().stream())
                 .collect(Collectors.toList());
 
         
