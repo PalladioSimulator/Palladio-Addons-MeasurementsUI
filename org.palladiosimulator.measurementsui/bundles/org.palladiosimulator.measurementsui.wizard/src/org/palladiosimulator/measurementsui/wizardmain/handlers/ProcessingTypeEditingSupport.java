@@ -44,6 +44,8 @@ public final class ProcessingTypeEditingSupport extends EditingSupport {
      *            the given ColumnViewer
      * @param tableViewer
      *            the given TableViewer
+     * @param processingTypeSelectionWizardModel
+     *            the internal model handler
      */
     public ProcessingTypeEditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
             ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {

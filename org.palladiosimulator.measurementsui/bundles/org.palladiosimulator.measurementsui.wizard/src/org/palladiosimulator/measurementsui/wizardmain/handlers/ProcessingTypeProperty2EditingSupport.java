@@ -48,6 +48,8 @@ public final class ProcessingTypeProperty2EditingSupport extends EditingSupport 
      *            the given ColumnViewer
      * @param tableViewer
      *            the given TableViewer
+     * @param processingTypeSelectionWizardModel
+     *            the internal model handler
      */
     public ProcessingTypeProperty2EditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
             ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {

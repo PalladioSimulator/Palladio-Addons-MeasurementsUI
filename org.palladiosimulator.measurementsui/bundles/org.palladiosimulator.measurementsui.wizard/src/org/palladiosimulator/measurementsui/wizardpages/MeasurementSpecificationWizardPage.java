@@ -1,19 +1,9 @@
 package org.palladiosimulator.measurementsui.wizardpages;
 
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
@@ -22,19 +12,8 @@ import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasurementSpeci
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeEditingSupport;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty1EditingSupport;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty2EditingSupport;
-import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
-import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.monitorrepository.ProcessingType;
-import org.palladiosimulator.monitorrepository.impl.FeedThroughImpl;
-import org.palladiosimulator.monitorrepository.impl.FixedSizeAggregationImpl;
-import org.palladiosimulator.monitorrepository.impl.TimeDrivenAggregationImpl;
-import org.palladiosimulator.monitorrepository.impl.TimeDrivenImpl;
-import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
 
-import java.util.List;
-
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.util.Policy;
 
 /**
