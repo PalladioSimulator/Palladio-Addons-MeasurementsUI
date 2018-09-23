@@ -2,9 +2,7 @@ package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 import java.util.LinkedList;
 
-import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -22,46 +20,46 @@ import org.palladiosimulator.pcm.resourceenvironment.provider.ResourceContainerI
 import org.palladiosimulator.pcm.resourceenvironment.provider.ResourceEnvironmentItemProvider;
 import org.palladiosimulator.pcm.resourcetype.provider.ProcessingResourceTypeItemProvider;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.provider.ExternalCallActionItemProvider;
 import org.palladiosimulator.pcm.subsystem.SubSystem;
 import org.palladiosimulator.pcm.subsystem.provider.SubSystemItemProvider;
 import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.system.provider.SystemItemProvider;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
+import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.provider.EntryLevelSystemCallItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.UsageModelItemProvider;
 
 /**
+ * label provider for the first wizard page of the measuringpoint creation process
  * 
  * @author Domas Mikalkinas
  *
  */
 public class MeasuringPointsLabelProvider implements ILabelProvider {
-    EMFPlugin plug = new EcoreEditPlugin();
+
+    private static final String LOCATED_IN = " located in ";
 
     @Override
     public void addListener(ILabelProviderListener listener) {
-        // TODO Auto-generated method stub
-
+        // not needed
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-
+        // not needed
     }
 
     @Override
     public boolean isLabelProperty(Object element, String property) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public void removeListener(ILabelProviderListener listener) {
-        // TODO Auto-generated method stub
-
+        // not needed
     }
 
     @Override
@@ -113,22 +111,57 @@ public class MeasuringPointsLabelProvider implements ILabelProvider {
     @Override
     public String getText(Object element) {
         if (element instanceof LinkedList) {
-            if (!((LinkedList) element).isEmpty()) {
-                return (((LinkedList) element).get(0).getClass().getSimpleName().replaceAll("Impl", "")
+            if (!((LinkedList<?>) element).isEmpty()) {
+                return (((LinkedList<?>) element).get(0).getClass().getSimpleName().replaceAll("Impl", "")
                         .replaceAll("([A-Z])", " $1"));
             } else {
                 return null;
             }
 
-            // return "Liste";
         } else {
             if (element instanceof ProcessingResourceSpecification) {
                 return ((ProcessingResourceSpecification) element).getActiveResourceType_ActiveResourceSpecification()
-                        .getEntityName();
+                        .getEntityName() + LOCATED_IN
+                        + ((ProcessingResourceSpecification) element)
+                                .getResourceContainer_ProcessingResourceSpecification().getEntityName();
 
-            } else {
-                return ((NamedElement) element).getEntityName();
+            } else if (element instanceof AssemblyContext) {
+                return ((AssemblyContext) element).getEntityName() + LOCATED_IN
+                        + ((AssemblyContext) element).getParentStructure__AssemblyContext().getEntityName();
+
+            } else if (element instanceof ResourceContainer) {
+                return ((ResourceContainer) element).getEntityName() + LOCATED_IN
+                        + ((ResourceContainer) element).getResourceEnvironment_ResourceContainer().getEntityName();
+
+            } else if (element instanceof LinkingResource) {
+                return ((LinkingResource) element).getEntityName() + LOCATED_IN
+                        + ((LinkingResource) element).getResourceEnvironment_LinkingResource().getEntityName();
+
+            } else if (element instanceof ExternalCallAction) {
+                NamedElement callyMcCallface = (NamedElement) ((ExternalCallAction) element)
+                        .getResourceDemandingBehaviour_AbstractAction().eContainer();
+                ResourceDemandingSEFF callysFriend = (ResourceDemandingSEFF) ((ExternalCallAction) element)
+                        .eContainer();
+                return ((ExternalCallAction) element).getEntityName() + " from the "
+                        + callysFriend.toString().replace("[TRANSIENT]", "") + LOCATED_IN
+                        + callyMcCallface.getEntityName();
+
+            } else if (element instanceof EntryLevelSystemCall) {
+                NamedElement entryLevelSystemCall = (NamedElement) ((EntryLevelSystemCall) element)
+                        .getScenarioBehaviour_AbstractUserAction().eContainer();
+                ScenarioBehaviour scenarioBehaviour = ((EntryLevelSystemCall) element)
+                        .getScenarioBehaviour_AbstractUserAction();
+                return ((EntryLevelSystemCall) element).getEntityName() + " from the "
+                        + scenarioBehaviour.getEntityName() + LOCATED_IN + entryLevelSystemCall.getEntityName();
+
+            } else if (element instanceof UsageScenario) {
+                return ((UsageScenario) element).getEntityName() + LOCATED_IN
+                        + ((UsageScenario) element).getUsageModel_UsageScenario().toString().replace("[TRANSIENT]", "");
+
             }
+
+            return ((NamedElement) element).getEntityName();
+
         }
 
     }
