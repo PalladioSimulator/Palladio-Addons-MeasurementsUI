@@ -2,44 +2,45 @@ package org.palladiosimulator.measurementsui.wizardmain.handlers;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
-import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 /**
+ * A content provider for the second step of the measuringpoint creation wizard pages
  * 
  * @author Domas Mikalkinas
  *
  */
 public class AdditionalMeasuringpointContentProvider implements ITreeContentProvider {
-	MeasuringPointSelectionWizardModel measuringPointWizardModel;
-	Object[] objects;
-	
-	public AdditionalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
-	    this.measuringPointWizardModel = measuringPointWizardModel;
-	}
-	
-	@Override
-	public Object[] getElements(Object inputElement) {
+    private MeasuringPointSelectionWizardModel measuringPointWizardModel;
 
-		objects = measuringPointWizardModel.getAllAdditionalModels();
-		return objects;
-	}
+    /**
+     * constructor with arguments, which sets the needed wizard model
+     * 
+     * @param measuringPointWizardModel
+     *            the needed wizard model
+     */
+    public AdditionalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+        this.measuringPointWizardModel = measuringPointWizardModel;
+    }
 
-	@Override
-	public Object[] getChildren(Object parentElement) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Object[] getElements(Object inputElement) {
 
-	@Override
-	public Object getParent(Object element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        return measuringPointWizardModel.getAllAdditionalModels();
+    }
 
-	@Override
-	public boolean hasChildren(Object element) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public Object[] getChildren(Object parentElement) {
+        return new Object[0];
+    }
+
+    @Override
+    public Object getParent(Object element) {
+        return null;
+    }
+
+    @Override
+    public boolean hasChildren(Object element) {
+        return false;
+    }
 
 }

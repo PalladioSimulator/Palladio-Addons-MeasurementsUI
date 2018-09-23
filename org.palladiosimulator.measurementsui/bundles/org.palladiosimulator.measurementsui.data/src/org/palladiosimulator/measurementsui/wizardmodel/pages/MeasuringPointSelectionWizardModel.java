@@ -49,11 +49,12 @@ import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
  */
 public class MeasuringPointSelectionWizardModel implements WizardModel {
 
-    private final String createMeasuringPointInfoText = "Select the element of your Models which should be monitored during a simulation run. ";
+    private static final String CREATE_MEASURINGPOINT_INFO_TEXT = "Select the element of your Models which should be "
+            + "monitored during a simulation run. ";
     private final String editMeasuringPointInfoText = "Select a different measuring Point.";
 
-    private final String createMeasuringPointTitel = "Create Measuring Point";
-    private final String editMeasuringPointTitel = "Edit Measuring Point";
+    private static final String CREATE_MEASURINGPOINT_TITLE = "Create Measuring Point";
+    private static final String EDIT_MEASURINGPOINT_TITLE = "Edit Measuring Point";
 
     private Monitor monitor;
     private boolean isEditing;
@@ -279,7 +280,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         if (this.monitor.getMeasuringPoint() != null) {
             return editMeasuringPointInfoText;
         }
-        return createMeasuringPointInfoText;
+        return CREATE_MEASURINGPOINT_INFO_TEXT;
     }
 
     @Override
@@ -293,9 +294,9 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     @Override
     public String getTitleText() {
         if (this.monitor.getMeasuringPoint() != null) {
-            return createMeasuringPointTitel;
+            return CREATE_MEASURINGPOINT_TITLE;
         }
-        return editMeasuringPointTitel;
+        return EDIT_MEASURINGPOINT_TITLE;
 
     }
 
