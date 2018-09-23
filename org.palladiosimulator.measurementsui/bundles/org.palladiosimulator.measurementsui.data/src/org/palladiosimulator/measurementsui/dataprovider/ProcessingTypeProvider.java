@@ -16,11 +16,25 @@ import org.palladiosimulator.monitorrepository.impl.TimeDrivenAggregationImpl;
 import org.palladiosimulator.monitorrepository.impl.TimeDrivenImpl;
 import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
 
+/**
+ * Provides the required methods to show and modify data in the 4th page.
+ * 
+ * @author Florian Nieuwenhuizen
+ *
+ */
 public class ProcessingTypeProvider {
 
     private static final String EDIT_MODE_NOT_YET_SUPPORTERD = "Edit Mode not yet supporterd";
-    MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();
+    private MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();
 
+    /**
+     * The five Processing types the wizard will support. Sadly PCM does not provide a class
+     * containing all Processing Types, meaning new Processing Types would need to be added
+     * manually.
+     * 
+     * @return a String Array containing the names of all supported Processing Types. Needed in this
+     *         format for drop-down in 4th page.
+     */
     public String[] provideBasicProcessingTypes() {
         EList<EObject> listOfProcessingTypes = new BasicEList<>();
         listOfProcessingTypes.add(monFactory.createFeedThrough());
@@ -54,6 +68,13 @@ public class ProcessingTypeProvider {
         return allProcessingTypesArray;
     }
 
+    /**
+     * Provides the properties for each Processing Type(PT) in String Form.
+     * 
+     * @param processingTypeString
+     *            The PT to provide the properties for.
+     * @return String List of the property types.
+     */
     public List<String> provideProcessingTypeProperties(String processingTypeString) {
         LinkedList<String> propertiesForProcessingType = new LinkedList<>();
         switch (processingTypeString) {
@@ -72,10 +93,19 @@ public class ProcessingTypeProvider {
             propertiesForProcessingType.add("Frequency");
             propertiesForProcessingType.add("Retrospection Length");
             break;
+        default:
+            break;
         }
         return propertiesForProcessingType;
     }
 
+    /**
+     * Sets the PT to the selected Measurement Specification. TODO: EMF Commands for Edit Mode.
+     * 
+     * @param measurementSpecification
+     * @param selectedProcessingType
+     * @param isEditing
+     */
     public void assignProcessingTypeToMeasurementSpecification(MeasurementSpecification measurementSpecification,
             String selectedProcessingType, boolean isEditing) {
 
@@ -122,14 +152,19 @@ public class ProcessingTypeProvider {
 
     }
 
+    /**
+     * Sets the PT attributes. TODO: EMF Commands for Edit Mode.
+     * 
+     * @param measurementSpecification
+     * @param values
+     * @param isEditing
+     */
     public void setProcessingTypeAttributes(MeasurementSpecification measurementSpecification, List<Double> values,
             boolean isEditing) {
         ProcessingType processingType = measurementSpecification.getProcessingType();
-        if (processingType instanceof FeedThroughImpl) {
-
-        } else if (processingType instanceof FixedSizeAggregationImpl) {
+        if (processingType instanceof FixedSizeAggregationImpl) {
             if (isEditing) {
-
+                // TODO: Edit Mode
             } else {
                 ((FixedSizeAggregationImpl) processingType).setFrequency(values.get(0).intValue());
                 ((FixedSizeAggregationImpl) processingType).setNumberOfMeasurements(values.get(1).intValue());
@@ -141,7 +176,7 @@ public class ProcessingTypeProvider {
                                                                // and both require the same values
                                                                // to be set
             if (isEditing) {
-
+                // TODO: Edit Mode
             } else {
                 ((TimeDrivenImpl) processingType).setWindowIncrement(values.get(0));
                 ((TimeDrivenImpl) processingType).setWindowLength(values.get(1));
@@ -149,7 +184,7 @@ public class ProcessingTypeProvider {
 
         } else if (processingType instanceof VariableSizeAggregationImpl) {
             if (isEditing) {
-
+                // TODO: Edit Mode
             } else {
                 ((VariableSizeAggregationImpl) processingType).setFrequency(values.get(0).intValue());
                 ((VariableSizeAggregationImpl) processingType).setRetrospectionLength(values.get(1).intValue());
@@ -159,41 +194,55 @@ public class ProcessingTypeProvider {
 
     }
 
+    /**
+     * Sets a single PT attribute. TODO: EMF Commands for Edit Mode.
+     * 
+     * @param measurementSpecification
+     * @param processingTypeProperty
+     * @param value
+     * @param isEditing
+     */
     public void setAProcessingTypeAttribute(MeasurementSpecification measurementSpecification,
             String processingTypeProperty, Double value, boolean isEditing) {
         ProcessingType processingType = measurementSpecification.getProcessingType();
         if (processingType instanceof FixedSizeAggregationImpl) {
             if (isEditing) {
-
+                // TODO: Edit Mode
             } else {
-                if (processingTypeProperty.equals("Frequency"))
+                if (processingTypeProperty.equals("Frequency")) {
                     ((FixedSizeAggregationImpl) processingType).setFrequency(value.intValue());
+                }
 
-                if (processingTypeProperty.equals("Number of Measurements"))
+                if (processingTypeProperty.equals("Number of Measurements")) {
                     ((FixedSizeAggregationImpl) processingType).setNumberOfMeasurements(value.intValue());
+                }
 
             }
         } else if (processingType instanceof TimeDrivenImpl) {
             if (isEditing) {
-
+                // TODO: Edit Mode
             } else {
-                if (processingTypeProperty.equals("Window Increment"))
+                if (processingTypeProperty.equals("Window Increment")) {
                     ((TimeDrivenImpl) processingType).setWindowIncrement(value);
+                }
 
-                if (processingTypeProperty.equals("Window Length"))
+                if (processingTypeProperty.equals("Window Length")) {
                     ((TimeDrivenImpl) processingType).setWindowLength(value);
+                }
 
             }
 
         } else if (processingType instanceof VariableSizeAggregationImpl) {
             if (isEditing) {
-
+                // TODO: Edit Mode
             } else {
-                if (processingTypeProperty.equals("Frequency"))
+                if (processingTypeProperty.equals("Frequency")) {
                     ((VariableSizeAggregationImpl) processingType).setFrequency(value.intValue());
+                }
 
-                if (processingTypeProperty.equals("Retrospection Length"))
+                if (processingTypeProperty.equals("Retrospection Length")) {
                     ((VariableSizeAggregationImpl) processingType).setRetrospectionLength(value.intValue());
+                }
 
             }
 
