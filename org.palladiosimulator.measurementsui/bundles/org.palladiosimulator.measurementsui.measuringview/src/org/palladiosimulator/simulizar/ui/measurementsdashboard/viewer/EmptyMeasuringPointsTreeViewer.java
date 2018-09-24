@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.measuringview.viewer;
+package org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer;
 
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
@@ -8,7 +8,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
+import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringPointDragListener;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
@@ -20,7 +20,7 @@ import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
  * 
  * @author David Schuetz
  */
-public class EmptyMpTreeViewer extends MpTreeViewer {
+public class EmptyMeasuringPointsTreeViewer extends MeasurementsTreeViewer {
 
     /**
      * 
@@ -34,7 +34,7 @@ public class EmptyMpTreeViewer extends MpTreeViewer {
      *            the connection to the data binding. This is needed in order to get the repository of
      *            the current project.
      */
-    public EmptyMpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
+    public EmptyMeasuringPointsTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
             DataApplication application) {
         super(parent, dirty, commandService, application);
     }

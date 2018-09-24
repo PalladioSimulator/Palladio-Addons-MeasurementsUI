@@ -16,7 +16,7 @@ import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
  * 
  * @author David Schuetz
  */
-public abstract class MpTreeViewer extends SaveableComponentViewer {
+public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
     protected TreeViewer treeViewer;
     protected ViewerFactory treeFactory;
 
@@ -32,7 +32,7 @@ public abstract class MpTreeViewer extends SaveableComponentViewer {
      *            the connection to the data binding. This is needed in order to get the repository
      *            of the current project.
      */
-    public MpTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
+    public MeasurementsTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
             DataApplication dataApplication) {
         super(parent, dirty, commandService, dataApplication);
         treeViewer.expandAll();

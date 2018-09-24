@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.wizard.viewer.EmptyMpTreeViewer;
+import org.palladiosimulator.measurementsui.wizard.viewer.EmptyMeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsContentProvider;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
@@ -47,7 +47,7 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 
 public class ChooseMeasuringpointWizardPage extends WizardPage {
 
-    private EmptyMpTreeViewer emptyMpTreeViewer;
+    private EmptyMeasurementsTreeViewer emptyMpTreeViewer;
     private TreeViewer createTreeViewer;
 
     private MeasuringPointSelectionWizardModel selectionWizardModel;
@@ -164,8 +164,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
      *            the parent composite of the tree viewer
      * @return EmptyMPTreeViewer the created tree viewer
      */
-    private EmptyMpTreeViewer createEmptyMpTreeViewer(Composite parent) {
-        return new EmptyMpTreeViewer(parent, DataApplication.getInstance());
+    private EmptyMeasurementsTreeViewer createEmptyMpTreeViewer(Composite parent) {
+        return new EmptyMeasurementsTreeViewer(parent, DataApplication.getInstance());
     }
 
     /**

@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.measuringview.parts;
+package org.palladiosimulator.simulizar.ui.measurementsdashboard.parts;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
-import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
+import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -45,8 +45,8 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
-import org.palladiosimulator.simulizar.ui.measuringview.viewer.EmptyMpTreeViewer;
-import org.palladiosimulator.simulizar.ui.measuringview.viewer.MonitorTreeViewer;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.MonitorTreeViewer;
 
 /**
  * Eclipse e4 view which gives the user an overview of all existing Monitors and MeasuringPoints in
@@ -55,10 +55,10 @@ import org.palladiosimulator.simulizar.ui.measuringview.viewer.MonitorTreeViewer
  * @author David Schuetz
  * 
  */
-public class MeasuringpointView {
+public class MeasurementsDashboardView {
 
-    private MpTreeViewer monitorTreeViewer;
-    private MpTreeViewer measuringTreeViewer;
+    private MeasurementsTreeViewer monitorTreeViewer;
+    private MeasurementsTreeViewer measuringTreeViewer;
     private Combo projectsComboDropDown;
     private DataApplication dataApplication;
     private Button deleteButton;
@@ -106,7 +106,7 @@ public class MeasuringpointView {
         createViewButtons(buttonContainer);
 
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
-        measuringTreeViewer = createEmptyMpTreeViewer(undefinedMeasuringContainer);
+        measuringTreeViewer = createEmptyMeasuringPointsTreeViewer(undefinedMeasuringContainer);
 
         handlerService.activateHandler("org.eclipse.ui.file.save", new SaveHandler());
     }
@@ -120,7 +120,7 @@ public class MeasuringpointView {
     }
 
     /**
-     * Adds a changeListener to the eclispe workspace to listen to changes in it and update our GUI
+     * Adds a changeListener to the eclipse workspace to listen to changes in it and update our GUI
      * accordingly
      */
     private void createWorkspaceListener() {
@@ -138,11 +138,11 @@ public class MeasuringpointView {
      *            a composite where the tree view will be placed
      * @return TreeViewer which includes all existing monitors
      */
-    private MpTreeViewer createMonitorTreeViewer(Composite parent) {
-        MpTreeViewer mpTreeViewer = new MonitorTreeViewer(parent, dirty, commandService, dataApplication);
-        mpTreeViewer.addMouseListener();
-        addSelectionListener(mpTreeViewer.getViewer());
-        return mpTreeViewer;
+    private MeasurementsTreeViewer createMonitorTreeViewer(Composite parent) {
+        MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService, dataApplication);
+        measurementsTreeViewer.addMouseListener();
+        addSelectionListener(measurementsTreeViewer.getViewer());
+        return measurementsTreeViewer;
     }
 
     /**
@@ -152,10 +152,10 @@ public class MeasuringpointView {
      *            a composite where the tree view will be placed
      * @return TreeViewer which includes all measuring points without a monitor
      */
-    private MpTreeViewer createEmptyMpTreeViewer(Composite parent) {
-        EmptyMpTreeViewer emptyMpTreeViewer = new EmptyMpTreeViewer(parent, dirty, commandService, dataApplication);
-        addSelectionListener(emptyMpTreeViewer.getViewer());
-        return emptyMpTreeViewer;
+    private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
+        EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent, dirty, commandService, dataApplication);
+        addSelectionListener(emptyMeasuringPointsTreeViewer.getViewer());
+        return emptyMeasuringPointsTreeViewer;
     }
 
     /**

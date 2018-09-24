@@ -17,20 +17,20 @@ import org.palladiosimulator.monitorrepository.Monitor;
  */
 public class MeasurementTreeDoubleClickListener implements MouseListener {
 
-    private Tree mpTree;
+    private Tree measurementsTree;
 
     /**
      * 
-     * @param mpTreeViewer
+     * @param measurementsTreeViewer
      *            the MeasurementTreeViewer where the listener is attached to.
      */
-    public MeasurementTreeDoubleClickListener(TreeViewer mpTreeViewer) {
-        this.mpTree = mpTreeViewer.getTree();
+    public MeasurementTreeDoubleClickListener(TreeViewer measurementsTreeViewer) {
+        this.measurementsTree = measurementsTreeViewer.getTree();
     }
 
     @Override
     public void mouseDoubleClick(MouseEvent e) {
-        for (TreeItem item : mpTree.getSelection()) {
+        for (TreeItem item : measurementsTree.getSelection()) {
             if (isClickedOnTreeItemSymbol(e, item)) {
                 setChecked(item);
             }
