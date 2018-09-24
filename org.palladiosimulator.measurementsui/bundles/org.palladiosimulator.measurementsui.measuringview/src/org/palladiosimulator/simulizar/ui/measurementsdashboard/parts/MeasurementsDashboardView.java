@@ -262,7 +262,7 @@ public class MeasurementsDashboardView {
         deleteButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         deleteButton.addListener(SWT.Selection, e -> {
-            ResourceEditor resourceEditor = new ResourceEditorImpl();
+            ResourceEditor resourceEditor = ResourceEditorImpl.getInstance();
             Object selection = selectionService.getSelection();
             if (selection instanceof EObject) {
                 resourceEditor.deleteResource((EObject) selection);

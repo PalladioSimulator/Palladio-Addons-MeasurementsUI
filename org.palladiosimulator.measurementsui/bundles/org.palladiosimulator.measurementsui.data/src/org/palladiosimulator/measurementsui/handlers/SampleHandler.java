@@ -22,7 +22,7 @@ public class SampleHandler extends AbstractHandler {
 
 
 		DataApplication start = DataApplication.getInstance();
-		ResourceEditor editor = new ResourceEditorImpl();
+		ResourceEditor editor = ResourceEditorImpl.getInstance();
 		DataGathering gatherer = new DataGathering();
 		
 		start.loadData(0);

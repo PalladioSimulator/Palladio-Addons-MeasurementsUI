@@ -33,7 +33,7 @@ public class MeasuringpointDropListener extends ViewerDropAdapter {
     @Override
     public boolean performDrop(Object data) {
         IStructuredSelection selection = (IStructuredSelection) data;
-        ResourceEditor editor = new ResourceEditorImpl();
+        ResourceEditor editor = ResourceEditorImpl.getInstance();
         editor.setMeasuringPointToMonitor((Monitor) getCurrentTarget(), (MeasuringPoint) selection.getFirstElement());
         try {
             measurementTreeViewer.save();

@@ -15,12 +15,22 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
  * @author Florian Nieuwenhuizen
  *
  */
-public class ResourceEditorImpl implements ResourceEditor {
+public final class ResourceEditorImpl implements ResourceEditor {
 
     private final DataEditor editor = new DataEditor();
 
     private static ResourceEditorImpl instance;
 
+    /**
+     * Private constructor for singelton pattern 
+     */
+    private ResourceEditorImpl() {
+    }
+    
+    /**
+     * Returns the instance of the ResourceEditorImpl
+     * @return instance of the ResourceEditorImpl
+     */
     public static ResourceEditorImpl getInstance() {
         if (ResourceEditorImpl.instance == null) {
             ResourceEditorImpl.instance = new ResourceEditorImpl();

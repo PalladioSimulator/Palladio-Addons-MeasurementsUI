@@ -55,7 +55,7 @@ public class MeasurementTreeDoubleClickListener implements MouseListener {
      *            the monitor which is set active/ inactive
      */
     private void toggleMonitorActive(Monitor monitor) {
-        ResourceEditor edit = new ResourceEditorImpl();
+        ResourceEditor edit = ResourceEditorImpl.getInstance();
         edit.changeMonitorActive(monitor, monitor.isActivated());
     }
 
@@ -67,7 +67,7 @@ public class MeasurementTreeDoubleClickListener implements MouseListener {
      *            the measurement where the attribute triggersSelfAdaptions is set
      */
     private void toggleTriggersSelfAdaption(MeasurementSpecification measurement) {
-        ResourceEditor edit = new ResourceEditorImpl();
+        ResourceEditor edit = ResourceEditorImpl.getInstance();
         edit.changeTriggersSelfAdapting(measurement);
 
     }
