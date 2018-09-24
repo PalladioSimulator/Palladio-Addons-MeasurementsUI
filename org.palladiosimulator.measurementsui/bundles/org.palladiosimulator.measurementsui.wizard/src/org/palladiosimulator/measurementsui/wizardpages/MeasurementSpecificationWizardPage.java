@@ -10,8 +10,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.measurementsui.wizard.viewer.MeasurementSpecificationViewer;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasurementSpecificationLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeEditingSupport;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty1EditingSupport;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeProperty2EditingSupport;
+import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypePropertyEditingSupport;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 
 import org.eclipse.jface.util.Policy;
@@ -85,10 +84,10 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
         TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
 		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel));
-		tableViewerColumns[2].setEditingSupport(new ProcessingTypeProperty1EditingSupport(tableViewerColumns[2].getViewer(), 
-		        tableViewer, this.processingTypeSelectionWizardModel));
-		tableViewerColumns[3].setEditingSupport(new ProcessingTypeProperty2EditingSupport(tableViewerColumns[3].getViewer(), 
-                tableViewer, this.processingTypeSelectionWizardModel));
+		tableViewerColumns[2].setEditingSupport(new ProcessingTypePropertyEditingSupport(tableViewerColumns[2].getViewer(), 
+		        tableViewer, this.processingTypeSelectionWizardModel, 0));
+		tableViewerColumns[3].setEditingSupport(new ProcessingTypePropertyEditingSupport(tableViewerColumns[3].getViewer(), 
+                tableViewer, this.processingTypeSelectionWizardModel, 1));
     }
 
     /**
