@@ -16,8 +16,6 @@ import org.palladiosimulator.measurementsui.wizard.viewer.SelectMeasurementsView
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -51,9 +49,8 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 	 */
 	public SelectMeasurementsWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
 		super("wizardPage");
-		//TODO: Change titles of wizard page (according to selected measuring point from previous page???)
-		setTitle("HDD Monitor: Select Measurements");
-		setDescription("Select desired Measurements to be used with the Monitor");
+		setTitle("Select Measurements");
+		setDescription("Select desired Measurements to be used with the Monitor.");
 		this.metricDescriptionSelectionWizardModel = metricDescriptionSelectionWizardModel;
 	}
 
@@ -97,7 +94,6 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			public void addListener(ILabelProviderListener listener) {
 			    // not used
 			}
-
 			public void dispose() {
 			    // not used
 			}
@@ -118,25 +114,19 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		
 		Button rightAll = new Button(compositeMiddle, SWT.PUSH);
 		rightAll.setText("-->");
-		rightAll.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
-				getContainer().updateButtons();
-			}
+		rightAll.addListener(SWT.Selection, e -> {
+			metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
+			getContainer().updateButtons();
 		});
 
 		Button rightOne = new Button(compositeMiddle, SWT.NONE);
 		rightOne.setText(">");
-		rightOne.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
-				Object firstElement = selection.getFirstElement();
-				MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
-				metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurment);
-				getContainer().updateButtons();
-			}
+		rightOne.addListener(SWT.Selection, e -> {
+			IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
+			Object firstElement = selection.getFirstElement();
+			MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
+			metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurment);
+			getContainer().updateButtons();
 		});
 
 		Composite compositeRight = new Composite(container, SWT.NONE);
@@ -187,26 +177,19 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 
 		Button leftOne = new Button(compositeMiddle, SWT.NONE);
 		leftOne.setText("<");
-		leftOne.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				IStructuredSelection selection = tableViewerRight.getStructuredSelection();
-				Object firstElement = selection.getFirstElement();
-				MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
-				metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurment);
-				getContainer().updateButtons();
-			}
-
+		leftOne.addListener(SWT.Selection, e -> {
+			IStructuredSelection selection = tableViewerRight.getStructuredSelection();
+			Object firstElement = selection.getFirstElement();
+			MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
+			metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurment);
+			getContainer().updateButtons();
 		});
 
 		Button leftAll = new Button(compositeMiddle, SWT.NONE);
 		leftAll.setText("<--");
-		leftAll.addListener(SWT.Selection, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
-				getContainer().updateButtons();
-			}
+		leftAll.addListener(SWT.Selection, e -> {
+			metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
+			getContainer().updateButtons();
 		});
 
 		Button addSuggestion = new Button(compositeMiddle, SWT.NONE);
@@ -218,7 +201,8 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		tableViewerRight.setCellEditors(cellEditor);
 		String[] columnNames = { "Metric Description", "Self Adapting" };
 		tableViewerRight.setColumnProperties(columnNames);
-		tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(tableViewerRight, metricDescriptionSelectionWizardModel));
+		tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(
+		        tableViewerRight, metricDescriptionSelectionWizardModel));
 		setPageComplete(true);
 		setControl(container);
 	}
