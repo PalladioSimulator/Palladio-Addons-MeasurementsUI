@@ -1,7 +1,9 @@
 package org.palladiosimulator.measurementsui.dataprovider;
 
+import java.util.Collection;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
@@ -89,7 +91,7 @@ public class UnselectedMetricSpecificationsProvider {
      * @param sendingMonitor
      * @param receivingMonitor
      */
-    public void moveMeasurementSpecificationsBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification,
+    public void moveMeasurementSpecificationToMonitor(MeasurementSpecification selectedMeasurementSpecification,
             Monitor receivingMonitor, boolean isInEditMode) {
         if (isInEditMode) {
             editor.addMeasurementSpecificationToMonitor(receivingMonitor, selectedMeasurementSpecification);
@@ -106,7 +108,7 @@ public class UnselectedMetricSpecificationsProvider {
      * @param receivingMonitor
      * @param isInEditMode
      */
-    public void removeMeasurementSpecificationBetweenMonitors(MeasurementSpecification selectedMeasurementSpecification,
+    public void removeMeasurementSpecificationFromMonitor(MeasurementSpecification selectedMeasurementSpecification,
             Monitor receivingMonitor, boolean isInEditMode) {
         if (isInEditMode) {
 
@@ -124,17 +126,36 @@ public class UnselectedMetricSpecificationsProvider {
      * @param sendingMonitor
      * @param receivingMonitor
      */
-    public void moveAllMeasurementSpecificationsBetweenMonitors(Monitor sendingMonitor, Monitor receivingMonitor,
+    public void moveAllMeasurementSpecificationsToMonitor(Monitor sendingMonitor, Monitor receivingMonitor,
             boolean isInEditMode) {
         if (isInEditMode) {
-            for (MeasurementSpecification aMSpec : sendingMonitor.getMeasurementSpecifications()) {
-                editor.addMeasurementSpecificationToMonitor(receivingMonitor, aMSpec);
-            }
+            editor.addMeasurementSpecificationsToMonitor(receivingMonitor,
+                    sendingMonitor.getMeasurementSpecifications());
         } else {
-
             receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
         }
 
+    }
+
+    /**
+     * Removes all MeasurementSpecifications from the Wizard Monitor and adds them back to the temp
+     * Monitor. EditMode requires working with a deep copy to first move to temp monitor and then
+     * delete from wizard Monitor.
+     * 
+     * @param sendingMonitor
+     * @param receivingMonitor
+     * @param isInEditMode
+     */
+    public void removeAllMeasurementSpecificationsFromMonitor(Monitor sendingMonitor, Monitor receivingMonitor,
+            boolean isInEditMode) {
+        if (isInEditMode) {
+            Collection<MeasurementSpecification> copy = EcoreUtil
+                    .copyAll(sendingMonitor.getMeasurementSpecifications());
+            receivingMonitor.getMeasurementSpecifications().addAll(copy);
+            editor.deleteMultipleResources(sendingMonitor.getMeasurementSpecifications());
+        } else {
+            receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
+        }
     }
 
     /**
@@ -166,7 +187,7 @@ public class UnselectedMetricSpecificationsProvider {
     }
 
     /**
-     * Finds the Metric Descriptions that are not in the passedMonitor
+     * Finds the Metric Descriptions that are not in the passedMonitor.
      * 
      * @param metricDescInPassedMonitor
      * @param allMetricDescriptions

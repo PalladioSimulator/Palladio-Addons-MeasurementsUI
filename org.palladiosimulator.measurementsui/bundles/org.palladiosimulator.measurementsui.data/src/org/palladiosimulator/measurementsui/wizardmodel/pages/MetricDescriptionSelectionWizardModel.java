@@ -79,7 +79,7 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      *            the specification which will be added to the monitor
      */
     public void addMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-        provider.moveMeasurementSpecificationsBetweenMonitors(selectedMeasurementSpecification, usedMetricsMonitor,
+        provider.moveMeasurementSpecificationToMonitor(selectedMeasurementSpecification, usedMetricsMonitor,
                 isEditing);
     }
 
@@ -90,7 +90,7 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      *            the specification which will be added to the monitor
      */
     public void removeMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-        provider.removeMeasurementSpecificationBetweenMonitors(selectedMeasurementSpecification, unusedMetricsMonitor,
+        provider.removeMeasurementSpecificationFromMonitor(selectedMeasurementSpecification, unusedMetricsMonitor,
                 isEditing);
     }
 
@@ -98,14 +98,14 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      * Add all unused MetricDescriptions to the monitor
      */
     public void addAllMetricDescriptions() {
-        provider.moveAllMeasurementSpecificationsBetweenMonitors(unusedMetricsMonitor, usedMetricsMonitor, isEditing);
+        provider.moveAllMeasurementSpecificationsToMonitor(unusedMetricsMonitor, usedMetricsMonitor, isEditing);
     }
 
     /**
      * Remove all MetricDescriptions from the monitor
      */
     public void removeAllMetricDescriptions() {
-        provider.moveAllMeasurementSpecificationsBetweenMonitors(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
+        provider.removeAllMeasurementSpecificationsFromMonitor(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
     }
     /**
      * Switches the attribute triggerSelfAdaption of a specific measurementSpecification
