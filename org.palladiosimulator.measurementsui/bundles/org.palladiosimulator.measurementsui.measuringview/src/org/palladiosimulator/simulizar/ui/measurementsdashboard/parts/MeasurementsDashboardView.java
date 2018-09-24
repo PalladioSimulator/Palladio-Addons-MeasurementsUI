@@ -19,12 +19,16 @@ import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -33,6 +37,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
@@ -63,6 +68,7 @@ public class MeasurementsDashboardView {
     private DataApplication dataApplication;
     private Button deleteButton;
     private Button editButton;
+    private MeasurementsFilter filter;
 
     @Inject
     private MDirtyable dirty;
@@ -88,21 +94,30 @@ public class MeasurementsDashboardView {
         initializeApplication();
         createWorkspaceListener();
         createProjectsSelectionComboBox(parent);
+        
         SashForm outerContainer = new SashForm(parent, SWT.FILL);
         outerContainer.setLayout(new GridLayout(1, true));
         outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        SashForm treeContainer = new SashForm(outerContainer, SWT.VERTICAL);
-        treeContainer.setLayout(new GridLayout(1, true));
+        
+        Composite leftContainer = new Composite(outerContainer, SWT.VERTICAL);
+        leftContainer.setLayout(new GridLayout(1, false));
+        leftContainer.setBackground(new Color(Display.getCurrent(),255,255,255));
+        
+        createFilterGadgets(leftContainer);
 
         Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
         buttonContainer.setLayout(new GridLayout(1, true));
 
         outerContainer.setWeights(new int[] { 3, 1 });
-
+        
+        SashForm treeContainer = new SashForm(leftContainer, SWT.VERTICAL);
+        treeContainer.setLayout(new GridLayout(1,false));
+        treeContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        treeContainer.setBackground(new Color(Display.getCurrent(),255,255,255));
+        
         Composite monitorContainer = createTreeComposite(treeContainer);
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
-
+        treeContainer.setWeights(new int[] { 10, 5 });
         createViewButtons(buttonContainer);
 
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
@@ -141,6 +156,7 @@ public class MeasurementsDashboardView {
     private MeasurementsTreeViewer createMonitorTreeViewer(Composite parent) {
         MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService, dataApplication);
         measurementsTreeViewer.addMouseListener();
+        measurementsTreeViewer.getViewer().addFilter(filter);
         addSelectionListener(measurementsTreeViewer.getViewer());
         return measurementsTreeViewer;
     }
@@ -154,6 +170,7 @@ public class MeasurementsDashboardView {
      */
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
         EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent, dirty, commandService, dataApplication);
+        emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
         addSelectionListener(emptyMeasuringPointsTreeViewer.getViewer());
         return emptyMeasuringPointsTreeViewer;
     }
@@ -206,6 +223,31 @@ public class MeasurementsDashboardView {
         composite.setLayout(new FillLayout());
         composite.setLayoutData(new GridData(GridData.FILL_BOTH));
         return composite;
+    }
+    
+    /**
+     * Creates all gadgets which are used to filter the tree viewers.
+     * @param parent
+     */
+    private void createFilterGadgets(Composite parent) {
+        Composite filterContainer = new Composite(parent,SWT.NONE);
+        filterContainer.setLayout(new GridLayout(1, false));
+        filterContainer.setLayoutData(new GridData(SWT.FILL, SWT.TOP,false, false));
+        filterContainer.setBackground(new Color(Display.getCurrent(),255,255,255));
+        
+        filter = new MeasurementsFilter();
+        
+        final Text searchText = new Text(filterContainer, SWT.BORDER | SWT.SEARCH);
+        searchText.setLayoutData(new GridData(SWT.FILL, SWT.FILL,true, true));
+        searchText.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                TreeViewer treeViewer = (TreeViewer)monitorTreeViewer.getViewer();
+                treeViewer.expandAll();
+                filter.setSearchText(searchText.getText());
+                monitorTreeViewer.getViewer().refresh();
+            }
+        });
     }
 
     /**
