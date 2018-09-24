@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.measuringview.parts;
+package org.palladiosimulator.simulizar.ui.measurementsdashboard.parts;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,8 +45,8 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
-import org.palladiosimulator.simulizar.ui.measuringview.viewer.EmptyMeasuringPointsTreeViewer;
-import org.palladiosimulator.simulizar.ui.measuringview.viewer.MonitorTreeViewer;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.MonitorTreeViewer;
 
 /**
  * Eclipse e4 view which gives the user an overview of all existing Monitors and MeasuringPoints in
@@ -55,7 +55,7 @@ import org.palladiosimulator.simulizar.ui.measuringview.viewer.MonitorTreeViewer
  * @author David Schuetz
  * 
  */
-public class MeasuringpointView {
+public class MeasurementsDashboardView {
 
     private MeasurementsTreeViewer monitorTreeViewer;
     private MeasurementsTreeViewer measuringTreeViewer;
