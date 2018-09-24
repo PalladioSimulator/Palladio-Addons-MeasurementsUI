@@ -22,7 +22,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
  * @author Birasanth Pushpanathan David Schuetz, Lasse Merz Added WizardModel support
  *
  */
-public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
+public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
 
     private WizardModelManager wizardManager;
 
@@ -55,7 +55,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
 
     private FinalModelsToMeasuringpointWizardPage page2final;
 
-    public MeasuringPointsWizard() {
+    public MeasurementsWizard() {
         wizardManager = new WizardModelManager();
         this.startingPage = WizardModelType.MONITOR_CREATION;
         createPages();
@@ -64,7 +64,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
     /**
      * The constructor
      */
-    public MeasuringPointsWizard(WizardModelType startingPage) {
+    public MeasurementsWizard(WizardModelType startingPage) {
         setWindowTitle("Add new Measuring Point");
         wizardManager = new WizardModelManager();
         this.startingPage = startingPage;
@@ -74,7 +74,7 @@ public class MeasuringPointsWizard extends org.eclipse.jface.wizard.Wizard {
     /**
      * The constructor
      */
-    public MeasuringPointsWizard(WizardModelType startingPage, Monitor monitor) {
+    public MeasurementsWizard(WizardModelType startingPage, Monitor monitor) {
         setWindowTitle("Add new Measuring Point");
         wizardManager = new WizardModelManager(monitor);
         this.startingPage = startingPage;

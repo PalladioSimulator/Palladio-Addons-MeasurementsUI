@@ -39,7 +39,7 @@ import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewe
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
+import org.palladiosimulator.measurementsui.wizardmain.MeasurementsWizard;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
@@ -241,7 +241,7 @@ public class MeasurementsDashboardView {
         newMpButton.setText("Add new Measuring Point");
         newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         newMpButton.addListener(SWT.Selection, e -> {
-            MeasuringPointsWizard wizard = new MeasuringPointsWizard();
+            MeasurementsWizard wizard = new MeasurementsWizard();
             Shell parentShell = wizard.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, wizard);
             dialog.setPageSize(720, 400);
@@ -281,19 +281,19 @@ public class MeasurementsDashboardView {
         editButton.setText("Edit...");
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         editButton.addListener(SWT.Selection, e -> {
-            MeasuringPointsWizard wizard;
+            MeasurementsWizard wizard;
             Object selection = selectionService.getSelection();
             ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
             if (selection instanceof Monitor) {
-                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
+                wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
             } else if (selection instanceof MeasuringPoint) {
-                wizard = new MeasuringPointsWizard(WizardModelType.MEASURING_POINT_SELECTION,
+                wizard = new MeasurementsWizard(WizardModelType.MEASURING_POINT_SELECTION,
                         (Monitor) provider.getParent(selection));
             } else if (selection instanceof MeasurementSpecification) {
-                wizard = new MeasuringPointsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
+                wizard = new MeasurementsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
                         (Monitor) provider.getParent(selection));
             } else {
-                wizard = new MeasuringPointsWizard(WizardModelType.MONITOR_CREATION);
+                wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION);
             }
 
             Shell parentShell = wizard.getShell();
