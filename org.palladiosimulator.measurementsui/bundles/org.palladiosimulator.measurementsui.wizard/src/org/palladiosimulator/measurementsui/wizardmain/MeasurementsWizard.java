@@ -127,6 +127,12 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
         addPage(page2final);
 
     }
+    
+    @Override
+    public boolean performCancel() {
+        wizardManager.cancel();
+        return true;
+    }
 
     @Override
     public boolean performFinish() {
