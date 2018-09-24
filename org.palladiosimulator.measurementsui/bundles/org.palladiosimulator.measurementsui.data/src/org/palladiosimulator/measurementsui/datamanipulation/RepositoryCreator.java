@@ -27,7 +27,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
  * @author Lasse
  *
  */
-public final class DataRepositoryCreator {
+public final class RepositoryCreator {
 
 	private static final String MEASURINGPOINT_REPOSITORY_FILE_ENDING = "/default.measuringpoint";
 	private MeasuringpointPackage measuringpointPackage;
@@ -37,12 +37,12 @@ public final class DataRepositoryCreator {
 	private MonitorRepositoryFactory monitorFactory;
 	private MonitorRepositoryPackage monitorPackage;
 	
-	private static DataRepositoryCreator instance;
+	private static RepositoryCreator instance;
 
 	/**
 	 * private Constructor for singelton pattern
 	 */
-	private DataRepositoryCreator() {
+	private RepositoryCreator() {
 		 this.measuringpointPackage = MeasuringpointPackage.eINSTANCE;
 		 this.measuringpointFactory = this.measuringpointPackage.getMeasuringpointFactory();	
 		 
@@ -54,11 +54,11 @@ public final class DataRepositoryCreator {
 	 * Returns instance of DataRepositoryCreator
 	 * @return instance of DataRepositoryCreator
 	 */
-	public static DataRepositoryCreator getInstance() {
-		if (DataRepositoryCreator.instance == null) {
-			DataRepositoryCreator.instance = new DataRepositoryCreator();
+	public static RepositoryCreator getInstance() {
+		if (RepositoryCreator.instance == null) {
+			RepositoryCreator.instance = new RepositoryCreator();
 		}
-		return DataRepositoryCreator.instance;
+		return RepositoryCreator.instance;
 	}
 	
 	/**

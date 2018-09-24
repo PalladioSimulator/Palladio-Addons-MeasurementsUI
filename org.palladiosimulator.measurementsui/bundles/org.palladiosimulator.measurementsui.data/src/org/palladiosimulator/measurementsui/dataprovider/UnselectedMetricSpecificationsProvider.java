@@ -21,7 +21,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
  */
 public class UnselectedMetricSpecificationsProvider {
 
-    private ResourceEditorImpl editor = new ResourceEditorImpl();
+    private ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
 
     /**
      * Creates a Monitor with all of the Metric Description <-> Measurement Specification pairs that
