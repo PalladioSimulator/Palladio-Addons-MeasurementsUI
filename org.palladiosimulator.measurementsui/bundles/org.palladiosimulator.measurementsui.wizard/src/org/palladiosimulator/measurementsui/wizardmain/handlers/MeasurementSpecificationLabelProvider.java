@@ -115,15 +115,8 @@ public class MeasurementSpecificationLabelProvider implements ITableLabelProvide
         if (!processingTypeProperties.isEmpty()) {
             result += processingTypeProperties.get(0) + ": ";
             
-            if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-                result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
-    
-            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-                result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
-    
-            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-                result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
-            }
+            result += this.processingTypeSelectionWizardModel.getAProccesingTypeAttribute(
+                    measurementSpecification, processingTypeProperties.get(0));
         } else {
             result += "-";
         }
@@ -145,15 +138,8 @@ public class MeasurementSpecificationLabelProvider implements ITableLabelProvide
         if (processingTypeProperties.size() > 1) {
             result += processingTypeProperties.get(1) + ": ";
             
-            if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-                result += ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
-    
-            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-                result += ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
-    
-            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-                result += ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
-            }
+            result += this.processingTypeSelectionWizardModel.getAProccesingTypeAttribute(
+                    measurementSpecification, processingTypeProperties.get(1));
         } else {
             result += "-";
         }

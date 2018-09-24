@@ -24,7 +24,24 @@ import org.eclipse.jface.util.Policy;
  */
 public class MeasurementSpecificationWizardPage extends WizardPage {
 
-	/**
+    /**
+     * The text for the column of the metric description
+     */
+    private static final String COLUMN_TEXT_METRIC_DESCRIPTION = "Metric Description";
+    /**
+     * The text for the column of the selected ProcessingType
+     */
+    private static final String COLUMN_TEXT_PROCESSING_TYPE = "Processing Type";
+    /**
+     * The text for the column for the 1st property of the selected ProcessingType
+     */
+    private static final String COLUMN_TEXT_PROPERTY1 = "Property Value 1";
+    /**
+     * The text for the column for the 2nd property of the selected ProcessingType
+     */
+    private static final String COLUMN_TEXT_PROPERTY2 = "Property Value 2";
+    
+    /**
 	 * This handles the internal model.
 	 */
 	private ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel;
@@ -55,19 +72,35 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 		TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
 		tableViewer.setLabelProvider(new MeasurementSpecificationLabelProvider(this.processingTypeSelectionWizardModel));
 		
-		tableViewer.getTable().getColumn(0).setText("Metric Description");
-		tableViewer.getTable().getColumn(1).setText("Processing Type");
-		tableViewer.getTable().getColumn(2).setText("Property Value 1");
-		tableViewer.getTable().getColumn(3).setText("Property Value 2");
-		
-		TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
+		setColumnsText(tableViewer);
+		setEditingSupports(tableViewer);
+	}
+
+    /**
+     * Sets the EditingSupport objects the table of the 4th wizard page.
+     * This is used to edit the values of the measurements.
+     * @param tableViewer the given TableViewer
+     */
+    private void setEditingSupports(TableViewer tableViewer) {
+        TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
 		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel));
 		tableViewerColumns[2].setEditingSupport(new ProcessingTypeProperty1EditingSupport(tableViewerColumns[2].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel));
 		tableViewerColumns[3].setEditingSupport(new ProcessingTypeProperty2EditingSupport(tableViewerColumns[3].getViewer(), 
                 tableViewer, this.processingTypeSelectionWizardModel));
-	}
+    }
+
+    /**
+     * Sets the text of the table columns for the 4th wizard page.
+     * @param tableViewer the given TableViewer
+     */
+    private void setColumnsText(TableViewer tableViewer) {
+        tableViewer.getTable().getColumn(0).setText(COLUMN_TEXT_METRIC_DESCRIPTION);
+		tableViewer.getTable().getColumn(1).setText(COLUMN_TEXT_PROCESSING_TYPE);
+		tableViewer.getTable().getColumn(2).setText(COLUMN_TEXT_PROPERTY1);
+		tableViewer.getTable().getColumn(3).setText(COLUMN_TEXT_PROPERTY2);
+    }
 
 	/**
 	 * Returns the TableViewerColumn objects as an array for a given TableViewer
