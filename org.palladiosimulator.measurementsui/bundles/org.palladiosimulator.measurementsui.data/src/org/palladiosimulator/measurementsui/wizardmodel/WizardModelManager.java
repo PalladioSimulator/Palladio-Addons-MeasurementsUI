@@ -36,7 +36,7 @@ public class WizardModelManager {
     public WizardModelManager() {
         monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
         this.dataApp = DataApplication.getInstance();
-        this.editor = new ResourceEditorImpl();
+        this.editor = ResourceEditorImpl.getInstance();
     }
 
     /**
@@ -46,7 +46,7 @@ public class WizardModelManager {
     public WizardModelManager(Monitor monitor) {
         this.monitor = monitor;
         this.dataApp = DataApplication.getInstance();
-        this.editor = new ResourceEditorImpl();
+        this.editor = ResourceEditorImpl.getInstance();
         isEditing = true;
     }
 

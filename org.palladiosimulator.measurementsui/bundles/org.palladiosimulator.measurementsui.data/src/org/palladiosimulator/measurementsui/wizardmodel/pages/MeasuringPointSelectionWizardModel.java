@@ -58,7 +58,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 
     private Monitor monitor;
     private boolean isEditing;
-    private ResourceEditorImpl editor = new ResourceEditorImpl();
+    private ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
     private Object currentSelectionFirstMeasuringModel;
     private Object currentSecondStageModel;
     private Object currentThirdStageModel;
