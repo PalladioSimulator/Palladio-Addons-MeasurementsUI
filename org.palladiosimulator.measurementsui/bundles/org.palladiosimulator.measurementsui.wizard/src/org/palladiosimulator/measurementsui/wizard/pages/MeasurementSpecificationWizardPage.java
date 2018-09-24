@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardpages;
+package org.palladiosimulator.measurementsui.wizard.pages;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
@@ -7,10 +7,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
+import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypeEditingSupport;
+import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypePropertyEditingSupport;
+import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.MeasurementSpecificationLabelProvider;
 import org.palladiosimulator.measurementsui.wizard.viewer.MeasurementSpecificationViewer;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasurementSpecificationLabelProvider;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypeEditingSupport;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.ProcessingTypePropertyEditingSupport;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 
 import org.eclipse.jface.util.Policy;

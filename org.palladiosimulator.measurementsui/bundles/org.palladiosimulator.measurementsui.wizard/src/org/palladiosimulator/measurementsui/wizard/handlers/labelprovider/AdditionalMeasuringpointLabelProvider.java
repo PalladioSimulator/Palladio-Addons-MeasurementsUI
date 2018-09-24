@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardmain.handlers;
+package org.palladiosimulator.measurementsui.wizard.handlers.labelprovider;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;

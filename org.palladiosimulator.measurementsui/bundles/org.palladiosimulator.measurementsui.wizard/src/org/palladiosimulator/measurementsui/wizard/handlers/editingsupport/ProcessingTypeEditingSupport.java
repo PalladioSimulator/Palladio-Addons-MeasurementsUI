@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardmain.handlers;
+package org.palladiosimulator.measurementsui.wizard.handlers.editingsupport;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnViewer;
@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.MeasurementSpecificationLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 

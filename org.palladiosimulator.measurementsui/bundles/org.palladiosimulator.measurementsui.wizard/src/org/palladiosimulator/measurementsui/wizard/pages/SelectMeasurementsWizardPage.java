@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardpages;
+package org.palladiosimulator.measurementsui.wizard.pages;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
@@ -10,9 +10,9 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
+import org.palladiosimulator.measurementsui.wizard.handlers.SelectMeasurementCheckboxCellModifier;
 import org.palladiosimulator.measurementsui.wizard.viewer.EmptySelectMeasurementsViewer;
 import org.palladiosimulator.measurementsui.wizard.viewer.SelectMeasurementsViewer;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.CellModifier;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.eclipse.swt.widgets.Button;
@@ -218,7 +218,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		tableViewerRight.setCellEditors(cellEditor);
 		String[] columnNames = { "Metric Description", "Self Adapting" };
 		tableViewerRight.setColumnProperties(columnNames);
-		tableViewerRight.setCellModifier(new CellModifier(tableViewerRight, metricDescriptionSelectionWizardModel));
+		tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(tableViewerRight, metricDescriptionSelectionWizardModel));
 		setPageComplete(true);
 		setControl(container);
 	}
