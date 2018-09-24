@@ -106,4 +106,24 @@ public interface ResourceEditor {
      */
     void addMonitorToRepository(EObject monitorRepository, EObject monitor);
 
+    /**
+     * Sets the Processing Type for a Measurement Specification using EMF Set Command. Used in 4th
+     * page of Wizard.
+     * 
+     * @param measurementSpecification
+     * @param processingType
+     */
+    public void setProcessingType(EObject measurementSpecification, EObject processingType);
+
+    /**
+     * Sets the PT attribute using EMF Set Command. Value should be either double or int, depending
+     * on the attribute.
+     * 
+     * @param processingType
+     * @param processingTypeAttributeName
+     *            The String name of the PT Attribute that we want to set
+     * @param value
+     */
+    public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Object value);
+
 }

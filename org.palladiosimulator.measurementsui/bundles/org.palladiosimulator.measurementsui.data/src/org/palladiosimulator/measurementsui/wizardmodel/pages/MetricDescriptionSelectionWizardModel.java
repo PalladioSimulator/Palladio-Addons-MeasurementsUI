@@ -79,8 +79,7 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      *            the specification which will be added to the monitor
      */
     public void addMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-        provider.moveMeasurementSpecificationToMonitor(selectedMeasurementSpecification, usedMetricsMonitor,
-                isEditing);
+        provider.moveMeasurementSpecificationToMonitor(selectedMeasurementSpecification, usedMetricsMonitor, isEditing);
     }
 
     /**
@@ -107,20 +106,22 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
     public void removeAllMetricDescriptions() {
         provider.removeAllMeasurementSpecificationsFromMonitor(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
     }
+
     /**
      * Switches the attribute triggerSelfAdaption of a specific measurementSpecification
      * 
      * @param currentValue
-     * @param mspec the MeasurementSpecification where the triggerSelfAdaptiong attribute will be changed
+     * @param mspec
+     *            the MeasurementSpecification where the triggerSelfAdaptiong attribute will be
+     *            changed
      */
-	public void switchTriggerSelfAdapting(MeasurementSpecification mspec) {
-	    if(isEditing) {
-	        ResourceEditorImpl.getInstance().changeTriggersSelfAdapting(mspec);
-	    }else {
-	        mspec.setTriggersSelfAdaptations(!mspec.isTriggersSelfAdaptations());
-	    }
-	}
-   
+    public void switchTriggerSelfAdapting(MeasurementSpecification mspec) {
+        if (isEditing) {
+            ResourceEditorImpl.getInstance().changeTriggersSelfAdapting(mspec);
+        } else {
+            mspec.setTriggersSelfAdaptations(!mspec.isTriggersSelfAdaptations());
+        }
+    }
 
     /**
      * Add all suggested MetricDescriptions to the monitor

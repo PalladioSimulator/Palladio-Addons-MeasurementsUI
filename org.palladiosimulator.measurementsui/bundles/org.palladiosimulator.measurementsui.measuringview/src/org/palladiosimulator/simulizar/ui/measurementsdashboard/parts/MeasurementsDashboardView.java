@@ -139,7 +139,8 @@ public class MeasurementsDashboardView {
      * @return TreeViewer which includes all existing monitors
      */
     private MeasurementsTreeViewer createMonitorTreeViewer(Composite parent) {
-        MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService, dataApplication);
+        MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService,
+                dataApplication);
         measurementsTreeViewer.addMouseListener();
         addSelectionListener(measurementsTreeViewer.getViewer());
         return measurementsTreeViewer;
@@ -153,7 +154,8 @@ public class MeasurementsDashboardView {
      * @return TreeViewer which includes all measuring points without a monitor
      */
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
-        EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent, dirty, commandService, dataApplication);
+        EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
+                dirty, commandService, dataApplication);
         addSelectionListener(emptyMeasuringPointsTreeViewer.getViewer());
         return emptyMeasuringPointsTreeViewer;
     }
@@ -292,6 +294,9 @@ public class MeasurementsDashboardView {
             } else if (selection instanceof MeasurementSpecification) {
                 wizard = new MeasurementsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
                         (Monitor) provider.getParent(selection));
+            } else if (selection instanceof ProcessingType) {
+                wizard = new MeasurementsWizard(WizardModelType.PROCESSING_TYPE,
+                        (Monitor) provider.getParent(((ProcessingType) selection).getMeasurementSpecification()));
             } else {
                 wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION);
             }
