@@ -16,14 +16,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Used to get different files from the Eclipse Workspace
+ * Used to get valid projects from the workspace. Mainly used for finding the .aird file of projects to determine if wizard work-flow can be applied on the project.
  * 
  * @author Florian
  *
  */
 public class DataGathering {
 
-    private static final String DATA_GATHERING_NULL_POINTER = "Nullpointer occurs when files don't have a file ending. Can be ignored";
     private static final Logger LOGGER = Logger.getLogger(DataGathering.class.getName());
 
     /**
@@ -51,12 +50,10 @@ public class DataGathering {
                 try {
                     IResource[] allMembers = project.members();
                     for (IResource oneMember : allMembers) {
-                        try {
+                        if (oneMember.getFileExtension() != null) {
                             if (oneMember.getFileExtension().equals("aird")) {
                                 return oneMember.getFullPath().toString();
                             }
-                        } catch (NullPointerException e) {
-                            LOGGER.log(Level.FINEST, DATA_GATHERING_NULL_POINTER, e);
                         }
                     }
                 } catch (CoreException e) {
@@ -80,12 +77,10 @@ public class DataGathering {
         try {
             IResource[] allMembers = project.members();
             for (IResource oneMember : allMembers) {
-                try {
+                if (oneMember.getFileExtension() != null) {
                     if (oneMember.getFileExtension().equals("aird")) {
                         return oneMember.getFullPath().toString();
                     }
-                } catch (NullPointerException e) {
-                    LOGGER.log(Level.FINEST, DATA_GATHERING_NULL_POINTER, e);
                 }
             }
         } catch (CoreException e) {
@@ -108,13 +103,10 @@ public class DataGathering {
         try {
             IResource[] allMembers = project.members();
             for (IResource oneMember : allMembers) {
-                try {
+                if (oneMember.getFileExtension() != null) {
                     if (oneMember.getFileExtension().equals(fileEnding)) {
                         return oneMember.getLocationURI().toString().replace("file:", "");
-
                     }
-                } catch (NullPointerException e) {
-                    LOGGER.log(Level.FINEST, DATA_GATHERING_NULL_POINTER, e);
                 }
             }
         } catch (CoreException e) {
@@ -137,12 +129,10 @@ public class DataGathering {
             try {
                 IResource[] allMembers = project.members();
                 for (IResource oneMember : allMembers) {
-                    try {
+                    if (oneMember.getFileExtension() != null) {
                         if (oneMember.getFileExtension().equals("aird")) {
                             allAirdProjects.add(project);
                         }
-                    } catch (NullPointerException e) {
-                        LOGGER.log(Level.FINEST, DATA_GATHERING_NULL_POINTER, e);
                     }
                 }
             } catch (CoreException e) {
