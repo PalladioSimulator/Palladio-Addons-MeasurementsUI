@@ -14,7 +14,6 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionS
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
-import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
 /**
  * This class handles the wizard and its wizard pages for creating a new measuring point/monitor.
@@ -125,9 +124,14 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
         addPage(page4);
         addPage(page2extra);
         addPage(page2final);
-
     }
 
+    @Override
+    public boolean performCancel() {
+        wizardManager.cancel();
+        return true;
+    }
+    
     @Override
     public boolean performFinish() {
         wizardManager.finish();
