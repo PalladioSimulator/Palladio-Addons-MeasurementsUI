@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.parts;
 
 
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -21,7 +22,7 @@ public class MeasurementsFilter extends ViewerFilter {
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
-
+        TreeViewer treeViewer = (TreeViewer) viewer;
         if (searchString == null || searchString.length() == 0 || element instanceof MonitorRepository
                 || element instanceof MeasuringPointRepository) {
             return true;
@@ -37,6 +38,7 @@ public class MeasurementsFilter extends ViewerFilter {
             
             for (MeasurementSpecification measurement : monitor.getMeasurementSpecifications()) {
                 if (select(viewer, monitor, measurement)) {
+                    treeViewer.setExpandedState(element, true);
                     return true;
                 }
             }
@@ -49,6 +51,10 @@ public class MeasurementsFilter extends ViewerFilter {
                     + measurement.getMetricDescription().getName() + "$" + measurement.getMetricDescription().getId()
                     + "$" + measurement.getMetricDescription().getTextualDescription()
                     + "$MeasurementSpecification$MetricDescription";
+            if (select(viewer, measurement, measurement.getProcessingType())) {
+                treeViewer.setExpandedState(element, true);
+                return true;
+            }
             return (measurementMatch.replace(" ", "").trim().toLowerCase().matches(searchString));
         }
 

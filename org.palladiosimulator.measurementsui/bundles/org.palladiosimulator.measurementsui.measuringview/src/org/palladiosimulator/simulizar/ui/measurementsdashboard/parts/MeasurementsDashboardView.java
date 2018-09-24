@@ -243,9 +243,12 @@ public class MeasurementsDashboardView {
             @Override
             public void keyReleased(KeyEvent e) {
                 TreeViewer treeViewer = (TreeViewer)monitorTreeViewer.getViewer();
-                treeViewer.expandAll();
+                treeViewer.collapseAll();
+                treeViewer.expandToLevel(2);
                 filter.setSearchText(searchText.getText());
                 monitorTreeViewer.getViewer().refresh();
+                measuringTreeViewer.getViewer().refresh();
+                filter.setSearchText("");
             }
         });
     }
