@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.datamanipulation;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -66,6 +67,14 @@ public interface ResourceEditor {
     void deleteResource(EObject objToDelete);
 
     /**
+     * Delete a List of MeasurementSpecifications, specifically for deleting mspecs out of the
+     * wizard monitor in edit mode in the 3rd page.
+     * 
+     * @param objsToDelete
+     */
+    void deleteMultipleResources(EList<MeasurementSpecification> objsToDelete);
+
+    /**
      * Sets MetricDescription for a MeasurementSpecification using EMF Commands.
      * 
      * @param aMeasurementSpecification
@@ -81,6 +90,13 @@ public interface ResourceEditor {
      *            The Monitor to which the new specification is added
      */
     void addMeasurementSpecificationToMonitor(EObject monitor, MeasurementSpecification mspec);
+
+    /**
+     * 
+     * @param monitor
+     * @param MSpecList
+     */
+    void addMeasurementSpecificationsToMonitor(EObject monitor, EList<MeasurementSpecification> mSpecList);
 
     /**
      * Appends a Monitor to a Monitor Repository through AddCommands.
