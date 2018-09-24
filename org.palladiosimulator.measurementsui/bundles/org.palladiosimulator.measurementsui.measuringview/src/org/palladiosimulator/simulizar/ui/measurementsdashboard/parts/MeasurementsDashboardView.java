@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -187,16 +188,17 @@ public class MeasurementsDashboardView {
             selectionService.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
 
             Object selectionObject = selection.getFirstElement();
+            
+            editButton.setText("Edit...");
+            deleteButton.setText("Delete...");
             if (selectionObject instanceof MonitorRepository || selectionObject instanceof MeasuringPointRepository) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
-                editButton.setText("Edit...");
             } else {
                 editButton.setEnabled(true);
                 if (selectionObject instanceof ProcessingType) {
                     deleteButton.setEnabled(false);
                     editButton.setText("Edit ProcessingType");
-                    deleteButton.setText("Delete...");
                 } else {
                     deleteButton.setEnabled(true);
                     if (selectionObject instanceof Monitor) {
@@ -231,11 +233,14 @@ public class MeasurementsDashboardView {
      */
     private void createFilterGadgets(Composite parent) {
         Composite filterContainer = new Composite(parent,SWT.NONE);
-        filterContainer.setLayout(new GridLayout(1, false));
+        filterContainer.setLayout(new GridLayout(4, false));
         filterContainer.setLayoutData(new GridData(SWT.FILL, SWT.TOP,false, false));
         filterContainer.setBackground(new Color(Display.getCurrent(),255,255,255));
         
         filter = new MeasurementsFilter();
+
+        final Label filterLabel = new Label(filterContainer, SWT.NONE);
+        filterLabel.setText("Filter:");
         
         final Text searchText = new Text(filterContainer, SWT.BORDER | SWT.SEARCH);
         searchText.setLayoutData(new GridData(SWT.FILL, SWT.FILL,true, true));
@@ -251,6 +256,13 @@ public class MeasurementsDashboardView {
                 filter.setSearchText("");
             }
         });
+        
+        final Button filterActiveCheckbox = new Button(filterContainer, SWT.CHECK);
+        filterActiveCheckbox.setText("Active");
+        filterActiveCheckbox.setSelection(true);
+        final Button filterInactiveCheckbox = new Button(filterContainer, SWT.CHECK);
+        filterInactiveCheckbox.setText("Inactive");
+        filterInactiveCheckbox.setSelection(true);
     }
 
     /**

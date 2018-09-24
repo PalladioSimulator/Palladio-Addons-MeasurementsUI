@@ -118,7 +118,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
         createTreeViewer.setContentProvider(createContentProvider);
         createTreeViewer.setInput(selectionWizardModel.getAllSecondPageObjects());
         createTreeViewer.setLabelProvider(new MeasuringPointsLabelProvider());
-        createTreeViewer.getTree().getItem(0).setExpanded(true);
+        //createTreeViewer.getTree().getItem(0).setExpanded(true);
         createTreeViewer.refresh();
 
         if (selectionWizardModel.getAllSecondPageObjects().length != 0) {
