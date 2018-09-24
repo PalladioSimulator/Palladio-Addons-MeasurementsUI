@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.datamanipulation;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -22,13 +23,14 @@ public final class ResourceEditorImpl implements ResourceEditor {
     private static ResourceEditorImpl instance;
 
     /**
-     * Private constructor for singelton pattern 
+     * Private constructor for singelton pattern
      */
     private ResourceEditorImpl() {
     }
-    
+
     /**
      * Returns the instance of the ResourceEditorImpl
+     * 
      * @return instance of the ResourceEditorImpl
      */
     public static ResourceEditorImpl getInstance() {
@@ -110,6 +112,15 @@ public final class ResourceEditorImpl implements ResourceEditor {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor#deleteMultipleResources(org.eclipse.emf.common.util.EList)
+     */
+    @Override
+    public void deleteMultipleResources(EList<MeasurementSpecification> objsToDelete) {
+        editor.deleteMultipleResources(objsToDelete);
+
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -132,6 +143,12 @@ public final class ResourceEditorImpl implements ResourceEditor {
     @Override
     public void addMeasurementSpecificationToMonitor(EObject monitor, MeasurementSpecification mspec) {
         editor.addResource(monitor, "measurementSpecifications", mspec);
+
+    }
+
+    @Override
+    public void addMeasurementSpecificationsToMonitor(EObject monitor, EList<MeasurementSpecification> mSpecList) {
+        editor.addListOfResources(monitor, "measurementSpecifications", mSpecList);
 
     }
 
