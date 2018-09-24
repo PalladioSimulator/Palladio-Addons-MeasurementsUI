@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardmain.handlers;
+package org.palladiosimulator.measurementsui.wizard.handlers;
 
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -7,14 +7,12 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionS
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
 /**
- * This handels the checkbox action for the self adapting column in the 3rd wizard page.
+ * This handles the checkbox action for the self adapting column in the 3rd wizard page (measurement selection).
  * @author mehme
  *
  */
-public class CellModifier implements ICellModifier {
-    
-    
-    
+public class SelectMeasurementCheckboxCellModifier implements ICellModifier {
+
 	/**
 	 * The table viewer of the according table
 	 */
@@ -25,7 +23,7 @@ public class CellModifier implements ICellModifier {
 	 * The constructor where basic attributes are set, e. g. the tableViewer
 	 * @param tableViewer the given tableViewer of the according table
 	 */
-	public CellModifier(TableViewer tableViewer, MetricDescriptionSelectionWizardModel model) {
+	public SelectMeasurementCheckboxCellModifier(TableViewer tableViewer, MetricDescriptionSelectionWizardModel model) {
 		super();
 		this.model = model;
 		this.tableViewer = tableViewer;

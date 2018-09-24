@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardpages;
+package org.palladiosimulator.measurementsui.wizard.pages;
 
 import java.util.LinkedList;
 
@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.MeasuringPointsContentProvider;
+import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.MeasuringPointsLabelProvider;
 import org.palladiosimulator.measurementsui.wizard.viewer.EmptyMeasurementsTreeViewer;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsContentProvider;
-import org.palladiosimulator.measurementsui.wizardmain.handlers.MeasuringPointsLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;

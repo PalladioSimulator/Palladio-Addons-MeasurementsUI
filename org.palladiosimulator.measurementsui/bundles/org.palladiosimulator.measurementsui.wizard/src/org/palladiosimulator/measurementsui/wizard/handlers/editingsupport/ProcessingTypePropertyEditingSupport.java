@@ -1,88 +1,55 @@
-package org.palladiosimulator.measurementsui.wizardmain.handlers;
+package org.palladiosimulator.measurementsui.wizard.handlers.editingsupport;
 
 import java.util.List;
 
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.ICellEditorListener;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.MeasurementSpecificationLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.ProcessingType;
-import org.palladiosimulator.monitorrepository.impl.FixedSizeAggregationImpl;
-import org.palladiosimulator.monitorrepository.impl.TimeDrivenImpl;
-import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
 
 /**
- * This class enables editing support for the 3rd column on the 4th wizard page (for
- * ProcessingTypes).
+ * This class enables editing support for the ProcessingType property columns on the 4th wizard page 
+ * (for specification of measurements).
  * 
  * @author Mehmet, Ba
  *
  */
-public final class ProcessingTypeProperty1EditingSupport extends EditingSupport {
+public final class ProcessingTypePropertyEditingSupport extends MeasurementSpecificationEditingSupport {
 
     /**
-     * This handles the internal model.
+     * This indicates the index of the property column of the ProcessingType,
+     * e. g. if the ProcessingType has 2 property values, then the index goes from 0 to 1.
      */
-    private ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel;
-
-    /**
-     * The Editor object for the table cells.
-     */
-    private TextCellEditor cellEditor;
-
-    /**
-     * The according TableViewer object.
-     */
-    private TableViewer tableViewer;
-
+    private int propertyColumnIndex;
+    
     /**
      * Constructor, where basic attributes are set for further use, e. g. the according
      * ColumnViewer, TableViewer.
      * 
-     * @param columnViewer
-     *            the given ColumnViewer
-     * @param tableViewer
-     *            the given TableViewer
+     * @param columnViewer the given ColumnViewer
+     * @param tableViewer the given TableViewer
+     * @param processingTypeSelectionWizardModel the internal model handler
+     * @param propertyColumn indicates the index of the property column of the ProcessingType
      */
-    public ProcessingTypeProperty1EditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
-            ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
-        super(columnViewer);
-        this.processingTypeSelectionWizardModel = processingTypeSelectionWizardModel;
+    public ProcessingTypePropertyEditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
+            ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel, int propertyColumn) {
+        super(columnViewer, tableViewer, processingTypeSelectionWizardModel);
+        
+        if (propertyColumn < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.propertyColumnIndex = propertyColumn;
+        
         cellEditor = new TextCellEditor((Composite) getViewer().getControl()) {
             @Override
             protected void doSetValue(Object value) {
                 super.doSetValue(value.toString());
             }
         };
-
-        this.tableViewer = tableViewer;
-
-        cellEditor.addListener(new ICellEditorListener() {
-            @Override
-            public void applyEditorValue() {
-                // not used here
-            }
-
-            @Override
-            public void cancelEditor() {
-                // not used here
-            }
-
-            @Override
-            public void editorValueChanged(boolean oldValidState, boolean newValidState) {
-                // not used here
-            }
-        });
-    }
-
-    @Override
-    protected CellEditor getCellEditor(Object element) {
-        return cellEditor;
     }
 
     @Override
@@ -94,7 +61,7 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
-        return (!processingTypeProperties.isEmpty());
+        return (processingTypeProperties.size() > this.propertyColumnIndex);
     }
 
     @Override
@@ -106,9 +73,9 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
-        if (!processingTypeProperties.isEmpty()) {
+        if (processingTypeProperties.size() > this.propertyColumnIndex) {
             return this.processingTypeSelectionWizardModel.getAProccesingTypeAttribute(
-                    measurementSpecification, processingTypeProperties.get(0));
+                    measurementSpecification, processingTypeProperties.get(this.propertyColumnIndex));
         } else {
             return null;
         }
@@ -124,9 +91,10 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
-        if (!processingTypeProperties.isEmpty()) {
+        if (processingTypeProperties.size() > this.propertyColumnIndex) {
             this.processingTypeSelectionWizardModel.editAProcessingTypeAttribute(
-                    measurementSpecification, processingTypeProperties.get(0), Double.valueOf(valueString));
+                    measurementSpecification, processingTypeProperties.get(this.propertyColumnIndex), 
+                    Double.valueOf(valueString));
         }
         
         this.tableViewer.refresh();

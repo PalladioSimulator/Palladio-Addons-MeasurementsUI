@@ -30,7 +30,7 @@ Import-Package: emptymeasuringpoints,
  org.palladiosimulator.measurementsui.dataprovider,
  org.palladiosimulator.measurementsui.fileaccess,
  org.palladiosimulator.measurementsui.monitorrepositoryview,
- org.palladiosimulator.measurementsui.wizardmain,
+ org.palladiosimulator.measurementsui.wizard.main,
  org.palladiosimulator.measurementsui.wizardmodel
 Bundle-ClassPath: .
 Export-Package: org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer

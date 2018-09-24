@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardmain;
+package org.palladiosimulator.measurementsui.wizard.main;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardpages;
+package org.palladiosimulator.measurementsui.wizard.pages;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

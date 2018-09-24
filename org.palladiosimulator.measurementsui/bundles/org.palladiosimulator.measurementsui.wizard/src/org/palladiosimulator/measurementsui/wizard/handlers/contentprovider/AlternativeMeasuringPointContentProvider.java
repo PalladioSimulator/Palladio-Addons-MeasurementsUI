@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.wizardmain.handlers;
+package org.palladiosimulator.measurementsui.wizard.handlers.contentprovider;
 
 import java.util.LinkedList;
 import java.util.List;
