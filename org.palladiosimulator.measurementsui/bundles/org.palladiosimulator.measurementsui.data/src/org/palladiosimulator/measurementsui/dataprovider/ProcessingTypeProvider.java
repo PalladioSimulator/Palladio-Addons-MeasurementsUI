@@ -212,7 +212,7 @@ public class ProcessingTypeProvider {
                 // frequency, numberOfMeasurements
                 if (processingTypeProperty.equals("Frequency")) {
                     editor.setAProcessingTypeAttribute((FixedSizeAggregationImpl) processingType, "frequency",
-                             value.intValue());
+                            value.intValue());
                 }
                 if (processingTypeProperty.equals("Number of Measurements")) {
                     editor.setAProcessingTypeAttribute((FixedSizeAggregationImpl) processingType,
@@ -285,26 +285,31 @@ public class ProcessingTypeProvider {
         ProcessingType processingType = measurementSpecification.getProcessingType();
         if (processingType instanceof FixedSizeAggregationImpl) {
 
-            if (processingTypeProperty.equals("Frequency"))
+            if (processingTypeProperty.equals("Frequency")) {
                 return (double) ((FixedSizeAggregationImpl) processingType).getFrequency();
-
-            if (processingTypeProperty.equals("Number of Measurements"))
+            }
+            if (processingTypeProperty.equals("Number of Measurements")) {
                 return (double) ((FixedSizeAggregationImpl) processingType).getNumberOfMeasurements();
+            }
 
         } else if (processingType instanceof TimeDrivenImpl) {
 
-            if (processingTypeProperty.equals("Window Increment"))
+            if (processingTypeProperty.equals("Window Increment")) {
                 return ((TimeDrivenImpl) processingType).getWindowIncrement();
+            }
 
-            if (processingTypeProperty.equals("Window Length"))
+            if (processingTypeProperty.equals("Window Length")) {
                 return ((TimeDrivenImpl) processingType).getWindowLength();
+            }
 
         } else if (processingType instanceof VariableSizeAggregationImpl) {
-            if (processingTypeProperty.equals("Frequency"))
+            if (processingTypeProperty.equals("Frequency")) {
                 return (double) ((VariableSizeAggregationImpl) processingType).getFrequency();
+            }
 
-            if (processingTypeProperty.equals("Retrospection Length"))
+            if (processingTypeProperty.equals("Retrospection Length")) {
                 return ((VariableSizeAggregationImpl) processingType).getRetrospectionLength();
+            }
 
         }
         return null;
