@@ -7,7 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.palladiosimulator.measurementsui.extensionpoint.definition.IPossibleMetricDescription;
+import org.palladiosimulator.measurementsui.extensionpoint.definition.IMeasuringPointMetricsWorkingCombinations;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
@@ -22,7 +22,7 @@ import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 
 public class EvaluateExtensions {
 
-	private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.PossibleMetricDescription";
+	private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.MeasuringPointMetricsWorkingCombinations";
 	private final MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
 
 	public EvaluateExtensions() {
@@ -39,14 +39,14 @@ public class EvaluateExtensions {
 
 		IConfigurationElement[] configurationElements = registry.getConfigurationElementsFor(ID);
 
-		List<IPossibleMetricDescription> possibleMetricDescriptionExtensions = new LinkedList<>();
+		List<IMeasuringPointMetricsWorkingCombinations> possibleMetricDescriptionExtensions = new LinkedList<>();
 
 		try {
 			for (IConfigurationElement configurationElement : configurationElements) {
 				System.out.println("Evaluating extension");
 				final Object possibleMetricDescription = configurationElement.createExecutableExtension("class");
-				if (possibleMetricDescription instanceof IPossibleMetricDescription) {
-					possibleMetricDescriptionExtensions.add((IPossibleMetricDescription) possibleMetricDescription);
+				if (possibleMetricDescription instanceof IMeasuringPointMetricsWorkingCombinations) {
+					possibleMetricDescriptionExtensions.add((IMeasuringPointMetricsWorkingCombinations) possibleMetricDescription);
 				}
 			}
 
@@ -54,7 +54,7 @@ public class EvaluateExtensions {
 			System.out.println(ex.getMessage());
 		}
 
-		for (IPossibleMetricDescription iPossibleMetricDescription : possibleMetricDescriptionExtensions) {
+		for (IMeasuringPointMetricsWorkingCombinations iPossibleMetricDescription : possibleMetricDescriptionExtensions) {
 
 			if (iPossibleMetricDescription.getMeasuringPoint() instanceof UsageScenarioMeasuringPoint) {
 				this.measuringPointMetricsCombinations.addUsageScenarioMeasuringPointMetric(iPossibleMetricDescription);

@@ -6,14 +6,14 @@ import org.palladiosimulator.metricspec.MetricDescription;
 /**
  * This Interface is used as Extension Point to define which Metric Descriptions
  * actually lead to a working simulation run in combination
- * with wich Measuring Points.
- * Extensions ave to implement this Interface to provide these working pairs.
+ * with which Measuring Points.
+ * Extensions have to implement this Interface to provide these working pairs.
  * (e.g Response_Time with UsageScenarioMeasuringPoint)
  * 
  * @author Lasse
  *
  */
-public interface IPossibleMetricDescription {
+public interface IMeasuringPointMetricsWorkingCombinations {
     
     /**
      * The Measuring Point with whom the Metric Description

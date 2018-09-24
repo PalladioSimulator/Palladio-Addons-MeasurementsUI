@@ -3,7 +3,7 @@
 <schema targetNamespace="org.palladiosimulator.measurementsui.extensionpoint.definition" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.palladiosimulator.measurementsui.extensionpoint.definition" id="org.palladiosimulator.measurementsui.extensionpoint.definition.PossibleMetricDescription" name="PossibleMetricDescription"/>
+         <meta.schema plugin="org.palladiosimulator.measurementsui.extensionpoint.definition" id="org.palladiosimulator.measurementsui.extensionpoint.definition.MeasuringPointMetricsWorkingCombinations" name="MeasuringPointMetricsWorkingCombinations"/>
       </appinfo>
       <documentation>
          This extension Point is used to define which Metric Descriptions are implemented to measure which Measuring Point during a SimuLizar simulation run.
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.measurementsui.extensionpoint.definition.IPossibleMetricDescription"/>
+                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.measurementsui.extensionpoint.definition.IMeasuringPointMetricsWorkingCombinations"/>
                </appinfo>
             </annotation>
          </attribute>
