@@ -7,7 +7,7 @@ import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.abstractviewer.MpTreeViewer;
+import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDropListener;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
@@ -19,7 +19,7 @@ import monitorrepositoryview.MonitorrepositoryviewInjectorProvider;
  * 
  * @author David Schuetz
  */
-public class MonitorTreeViewer extends MpTreeViewer {
+public class MonitorTreeViewer extends MeasurementsTreeViewer {
 
     /**
      * 

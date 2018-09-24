@@ -13,7 +13,7 @@ import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
  * 
  * @author David Schuetz
  */
-public class EmptyMpTreeViewer extends WizardTreeViewer {
+public class EmptyMeasurementsTreeViewer extends WizardTreeViewer {
 
     /**
      * 
@@ -23,7 +23,7 @@ public class EmptyMpTreeViewer extends WizardTreeViewer {
      *            the connection to the data binding. This is needed in order to get the repository
      *            of the current project.
      */
-    public EmptyMpTreeViewer(Composite parent, DataApplication application) {
+    public EmptyMeasurementsTreeViewer(Composite parent, DataApplication application) {
         super(parent, application);
     }
 
