@@ -115,6 +115,6 @@ public interface ResourceEditor {
      */
     public void setProcessingType(EObject measurementSpecification, EObject processingType);
     
-    public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Double value);
+    public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Object value);
 
 }

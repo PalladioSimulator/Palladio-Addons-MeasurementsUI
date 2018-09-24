@@ -170,7 +170,7 @@ public final class ResourceEditorImpl implements ResourceEditor {
     }
 
     @Override
-    public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Double value) {
+    public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Object value) {
         editor.editResource(processingType, processingTypeAttributeName, value);
         
     }

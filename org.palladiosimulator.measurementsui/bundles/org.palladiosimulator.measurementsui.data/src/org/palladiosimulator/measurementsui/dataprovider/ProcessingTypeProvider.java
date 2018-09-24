@@ -212,11 +212,11 @@ public class ProcessingTypeProvider {
                 // frequency, numberOfMeasurements
                 if (processingTypeProperty.equals("Frequency")) {
                     editor.setAProcessingTypeAttribute((FixedSizeAggregationImpl) processingType, "frequency",
-                            (double) value.intValue());
+                             value.intValue());
                 }
                 if (processingTypeProperty.equals("Number of Measurements")) {
                     editor.setAProcessingTypeAttribute((FixedSizeAggregationImpl) processingType,
-                            "numberOfMeasurements", (double) value.intValue());
+                            "numberOfMeasurements", value.intValue());
                 }
             } else {
                 if (processingTypeProperty.equals("Frequency")) {
@@ -253,7 +253,7 @@ public class ProcessingTypeProvider {
                 // frequency, retrospectionLength
                 if (processingTypeProperty.equals("Frequency")) {
                     editor.setAProcessingTypeAttribute((VariableSizeAggregationImpl) processingType, "frequency",
-                            (double) value.intValue());
+                            value.intValue());
                 }
 
                 if (processingTypeProperty.equals("Retrospection Length")) {
