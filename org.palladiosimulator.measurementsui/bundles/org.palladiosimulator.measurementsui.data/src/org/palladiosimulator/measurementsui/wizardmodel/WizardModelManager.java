@@ -3,6 +3,10 @@ package org.palladiosimulator.measurementsui.wizardmodel;
 import java.io.IOException;
 import java.util.EnumMap;
 
+import org.eclipse.emf.common.command.CommandStack;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -54,7 +58,16 @@ public class WizardModelManager {
      * Discards all changes made
      */
     public void cancel() {
-        // TODO Do nothing on cancel right now. This probably has to change if commands are used.
+        if (isEditing) {
+        EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(monitor);
+        CommandStack commandStack = editingDomain.getCommandStack();
+        
+        while (commandStack.canUndo()) {
+            editingDomain.getCommandStack().undo();
+            }
+        } else {
+            monitor = null;
+        }
     }
 
     /**
