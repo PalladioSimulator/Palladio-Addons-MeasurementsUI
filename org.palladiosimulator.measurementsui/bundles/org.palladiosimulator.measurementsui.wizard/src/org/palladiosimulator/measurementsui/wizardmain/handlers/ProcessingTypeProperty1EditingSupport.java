@@ -107,19 +107,8 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
         if (!processingTypeProperties.isEmpty()) {
-            String result = "";
-            
-            if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-                result += ((FixedSizeAggregationImpl) selectedProcessingType).getFrequency();
-
-            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-                result += ((TimeDrivenImpl) selectedProcessingType).getWindowIncrement();
-
-            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-                result += ((VariableSizeAggregationImpl) selectedProcessingType).getFrequency();
-            }
-
-            return result;
+            return this.processingTypeSelectionWizardModel.getAProccesingTypeAttribute(
+                    measurementSpecification, processingTypeProperties.get(0));
         } else {
             return null;
         }
@@ -136,17 +125,8 @@ public final class ProcessingTypeProperty1EditingSupport extends EditingSupport 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
         if (!processingTypeProperties.isEmpty()) {
-            
-            if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-                ((FixedSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
-
-            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-                ((TimeDrivenImpl) selectedProcessingType).setWindowIncrement(Double.valueOf(valueString));
-
-            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-                ((VariableSizeAggregationImpl) selectedProcessingType).setFrequency(Integer.valueOf(valueString));
-            }
-
+            this.processingTypeSelectionWizardModel.editAProcessingTypeAttribute(
+                    measurementSpecification, processingTypeProperties.get(0), Double.valueOf(valueString));
         }
         
         this.tableViewer.refresh();

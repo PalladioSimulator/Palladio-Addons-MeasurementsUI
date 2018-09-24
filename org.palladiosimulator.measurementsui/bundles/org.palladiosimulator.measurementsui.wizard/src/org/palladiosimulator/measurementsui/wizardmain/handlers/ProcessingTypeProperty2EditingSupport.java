@@ -109,19 +109,8 @@ public final class ProcessingTypeProperty2EditingSupport extends EditingSupport 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
         if (processingTypeProperties.size() > 1) {
-            String result = "";
-            
-            if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-                result += ((FixedSizeAggregationImpl) selectedProcessingType).getNumberOfMeasurements();
-
-            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-                result += ((TimeDrivenImpl) selectedProcessingType).getWindowLength();
-
-            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-                result += ((VariableSizeAggregationImpl) selectedProcessingType).getRetrospectionLength();
-            }
-
-            return result;
+            return this.processingTypeSelectionWizardModel.getAProccesingTypeAttribute(
+                    measurementSpecification, processingTypeProperties.get(1));
         } else {
             return null;
         }
@@ -138,17 +127,8 @@ public final class ProcessingTypeProperty2EditingSupport extends EditingSupport 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
         if (processingTypeProperties.size() > 1) {
-            
-            if (selectedProcessingType instanceof FixedSizeAggregationImpl) {
-                ((FixedSizeAggregationImpl) selectedProcessingType).setNumberOfMeasurements(Integer.valueOf(valueString));
-
-            } else if (selectedProcessingType instanceof TimeDrivenImpl) {
-                ((TimeDrivenImpl) selectedProcessingType).setWindowLength(Double.valueOf(valueString));
-
-            } else if (selectedProcessingType instanceof VariableSizeAggregationImpl) {
-                ((VariableSizeAggregationImpl) selectedProcessingType).setRetrospectionLength(Double.valueOf(valueString));
-            }
-
+            this.processingTypeSelectionWizardModel.editAProcessingTypeAttribute(
+                    measurementSpecification, processingTypeProperties.get(1), Double.valueOf(valueString));
         }
         
         this.tableViewer.refresh();
