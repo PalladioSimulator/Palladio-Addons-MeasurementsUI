@@ -106,4 +106,15 @@ public interface ResourceEditor {
      */
     void addMonitorToRepository(EObject monitorRepository, EObject monitor);
 
+    /**
+     * Sets the Processing Type for a Measurement Specification using EMF Set Command. Used in 4th
+     * page of Wizard.
+     * 
+     * @param measurementSpecification
+     * @param processingType
+     */
+    public void setProcessingType(EObject measurementSpecification, EObject processingType);
+    
+    public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Double value);
+
 }

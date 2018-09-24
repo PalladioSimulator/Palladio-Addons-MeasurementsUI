@@ -164,5 +164,17 @@ public final class ResourceEditorImpl implements ResourceEditor {
         editor.addResource(monitorRepository, "monitors", monitor);
 
     }
+    
+    public void setProcessingType(EObject measurementSpecification, EObject processingType) {
+        editor.editResource(measurementSpecification, "processingType", processingType);
+    }
+
+    @Override
+    public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Double value) {
+        editor.editResource(processingType, processingTypeAttributeName, value);
+        
+    }
+    
+    
 
 }
