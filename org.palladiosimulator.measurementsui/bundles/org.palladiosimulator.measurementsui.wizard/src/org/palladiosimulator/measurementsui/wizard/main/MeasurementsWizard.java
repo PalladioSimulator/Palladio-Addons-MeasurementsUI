@@ -1,20 +1,19 @@
-package org.palladiosimulator.measurementsui.wizardmain;
+package org.palladiosimulator.measurementsui.wizard.main;
 
 import org.eclipse.jface.wizard.IWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.AddMonitorWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.AdditionalModelsToMeasuringpointWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.ChooseMeasuringpointWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.FinalModelsToMeasuringpointWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.MeasurementSpecificationWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.SelectMeasurementsWizardPage;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelManager;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
-import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
-import org.palladiosimulator.measurementsui.wizardpages.AdditionalModelsToMeasuringpointWizardPage;
-import org.palladiosimulator.measurementsui.wizardpages.ChooseMeasuringpointWizardPage;
-import org.palladiosimulator.measurementsui.wizardpages.FinalModelsToMeasuringpointWizardPage;
-import org.palladiosimulator.measurementsui.wizardpages.MeasurementSpecificationWizardPage;
-import org.palladiosimulator.measurementsui.wizardpages.SelectMeasurementsWizardPage;
 import org.palladiosimulator.monitorrepository.Monitor;
-import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
 /**
  * This class handles the wizard and its wizard pages for creating a new measuring point/monitor.
@@ -125,15 +124,14 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
         addPage(page4);
         addPage(page2extra);
         addPage(page2final);
-
     }
-    
+
     @Override
     public boolean performCancel() {
         wizardManager.cancel();
         return true;
     }
-
+    
     @Override
     public boolean performFinish() {
         wizardManager.finish();

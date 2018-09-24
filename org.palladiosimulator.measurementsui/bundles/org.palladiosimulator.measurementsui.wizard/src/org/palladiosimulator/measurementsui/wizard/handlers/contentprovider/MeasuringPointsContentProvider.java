@@ -1,46 +1,55 @@
-package org.palladiosimulator.measurementsui.wizardmain.handlers;
+package org.palladiosimulator.measurementsui.wizard.handlers.contentprovider;
+
+import java.util.LinkedList;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 
 /**
- * A content provider for the second step of the measuringpoint creation wizard pages
  * 
  * @author Domas Mikalkinas
  *
  */
-public class AdditionalMeasuringpointContentProvider implements ITreeContentProvider {
+public class MeasuringPointsContentProvider implements ITreeContentProvider {
+
     private MeasuringPointSelectionWizardModel measuringPointWizardModel;
 
     /**
-     * constructor with arguments, which sets the needed wizard model
+     * constructor which sets the needed wizard model
      * 
      * @param measuringPointWizardModel
      *            the needed wizard model
      */
-    public AdditionalMeasuringpointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+    public MeasuringPointsContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
         this.measuringPointWizardModel = measuringPointWizardModel;
     }
 
     @Override
     public Object[] getElements(Object inputElement) {
-
-        return measuringPointWizardModel.getAllAdditionalModels();
+        return measuringPointWizardModel.getAllSecondPageObjects();
     }
 
     @Override
     public Object[] getChildren(Object parentElement) {
+        if (parentElement instanceof LinkedList) {
+            return ((LinkedList<?>) parentElement).toArray();
+        }
         return new Object[0];
     }
 
     @Override
     public Object getParent(Object element) {
+        if (element instanceof LinkedList && !((LinkedList<?>) element).isEmpty()) {
+
+            return element;
+
+        }
         return null;
     }
 
     @Override
     public boolean hasChildren(Object element) {
-        return false;
+        return element instanceof LinkedList;
     }
 
 }
