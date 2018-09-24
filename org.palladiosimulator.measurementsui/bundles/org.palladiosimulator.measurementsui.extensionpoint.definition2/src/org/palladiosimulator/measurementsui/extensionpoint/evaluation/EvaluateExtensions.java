@@ -20,19 +20,38 @@ import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 
+/**
+ * This class is used to evaluate our Extensionpoint measuringPointMetricsWorkingCombinations.
+ * It loads all Extensions connected to this Extensionpoint and adds them
+ * to the MeasuringPointMetricsCombinations object accordingly.
+ * 
+ * @author Lasse
+ *
+ */
 public class EvaluateExtensions {
 
 	private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
 	private final MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
 
+	/**
+	 * Constructor which creates an object of MeasuringPointMetricsCombinations
+	 */
 	public EvaluateExtensions() {
 		this.measuringPointMetricsCombinations = new MeasuringPointMetricsCombinations();
 	}
 	
+	/**
+	 * Returns the instance of MeasuringPointMetricsCombinations
+	 * @return MeasuringPointMetricsCombinations
+	 */
 	public MeasuringPointMetricsCombinations getMeasuringPointmetricsCombinations() {
 		return this.measuringPointMetricsCombinations;
 	}
 
+	/**
+	 * Loads all Extensions to the Extensionpoint from the ExtensionRegistry
+	 * and adds their content accordingly to the MeasuringPointMetricsCombinations obejct
+	 */
 	public void loadExtensions() {
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
@@ -43,7 +62,6 @@ public class EvaluateExtensions {
 
 		try {
 			for (IConfigurationElement configurationElement : configurationElements) {
-				System.out.println("Evaluating extension");
 				final Object possibleMetricDescription = configurationElement.createExecutableExtension("class");
 				if (possibleMetricDescription instanceof IMeasuringPointMetricsWorkingCombinations) {
 					possibleMetricDescriptionExtensions.add((IMeasuringPointMetricsWorkingCombinations) possibleMetricDescription);
