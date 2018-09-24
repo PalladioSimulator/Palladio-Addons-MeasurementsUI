@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.palladiosimulator.measurementsui.wizard.viewer.MonitorFormViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
@@ -59,8 +61,8 @@ public class AddMonitorWizardPage extends WizardPage  {
         container.setLayout(layout);
 
         setControl(container);
-        setPageComplete(true);
-
+        setPageComplete(true); 
+   
         createMonitorFormViewer(container, model.getMonitor(), this);
     }
 
