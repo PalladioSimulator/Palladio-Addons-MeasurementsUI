@@ -16,13 +16,7 @@ import org.palladiosimulator.monitorrepository.Monitor;
 
 
 public class SampleHandler extends AbstractHandler {
-    
-    private static final String ID = "org.palladiosimulator.measurementsui."
-            + "extensionpoint.definition.PossibleMetricDescription";
-             
-        
-
-
+     
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {

@@ -2,10 +2,10 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
-         point="org.palladiosimulator.measurementsui.extensionpoint.definition.PossibleMetricDescription">
+         point="org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations">
       <client
-            ID="ResponseTime"
-            class="org.palladiosimulator.measurementsui.extension.contributions.ResponseTime">
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client3"
+            class="org.palladiosimulator.measurementsui.extension.contributions.MeasuringPointMetricsWorkingCombinations3">
       </client>
    </extension>
 

@@ -22,7 +22,7 @@ import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 
 public class EvaluateExtensions {
 
-	private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.MeasuringPointMetricsWorkingCombinations";
+	private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
 	private final MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
 
 	public EvaluateExtensions() {

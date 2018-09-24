@@ -3,10 +3,16 @@
 <schema targetNamespace="org.palladiosimulator.measurementsui.extensionpoint.definition" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.palladiosimulator.measurementsui.extensionpoint.definition" id="org.palladiosimulator.measurementsui.extensionpoint.definition.MeasuringPointMetricsWorkingCombinations" name="MeasuringPointMetricsWorkingCombinations"/>
+         <meta.schema plugin="org.palladiosimulator.measurementsui.extensionpoint.definition" id="org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations" name="MeasuringPointMetricsWorkingCombinations"/>
       </appinfo>
       <documentation>
-         This extension Point is used to define which Metric Descriptions are implemented to measure which Measuring Point during a SimuLizar simulation run.
+         This Extensionpoint is used to define which combinations of Measuring Points and Metric Descriptions work in a SimuLizar simulation run.
+
+By the time of writing there exist over 60 implemented Metric Descriptions, which are bundeled in the MetricDescriptionsConstants. But not all of them are implemented for each type of Measuring Point. In fact most of the time only very few actually work. If you don&apos;t know which ones work your only option right now is to find out by trial and error. That&apos;s why this Extensionpoint should be used to define all the working Combinations of Measuring Points and Metric Descriptions.
+With that information we can show users a list of only working Metric Descriptions when he wants to decide what he wants to measure for the simulation.
+Furthermore you can define which of the working Metric Descriptions should be suggested to a user as default measures. This helps newer/not experienced users to start and learn what you can measure in a simulation.
+
+For example, if i want to measure a Usage Scenario, a user would create a UsageScenarioMeasuringPoint and a corresponding Monitor. Afterwards he needs to define the Measurement Specifications with the Metric Descirptions he wants to measure. This Extensionpoint should define which options he has in this step(e.g ResponseTime,...). If i don&apos;t know which Metric Descriptions to use it should further held with suggesting useful ones.
       </documentation>
    </annotation>
 
@@ -83,7 +89,35 @@
          <meta.section type="examples"/>
       </appinfo>
       <documentation>
-         [Enter extension point usage example here.]
+         This is a simple example, if you want to define that you can measure the ResponseTime of a UsageScenario and that ResponseTime should be a suggested Metric Description:
+
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.measurementsui.extensionpoint.definition.IMeasuringPointMetricsWorkingCombinations;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
+
+public class ResponseTimeWithUsageScenarioMeasuringPoint implements IMeasuringPointMetricsWorkingCombinations {
+
+
+    @Override
+    public MetricDescription getMetricDescription() {
+       return MetricDescriptionConstants.RESPONSE_TIME_METRIC;
+        
+    }
+
+    @Override
+    public MeasuringPoint getMeasuringPoint() {
+       return PcmmeasuringpointFactory.eINSTANCE.createUsageScenarioMeasuringPoint();
+      
+    }
+
+    @Override
+    public boolean addtoSuggestedList() {     
+        return true;
+    }
+
+}
       </documentation>
    </annotation>
 
