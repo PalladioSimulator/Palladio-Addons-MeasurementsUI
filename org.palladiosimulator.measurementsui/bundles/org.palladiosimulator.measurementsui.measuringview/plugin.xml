@@ -13,7 +13,7 @@
    <extension
          point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
       <propertyContributor
-            contributorId="org.palladiosimulator.measurementsui.measuringview.propertyContributor1"
+            contributorId="org.palladiosimulator.simulizar.ui.measuringview.fragment1org.palladiosimulator.measurementsui.measuringview.properyContributor1"
             labelProvider="org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider$StyledLabelProvider"
             typeMapper="org.eclipse.ui.views.properties.tabbed.AbstractTypeMapper">
          <propertyCategory></propertyCategory>
