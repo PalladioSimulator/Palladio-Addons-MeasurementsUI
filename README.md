@@ -15,8 +15,7 @@ How to run this project:
 Some problems which may occur:
 - If there are lots of errors of classes which can not be found, you may miss the Parsley-Plugin. You can install it from the eclipse repository (In Install New Software -> in the dropdown menu choose the repository of your eclipse version, e.g Oxygen)
 - If there are a few errors stating that projects are missing required source folder: "emfparsley-gen", perform a project clean via Eclipse Bar -> Project -> Clean...
-- If there are SWTBot related errors, install the SWTBot for Eclipse Testing plugin from the eclipse repository.
-
+- If there are SWTBot related errors, install the SWTBot for Eclipse Testing and SWTBot for SWT Testing plugins from the eclipse repository.
 
 
 
