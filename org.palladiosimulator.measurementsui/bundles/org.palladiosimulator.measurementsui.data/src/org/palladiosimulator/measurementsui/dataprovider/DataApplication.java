@@ -78,6 +78,7 @@ public final class DataApplication {
      * through a new session
      */
     public void updateData() {  
+        initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
         initializeSession(sessionResourceURI);
         if (session != null) {
             this.modelAccessor.initializeModels(session);

@@ -1,10 +1,14 @@
 package org.palladiosimulator.measurementsui.datamanipulation;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -12,6 +16,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.resource.ResourceItemProviderAdapterFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
@@ -70,9 +77,16 @@ public final class RepositoryCreator {
 	public MeasuringPointRepository createMeasuringPointRepository(IProject project) {
 		String measuringPointRepositoryfileName = project.getFullPath() + MEASURINGPOINT_REPOSITORY_FILE_ENDING;	
 		final URI measuringPointRepositoryfileURI = URI.createPlatformResourceURI(measuringPointRepositoryfileName, true);
-
-		final ResourceSet resourceSet = new ResourceSetImpl();
-		final Resource resource = resourceSet.createResource(measuringPointRepositoryfileURI);
+		
+		List<AdapterFactory> factories = new ArrayList<>();
+        factories.add(new ResourceItemProviderAdapterFactory());
+		ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory();
+        BasicCommandStack commandStack = new BasicCommandStack();
+       
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(adapterFactory,
+                commandStack);
+        commandStack.flush();
+		final Resource resource = editingDomain.getResourceSet().createResource(measuringPointRepositoryfileURI);
 
 		EClass measuringPointRepository = this.measuringpointPackage.getMeasuringPointRepository();
 
@@ -102,8 +116,14 @@ public final class RepositoryCreator {
 		String monitorRepositoryfileName = project.getFullPath() + MONITORREPOSITORY_FILE_ENDING;	
 		final URI monitorRepositoryfileURI = URI.createPlatformResourceURI(monitorRepositoryfileName, true);
 
-		final ResourceSet resourceSet = new ResourceSetImpl();
-		final Resource resource = resourceSet.createResource(monitorRepositoryfileURI);
+		List<AdapterFactory> factories = new ArrayList<>();
+        factories.add(new ResourceItemProviderAdapterFactory());
+        ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory();
+        BasicCommandStack commandStack = new BasicCommandStack();
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(adapterFactory,
+                commandStack);
+        commandStack.flush();
+		final Resource resource = editingDomain.getResourceSet().createResource(monitorRepositoryfileURI);
 
 		EClass monitorRepository = this.monitorPackage.getMonitorRepository();
 		final EObject monitorRepositoryRootObject = monitorFactory.create(monitorRepository);
