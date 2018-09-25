@@ -22,8 +22,7 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.pcm,
  org.eclipse.jface,
  org.eclipse.swt,
- org.palladiosimulator.measurementsui.viewer,
- org.palladiosimulator.measurementsui.measurementsdashboard;bundle-version="1.0.0"
+ org.palladiosimulator.measurementsui.viewer
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.uni-stuttgart.enpro.wizard
 Bundle-ActivationPolicy: lazy
