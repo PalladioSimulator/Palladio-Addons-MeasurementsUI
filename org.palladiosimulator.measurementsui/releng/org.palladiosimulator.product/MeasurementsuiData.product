@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="HelloWorldMenu.product" uid="HelloWorldMenu" id="HelloWorldMenu.helloworldmenu" application="org.eclipse.ui.ide.workbench" useFeatures="true" includeLaunchers="true">
-
+<product name="MeasurementsuiData.product" uid="MeasurementsuiData" id="org.palladiosimulator.measurementsui.data.measurementsuiData" application="org.eclipse.ui.ide.workbench" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -14,13 +13,11 @@
 
    <windowImages/>
 
-
    <launcher>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>

@@ -11,7 +11,6 @@
 	<artifactId>org.palladiosimulator.tests</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<module>HelloWorldMenu.it.tests</module>
-		<module>HelloWorldMenu.tests</module>
+	
 	</modules>
 </project>

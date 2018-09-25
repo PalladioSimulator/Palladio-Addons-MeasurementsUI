@@ -13,10 +13,11 @@
 		<module>org.palladiosimulator.measurementsui.data</module>
 		<module>org.palladiosimulator.measurementsui.emptymeasuringpoints</module>
 		<module>org.palladiosimulator.measurementsui.emptymeasuringpointswizard</module>
+		<module>org.palladiosimulator.measurementsui.extension.contributions</module>
+		<module>org.palladiosimulator.measurementsui.extensionpoint.definitions</module>
 		<module>org.palladiosimulator.measurementsui.measurementsdashboard</module>
 		<module>org.palladiosimulator.measurementsui.measurementspecification</module>
 		<module>org.palladiosimulator.measurementsui.monitorrepositoryview</module>
-		<module>org.palladiosimulator.measurementsui.newMonitor</module>
 		<module>org.palladiosimulator.measurementsui.propertiespage</module>
 		<module>org.palladiosimulator.measurementsui.selectmeasurement</module>
 		<module>org.palladiosimulator.measurementsui.selectmeasurements.emptyview</module>
