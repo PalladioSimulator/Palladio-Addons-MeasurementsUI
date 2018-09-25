@@ -13,64 +13,106 @@ import org.palladiosimulator.monitorrepository.ProcessingType;
 
 public class MeasurementsFilter extends ViewerFilter {
 
-    private String searchString;
+    private String searchText;
+    private boolean filterActiveMonitors;
+    private boolean filterInactiveMonitors;
 
     public void setSearchText(String s) {
         // ensure that the value can be used for matching
-        this.searchString = (".*" + s + ".*").trim().replace(" ", "").toLowerCase();
+        this.searchText = (".*" + s + ".*").trim().replace(" ", "").toLowerCase();
     }
 
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
         TreeViewer treeViewer = (TreeViewer) viewer;
-        if (searchString == null || searchString.length() == 0 || element instanceof MonitorRepository
+        if (searchText == null || searchText.length() == 0 || element instanceof MonitorRepository
                 || element instanceof MeasuringPointRepository) {
             return true;
         }
 
         if (element instanceof Monitor) {
-            Monitor monitor = (Monitor) element;
-            String monitorMatch = monitor.getEntityName() + "$" + monitor.getId() + "$" + monitor.toString()
-                    + "$monitor$" + monitor.getMeasuringPoint().getStringRepresentation();
-            if (monitorMatch.replace(" ", "").trim().toLowerCase().matches(searchString)) {
-                return true;
-            }
-            
-            for (MeasurementSpecification measurement : monitor.getMeasurementSpecifications()) {
-                if (select(viewer, monitor, measurement)) {
-                    treeViewer.setExpandedState(element, true);
-                    return true;
-                }
-            }
-            
+             return filterMonitor(element, treeViewer);
         }
 
         if (element instanceof MeasurementSpecification) {
-            MeasurementSpecification measurement = (MeasurementSpecification) element;
-            String measurementMatch = measurement.getName() + "$" + measurement.getId() + "$"
-                    + measurement.getMetricDescription().getName() + "$" + measurement.getMetricDescription().getId()
-                    + "$" + measurement.getMetricDescription().getTextualDescription()
-                    + "$MeasurementSpecification$MetricDescription";
-            if (select(viewer, measurement, measurement.getProcessingType())) {
-                treeViewer.setExpandedState(element, true);
-                return true;
-            }
-            return (measurementMatch.replace(" ", "").trim().toLowerCase().matches(searchString));
+            return filterMeasurementSpecification(element, treeViewer);
         }
 
         if (element instanceof ProcessingType) {
-            ProcessingType processing = (ProcessingType) element;
-            String processingTypeMatch = processing.getId()+"$"+processing.toString()+"$ProcessingType";
-            return processingTypeMatch.replace(" ", "").trim().toLowerCase().matches(searchString);
+            return filterProcessingType(element);
         }
 
         if (element instanceof MeasuringPoint) {
-            MeasuringPoint measuringPoint = (MeasuringPoint) element;
-            String measuringPointMatch = measuringPoint.getStringRepresentation()+"$"+measuringPoint.toString()+"$MeasuringPoint";
-            return measuringPointMatch.replace(" ", "").trim().toLowerCase().matches(searchString);
+            return filterMeasuringPoint(element);
         }
 
         return false;
     }
     
+    private boolean filterMonitor(Object element, TreeViewer treeViewer) {
+        Monitor monitor = (Monitor) element;
+        if (filterActiveMonitors && monitor.isActivated()) {
+            return false;
+        }
+        if (filterInactiveMonitors && !monitor.isActivated()) {
+            return false;
+        }
+        final String monitorMatch = monitor.getEntityName() + "$" + monitor.getId() + "$" + monitor.toString()
+                + "$monitor$" + monitor.getMeasuringPoint().getStringRepresentation();
+        if (monitorMatch.replace(" ", "").trim().toLowerCase().matches(searchText)) {
+            return true;
+        }
+        
+        for (MeasurementSpecification measurement : monitor.getMeasurementSpecifications()) {
+            if (select(treeViewer, monitor, measurement)) {
+                treeViewer.setExpandedState(element, true);
+                return true;
+            }
+        }
+        return false;
+    }
+ 
+    private boolean filterMeasurementSpecification(Object element, TreeViewer treeViewer) {
+        MeasurementSpecification measurement = (MeasurementSpecification) element;
+        final String measurementMatch = measurement.getName() + "$" + measurement.getId() + "$"
+                + measurement.getMetricDescription().getName() + "$" + measurement.getMetricDescription().getId()
+                + "$" + measurement.getMetricDescription().getTextualDescription()
+                + "$MeasurementSpecification$MetricDescription";
+        
+        if (select(treeViewer, measurement, measurement.getProcessingType())) {
+            treeViewer.setExpandedState(element, true);
+            return true;
+        }
+        return measurementMatchesSearchText(measurementMatch, searchText);
+    }
+
+    private boolean filterProcessingType(Object element) {
+        ProcessingType processing = (ProcessingType) element;
+        String processingTypeMatch = processing.getId()+"$"+processing.toString()+"$ProcessingType";
+        return processingTypeMatch.replace(" ", "").trim().toLowerCase().matches(searchText);
+    }
+
+    private boolean filterMeasuringPoint(Object element) {
+        MeasuringPoint measuringPoint = (MeasuringPoint) element;
+        String measuringPointMatch = measuringPoint.getStringRepresentation()+"$"+measuringPoint.toString()+"$MeasuringPoint";
+        return measuringPointMatch.replace(" ", "").trim().toLowerCase().matches(searchText);
+    }
+
+    private boolean measurementMatchesSearchText(String measurementMatch, String searchText) {
+        return (measurementMatch.replace(" ", "").trim().toLowerCase().matches(searchText));
+    }
+    
+    /**
+     * @param filterActiveMonitors the filterActiveMonitors to set
+     */
+    public void setFilterActiveMonitors(boolean filterActiveMonitors) {
+        this.filterActiveMonitors = filterActiveMonitors;
+    }
+
+    /**
+     * @param filterInactiveMonitors the filterInactiveMonitors to set
+     */
+    public void setFilterInactiveMonitors(boolean filterInactiveMonitors) {
+        this.filterInactiveMonitors = filterInactiveMonitors;
+    }
 }

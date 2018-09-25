@@ -26,6 +26,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -70,6 +71,7 @@ public class MeasurementsDashboardView {
     private Button deleteButton;
     private Button editButton;
     private MeasurementsFilter filter;
+    private Text searchText;
 
     @Inject
     private MDirtyable dirty;
@@ -242,33 +244,53 @@ public class MeasurementsDashboardView {
         final Label filterLabel = new Label(filterContainer, SWT.NONE);
         filterLabel.setText("Filter:");
         
-        final Text searchText = new Text(filterContainer, SWT.BORDER | SWT.SEARCH);
+        searchText = new Text(filterContainer, SWT.BORDER | SWT.SEARCH);
         searchText.setLayoutData(new GridData(SWT.FILL, SWT.FILL,true, true));
         searchText.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                TreeViewer treeViewer = (TreeViewer)monitorTreeViewer.getViewer();
-                treeViewer.collapseAll();
-                treeViewer.expandToLevel(2);
-                filter.setSearchText(searchText.getText());
-                monitorTreeViewer.getViewer().refresh();
-                measuringTreeViewer.getViewer().refresh();
-                filter.setSearchText("");
+                filterTreeViewer();
             }
         });
+        
         final Label filterActiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
         filterActiveCheckboxLabel.setText("Active\nMonitors");
         final Button filterActiveCheckbox = new Button(filterContainer, SWT.CHECK);
         filterActiveCheckbox.setSelection(true);
+        filterActiveCheckbox.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                filter.setFilterActiveMonitors(!filterActiveCheckbox.getSelection());
+                filterTreeViewer();
+            }
+        });
+        
         final Label filterInactiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
         filterInactiveCheckboxLabel.setText("Inactive\nMonitors");
         final Button filterInactiveCheckbox = new Button(filterContainer, SWT.CHECK);
         filterInactiveCheckbox.setSelection(true);
+        filterInactiveCheckbox.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                filter.setFilterInactiveMonitors(!filterInactiveCheckbox.getSelection());
+                filterTreeViewer();
+            }
+        });
+    }
+    
+    private void filterTreeViewer() {
+        TreeViewer treeViewer = (TreeViewer)monitorTreeViewer.getViewer();
+        treeViewer.collapseAll();
+        treeViewer.expandToLevel(2);
+        filter.setSearchText(searchText.getText());
+        monitorTreeViewer.getViewer().refresh();
+        measuringTreeViewer.getViewer().refresh();
+        filter.setSearchText("");
     }
 
     /**
      * Create all buttons of the view which provide different functionalities like editing,
-     * deleting, assigning measuringpoints to monitor or creating a standard measuring point set
+     * deleting, assigning measuring points to a monitor or creating a standard measuring point set
      * 
      * @param buttonContainer
      *            a composite where the buttons will be placed
