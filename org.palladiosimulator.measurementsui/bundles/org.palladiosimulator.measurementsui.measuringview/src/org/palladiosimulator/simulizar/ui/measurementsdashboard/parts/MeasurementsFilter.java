@@ -11,6 +11,11 @@ import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 
+/**
+ * F
+ * @author zss3
+ *
+ */
 public class MeasurementsFilter extends ViewerFilter {
 
     private String searchText;
@@ -74,7 +79,7 @@ public class MeasurementsFilter extends ViewerFilter {
  
     private boolean filterMeasurementSpecification(Object element, TreeViewer treeViewer) {
         MeasurementSpecification measurement = (MeasurementSpecification) element;
-        final String measurementMatch = measurement.getName() + "$" + measurement.getId() + "$"
+        final String measurementSpecificationMatch = measurement.getName() + "$" + measurement.getId() + "$"
                 + measurement.getMetricDescription().getName() + "$" + measurement.getMetricDescription().getId()
                 + "$" + measurement.getMetricDescription().getTextualDescription()
                 + "$MeasurementSpecification$MetricDescription";
@@ -83,19 +88,19 @@ public class MeasurementsFilter extends ViewerFilter {
             treeViewer.setExpandedState(element, true);
             return true;
         }
-        return measurementMatchesSearchText(measurementMatch, searchText);
+        return measurementMatchesSearchText(measurementSpecificationMatch, searchText);
     }
 
     private boolean filterProcessingType(Object element) {
         ProcessingType processing = (ProcessingType) element;
         String processingTypeMatch = processing.getId()+"$"+processing.toString()+"$ProcessingType";
-        return processingTypeMatch.replace(" ", "").trim().toLowerCase().matches(searchText);
+        return measurementMatchesSearchText(processingTypeMatch, searchText);
     }
 
     private boolean filterMeasuringPoint(Object element) {
         MeasuringPoint measuringPoint = (MeasuringPoint) element;
         String measuringPointMatch = measuringPoint.getStringRepresentation()+"$"+measuringPoint.toString()+"$MeasuringPoint";
-        return measuringPointMatch.replace(" ", "").trim().toLowerCase().matches(searchText);
+        return measurementMatchesSearchText(measuringPointMatch, searchText);
     }
 
     private boolean measurementMatchesSearchText(String measurementMatch, String searchText) {

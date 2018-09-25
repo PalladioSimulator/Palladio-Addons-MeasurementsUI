@@ -160,7 +160,7 @@ public class MeasurementsDashboardView {
         MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService, dataApplication);
         measurementsTreeViewer.addMouseListener();
         measurementsTreeViewer.getViewer().addFilter(filter);
-        addSelectionListener(measurementsTreeViewer.getViewer());
+        addSelectionListener(measurementsTreeViewer);
         return measurementsTreeViewer;
     }
 
@@ -174,7 +174,7 @@ public class MeasurementsDashboardView {
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
         EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent, dirty, commandService, dataApplication);
         emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
-        addSelectionListener(emptyMeasuringPointsTreeViewer.getViewer());
+        addSelectionListener(emptyMeasuringPointsTreeViewer);
         return emptyMeasuringPointsTreeViewer;
     }
 
@@ -184,8 +184,8 @@ public class MeasurementsDashboardView {
      * @param treeViewer
      *            a viewer where the SelectionListener will be added to.
      */
-    private void addSelectionListener(Viewer treeViewer) {
-        treeViewer.addSelectionChangedListener(event -> {
+    private void addSelectionListener(MeasurementsTreeViewer treeViewer) {
+        treeViewer.getViewer().addSelectionChangedListener(event -> {
             IStructuredSelection selection = (IStructuredSelection) event.getSelection();
             selectionService.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
 
@@ -193,7 +193,7 @@ public class MeasurementsDashboardView {
             
             editButton.setText("Edit...");
             deleteButton.setText("Delete...");
-            if (selectionObject instanceof MonitorRepository || selectionObject instanceof MeasuringPointRepository) {
+            if (selectionObject == null || selectionObject instanceof MonitorRepository || selectionObject instanceof MeasuringPointRepository) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
             } else {
