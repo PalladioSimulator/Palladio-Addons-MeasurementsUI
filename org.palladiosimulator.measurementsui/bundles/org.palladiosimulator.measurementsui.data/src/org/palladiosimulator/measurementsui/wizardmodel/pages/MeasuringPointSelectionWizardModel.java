@@ -11,8 +11,6 @@ import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
-import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
-import org.palladiosimulator.monitorrepository.impl.MonitorRepositoryFactoryImpl;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
@@ -51,32 +49,44 @@ import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
  */
 public class MeasuringPointSelectionWizardModel implements WizardModel {
 
-    List<ResourceContainer> resourceContainer = new LinkedList<>();
-
-    private final String createMeasuringPointInfoText = "Select the element of your Models which should be monitored during a simulation run. ";
+    private static final String CREATE_MEASURINGPOINT_INFO_TEXT = "Select the element of your Models which should be "
+            + "monitored during a simulation run. ";
     private final String editMeasuringPointInfoText = "Select a different measuring Point.";
 
-    private final String createMeasuringPointTitel = "Create Measuring Point";
-    private final String editMeasuringPointTitel = "Edit Measuring Point";
+    private static final String CREATE_MEASURINGPOINT_TITLE = "Create Measuring Point";
+    private static final String EDIT_MEASURINGPOINT_TITLE = "Edit Measuring Point";
 
     private Monitor monitor;
     private boolean isEditing;
-    private static MeasuringPointSelectionWizardModel instance;
-    MonitorRepositoryFactory mf = new MonitorRepositoryFactoryImpl();
-    ResourceEditorImpl editor = new ResourceEditorImpl();
-    Object currentSelectionFirstMeasuringModel;
-    Object currentSecondStageModel;
-    Object currentThirdStageModel;
-    String test;
+    private ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
+    private Object currentSelectionFirstMeasuringModel;
+    private Object currentSecondStageModel;
+    private Object currentThirdStageModel;
 
-    DataApplication da = DataApplication.getInstance();
-  
+    private DataApplication da = DataApplication.getInstance();
+
+    /**
+     * 
+     * @param monitor
+     *            the monitor with which the model should be initialized
+     * @param isEditing
+     *            indicates, whether it is in edit mode or not
+     */
     public MeasuringPointSelectionWizardModel(Monitor monitor, boolean isEditing) {
         this.monitor = monitor;
         this.isEditing = isEditing;
 
     }
 
+    /**
+     * 
+     * @param monitor
+     *            the monitor which is currently used in the wizard
+     * @param measuringPoint
+     *            the measuringpoint which needs to be added to the monitor
+     * @param isEditing
+     *            indicates, whether it is in edit mode or not
+     */
     private void setMeasuringPointDependingOnEditMode(Monitor monitor, MeasuringPoint measuringPoint,
             boolean isEditing) {
         if (isEditing) {
@@ -91,6 +101,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * measuring point and adds it to the monitor
      * 
      * @param model
+     *            the model, which indicates which measuringpoint needs to be created
      */
     public void createMeasuringPoint(Object model) {
 
@@ -233,6 +244,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * helper method to add the measuringpoint to the monitor
      * 
      * @param measuringPoint
+     *            the measuringpoint to be added to the monitor
      */
     public void addMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
         monitor.setMeasuringPoint(measuringPoint);
@@ -243,6 +255,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * adds a measuringpoint to the given repository
      * 
      * @param measuringPoint
+     *            the measuringpoint to be added to the measuringpoint repository
      */
     public void addMeasuringPointToRepository(MeasuringPoint measuringPoint) {
         MeasuringPointRepository measuringPointRepository = DataApplication.getInstance().getModelAccessor()
@@ -267,12 +280,11 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         if (this.monitor.getMeasuringPoint() != null) {
             return editMeasuringPointInfoText;
         }
-        return createMeasuringPointInfoText;
+        return CREATE_MEASURINGPOINT_INFO_TEXT;
     }
 
     @Override
     public boolean nextStep() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -282,9 +294,9 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     @Override
     public String getTitleText() {
         if (this.monitor.getMeasuringPoint() != null) {
-            return createMeasuringPointTitel;
+            return CREATE_MEASURINGPOINT_TITLE;
         }
-        return editMeasuringPointTitel;
+        return EDIT_MEASURINGPOINT_TITLE;
 
     }
 
@@ -306,8 +318,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * @return List<ResourceContainer>
      */
     public List<ResourceContainer> getResourceContainer() {
-
-      
 
         return da.getModelAccessor().getResourceEnvironment().stream()
                 .flatMap(e -> e.getResourceContainer_ResourceEnvironment().stream())
@@ -333,8 +343,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<LinkingResource> getLinkingResources() {
 
-    
-
         return da.getModelAccessor().getResourceEnvironment().stream()
                 .flatMap(e -> e.getLinkingResources__ResourceEnvironment().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
@@ -347,9 +355,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<UsageScenario> getUsageScenarios() {
 
-
-        return da.getModelAccessor().getUsageModel().stream()
-                .flatMap(e -> e.getUsageScenario_UsageModel().stream())
+        return da.getModelAccessor().getUsageModel().stream().flatMap(e -> e.getUsageScenario_UsageModel().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -359,7 +365,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * @return List<AbstractUserAction>
      */
     public List<AbstractUserAction> getEntryLevelSystemCalls() {
-
 
         return getUsageScenarios().stream()
                 .flatMap(e -> e.getScenarioBehaviour_UsageScenario().getActions_ScenarioBehaviour().stream())
@@ -442,10 +447,12 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * helper class to filter out empty model lists
      * 
      * @param fillerList
+     *            the list of all the lists of models required for the second wizard page
      * @param modelList
+     *            the list with all the models of a type
      * @return List
      */
-    public List addOnlyFilledLists(List fillerList, List modelList) {
+    public List<Object> addOnlyFilledLists(List<Object> fillerList, List<?> modelList) {
 
         if (!modelList.isEmpty()) {
             fillerList.add(modelList);
@@ -506,7 +513,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     /**
      * setter for the selection of the first step in the creation of a measuring point
      * 
-     * @return Object
+     * @param current
+     *            the current object selected in the tree
      */
     public void setCurrentSelection(Object current) {
         this.currentSelectionFirstMeasuringModel = current;
@@ -525,6 +533,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * setter for the monitor the measuring point needs to be added to
      * 
      * @param monitor
+     *            the monitor the wizard operates on
      */
     public void setMonitor(Monitor monitor) {
         this.monitor = monitor;
@@ -542,7 +551,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     /**
      * setter for the selection of the second step in the creation of a measuring point
      * 
-     * @return Object
+     * @param currentSecondStageModel
+     *            the current secondary model selected in the measuring point wizard
      */
     public void setCurrentSecondStageModel(Object currentSecondStageModel) {
         this.currentSecondStageModel = currentSecondStageModel;
@@ -560,7 +570,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     /**
      * setter for the selection of the third step in the creation of a measuring point
      * 
-     * @return Object
+     * @param currentThirdStageModel
+     *            the current third model selected in the measuring point wizard
      */
     public void setCurrentThirdStageModel(Object currentThirdStageModel) {
         this.currentThirdStageModel = currentThirdStageModel;

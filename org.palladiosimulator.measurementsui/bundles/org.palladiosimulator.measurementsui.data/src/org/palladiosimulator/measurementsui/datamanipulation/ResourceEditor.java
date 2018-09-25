@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.datamanipulation;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -66,6 +67,14 @@ public interface ResourceEditor {
     void deleteResource(EObject objToDelete);
 
     /**
+     * Delete a List of MeasurementSpecifications, specifically for deleting mspecs out of the
+     * wizard monitor in edit mode in the 3rd page.
+     * 
+     * @param objsToDelete
+     */
+    void deleteMultipleResources(EList<MeasurementSpecification> objsToDelete);
+
+    /**
      * Sets MetricDescription for a MeasurementSpecification using EMF Commands.
      * 
      * @param aMeasurementSpecification
@@ -83,11 +92,38 @@ public interface ResourceEditor {
     void addMeasurementSpecificationToMonitor(EObject monitor, MeasurementSpecification mspec);
 
     /**
+     * 
+     * @param monitor
+     * @param MSpecList
+     */
+    void addMeasurementSpecificationsToMonitor(EObject monitor, EList<MeasurementSpecification> mSpecList);
+
+    /**
      * Appends a Monitor to a Monitor Repository through AddCommands.
      * 
      * @param monitorRepository
      * @param monitor
      */
     void addMonitorToRepository(EObject monitorRepository, EObject monitor);
+
+    /**
+     * Sets the Processing Type for a Measurement Specification using EMF Set Command. Used in 4th
+     * page of Wizard.
+     * 
+     * @param measurementSpecification
+     * @param processingType
+     */
+    public void setProcessingType(EObject measurementSpecification, EObject processingType);
+
+    /**
+     * Sets the PT attribute using EMF Set Command. Value should be either double or int, depending
+     * on the attribute.
+     * 
+     * @param processingType
+     * @param processingTypeAttributeName
+     *            The String name of the PT Attribute that we want to set
+     * @param value
+     */
+    public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Object value);
 
 }

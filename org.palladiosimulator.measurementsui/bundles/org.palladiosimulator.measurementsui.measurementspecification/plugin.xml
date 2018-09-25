@@ -5,6 +5,13 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.emf.parsley"
+            class="org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationExecutableExtensionFactory:org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationSaveableTableView"
+            id="org.palladiosimulator.measurementsui.measurementspecification"
+            name="Measurementspecification"
+            restorable="true">
+      </view>
+      <view
+            category="org.eclipse.emf.parsley"
             class="measurementspecification.MeasurementspecificationExecutableExtensionFactory:measurementspecification.MeasurementspecificationSaveableTableView"
             id="measurementspecification"
             name="Measurementspecification"

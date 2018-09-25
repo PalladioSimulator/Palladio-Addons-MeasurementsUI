@@ -10,7 +10,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.palladiosimulator.monitorrepository.Monitor;
 import com.google.inject.Injector;
 import org.palladiosimulator.measurementsui.newMonitor.NewMonitorInjectorProvider;
-import org.palladiosimulator.measurementsui.wizardpages.AddMonitorWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.AddMonitorWizardPage;
 
 /**
  * This class handles the view for the form for the 1st wizard page where the new monitor is created.
