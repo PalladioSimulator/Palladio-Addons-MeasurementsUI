@@ -12,7 +12,10 @@ Require-Bundle: org.eclipse.ui,
  org.apache.commons.collections15,
  org.junit,
  org.eclipse.swt,
- org.apache.log4j
+ org.apache.log4j,
+ org.eclipse.swtbot.e4.finder,
+ org.eclipse.e4.ui.workbench,
+ org.eclipse.e4.ui.model.workbench
 Bundle-RequiredExecutionEnvironment: JavaSE-10
 Automatic-Module-Name: org.palladiosimulator.swtbot
 Bundle-ActivationPolicy: lazy

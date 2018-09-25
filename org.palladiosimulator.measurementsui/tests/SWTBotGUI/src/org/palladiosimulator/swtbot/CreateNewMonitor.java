@@ -1,11 +1,16 @@
 package org.palladiosimulator.swtbot;
 
 import static org.eclipse.swtbot.swt.finder.SWTBotAssert.pass;
+import static org.eclipse.swtbot.swt.finder.waits.Conditions.shellCloses;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.eclipse.e4.ui.internal.workbench.E4Workbench;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.workbench.modeling.EPartService;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -14,10 +19,14 @@ import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.matchers.WithText;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.internal.dnd.SwtUtil;
 import org.hamcrest.Matcher;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -64,9 +73,23 @@ public class CreateNewMonitor {
         SWTBotShell shell = bot.shell("Show View");
         shell.activate();
 
-        bot.tree().select("Sample Category").expandNode("Sample Category").select("Measurements Overview");
-        bot.button("Open").click();
-        bot.closeAllShells();
+        SWTBotTree tree = bot.tree();
+        for (SWTBotTreeItem item : tree.getAllItems()) {
+            if ("Sample Category".equals(item.getText())) {
+
+                item.expand();
+                for (SWTBotTreeItem element : item.getItems()) {
+                    if ("Measurements Dashboard".equals(element.getText())) {
+
+                        element.select();
+                    }
+                }
+            }
+        }
+
+//        bot.tree().select("Sample Category").expandNode("Sample Category").select("Measurements Overview");
+//        bot.button("Open").click();
+//        bot.waitUntil(shellCloses(shell));
 
     }
 
@@ -87,24 +110,39 @@ public class CreateNewMonitor {
         if (addCheck.isChecked() == false)
             addCheck.click();
         bot.button("Next >").click();
+        Display.getDefault().syncExec(new Runnable() {
 
-//        SWTBotShell measuringShell = bot.shell("Edit Measuring Point");
-//        measuringShell.activate();
-        SWTBotTree tree = bot.treeWithId("org.palladiosimulator.measurementsui.emptymeasuringpoints");
-        tree.setFocus();
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+
+            }
+
+        });
+        SWTBotTabItem tabItem = bot.tabItem("Create new measuring point");
+        assertEquals("Create new measuring point", tabItem.getText());
+        SWTBotTabItem tabItem2 = bot.tabItem("Select existing measuring point");
+        bot.tabItem("Select existing measuring point").activate();
+        assertEquals("Select existing measuring point", tabItem2.getText());
+        bot.tabItem("Create new measuring point").activate().setFocus();
+
+        SWTBotShell shell = bot.activeShell();
+        shell.activate();
+
+//        SWTBotTree tree = bot.tree().select("System");
     }
 
-    
-    public static void closeWelcomePage () {
-        for(SWTBotView view : bot.views()) {
-            if(view.getTitle().equals("Welcome")) {
+    public static void closeWelcomePage() {
+        for (SWTBotView view : bot.views()) {
+            if (view.getTitle().equals("Welcome")) {
                 view.close();
             }
         }
     }
+
     @AfterClass
     public static void afterClass() throws Exception {
         bot.sleep(2000);
-        bot.closeAllShells();
+//        bot.closeAllShells();
     }
 }
