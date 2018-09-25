@@ -7,13 +7,13 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 
 /**
- * This class is used as an exmaple of an extension to the MeasuringPointMetricsWorkingCombinations
+ * This class is used as an example of an extension to the MeasuringPointMetricsWorkingCombinations
  * ExtensionPoint which defines, that the ResponseTime metric works with
  * a UsageScenarioMeasuringPoint, and it should also be suggested.
  * @author Lasse
  *
  */
-public class MeasuringPointMetricsWorkingCombinations3 implements IMeasuringPointMetricsWorkingCombinations {
+public class ResponseTimeWithUsageScenarioMeasuringPoint implements IMeasuringPointMetricsWorkingCombinations {
 
 
     @Override
