@@ -16,14 +16,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Used to get valid projects from the workspace. Mainly used for finding the .aird file of projects to determine if wizard work-flow can be applied on the project.
+ * Used to get valid projects from the workspace. Mainly used for finding the .aird file of projects
+ * to determine if wizard work-flow can be applied on the project.
  * 
  * @author Florian
  *
  */
-public class DataGathering {
+public class ValidProjectAccessor {
 
-    private static final Logger LOGGER = Logger.getLogger(DataGathering.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ValidProjectAccessor.class.getName());
 
     /**
      * This Method returns the path to the ".aird" file depeding on the selected project.
