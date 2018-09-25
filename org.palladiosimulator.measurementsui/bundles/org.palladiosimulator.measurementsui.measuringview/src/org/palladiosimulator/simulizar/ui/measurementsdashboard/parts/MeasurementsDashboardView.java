@@ -6,10 +6,16 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.eclipse.core.resources.IMarkerDelta;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Persist;
@@ -125,10 +131,70 @@ public class MeasurementsDashboardView {
      */
     private void createWorkspaceListener() {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IResourceChangeListener listener = e -> Display.getDefault().asyncExec(this::updateMeasuringPointView);
+        IResourceChangeListener listener = new IResourceChangeListener() {
+            
+            @Override
+            public void resourceChanged(IResourceChangeEvent event) {
+                
+                Display.getDefault().asyncExec(new Runnable() {
+                    
+                    @Override
+                    public void run() {
+                       updateMeasuringPointView();
+                        
+                    }
+                });       
+               
+                System.out.println("Resources have changed.");
+                try {
+                    event.getDelta().accept(new DeltaPrinter());
+                } catch (CoreException e) {
+                    e.printStackTrace();
+                }
+               
+            }
+        };
+                
+            
 
-        workspace.addResourceChangeListener(listener, 1);
+        workspace.addResourceChangeListener(listener,IResourceChangeEvent.POST_CHANGE);
     }
+    
+    class DeltaPrinter implements IResourceDeltaVisitor {
+        public boolean visit(IResourceDelta delta) {
+           IResource res = delta.getResource();
+           switch (delta.getKind()) {
+              case IResourceDelta.ADDED:
+                 System.out.print("Resource " + res.getClass());
+                 System.out.print(res.getFullPath());
+                 System.out.println(" was added.");
+                 break;
+              case IResourceDelta.REMOVED:
+                 System.out.print("Resource " + res.getClass());
+                 System.out.print(res.getFullPath());
+                 System.out.println(" was removed.");
+                 break;
+              case IResourceDelta.CHANGED:
+                  System.out.print("Resource " + res.getClass());
+                  System.out.print(delta.getFullPath());
+                  System.out.println(" has changed.");
+                  int flags = delta.getFlags();
+                  if ((flags & IResourceDelta.CONTENT) != 0) {
+                        System.out.println("--> Content Change");
+                  }
+                  if ((flags & IResourceDelta.REPLACED) != 0) {
+                        System.out.println("--> Content Replaced");
+                  }
+                  if ((flags & IResourceDelta.MARKERS) != 0) {
+                        System.out.println("--> Marker Change");
+                        IMarkerDelta[] markers = delta.getMarkerDeltas();
+                        // if interested in markers, check these deltas
+                  }
+                 break;
+           }
+           return true; // visit the children
+        }
+     }
 
     /**
      * Creates a tree view which shows all existing monitors and their childs in the selected
@@ -362,6 +428,7 @@ public class MeasurementsDashboardView {
      * Reloads the dashboard view and updates it, if something changed
      */
     private void updateMeasuringPointView() {
+        System.out.println("Updating DashboardView");
         updateProjectComboBox();
         dataApplication.updateData();
         updateTreeViewer();
