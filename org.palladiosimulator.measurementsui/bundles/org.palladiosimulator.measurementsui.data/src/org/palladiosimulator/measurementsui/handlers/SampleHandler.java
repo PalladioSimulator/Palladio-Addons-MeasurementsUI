@@ -7,7 +7,7 @@ import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
+import org.palladiosimulator.measurementsui.fileaccess.ValidProjectAccessor;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 
@@ -23,7 +23,7 @@ public class SampleHandler extends AbstractHandler {
 
 		DataApplication start = DataApplication.getInstance();
 		ResourceEditor editor = ResourceEditorImpl.getInstance();
-		DataGathering gatherer = new DataGathering();
+		ValidProjectAccessor gatherer = new ValidProjectAccessor();
 		
 		start.loadData(0);
 		

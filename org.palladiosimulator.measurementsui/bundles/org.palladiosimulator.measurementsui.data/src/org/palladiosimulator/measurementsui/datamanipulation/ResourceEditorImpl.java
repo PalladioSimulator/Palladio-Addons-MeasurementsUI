@@ -12,10 +12,6 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
  * @author Florian
  *
  */
-/**
- * @author Florian Nieuwenhuizen
- *
- */
 public final class ResourceEditorImpl implements ResourceEditor {
 
     private final DataEditor editor = new DataEditor();
@@ -146,6 +142,9 @@ public final class ResourceEditorImpl implements ResourceEditor {
 
     }
 
+    /* (non-Javadoc)
+     * @see org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor#addMeasurementSpecificationsToMonitor(org.eclipse.emf.ecore.EObject, org.eclipse.emf.common.util.EList)
+     */
     @Override
     public void addMeasurementSpecificationsToMonitor(EObject monitor, EList<MeasurementSpecification> mSpecList) {
         editor.addListOfResources(monitor, "measurementSpecifications", mSpecList);
@@ -165,10 +164,17 @@ public final class ResourceEditorImpl implements ResourceEditor {
 
     }
     
+    /* (non-Javadoc)
+     * @see org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor#setProcessingType(org.eclipse.emf.ecore.EObject, org.eclipse.emf.ecore.EObject)
+     */
+    @Override
     public void setProcessingType(EObject measurementSpecification, EObject processingType) {
         editor.editResource(measurementSpecification, "processingType", processingType);
     }
 
+    /* (non-Javadoc)
+     * @see org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor#setAProcessingTypeAttribute(org.eclipse.emf.ecore.EObject, java.lang.String, java.lang.Object)
+     */
     @Override
     public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Object value) {
         editor.editResource(processingType, processingTypeAttributeName, value);

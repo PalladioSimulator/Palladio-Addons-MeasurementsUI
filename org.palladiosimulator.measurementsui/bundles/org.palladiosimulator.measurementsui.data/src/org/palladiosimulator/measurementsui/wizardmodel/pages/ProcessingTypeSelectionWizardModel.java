@@ -6,6 +6,7 @@ import org.palladiosimulator.measurementsui.dataprovider.ProcessingTypeProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
+import org.palladiosimulator.monitorrepository.ProcessingType;
 
 public class ProcessingTypeSelectionWizardModel implements WizardModel {
 
@@ -88,18 +89,6 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
 	}
 
 	/**
-	 * Sets the values for the modification fields of each Processing Type.
-	 * 
-	 * @param aMeasurementSpecification
-	 * @param floatValues
-	 */
-	public void editProcessingTypeAttributes(MeasurementSpecification aMeasurementSpecification,
-			List<Double> floatValues) {
-		provider.setProcessingTypeAttributes(aMeasurementSpecification, floatValues, isEditing);
-
-	}
-
-	/**
 	 * Sets the value for a single ProcessingTypeAttribute.
 	 * 
 	 * @param aMeasurementSpecification
@@ -118,9 +107,13 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
 	 * @param aProcessingTypeAttribute
 	 * @return
 	 */
-	public Double getAProccesingTypeAttribute(MeasurementSpecification aMeasurementSpecification,
+	public Number getAProccesingTypeAttribute(MeasurementSpecification aMeasurementSpecification,
 			String aProcessingTypeAttribute) {
 		return provider.getAProcessingType(aMeasurementSpecification, aProcessingTypeAttribute);
 	}
 
+	
+	public String getStringOfProcessingType(ProcessingType processingType) {
+	    return provider.getProcessingTypeString(processingType);
+	}
 }
