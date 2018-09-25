@@ -82,6 +82,8 @@ public class CreateNewMonitor {
                     if ("Measurements Dashboard".equals(element.getText())) {
 
                         element.select();
+                        bot.button("Open").click();
+                        bot.sleep(1500);
                     }
                 }
             }
