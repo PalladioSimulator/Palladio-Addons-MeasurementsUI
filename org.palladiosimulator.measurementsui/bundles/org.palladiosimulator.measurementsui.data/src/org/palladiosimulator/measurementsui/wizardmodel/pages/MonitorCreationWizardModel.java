@@ -92,7 +92,7 @@ public class MonitorCreationWizardModel implements WizardModel {
 	        this.monitor.setActivated(activatedOrNot);
 	    } else {
 	        ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
-	        editor.changeMonitorActive(this.monitor, activatedOrNot);
+	        editor.changeMonitorActive(this.monitor, !activatedOrNot);
 	    }
 	}
 }
