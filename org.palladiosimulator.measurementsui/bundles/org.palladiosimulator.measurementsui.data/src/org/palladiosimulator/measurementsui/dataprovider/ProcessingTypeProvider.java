@@ -25,7 +25,16 @@ import org.palladiosimulator.monitorrepository.impl.VariableSizeAggregationImpl;
  */
 public class ProcessingTypeProvider {
 
-    private static final String EDIT_MODE_NOT_YET_SUPPORTERD = "Edit Mode not yet supporterd";
+    private static final String RETROSPECTION_LENGTH = "Retrospection Length";
+    private static final String WINDOW_LENGTH = "Window Length";
+    private static final String WINDOW_INCREMENT = "Window Increment";
+    private static final String NUMBER_OF_MEASUREMENTS = "Number of Measurements";
+    private static final String FREQUENCY = "Frequency";
+    private static final String VARIABLE_SIZE_AGGREGATION = "VariableSizeAggregation";
+    private static final String TIME_DRIVEN = "TimeDriven";
+    private static final String TIME_DRIVEN_AGGREGATION = "TimeDrivenAggregation";
+    private static final String FIXED_SIZE_AGGREGATION = "FixedSizeAggregation";
+    private static final String FEED_THROUGH = "FeedThrough";
     private MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();
     private ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
 
@@ -48,21 +57,21 @@ public class ProcessingTypeProvider {
 
         for (EObject aProcessingType : listOfProcessingTypes) {
             if (aProcessingType instanceof FeedThroughImpl) {
-                allProcessingTypesArray[0] = "FeedThrough";
+                allProcessingTypesArray[0] = FEED_THROUGH;
 
             } else if (aProcessingType instanceof FixedSizeAggregationImpl) {
-                allProcessingTypesArray[1] = "FixedSizeAggregation";
+                allProcessingTypesArray[1] = FIXED_SIZE_AGGREGATION;
 
             } else if (aProcessingType instanceof TimeDrivenImpl) {
                 if (aProcessingType instanceof TimeDrivenAggregationImpl) {
-                    allProcessingTypesArray[3] = "TimeDrivenAggregation";
+                    allProcessingTypesArray[3] = TIME_DRIVEN_AGGREGATION;
 
                 } else {
-                    allProcessingTypesArray[2] = "TimeDriven";
+                    allProcessingTypesArray[2] = TIME_DRIVEN;
                 }
 
             } else if (aProcessingType instanceof VariableSizeAggregationImpl) {
-                allProcessingTypesArray[4] = "VariableSizeAggregation";
+                allProcessingTypesArray[4] = VARIABLE_SIZE_AGGREGATION;
 
             }
 
@@ -80,20 +89,20 @@ public class ProcessingTypeProvider {
     public List<String> provideProcessingTypeProperties(String processingTypeString) {
         LinkedList<String> propertiesForProcessingType = new LinkedList<>();
         switch (processingTypeString) {
-        case "FeedThrough":
+        case FEED_THROUGH:
             break;
-        case "FixedSizeAggregation":
-            propertiesForProcessingType.add("Frequency");
-            propertiesForProcessingType.add("Number of Measurements");
+        case FIXED_SIZE_AGGREGATION:
+            propertiesForProcessingType.add(FREQUENCY);
+            propertiesForProcessingType.add(NUMBER_OF_MEASUREMENTS);
             break;
-        case "TimeDriven":
-        case "TimeDrivenAggregation":
-            propertiesForProcessingType.add("Window Increment");
-            propertiesForProcessingType.add("Window Length");
+        case TIME_DRIVEN:
+        case TIME_DRIVEN_AGGREGATION:
+            propertiesForProcessingType.add(WINDOW_INCREMENT);
+            propertiesForProcessingType.add(WINDOW_LENGTH);
             break;
-        case "VariableSizeAggregation":
-            propertiesForProcessingType.add("Frequency");
-            propertiesForProcessingType.add("Retrospection Length");
+        case VARIABLE_SIZE_AGGREGATION:
+            propertiesForProcessingType.add(FREQUENCY);
+            propertiesForProcessingType.add(RETROSPECTION_LENGTH);
             break;
         default:
             break;
@@ -112,7 +121,7 @@ public class ProcessingTypeProvider {
             String selectedProcessingType, boolean isEditing) {
 
         switch (selectedProcessingType) {
-        case "FeedThrough":
+        case FEED_THROUGH:
             if (isEditing) {
                 editor.setProcessingType(measurementSpecification, monFactory.createFeedThrough());
             } else {
@@ -120,28 +129,28 @@ public class ProcessingTypeProvider {
             }
 
             break;
-        case "FixedSizeAggregation":
+        case FIXED_SIZE_AGGREGATION:
             if (isEditing) {
                 editor.setProcessingType(measurementSpecification, monFactory.createFixedSizeAggregation());
             } else {
                 measurementSpecification.setProcessingType(monFactory.createFixedSizeAggregation());
             }
             break;
-        case "TimeDriven":
+        case TIME_DRIVEN:
             if (isEditing) {
                 editor.setProcessingType(measurementSpecification, monFactory.createTimeDriven());
             } else {
                 measurementSpecification.setProcessingType(monFactory.createTimeDriven());
             }
             break;
-        case "TimeDrivenAggregation":
+        case TIME_DRIVEN_AGGREGATION:
             if (isEditing) {
                 editor.setProcessingType(measurementSpecification, monFactory.createTimeDrivenAggregation());
             } else {
                 measurementSpecification.setProcessingType(monFactory.createTimeDrivenAggregation());
             }
             break;
-        case "VariableSizeAggregation":
+        case VARIABLE_SIZE_AGGREGATION:
             if (isEditing) {
                 editor.setProcessingType(measurementSpecification, monFactory.createVariableSizeAggregation());
             } else {
@@ -149,55 +158,13 @@ public class ProcessingTypeProvider {
             }
             break;
         default:
-            System.err.println("You done fucked up boy");
+            break;
         }
 
     }
 
     /**
-     * Sets the PT attributes. TODO: EMF Commands for Edit Mode.
-     * 
-     * @param measurementSpecification
-     * @param values
-     * @param isEditing
-     */
-    public void setProcessingTypeAttributes(MeasurementSpecification measurementSpecification, List<Double> values,
-            boolean isEditing) {
-        ProcessingType processingType = measurementSpecification.getProcessingType();
-        if (processingType instanceof FixedSizeAggregationImpl) {
-            if (isEditing) {
-                // TODO: Edit Mode
-            } else {
-                ((FixedSizeAggregationImpl) processingType).setFrequency(values.get(0).intValue());
-                ((FixedSizeAggregationImpl) processingType).setNumberOfMeasurements(values.get(1).intValue());
-            }
-
-        } else if (processingType instanceof TimeDrivenImpl) { // works for both Time Driven and
-                                                               // TimeDrivenAggregation, since
-                                                               // Aggregation is child of TimeDriven
-                                                               // and both require the same values
-                                                               // to be set
-            if (isEditing) {
-                // TODO: Edit Mode
-            } else {
-                ((TimeDrivenImpl) processingType).setWindowIncrement(values.get(0));
-                ((TimeDrivenImpl) processingType).setWindowLength(values.get(1));
-            }
-
-        } else if (processingType instanceof VariableSizeAggregationImpl) {
-            if (isEditing) {
-                // TODO: Edit Mode
-            } else {
-                ((VariableSizeAggregationImpl) processingType).setFrequency(values.get(0).intValue());
-                ((VariableSizeAggregationImpl) processingType).setRetrospectionLength(values.get(1).intValue());
-            }
-
-        }
-
-    }
-
-    /**
-     * Sets a single PT attribute. TODO: EMF Commands for Edit Mode.
+     * Sets a single PT attribute.
      * 
      * @param measurementSpecification
      * @param processingTypeProperty
@@ -208,67 +175,103 @@ public class ProcessingTypeProvider {
             String processingTypeProperty, Double value, boolean isEditing) {
         ProcessingType processingType = measurementSpecification.getProcessingType();
         if (processingType instanceof FixedSizeAggregationImpl) {
-            if (isEditing) {
-                // frequency, numberOfMeasurements
-                if (processingTypeProperty.equals("Frequency")) {
-                    editor.setAProcessingTypeAttribute((FixedSizeAggregationImpl) processingType, "frequency",
-                            value.intValue());
-                }
-                if (processingTypeProperty.equals("Number of Measurements")) {
-                    editor.setAProcessingTypeAttribute((FixedSizeAggregationImpl) processingType,
-                            "numberOfMeasurements", value.intValue());
-                }
-            } else {
-                if (processingTypeProperty.equals("Frequency")) {
-                    ((FixedSizeAggregationImpl) processingType).setFrequency(value.intValue());
-                }
-
-                if (processingTypeProperty.equals("Number of Measurements")) {
-                    ((FixedSizeAggregationImpl) processingType).setNumberOfMeasurements(value.intValue());
-                }
-
-            }
+            setFixedSizeAggregation(processingTypeProperty, value, isEditing, processingType);
         } else if (processingType instanceof TimeDrivenImpl) {
-            if (isEditing) {
-                // windowLength, windowIncrement
-                if (processingTypeProperty.equals("Window Increment")) {
-                    editor.setAProcessingTypeAttribute((TimeDrivenImpl) processingType, "windowIncrement", value);
-                }
-                if (processingTypeProperty.equals("Window Length")) {
-                    editor.setAProcessingTypeAttribute((TimeDrivenImpl) processingType, "windowLength", value);
-                }
-            } else {
-                if (processingTypeProperty.equals("Window Increment")) {
-                    ((TimeDrivenImpl) processingType).setWindowIncrement(value);
-                }
+            setTimeDriven(processingTypeProperty, value, isEditing, processingType);
+        } else if (processingType instanceof VariableSizeAggregationImpl) {
+            setVariableSizeAggregation(processingTypeProperty, value, isEditing, processingType);
+        }
+    }
 
-                if (processingTypeProperty.equals("Window Length")) {
-                    ((TimeDrivenImpl) processingType).setWindowLength(value);
-                }
-
+    /**
+     * Setter method for the variableSizeAggregation Processing Type. Uses EMF Commands in Edit
+     * Mode.
+     * 
+     * @param processingTypeProperty
+     * @param value
+     * @param isEditing
+     * @param processingType
+     */
+    private void setVariableSizeAggregation(String processingTypeProperty, Double value, boolean isEditing,
+            ProcessingType processingType) {
+        if (isEditing) {
+            if (processingTypeProperty.equals(FREQUENCY)) {
+                editor.setAProcessingTypeAttribute((VariableSizeAggregationImpl) processingType, "frequency",
+                        value.intValue());
             }
 
-        } else if (processingType instanceof VariableSizeAggregationImpl) {
-            if (isEditing) {
-                // frequency, retrospectionLength
-                if (processingTypeProperty.equals("Frequency")) {
-                    editor.setAProcessingTypeAttribute((VariableSizeAggregationImpl) processingType, "frequency",
-                            value.intValue());
-                }
+            if (processingTypeProperty.equals(RETROSPECTION_LENGTH)) {
+                editor.setAProcessingTypeAttribute((VariableSizeAggregationImpl) processingType, "retrospectionLength",
+                        value);
+            }
+        } else {
+            if (processingTypeProperty.equals(FREQUENCY)) {
+                ((VariableSizeAggregationImpl) processingType).setFrequency(value.intValue());
+            }
 
-                if (processingTypeProperty.equals("Retrospection Length")) {
-                    editor.setAProcessingTypeAttribute((VariableSizeAggregationImpl) processingType,
-                            "retrospectionLength", (double) value.intValue());
-                }
-            } else {
-                if (processingTypeProperty.equals("Frequency")) {
-                    ((VariableSizeAggregationImpl) processingType).setFrequency(value.intValue());
-                }
+            if (processingTypeProperty.equals(RETROSPECTION_LENGTH)) {
+                ((VariableSizeAggregationImpl) processingType).setRetrospectionLength(value);
+            }
 
-                if (processingTypeProperty.equals("Retrospection Length")) {
-                    ((VariableSizeAggregationImpl) processingType).setRetrospectionLength(value.intValue());
-                }
+        }
+    }
 
+    /**
+     * Setter method for the TimeDriven and TimeDrivenAggregation Processing Type. Uses EMF Commands
+     * in Edit Mode.
+     * 
+     * @param processingTypeProperty
+     * @param value
+     * @param isEditing
+     * @param processingType
+     */
+    private void setTimeDriven(String processingTypeProperty, Double value, boolean isEditing,
+            ProcessingType processingType) {
+        if (isEditing) {
+            if (processingTypeProperty.equals(WINDOW_INCREMENT)) {
+                editor.setAProcessingTypeAttribute((TimeDrivenImpl) processingType, "windowIncrement", value);
+            }
+            if (processingTypeProperty.equals(WINDOW_LENGTH)) {
+                editor.setAProcessingTypeAttribute((TimeDrivenImpl) processingType, "windowLength", value);
+            }
+        } else {
+            if (processingTypeProperty.equals(WINDOW_INCREMENT)) {
+                ((TimeDrivenImpl) processingType).setWindowIncrement(value);
+            }
+
+            if (processingTypeProperty.equals(WINDOW_LENGTH)) {
+                ((TimeDrivenImpl) processingType).setWindowLength(value);
+            }
+
+        }
+    }
+
+    /**
+     * Setter method for the fixedSizeAggregation Processing Type. Uses EMF Commands in Edit Mode.
+     * 
+     * @param processingTypeProperty
+     * @param value
+     * @param isEditing
+     * @param processingType
+     */
+    private void setFixedSizeAggregation(String processingTypeProperty, Double value, boolean isEditing,
+            ProcessingType processingType) {
+        if (isEditing) {
+            if (processingTypeProperty.equals(FREQUENCY)) {
+                editor.setAProcessingTypeAttribute((FixedSizeAggregationImpl) processingType, "frequency",
+                        value.intValue());
+            }
+            if (processingTypeProperty.equals(NUMBER_OF_MEASUREMENTS)) {
+                editor.setAProcessingTypeAttribute((FixedSizeAggregationImpl) processingType, "numberOfMeasurements",
+                        value.intValue());
+            }
+        } else {
+            if (processingTypeProperty.equals(FREQUENCY)) {
+                ((FixedSizeAggregationImpl) processingType).setFrequency(value.intValue());
+            }
+
+            if (processingTypeProperty.equals(NUMBER_OF_MEASUREMENTS)) {
+                ((FixedSizeAggregationImpl) processingType).setNumberOfMeasurements(value.intValue());
             }
 
         }
@@ -279,39 +282,70 @@ public class ProcessingTypeProvider {
      * 
      * @param measurementSpecification
      * @param processingTypeProperty
-     * @return
+     * @return Either a double or int depending on the type of attribute.
      */
-    public Double getAProcessingType(MeasurementSpecification measurementSpecification, String processingTypeProperty) {
+    public Number getAProcessingType(MeasurementSpecification measurementSpecification, String processingTypeProperty) {
         ProcessingType processingType = measurementSpecification.getProcessingType();
         if (processingType instanceof FixedSizeAggregationImpl) {
 
-            if (processingTypeProperty.equals("Frequency")) {
-                return (double) ((FixedSizeAggregationImpl) processingType).getFrequency();
+            if (processingTypeProperty.equals(FREQUENCY)) {
+                return ((FixedSizeAggregationImpl) processingType).getFrequency();
             }
-            if (processingTypeProperty.equals("Number of Measurements")) {
-                return (double) ((FixedSizeAggregationImpl) processingType).getNumberOfMeasurements();
+            if (processingTypeProperty.equals(NUMBER_OF_MEASUREMENTS)) {
+                return ((FixedSizeAggregationImpl) processingType).getNumberOfMeasurements();
             }
 
         } else if (processingType instanceof TimeDrivenImpl) {
 
-            if (processingTypeProperty.equals("Window Increment")) {
+            if (processingTypeProperty.equals(WINDOW_INCREMENT)) {
                 return ((TimeDrivenImpl) processingType).getWindowIncrement();
             }
 
-            if (processingTypeProperty.equals("Window Length")) {
+            if (processingTypeProperty.equals(WINDOW_LENGTH)) {
                 return ((TimeDrivenImpl) processingType).getWindowLength();
             }
 
         } else if (processingType instanceof VariableSizeAggregationImpl) {
-            if (processingTypeProperty.equals("Frequency")) {
-                return (double) ((VariableSizeAggregationImpl) processingType).getFrequency();
+            if (processingTypeProperty.equals(FREQUENCY)) {
+                return ((VariableSizeAggregationImpl) processingType).getFrequency();
             }
 
-            if (processingTypeProperty.equals("Retrospection Length")) {
+            if (processingTypeProperty.equals(RETROSPECTION_LENGTH)) {
                 return ((VariableSizeAggregationImpl) processingType).getRetrospectionLength();
             }
 
         }
         return null;
+    }
+
+    /**
+     * Returns the correct name of a given ProcessingType.
+     * 
+     * @param aProcessingType
+     *            the given ProcessingType
+     * @return the correct name of a given ProcessingType
+     */
+    public String getProcessingTypeString(ProcessingType aProcessingType) {
+        String result;
+        if (aProcessingType instanceof FeedThroughImpl) {
+            result = FEED_THROUGH;
+
+        } else if (aProcessingType instanceof FixedSizeAggregationImpl) {
+            result = FIXED_SIZE_AGGREGATION;
+
+        } else if (aProcessingType instanceof TimeDrivenImpl) {
+            if (aProcessingType instanceof TimeDrivenAggregationImpl) {
+                result = TIME_DRIVEN_AGGREGATION;
+
+            } else {
+                result = TIME_DRIVEN;
+            }
+
+        } else if (aProcessingType instanceof VariableSizeAggregationImpl) {
+            result = VARIABLE_SIZE_AGGREGATION;
+        } else {
+            throw new IllegalArgumentException();
+        }
+        return result;
     }
 }

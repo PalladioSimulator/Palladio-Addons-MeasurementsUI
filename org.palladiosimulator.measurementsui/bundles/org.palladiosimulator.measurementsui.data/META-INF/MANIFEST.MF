@@ -27,3 +27,5 @@ Export-Package: org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.fileaccess,
  org.palladiosimulator.measurementsui.wizardmodel,
  org.palladiosimulator.measurementsui.wizardmodel.pages
+Import-Package: org.palladiosimulator.measurementsui.extensionpoint.definition,
+ org.palladiosimulator.measurementsui.extensionpoint.evaluation
