@@ -58,8 +58,8 @@ public final class DataApplication {
      * 
      * @param selectionIndex index of selected project
      */
-    public void loadData(int selectionIndex) {
-    	this.project = this.dataGathering.getAllProjectAirdfiles().get(selectionIndex);
+    public void loadData(IProject project) {
+    	this.project = project;
     	
         initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
         initializeSession(sessionResourceURI);

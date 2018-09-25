@@ -122,8 +122,10 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        dataApplication.loadData(0);
+        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
     }
+    
+    IProject addedProject = null;
 
     /**
      * Adds a changeListener to the eclipse workspace to listen to changes in it and update our GUI
@@ -132,69 +134,114 @@ public class MeasurementsDashboardView {
     private void createWorkspaceListener() {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
         IResourceChangeListener listener = new IResourceChangeListener() {
-            
+ 
             @Override
             public void resourceChanged(IResourceChangeEvent event) {
+
                 
-                Display.getDefault().asyncExec(new Runnable() {
-                    
-                    @Override
-                    public void run() {
-                       updateMeasuringPointView();
-                        
+                IProject deletedProject = null;
+                addedProject =null;
+                IProject changedProject = null;
+                IResourceDelta delta = event.getDelta();
+                for (IResourceDelta deltaElement : delta.getAffectedChildren()) {
+                    IResource res = deltaElement.getResource();
+
+                    switch (deltaElement.getKind()) {
+                    case IResourceDelta.ADDED:
+                        if(res instanceof IProject) {
+                            addedProject = (IProject) res;
+                        }
+                        System.out.print("Resource " + res.getClass() + "  ");
+                        System.out.print(res.getFullPath());
+                        System.out.println(" was added.");
+                        break;
+                    case IResourceDelta.REMOVED:
+                        if(res instanceof IProject) {
+                            deletedProject = (IProject) res;
+                        }
+                        System.out.print("Resource " + res.getClass()+ "  ");
+                        System.out.print(res.getFullPath());
+                        System.out.println(" was removed.");
+                        break;
+                    case IResourceDelta.CHANGED:
+                        if(res instanceof IProject) {
+                            changedProject = (IProject) res;
+                        }
+                        System.out.print("Resource " + res.getClass()+ "  ");
+                        System.out.print(delta.getFullPath());
+                        System.out.println(" has changed.");
+                        int flags = delta.getFlags();
+                        if ((flags & IResourceDelta.CONTENT) != 0) {
+                              System.out.println("--> Content Change");
+                        }
+                        if ((flags & IResourceDelta.REPLACED) != 0) {
+                              System.out.println("--> Content Replaced");
+                        }
+                        if ((flags & IResourceDelta.MARKERS) != 0) {
+                              System.out.println("--> Marker Change");
+                              IMarkerDelta[] markers = delta.getMarkerDeltas();
+                              // if interested in markers, check these deltas
+                        }
                     }
-                });       
-               
-                System.out.println("Resources have changed.");
-                try {
-                    event.getDelta().accept(new DeltaPrinter());
-                } catch (CoreException e) {
-                    e.printStackTrace();
+
+                }  
+                
+                if(deletedProject!= null && deletedProject.equals(dataApplication.getProject())){
+                    System.out.println("Same Project");
+                    if(addedProject == null) {
+                        
+                        Display.getDefault().asyncExec(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
+                                updateProjectComboBox();
+                                updateTreeViewer();
+                                
+
+                            }
+                        }); 
+                       
+                    } else {
+                        System.out.println("AddedProject is null?: " + addedProject);
+                        Display.getDefault().asyncExec(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                System.out.println("Add renamend Project " + addedProject);
+                                dataApplication.loadData(addedProject);
+                                updateProjectComboBox();
+                                updateTreeViewer();
+
+                            }
+                        }); 
+                       
+                    }
+                    
+                    
+                } else if (addedProject != null|| deletedProject!= null) {
+                    Display.getDefault().asyncExec(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            updateProjectComboBox();
+
+                        }
+                    }); 
+                   
                 }
-               
+                
+                System.out.println("Added project: " + addedProject);
+                System.out.println("Deleted project: " + deletedProject);
+                System.out.println("Changed project: " + changedProject);                        
+
             }
         };
-                
-            
-
+        
         workspace.addResourceChangeListener(listener,IResourceChangeEvent.POST_CHANGE);
     }
-    
-    class DeltaPrinter implements IResourceDeltaVisitor {
-        public boolean visit(IResourceDelta delta) {
-           IResource res = delta.getResource();
-           switch (delta.getKind()) {
-              case IResourceDelta.ADDED:
-                 System.out.print("Resource " + res.getClass());
-                 System.out.print(res.getFullPath());
-                 System.out.println(" was added.");
-                 break;
-              case IResourceDelta.REMOVED:
-                 System.out.print("Resource " + res.getClass());
-                 System.out.print(res.getFullPath());
-                 System.out.println(" was removed.");
-                 break;
-              case IResourceDelta.CHANGED:
-                  System.out.print("Resource " + res.getClass());
-                  System.out.print(delta.getFullPath());
-                  System.out.println(" has changed.");
-                  int flags = delta.getFlags();
-                  if ((flags & IResourceDelta.CONTENT) != 0) {
-                        System.out.println("--> Content Change");
-                  }
-                  if ((flags & IResourceDelta.REPLACED) != 0) {
-                        System.out.println("--> Content Replaced");
-                  }
-                  if ((flags & IResourceDelta.MARKERS) != 0) {
-                        System.out.println("--> Marker Change");
-                        IMarkerDelta[] markers = delta.getMarkerDeltas();
-                        // if interested in markers, check these deltas
-                  }
-                 break;
-           }
-           return true; // visit the children
-        }
-     }
+
+
 
     /**
      * Creates a tree view which shows all existing monitors and their childs in the selected
@@ -390,7 +437,7 @@ public class MeasurementsDashboardView {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
-                dataApplication.loadData(selectionIndex);
+                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex));
                 updateTreeViewer();
             }
 
@@ -408,7 +455,7 @@ public class MeasurementsDashboardView {
      */
     private void updateProjectComboBox() {
 
-        int selectionIndex = -1;
+        int selectionIndex = 0;
         projectsComboDropDown.removeAll();
         List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
         for (int i = 0; i < allProjects.size(); i++) {

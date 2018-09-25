@@ -107,6 +107,9 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 
         PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
         PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
+        
+        
+       
 
         if (model instanceof ResourceContainer) {
             ResourceContainer container = (ResourceContainer) model;

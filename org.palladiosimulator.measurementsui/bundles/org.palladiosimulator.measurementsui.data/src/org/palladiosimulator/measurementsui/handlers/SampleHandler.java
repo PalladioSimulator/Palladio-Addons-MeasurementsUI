@@ -25,7 +25,7 @@ public class SampleHandler extends AbstractHandler {
 		ResourceEditor editor = ResourceEditorImpl.getInstance();
 		DataGathering gatherer = new DataGathering();
 		
-		start.loadData(0);
+		//start.loadData(0);
 		
 		Monitor aMon = start.getModelAccessor().getMonitorRepository().get(0).getMonitors().get(0); 
 		EList<MeasurementSpecification> mSpecs = aMon.getMeasurementSpecifications();
