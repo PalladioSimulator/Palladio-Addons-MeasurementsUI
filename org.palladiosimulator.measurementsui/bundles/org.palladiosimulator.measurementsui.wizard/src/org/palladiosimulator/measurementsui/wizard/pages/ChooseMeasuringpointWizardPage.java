@@ -189,6 +189,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
             return page;
 
         } else {
+            SelectMeasurementsWizardPage page = (SelectMeasurementsWizardPage) super.getNextPage();
+            
             return super.getNextPage();
         }
 

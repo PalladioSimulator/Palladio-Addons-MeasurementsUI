@@ -206,4 +206,11 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		setPageComplete(true);
 		setControl(container);
 	}
+	@Override
+	public void setVisible(boolean visible) {
+	    if(visible) {
+	        metricDescriptionSelectionWizardModel.initUnusedMetrics(metricDescriptionSelectionWizardModel.getUsedMetricsMonitor());
+	    }
+	    super.setVisible(visible);
+	}
 }

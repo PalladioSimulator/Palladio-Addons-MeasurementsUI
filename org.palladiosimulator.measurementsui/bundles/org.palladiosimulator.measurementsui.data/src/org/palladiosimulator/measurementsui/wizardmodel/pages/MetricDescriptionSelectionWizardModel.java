@@ -5,6 +5,7 @@ import org.palladiosimulator.measurementsui.dataprovider.UnselectedMetricSpecifi
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 
 /**
  * Provides all methods to edit the MeasurementSpecifications of a monitor in the wizard
@@ -35,9 +36,14 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
         this.provider = new UnselectedMetricSpecificationsProvider();
         this.usedMetricsMonitor = monitor;
         this.isEditing = isEditing;
-        this.unusedMetricsMonitor = provider.createMonitorWithMissingMetricDescriptions(usedMetricsMonitor);
+        this.unusedMetricsMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+
     }
 
+    public void initUnusedMetrics(Monitor usedMonitor) {
+        unusedMetricsMonitor = provider.createMonitorWithMissingMetricDescriptions(usedMonitor);
+    }
+    
     @Override
     public boolean canFinish() {
         return !metricListIsEmpty();
