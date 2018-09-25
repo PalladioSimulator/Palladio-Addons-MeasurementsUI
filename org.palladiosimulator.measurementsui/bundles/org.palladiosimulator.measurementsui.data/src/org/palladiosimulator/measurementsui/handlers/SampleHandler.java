@@ -8,7 +8,7 @@ import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.extensionpoint.evaluation.EvaluateExtensions;
-import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
+import org.palladiosimulator.measurementsui.fileaccess.ValidProjectAccessor;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 
@@ -55,16 +55,6 @@ public class SampleHandler extends AbstractHandler {
 //              System.out.println(ex.getMessage());
 //          }
     
-
-
-		DataApplication start = DataApplication.getInstance();
-		ResourceEditor editor = new ResourceEditorImpl();
-		DataGathering gatherer = new DataGathering();
-		
-		start.loadData(0);
-		
-		Monitor aMon = start.getModelAccessor().getMonitorRepository().get(0).getMonitors().get(0); 
-		EList<MeasurementSpecification> mSpecs = aMon.getMeasurementSpecifications();
 
 		return null;
 	}

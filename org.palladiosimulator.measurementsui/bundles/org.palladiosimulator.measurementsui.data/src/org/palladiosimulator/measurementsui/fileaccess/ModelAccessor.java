@@ -16,7 +16,7 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
-import org.palladiosimulator.measurementsui.datamanipulation.DataRepositoryCreator;
+import org.palladiosimulator.measurementsui.datamanipulation.RepositoryCreator;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
@@ -167,11 +167,11 @@ public class ModelAccessor {
     public void checkIfRepositoriesExist(IProject project) {
     	
     	if (!monitorRepositoryExists()) {
-    		addMonitorRepository(DataRepositoryCreator.getInstance().createMonitorRepository(project));
+    		addMonitorRepository(RepositoryCreator.getInstance().createMonitorRepository(project));
     	}
     	
     	if (!measuringPointRepositoryExists()) {
-    		addMeasuringPointRepository(DataRepositoryCreator.getInstance().createMeasuringPointRepository(project));
+    		addMeasuringPointRepository(RepositoryCreator.getInstance().createMeasuringPointRepository(project));
     	}
     		
     }

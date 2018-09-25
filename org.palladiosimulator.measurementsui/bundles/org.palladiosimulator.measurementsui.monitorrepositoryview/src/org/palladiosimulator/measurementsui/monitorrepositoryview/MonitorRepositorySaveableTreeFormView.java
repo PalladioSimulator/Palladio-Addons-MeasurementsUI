@@ -3,7 +3,7 @@ package org.palladiosimulator.measurementsui.monitorrepositoryview;
 import org.eclipse.emf.parsley.views.SaveableTreeView;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.palladiosimulator.measurementsui.wizardmain.MeasuringPointsWizard;
+import org.palladiosimulator.measurementsui.wizard.main.MeasurementsWizard;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.monitorrepository.Monitor;
 
@@ -17,7 +17,7 @@ import org.palladiosimulator.monitorrepository.Monitor;
 public class MonitorRepositorySaveableTreeFormView extends SaveableTreeView {
 	
 	public static void openWizard() {
-		MeasuringPointsWizard wizard = new MeasuringPointsWizard();
+		MeasurementsWizard wizard = new MeasurementsWizard();
 		Shell parentShell = wizard.getShell();
 		WizardDialog dialog = new WizardDialog(parentShell, wizard);
 		dialog.setPageSize(720, 400);
@@ -26,7 +26,7 @@ public class MonitorRepositorySaveableTreeFormView extends SaveableTreeView {
 	}
 	
 	public static void openWizard(WizardModelType type, Monitor monitor) {
-		MeasuringPointsWizard wizard = new MeasuringPointsWizard(type, monitor);
+		MeasurementsWizard wizard = new MeasurementsWizard(type, monitor);
 		Shell parentShell = wizard.getShell();
 		WizardDialog dialog = new WizardDialog(parentShell, wizard);
 		dialog.setPageSize(720, 400);

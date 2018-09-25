@@ -1,0 +1,59 @@
+package org.palladiosimulator.measurementsui.wizard.handlers.editingsupport;
+
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+
+/**
+ * This class enables editing support for the 2nd column on the 4th wizard page (for
+ * ProcessingTypes).
+ * 
+ * @author Mehmet, Ba
+ *
+ */
+public final class ProcessingTypeEditingSupport extends MeasurementSpecificationEditingSupport {
+
+    /**
+     * Constructor, where basic attributes are set for further use, e. g. the according
+     * ColumnViewer, TableViewer.
+     * 
+     * @param columnViewer the given ColumnViewer
+     * @param tableViewer the given TableViewer
+     * @param processingTypeSelectionWizardModel the internal model handler
+     */
+    public ProcessingTypeEditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
+            ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {     
+        super(columnViewer, tableViewer, processingTypeSelectionWizardModel);
+        
+        cellEditor = new ComboBoxViewerCellEditor((Composite) getViewer().getControl(), SWT.READ_ONLY);
+        ((ComboBoxViewerCellEditor) cellEditor).setContenProvider(new ArrayContentProvider());
+        String[] possibleProcessingTypes = processingTypeSelectionWizardModel.providePossibleProcessingTypes();
+        ((ComboBoxViewerCellEditor) cellEditor).setInput(possibleProcessingTypes);
+    }
+
+    @Override
+    protected boolean canEdit(Object element) {
+        return true;
+    }
+
+    @Override
+    protected Object getValue(Object element) {
+        MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
+        return super.processingTypeSelectionWizardModel.getStringOfProcessingType(measurementSpecification.getProcessingType());
+    }
+
+    @Override
+    protected void setValue(Object element, Object value) {
+        MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
+        String selectedProcessingTypeString = (String) value;
+        
+        processingTypeSelectionWizardModel.assignProcessingType(measurementSpecification, selectedProcessingTypeString);
+        tableViewer.refresh();
+    }
+
+}
