@@ -116,7 +116,7 @@ public class WizardModelManager {
         WizardModel newWizardModel;
         switch (wizardModelType) {
         case MONITOR_CREATION:
-            newWizardModel = new MonitorCreationWizardModel(monitor);
+            newWizardModel = new MonitorCreationWizardModel(monitor, isEditing);
             break;
         case MEASURING_POINT_SELECTION:
             newWizardModel = new MeasuringPointSelectionWizardModel(monitor, isEditing);
