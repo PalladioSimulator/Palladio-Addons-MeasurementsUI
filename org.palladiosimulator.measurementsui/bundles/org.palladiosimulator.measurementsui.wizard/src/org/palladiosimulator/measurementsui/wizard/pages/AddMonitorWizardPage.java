@@ -3,16 +3,16 @@ package org.palladiosimulator.measurementsui.wizard.pages;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.palladiosimulator.measurementsui.wizard.viewer.MonitorFormViewer;
+import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
-import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
  * This class handles the first wizard page for creating a new monitor.
@@ -43,26 +43,44 @@ public class AddMonitorWizardPage extends WizardPage {
     public void createControl(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);
         
-        parent.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-        
-        FillLayout layout = new FillLayout();
-        container.setLayout(layout);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 2;
+        container.setLayout(gridLayout);
 
+        Label nameLabel = new Label(container, SWT.NONE);
+        nameLabel.setText("Name: ");
+        
+        Text nameText = new Text(container, SWT.BORDER);
+        nameText.setText(this.model.getMonitor().getEntityName());
+        nameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        nameText.addModifyListener(e -> {
+            this.model.setMonitorName(nameText.getText());
+            if (nameText.getText().length() > 0) {
+                this.setPageComplete(true);
+            } else {
+                this.setPageComplete(false);
+            }
+
+        });
+        
+        Label activatedLabel = new Label(container, SWT.NONE);
+        activatedLabel.setText("Activated: ");
+        
+        Button activatedCheckbox = new Button(container, SWT.CHECK);
+        activatedCheckbox.setSelection(this.model.getMonitor().isActivated());
+        activatedCheckbox.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                model.setMonitorActivated(activatedCheckbox.getSelection());                
+            }
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // not used here, but the existence of this method is required
+            }
+        });
+        
         setControl(container);
         setPageComplete(true);
-
-        createMonitorFormViewer(container, model.getMonitor(), this);
-    }
-    
-    /**
-     * Creates a form view where the user can edit different properties for the newly created monitor object.
-     * @param parent the parent composite that contains the form view
-     * @param newMonitor the newly created monitor object
-     * @param wizardPage this wizard page
-     * @return the form view 
-     */
-    private MonitorFormViewer createMonitorFormViewer(Composite parent, Monitor newMonitor, AddMonitorWizardPage wizardPage) {
-        return new MonitorFormViewer(parent, newMonitor, wizardPage);
     }
 
     @Override
