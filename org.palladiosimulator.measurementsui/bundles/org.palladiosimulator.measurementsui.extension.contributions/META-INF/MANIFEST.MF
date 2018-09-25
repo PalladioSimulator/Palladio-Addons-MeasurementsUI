@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Contributions
+Bundle-SymbolicName: org.palladiosimulator.measurementsui.extension.contributions;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.palladiosimulator.measurementsui.extension.contributions
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.13.0",
+ org.palladiosimulator.measurementsui.data;bundle-version="0.0.1",
+ org.palladiosimulator.measurementsui.extensionpoint.definition;bundle-version="1.0.0"
+Import-Package: org.palladiosimulator.edp2.models.measuringpoint,
+ org.palladiosimulator.metricspec,
+ org.palladiosimulator.metricspec.constants,
+ org.palladiosimulator.pcmmeasuringpoint
