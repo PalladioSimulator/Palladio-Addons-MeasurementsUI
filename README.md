@@ -4,7 +4,7 @@ Code Repository for Palladio UI Extension
 About the project structure:
 
 All code is located within the "org.palladiosimulator.measurementsui"-project. All functional code is separated between different projects, which are all located in the "bundles"-folder.
-Tests belong to the "tests" folder. The main maven-tycho pom.xml can be found in the releng-folder  in the project "org.palladiosimlator.measurementsui.configuration".
+Tests belong to the "tests" folder. The main maven-tycho pom.xml can be found in the releng-folder  in the project "org.palladiosimulator.measurementsui.configuration".
 
 How to run this project: 
 - Run a new runtime configuration on any of the sub-projects from the bundles folder (e.g. on org.palladiosimulator.measurementsui.data)
