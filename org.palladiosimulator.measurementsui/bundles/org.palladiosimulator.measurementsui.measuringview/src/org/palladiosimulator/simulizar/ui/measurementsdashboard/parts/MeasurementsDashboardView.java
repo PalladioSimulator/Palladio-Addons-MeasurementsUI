@@ -233,7 +233,7 @@ public class MeasurementsDashboardView {
      */
     private void createFilterGadgets(Composite parent) {
         Composite filterContainer = new Composite(parent,SWT.NONE);
-        filterContainer.setLayout(new GridLayout(4, false));
+        filterContainer.setLayout(new GridLayout(6, false));
         filterContainer.setLayoutData(new GridData(SWT.FILL, SWT.TOP,false, false));
         filterContainer.setBackground(new Color(Display.getCurrent(),255,255,255));
         
@@ -256,12 +256,13 @@ public class MeasurementsDashboardView {
                 filter.setSearchText("");
             }
         });
-        
+        final Label filterActiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
+        filterActiveCheckboxLabel.setText("Active\nMonitors");
         final Button filterActiveCheckbox = new Button(filterContainer, SWT.CHECK);
-        filterActiveCheckbox.setText("Active");
         filterActiveCheckbox.setSelection(true);
+        final Label filterInactiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
+        filterInactiveCheckboxLabel.setText("Inactive\nMonitors");
         final Button filterInactiveCheckbox = new Button(filterContainer, SWT.CHECK);
-        filterInactiveCheckbox.setText("Inactive");
         filterInactiveCheckbox.setSelection(true);
     }
 
