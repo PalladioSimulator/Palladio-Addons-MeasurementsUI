@@ -19,6 +19,7 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWiz
  * @author Birasanth Pushpanathan
  * @author David Schuetz Added WizardModel integration
  * @author Lasse Merz Added WizardModel integration
+ * @author Ba reworked first page, now working without Parsley, due to complication with GUI Design
  *
  */
 public class AddMonitorWizardPage extends WizardPage {
