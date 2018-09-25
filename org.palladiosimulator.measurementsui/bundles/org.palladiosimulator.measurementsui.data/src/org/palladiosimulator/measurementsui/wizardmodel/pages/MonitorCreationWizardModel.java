@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmodel.pages;
 
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 
@@ -19,17 +20,18 @@ public class MonitorCreationWizardModel implements WizardModel {
 	
 	private static final String CREATE_MONITOR_TITEL = "Create Monitor";
 	private static final String EDIT_MONITOR_TITEL = "Edit Monitor";
-
 	
 	private Monitor monitor;
+	private boolean isEditing;
 	
 	/**
 	 * Constructor
 	 * @param monitor to edit
+	 * @param isEditing indicates whether we are in edit mode or creation mode
 	 */
-	 public MonitorCreationWizardModel(Monitor monitor) {
+	 public MonitorCreationWizardModel(Monitor monitor, boolean isEditing) {
 		 this.monitor = monitor;
-		
+		 this.isEditing = isEditing;
 	}
 	 
 	 /**
@@ -66,8 +68,31 @@ public class MonitorCreationWizardModel implements WizardModel {
 		}
 		
 		return CREATE_MONITOR_TITEL;
-
-		
 	}
 
+	/**
+	 * Sets the name of the monitor.
+	 * @param name the new given name of the monitor
+	 */
+	public void setMonitorName(String name) {
+	    if (!this.isEditing) {
+    	    this.monitor.setEntityName(name);
+	    } else {    	    
+    	    ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
+    	    editor.setResourceName(this.monitor, name);
+	    }
+	}
+
+	/**
+	 * Sets the activated attribute of the monitor.
+	 * @param activatedOrNot the given boolean to be set for the activated attribute
+	 */
+	public void setMonitorActivated(boolean activatedOrNot) {
+	    if (!this.isEditing) {
+	        this.monitor.setActivated(activatedOrNot);
+	    } else {
+	        ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
+	        editor.changeMonitorActive(this.monitor, activatedOrNot);
+	    }
+	}
 }
