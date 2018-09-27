@@ -81,7 +81,7 @@ public class UnselectedMetricSpecificationsProvider {
             createMonitorWithMissingDescriptions(monFactory, nonMatchingMetricDesciptions, unusedMonitor);
 
         } else {
-            createMonitorWithMissingDescriptions(monFactory, validMetricDescriptionList, unusedMonitor);
+            createMonitorWithMissingDescriptions(monFactory, allMetricDescriptions, unusedMonitor);
         }
 
     }
