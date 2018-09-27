@@ -240,7 +240,7 @@ public class MeasurementsDashboardView {
 							} else if (addedProject != null || deletedProject != null) {
 								updateProjectComboBox();
 							} else if (changedProject != null) {
-								
+							    dataApplication.loadData(changedProject);
 								updateTreeViewer();
 							}
 
@@ -503,7 +503,6 @@ public class MeasurementsDashboardView {
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
     private void updateTreeViewer() {
-    	dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
         monitorTreeViewer.update();
         measuringTreeViewer.update();
     }
