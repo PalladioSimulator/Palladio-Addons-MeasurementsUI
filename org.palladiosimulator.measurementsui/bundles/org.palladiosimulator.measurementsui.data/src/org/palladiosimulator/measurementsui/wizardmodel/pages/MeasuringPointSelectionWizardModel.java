@@ -123,10 +123,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     public void createMeasuringPoint(Object model) {
 
         PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
-        PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
-        
-        
-       
+        PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();      
 
         if (model instanceof ResourceContainer) {
             ResourceContainer container = (ResourceContainer) model;
