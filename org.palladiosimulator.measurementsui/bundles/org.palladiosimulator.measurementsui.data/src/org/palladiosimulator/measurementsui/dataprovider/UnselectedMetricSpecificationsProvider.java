@@ -49,7 +49,7 @@ public class UnselectedMetricSpecificationsProvider {
      *            The Monitor that gets passed from the previous Wizard Page
      * @return the Monitor with the missing Metric Description<->Measurement Specification pairs
      */
-    public Monitor createMonitorWithMissingMetricDescriptions(Monitor passedMonitor) {
+    public void createMonitorWithMissingMetricDescriptions(Monitor passedMonitor, Monitor unusedMonitor) {
         MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();
 
         // Only way to get all Metric Descriptions from scratch
@@ -78,10 +78,10 @@ public class UnselectedMetricSpecificationsProvider {
             findNonMatchingMetricDescriptions(metricDescriptionsInPassedMonitor, allMetricDescriptions,
                     nonMatchingMetricDesciptions);
 
-            return createMonitorWithMissingDescriptions(monFactory, nonMatchingMetricDesciptions);
+            createMonitorWithMissingDescriptions(monFactory, nonMatchingMetricDesciptions, unusedMonitor);
 
         } else {
-            return createMonitorWithMissingDescriptions(monFactory, allMetricDescriptions);
+            createMonitorWithMissingDescriptions(monFactory, validMetricDescriptionList, unusedMonitor);
         }
 
     }
@@ -157,8 +157,7 @@ public class UnselectedMetricSpecificationsProvider {
      * @return
      */
     private Monitor createMonitorWithMissingDescriptions(MonitorRepositoryFactory monFactory,
-            EList<MetricDescription> listOfMetricDescriptions) {
-        Monitor tempMon = monFactory.createMonitor();
+            EList<MetricDescription> listOfMetricDescriptions, Monitor tempMon) {
         EList<MeasurementSpecification> mSpecList = new BasicEList<>();
         createMeasurementSpecificationsForEveryMetricDescription(listOfMetricDescriptions, monFactory, mSpecList);
         setMetricDescriptionForEveryMeasurementSpecification(listOfMetricDescriptions, mSpecList);

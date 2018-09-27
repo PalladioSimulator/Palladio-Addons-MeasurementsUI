@@ -41,7 +41,7 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
     }
 
     public void initUnusedMetrics(Monitor usedMonitor) {
-        unusedMetricsMonitor = provider.createMonitorWithMissingMetricDescriptions(usedMonitor);
+        provider.createMonitorWithMissingMetricDescriptions(usedMonitor, unusedMetricsMonitor);
     }
     
     @Override
