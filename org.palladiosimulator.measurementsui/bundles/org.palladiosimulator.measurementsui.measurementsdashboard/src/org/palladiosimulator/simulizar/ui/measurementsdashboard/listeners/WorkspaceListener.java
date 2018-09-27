@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.measurementsdashboard.listeners;
+package org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
