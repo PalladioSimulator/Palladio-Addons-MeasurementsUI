@@ -93,7 +93,7 @@ public class UnselectedMetricSpecificationsProvider {
      * @param passedMP
      * @return the map Of MetricDescription, boolean(suggested) pairs.
      */
-    private Map<MetricDescription, Boolean> getAllValidMetricDescriptionsForMeasuringPoint(Monitor passedMonitor) {
+    public Map<MetricDescription, Boolean> getAllValidMetricDescriptionsForMeasuringPoint(Monitor passedMonitor) {
         if (passedMonitor.getMeasuringPoint() != null) {
 
             MeasuringPoint passedMP = passedMonitor.getMeasuringPoint();
@@ -250,7 +250,7 @@ public class UnselectedMetricSpecificationsProvider {
      * @param nonMatchingMetricDesciptions
      * @param mSpecList
      */
-    private void setMetricDescriptionForEveryMeasurementSpecification(
+    public void setMetricDescriptionForEveryMeasurementSpecification(
             EList<MetricDescription> nonMatchingMetricDesciptions, EList<MeasurementSpecification> mSpecList) {
         for (int i = 0; i < mSpecList.size(); i++) {
             mSpecList.get(i).setMetricDescription(nonMatchingMetricDesciptions.get(i));
@@ -264,7 +264,7 @@ public class UnselectedMetricSpecificationsProvider {
      * @param monFactory
      * @param mSpecList
      */
-    private void createMeasurementSpecificationsForEveryMetricDescription(
+    public void createMeasurementSpecificationsForEveryMetricDescription(
             EList<MetricDescription> nonMatchingMetricDesciptions, MonitorRepositoryFactory monFactory,
             EList<MeasurementSpecification> mSpecList) {
         for (int i = 0; i < nonMatchingMetricDesciptions.size(); i++) {

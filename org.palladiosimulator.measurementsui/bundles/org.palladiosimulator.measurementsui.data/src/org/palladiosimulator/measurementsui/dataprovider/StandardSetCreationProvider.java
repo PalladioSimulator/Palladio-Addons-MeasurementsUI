@@ -2,9 +2,14 @@ package org.palladiosimulator.measurementsui.dataprovider;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
+import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -28,7 +33,7 @@ public class StandardSetCreationProvider {
      * @return List of Monitors with MPs assigned for every resource
      */
     public List<Monitor> createMonitorForEveryResource() {
-        List<Monitor> monitorList = new LinkedList();
+        List<Monitor> monitorList = new LinkedList<Monitor>();
 
         Monitor tempMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
         MeasuringPointSelectionWizardModel model = new MeasuringPointSelectionWizardModel(tempMonitor, false);
@@ -50,6 +55,42 @@ public class StandardSetCreationProvider {
             }
         }
         return monitorList;
+    }
+
+    /**
+     * adds suggested, valid Metric Description<->MeasurementSpecification pairs to each Monitor.
+     * 
+     * @param monitorArray
+     */
+    public void addMetricDescriptionsToAllMonitors(Monitor[] monitorArray) {
+        for (Monitor aMonitor : monitorArray) {
+            addValidMetricDescriptionsToMonitor(aMonitor);
+        }
+    }
+
+    /**
+     * finds all suggested Metric Descriptions for the monitor, creates mspec <-> metricDesc pair
+     * and adds it to the given Monitor.
+     * 
+     * @param monitor
+     */
+    public void addValidMetricDescriptionsToMonitor(Monitor monitor) {
+        EList<MetricDescription> suggestedMetricDescriptionsList = new BasicEList<>();
+        UnselectedMetricSpecificationsProvider provider = new UnselectedMetricSpecificationsProvider();
+        Map<MetricDescription, Boolean> validMetricDescriptions = provider
+                .getAllValidMetricDescriptionsForMeasuringPoint(monitor);
+        for (Map.Entry<MetricDescription, Boolean> entry : validMetricDescriptions.entrySet()) {
+            if (entry.getValue()) {
+                suggestedMetricDescriptionsList.add(entry.getKey());
+            }
+        }
+        if (!suggestedMetricDescriptionsList.isEmpty()) {
+            MonitorRepositoryFactory factory = MonitorRepositoryFactory.eINSTANCE;
+            EList<MeasurementSpecification> mSpecList = new BasicEList<>();
+            provider.createMeasurementSpecificationsForEveryMetricDescription(suggestedMetricDescriptionsList, factory,
+                    mSpecList);
+            provider.setMetricDescriptionForEveryMeasurementSpecification(suggestedMetricDescriptionsList, mSpecList);
+        }
     }
 
     /**
