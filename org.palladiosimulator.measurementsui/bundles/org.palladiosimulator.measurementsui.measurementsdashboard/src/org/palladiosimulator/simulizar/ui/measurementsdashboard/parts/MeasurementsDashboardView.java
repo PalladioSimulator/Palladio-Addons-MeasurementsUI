@@ -465,15 +465,6 @@ public class MeasurementsDashboardView {
     }
 
     /**
-     * Reloads the dashboard view and updates it, if something changed
-     */
-    private void updateMeasuringPointView() {
-        updateProjectComboBox();
-        dataApplication.updateData();
-        updateTreeViewer();
-    }
-
-    /**
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
     public void updateTreeViewer() {
