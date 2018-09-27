@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -73,6 +72,15 @@ public class MeasurementsDashboardView {
     private Button editButton;
     private MeasurementsFilter filter;
     private Text searchText;
+    
+    private static final String EDITTEXT_GRAYEDOUT = "Edit...";
+    private static final String DELETETEXT_GRAYEDOUT = "Delete...";
+    private static final String EDITTEXT_MONITOR = "Edit Monitor";
+    private static final String DELETETEXT_MONITOR = "Delete Monitor";
+    private static final String EDITTEXT_MEASUREMENT = "Edit Measurement";
+    private static final String DELETETEXT_MEASUREMENT = "Delete Measurement";
+    private static final String EDITTEXT_PROCESSINGTYPE = "Edit ProcessingType";
+    
 
     @Inject
     private MDirtyable dirty;
@@ -195,8 +203,9 @@ public class MeasurementsDashboardView {
 
             Object selectionObject = selection.getFirstElement();
 
-            editButton.setText("Edit...");
-            deleteButton.setText("Delete...");
+            editButton.setText(EDITTEXT_GRAYEDOUT);
+            deleteButton.setText(DELETETEXT_GRAYEDOUT);
+            
             if (selectionObject == null || selectionObject instanceof MonitorRepository
                     || selectionObject instanceof MeasuringPointRepository) {
                 editButton.setEnabled(false);
@@ -205,15 +214,15 @@ public class MeasurementsDashboardView {
                 editButton.setEnabled(true);
                 if (selectionObject instanceof ProcessingType) {
                     deleteButton.setEnabled(false);
-                    editButton.setText("Edit ProcessingType");
+                    editButton.setText(EDITTEXT_PROCESSINGTYPE);
                 } else {
                     deleteButton.setEnabled(true);
                     if (selectionObject instanceof Monitor) {
-                        editButton.setText("Edit Monitor");
-                        deleteButton.setText("Delete Monitor");
+                        editButton.setText(EDITTEXT_MONITOR);
+                        deleteButton.setText(DELETETEXT_MONITOR);
                     } else if (selectionObject instanceof MeasurementSpecification) {
-                        editButton.setText("Edit Measurement");
-                        deleteButton.setText("Delete Measurement");
+                        editButton.setText(EDITTEXT_MEASUREMENT);
+                        deleteButton.setText(DELETETEXT_MEASUREMENT);
                     }
                 }
             }
@@ -283,6 +292,10 @@ public class MeasurementsDashboardView {
         });
     }
 
+    /**
+     * filter the monitorTreeViewer and measuringTreeViewer according to the search text entered in the textbox.
+     * If there is going to be no item shown in a tree all items will be made visible again.
+     */
     private void filterTreeViewer() {
         TreeViewer treeViewer = (TreeViewer) monitorTreeViewer.getViewer();
         treeViewer.collapseAll();
@@ -351,7 +364,7 @@ public class MeasurementsDashboardView {
      */
     private void createDeleteButton(Composite parent) {
         deleteButton = new Button(parent, SWT.PUSH);
-        deleteButton.setText("Delete...");
+        deleteButton.setText(DELETETEXT_GRAYEDOUT);
         deleteButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         deleteButton.addListener(SWT.Selection, e -> {
@@ -371,7 +384,7 @@ public class MeasurementsDashboardView {
      */
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
-        editButton.setText("Edit...");
+        editButton.setText(EDITTEXT_GRAYEDOUT);
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         editButton.addListener(SWT.Selection, e -> {
             MeasurementsWizard wizard;
