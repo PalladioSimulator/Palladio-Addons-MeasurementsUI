@@ -25,6 +25,9 @@ public final class DataApplication {
     private IProject project;
 
     private static DataApplication instance;
+    
+    
+
 
     /**
      * Private constructor for singelton pattern
@@ -53,10 +56,10 @@ public final class DataApplication {
      * Initializes a session correspondig to the project, which is used to load the models.
      * Checks for Monitor-/MeasuringPoint-Repositories and creates them if none exist.
      * 
-     * @param project to load data from
+     * @param selectionIndex index of selected project
      */
-    public void loadData(IProject project) {
-    	this.project = project;
+    public void loadData(int selectionIndex) {
+    	this.project = this.dataGathering.getAllProjectAirdfiles().get(selectionIndex);
     	
         initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
         initializeSession(sessionResourceURI);
@@ -75,7 +78,6 @@ public final class DataApplication {
      * through a new session
      */
     public void updateData() {  
-        initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
         initializeSession(sessionResourceURI);
         if (session != null) {
             this.modelAccessor.initializeModels(session);
