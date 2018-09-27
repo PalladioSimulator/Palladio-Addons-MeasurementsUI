@@ -39,6 +39,10 @@ public class WorkspaceListener implements IResourceChangeListener {
         this.dataApplication = this.dashboardView.getDataApplication();
     }
 
+    /**
+     * Listens to ChangeEvents and sets the changed project,
+     * which are then used to update our Dashboard view
+     */
     @Override
     public void resourceChanged(IResourceChangeEvent event) {
         deletedProject = null;
