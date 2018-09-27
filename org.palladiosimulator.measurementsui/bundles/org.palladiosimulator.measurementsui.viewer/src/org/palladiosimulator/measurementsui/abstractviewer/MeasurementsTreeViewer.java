@@ -35,7 +35,7 @@ public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
     public MeasurementsTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
             DataApplication dataApplication) {
         super(parent, dirty, commandService, dataApplication);
-        treeViewer.expandAll();
+        treeViewer.expandToLevel(2);
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
         treeViewer.setAutoExpandLevel(1);
         treeViewer.setExpandedElements(expandedElements);
         if (treeViewer.getExpandedElements().length == 0) {
-            treeViewer.expandToLevel(1);
+            treeViewer.expandToLevel(2);
         }
         treeViewer.refresh();
     }
