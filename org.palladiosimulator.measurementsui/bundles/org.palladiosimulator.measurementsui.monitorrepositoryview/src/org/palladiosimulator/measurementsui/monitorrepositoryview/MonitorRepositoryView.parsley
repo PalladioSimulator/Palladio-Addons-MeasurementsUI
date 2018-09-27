@@ -31,11 +31,20 @@ module monitorrepositoryview {
 	labelProvider {
 		text {
 			Monitor mon -> {
-				mon.entityName
+				if (mon.measuringPoint!== null) {
+					mon.entityName+" ["+mon.measuringPoint.toString.replaceAll("\\[[^\\[]*\\]$","")+"]";
+				}
+				else {
+					mon.entityName+" [There is no MeasuringPoint set!]";	
+				}
 			}
 
 			MeasurementSpecification ms -> {
-				ms.name
+				"MeasurementSpecification: "+ms.metricDescription.getName
+			}
+			ProcessingType proc -> {
+				//Remove the "[TRANSIENT]" substring from the label 
+				proc.toString.replaceAll("\\[[^\\[]*\\]$","")
 			}
 		}
 

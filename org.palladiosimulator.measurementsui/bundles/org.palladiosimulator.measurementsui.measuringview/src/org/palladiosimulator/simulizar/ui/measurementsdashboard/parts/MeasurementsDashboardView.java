@@ -52,6 +52,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.MonitorTreeViewer;
 
@@ -286,6 +287,10 @@ public class MeasurementsDashboardView {
         monitorTreeViewer.getViewer().refresh();
         measuringTreeViewer.getViewer().refresh();
         filter.setSearchText("");
+        TreeViewer measuringTree = (TreeViewer) measuringTreeViewer.getViewer();
+        if (measuringTree.getTree().getTopItem().getItems().length<=1) {
+            measuringTreeViewer.getViewer().refresh();
+        }
     }
 
     /**
