@@ -7,7 +7,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.e4.core.commands.ECommandService;
@@ -45,6 +47,7 @@ import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewe
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.measurementsdashboard.listeners.WorkspaceListener;
 import org.palladiosimulator.measurementsui.wizard.main.MeasurementsWizard;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -143,7 +146,7 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        dataApplication.loadData(0);
+        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
     }
 
     /**
@@ -152,9 +155,8 @@ public class MeasurementsDashboardView {
      */
     private void createWorkspaceListener() {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IResourceChangeListener listener = e -> Display.getDefault().asyncExec(this::updateMeasuringPointView);
 
-        workspace.addResourceChangeListener(listener, 1);
+        workspace.addResourceChangeListener(new WorkspaceListener(this), 1);
     }
 
     /**
@@ -428,7 +430,7 @@ public class MeasurementsDashboardView {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
-                dataApplication.loadData(selectionIndex);
+                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex));
                 updateTreeViewer();
             }
 
@@ -444,7 +446,7 @@ public class MeasurementsDashboardView {
     /**
      * Adds every project in the workspace that has an .aird file to the projectsComboBox
      */
-    private void updateProjectComboBox() {
+    public void updateProjectComboBox() {
 
         int selectionIndex = -1;
         projectsComboDropDown.removeAll();
@@ -474,9 +476,17 @@ public class MeasurementsDashboardView {
     /**
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
-    private void updateTreeViewer() {
+    public void updateTreeViewer() {
         monitorTreeViewer.update();
         measuringTreeViewer.update();
+    }
+    
+    /**
+     * Returns the dataApplication instance
+     * @return dataApplication
+     */
+    public DataApplication getDataApplication() {
+        return dataApplication;
     }
 
     /**
@@ -491,4 +501,5 @@ public class MeasurementsDashboardView {
     public void save(MDirtyable dirty) throws IOException {
         monitorTreeViewer.save(dirty);
     }
+
 }
