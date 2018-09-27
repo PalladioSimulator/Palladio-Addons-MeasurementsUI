@@ -51,13 +51,31 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 
     private static final String CREATE_MEASURINGPOINT_INFO_TEXT = "Select the element of your Models which should be "
             + "monitored during a simulation run. ";
-    private final String editMeasuringPointInfoText = "Select a different measuring Point.";
+    private static final String EDIT_MEASURINGPOINT_INFO_TEXT = "Select a different measuring Point.";
 
     private static final String CREATE_MEASURINGPOINT_TITLE = "Create Measuring Point";
     private static final String EDIT_MEASURINGPOINT_TITLE = "Edit Measuring Point";
 
     private Monitor monitor;
     private boolean isEditing;
+    private boolean finishable=true;
+
+    public boolean isFinishable() {
+        return finishable;
+    }
+
+    public void setFinishable(boolean finishable) {
+        this.finishable = finishable;
+    }
+
+    public boolean isEditing() {
+        return isEditing;
+    }
+
+    public void setEditing(boolean isEditing) {
+        this.isEditing = isEditing;
+    }
+
     private ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
     private Object currentSelectionFirstMeasuringModel;
     private Object currentSecondStageModel;
@@ -87,8 +105,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      * @param isEditing
      *            indicates, whether it is in edit mode or not
      */
-    private void setMeasuringPointDependingOnEditMode(Monitor monitor, MeasuringPoint measuringPoint,
-            boolean isEditing) {
+    public void setMeasuringPointDependingOnEditMode(MeasuringPoint measuringPoint) {
         if (isEditing) {
             editor.setMeasuringPointToMonitor(monitor, measuringPoint);
         } else {
@@ -119,7 +136,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setResourceContainer(container);
             mp.setStringRepresentation(container.getEntityName());
             mp.setResourceURIRepresentation(container.eResource().getURI().toString() + "#" + container.getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
         } else if (model instanceof ProcessingResourceSpecification) {
             ProcessingResourceSpecification processingResourceSpecification = (ProcessingResourceSpecification) model;
             ActiveResourceMeasuringPoint mp = (ActiveResourceMeasuringPoint) pcmMeasuringPointFactory
@@ -130,7 +147,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
                     .getActiveResourceType_ActiveResourceSpecification().getEntityName());
             mp.setResourceURIRepresentation(processingResourceSpecification.eResource().getURI().toString() + "#"
                     + processingResourceSpecification.getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
 
         } else if (model instanceof AssemblyContext && currentSecondStageModel instanceof PassiveResource) {
             AssemblyContext assemblyContext = (AssemblyContext) model;
@@ -144,7 +161,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setStringRepresentation(assemblyContext.getEntityName() + "_" + passiveResource.getEntityName());
             mp.setResourceURIRepresentation(
                     assemblyContext.eResource().getURI().toString() + "#" + assemblyContext.getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
 
         } else if (model instanceof AssemblyContext) {
             AssemblyContext assemblyContext = (AssemblyContext) model;
@@ -159,7 +176,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setStringRepresentation(assemblyContext.getEntityName());
             mp.setResourceURIRepresentation(
                     assemblyContext.eResource().getURI().toString() + "#" + (assemblyContext).getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
 
         } else if (model instanceof EntryLevelSystemCall) {
             EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) model;
@@ -170,7 +187,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setStringRepresentation(entryLevelSystemCall.getEntityName());
             mp.setResourceURIRepresentation(
                     entryLevelSystemCall.eResource().getURI().toString() + "#" + entryLevelSystemCall.getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
 
         } else if (model instanceof ExternalCallAction) {
             ExternalCallAction externalCallAction = (ExternalCallAction) model;
@@ -181,7 +198,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setStringRepresentation(externalCallAction.getEntityName());
             mp.setResourceURIRepresentation(
                     externalCallAction.eResource().getURI().toString() + "#" + externalCallAction.getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
         } else if (model instanceof LinkingResource) {
             LinkingResource linkingResource = (LinkingResource) model;
             LinkingResourceMeasuringPoint mp = (LinkingResourceMeasuringPoint) pcmMeasuringPointFactory
@@ -191,7 +208,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setStringRepresentation(linkingResource.getEntityName());
             mp.setResourceURIRepresentation(
                     linkingResource.eResource().getURI().toString() + "#" + linkingResource.getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
         } else if (model instanceof ResourceEnvironment) {
             ResourceEnvironment resourceEnvironment = (ResourceEnvironment) model;
             ResourceEnvironmentMeasuringPoint mp = (ResourceEnvironmentMeasuringPoint) pcmMeasuringPointFactory
@@ -200,7 +217,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setResourceEnvironment(resourceEnvironment);
             mp.setStringRepresentation(resourceEnvironment.getEntityName());
             mp.setResourceURIRepresentation(resourceEnvironment.eResource().getURI().toString() + "#/0");
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
         } else if (model instanceof SubSystem) {
             SubSystem subSystem = (SubSystem) model;
             OperationSignature operationSignature = (OperationSignature) currentThirdStageModel;
@@ -213,7 +230,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setRole(role);
             mp.setStringRepresentation(subSystem.getEntityName());
             mp.setResourceURIRepresentation((subSystem.eResource().getURI().toString() + "#" + subSystem.getId()));
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
 
         } else if (model instanceof System) {
             System system = (System) model;
@@ -227,7 +244,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setRole(role);
             mp.setStringRepresentation(system.getEntityName());
             mp.setResourceURIRepresentation(system.eResource().getURI().toString() + "#" + system.getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
 
         } else if (model instanceof UsageScenario) {
             UsageScenario usageScenario = (UsageScenario) model;
@@ -237,7 +254,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             mp.setStringRepresentation(usageScenario.getEntityName());
             mp.setResourceURIRepresentation(
                     usageScenario.eResource().getURI().toString() + "#" + usageScenario.getId());
-            setMeasuringPointDependingOnEditMode(monitor, mp, isEditing);
+            setMeasuringPointDependingOnEditMode(mp);
 
         }
 
@@ -272,7 +289,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     @Override
     public boolean canFinish() {
-        return this.monitor.getMeasuringPoint() != null;
+        return (this.monitor.getMeasuringPoint() != null)&&finishable;
     }
 
     /**
@@ -281,7 +298,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     @Override
     public String getInfoText() {
         if (this.monitor.getMeasuringPoint() != null) {
-            return editMeasuringPointInfoText;
+            return EDIT_MEASURINGPOINT_INFO_TEXT;
         }
         return CREATE_MEASURINGPOINT_INFO_TEXT;
     }
@@ -446,6 +463,17 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         return allmodels.toArray();
     }
 
+    public Object[] getExistingMeasuringPoints() {
+        if (isEditing()) {
+            List<MeasuringPoint> points = DataApplication.getInstance().getModelAccessor()
+                    .getUnassignedMeasuringPoints();
+            points.add(getMonitor().getMeasuringPoint());
+            return points.toArray();
+        } else {
+            return DataApplication.getInstance().getModelAccessor().getUnassignedMeasuringPoints().toArray();
+        }
+    }
+
     /**
      * helper class to filter out empty model lists
      * 
@@ -489,7 +517,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 
             return elements.toArray();
         } else if (currentSelectionFirstMeasuringModel instanceof System) {
-            org.palladiosimulator.pcm.system.System context = (org.palladiosimulator.pcm.system.System) currentSelectionFirstMeasuringModel;
+            System context = (System) currentSelectionFirstMeasuringModel;
             elements.addAll(context.getProvidedRoles_InterfaceProvidingEntity());
             elements.addAll(context.getRequiredRoles_InterfaceRequiringEntity());
 

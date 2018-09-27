@@ -2,14 +2,10 @@ package org.palladiosimulator.measurementsui.wizard.pages;
 
 import java.util.LinkedList;
 
-import javax.inject.Inject;
-
-import org.eclipse.e4.core.commands.ECommandService;
-import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,10 +17,10 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TreeItem;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.ExistingMeasuringpointContentProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.MeasuringPointsContentProvider;
+import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.ExistingMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.MeasuringPointsLabelProvider;
-import org.palladiosimulator.measurementsui.wizard.viewer.EmptyMeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
@@ -47,17 +43,13 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 
 public class ChooseMeasuringpointWizardPage extends WizardPage {
 
-    private EmptyMeasurementsTreeViewer emptyMpTreeViewer;
+    private TreeViewer emptyMeasuringpointViewer;
     private TreeViewer createTreeViewer;
 
     private MeasuringPointSelectionWizardModel selectionWizardModel;
     private boolean selected = false;
+    private boolean validatedNextPressed;
     private TabFolder tabFolder;
-    @Inject
-    private MDirtyable dirty;
-
-    @Inject
-    private ECommandService commandService;
 
     /**
      * Constructor for the second wizard page, sets structural features like the title, the name of
@@ -95,6 +87,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
         createExistingMeasuringPointTab(layout);
 
+        setSelectedItem(selectionWizardModel.isEditing());
         this.setPageComplete(true);
     }
 
@@ -112,8 +105,9 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
         Composite createMPcomposite = new Composite(tabFolder, SWT.SINGLE);
         createMPcomposite.setLayout(layout);
-        MeasuringPointsContentProvider mp = new MeasuringPointsContentProvider(selectionWizardModel);
-        ITreeContentProvider createContentProvider = mp;
+        // AlternativeMeasuringPointContentProvider createContentProvider = new
+        // AlternativeMeasuringPointContentProvider();
+        MeasuringPointsContentProvider createContentProvider = new MeasuringPointsContentProvider(selectionWizardModel);
         createTreeViewer = new TreeViewer(createMPcomposite, SWT.SINGLE);
         createTreeViewer.setContentProvider(createContentProvider);
         createTreeViewer.setInput(selectionWizardModel.getAllSecondPageObjects());
@@ -121,18 +115,25 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
         createTreeViewer.getTree().getItem(0).setExpanded(true);
         createTreeViewer.refresh();
 
-        if (selectionWizardModel.getAllSecondPageObjects().length != 0) {
-            LinkedList<?> temp = (LinkedList<?>) selectionWizardModel.getAllSecondPageObjects()[0];
-            ISelection selection = new StructuredSelection(temp.get(0));
-            createTreeViewer.setSelection(selection);
-        }
-
         createTreeViewer.getTree().addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+
                 TreeItem item = (TreeItem) e.item;
 
-                showMessage(item);
+                if (item.getData() instanceof LinkedList) {
+                    selectionWizardModel.setFinishable(false);
+                    validatedNextPressed = false;
+                    setPageComplete(false);
+                    getContainer().updateButtons();
+                    setErrorMessage("Choose a model for which a measuring point will be created.");
+                } else {
+                    selectionWizardModel.setFinishable(true);
+                    validatedNextPressed = true;
+                    getContainer().updateButtons();
+                    setPageComplete(true);
+                    showMessage(item);
+                }
 
             }
         });
@@ -151,21 +152,31 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
         Composite existingMPcomposite = new Composite(tabFolder, SWT.SINGLE);
         existingMPcomposite.setLayout(layout);
+        emptyMeasuringpointViewer = new TreeViewer(existingMPcomposite, SWT.SINGLE);
+        emptyMeasuringpointViewer.setContentProvider(new ExistingMeasuringpointContentProvider(selectionWizardModel));
+        emptyMeasuringpointViewer.setInput(selectionWizardModel.getExistingMeasuringPoints());
+        emptyMeasuringpointViewer.setLabelProvider(new ExistingMeasuringpointLabelProvider());
+        emptyMeasuringpointViewer.refresh();
 
-        emptyMpTreeViewer = createEmptyMpTreeViewer(existingMPcomposite);
+        emptyMeasuringpointViewer.getTree().addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+
+                TreeItem item = (TreeItem) e.item;
+
+                if (item.getData() instanceof MeasuringPoint) {
+
+                    selectionWizardModel.setFinishable(true);
+                    validatedNextPressed = true;
+                    getContainer().updateButtons();
+                    setPageComplete(true);
+                    showMessage(item);
+                }
+
+            }
+        });
 
         existingMeasuringTabbedItem.setControl(existingMPcomposite);
-    }
-
-    /**
-     * calls the tree viewer which is being build by parsley
-     * 
-     * @param parent
-     *            the parent composite of the tree viewer
-     * @return EmptyMPTreeViewer the created tree viewer
-     */
-    private EmptyMeasurementsTreeViewer createEmptyMpTreeViewer(Composite parent) {
-        return new EmptyMeasurementsTreeViewer(parent, DataApplication.getInstance());
     }
 
     /**
@@ -174,6 +185,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
      */
     @Override
     public org.eclipse.jface.wizard.IWizardPage getNextPage() {
+
         boolean isNextPressed = "nextPressed"
                 .equalsIgnoreCase(Thread.currentThread().getStackTrace()[2].getMethodName());
         if (isNextPressed) {
@@ -189,6 +201,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
             return page;
 
         } else {
+            SelectMeasurementsWizardPage page = (SelectMeasurementsWizardPage) super.getNextPage();
+            
             return super.getNextPage();
         }
 
@@ -202,7 +216,9 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
      */
     public void showMessage(TreeItem item) {
         this.setErrorMessage(null);
-        if (item.getData() instanceof ResourceEnvironment) {
+        if (item.getData() instanceof MeasuringPoint) {
+            this.setMessage("This is an existing measuring point.");
+        } else if (item.getData() instanceof ResourceEnvironment) {
             this.setMessage("This will create a resource environment measuring point.");
         } else if (item.getData() instanceof ResourceContainer) {
             this.setMessage("This will create a resource container measuring point.");
@@ -237,20 +253,21 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
      * @return boolean validates whether the next button is pressed or not
      */
     protected boolean nextPressed() {
-        boolean validatedNextPressed = true;
-        try {
-            if (emptyMpTreeViewer.getViewer().getStructuredSelection()
-                    .getFirstElement() instanceof MeasuringPointRepository
-                    || createTreeViewer.getStructuredSelection().getFirstElement() instanceof LinkedList) {
-                this.setErrorMessage("Choose a model for which a measuring point will be created.");
-                validatedNextPressed = false;
+        validatedNextPressed = true;
+        validatedNextPressed = performAddingOperations(validatedNextPressed);
+        return validatedNextPressed;
+    }
 
-            }
+    public boolean performAddingOperations(boolean validatedNextPressed) {
+        getContainer().updateButtons();
+        try {
+
             if (tabFolder.getSelectionIndex() == 1) {
-                if (emptyMpTreeViewer.getViewer().getStructuredSelection()
-                        .getFirstElement() instanceof MeasuringPoint) {
-                    selectionWizardModel.addMeasuringPointToMonitor(
-                            (MeasuringPoint) emptyMpTreeViewer.getViewer().getStructuredSelection().getFirstElement());
+                if (emptyMeasuringpointViewer.getStructuredSelection().getFirstElement() instanceof MeasuringPoint) {
+                    setErrorMessage(null);
+                    setPageComplete(true);
+                    selectionWizardModel.setMeasuringPointDependingOnEditMode(
+                            (MeasuringPoint) emptyMeasuringpointViewer.getStructuredSelection().getFirstElement());
                 }
             } else {
                 if (createTreeViewer.getStructuredSelection().getFirstElement() instanceof AssemblyContext
@@ -273,6 +290,22 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
             ex.printStackTrace();
         }
         return validatedNextPressed;
+    }
+
+    private void setSelectedItem(boolean isEditing) {
+        if (isEditing) {
+            tabFolder.setSelection(1);
+
+            ISelection selection = new StructuredSelection(selectionWizardModel.getMonitor().getMeasuringPoint());
+
+            emptyMeasuringpointViewer.setSelection(selection);
+            emptyMeasuringpointViewer.refresh();
+
+        } else if (selectionWizardModel.getAllSecondPageObjects().length != 0) {
+            LinkedList<?> temp = (LinkedList<?>) selectionWizardModel.getAllSecondPageObjects()[0];
+            ISelection selection = new StructuredSelection(temp.get(0));
+            createTreeViewer.setSelection(selection);
+        }
     }
 
 }

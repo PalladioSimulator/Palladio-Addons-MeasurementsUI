@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations">
+      <client
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client3"
+            class="org.palladiosimulator.measurementsui.extension.contributions.ResponseTimeWithUsageScenarioMeasuringPoint">
+      </client>
+   </extension>
+
+</plugin>

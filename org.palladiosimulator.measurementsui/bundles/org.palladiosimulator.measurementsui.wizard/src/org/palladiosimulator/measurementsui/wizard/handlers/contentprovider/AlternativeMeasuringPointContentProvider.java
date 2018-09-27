@@ -31,9 +31,13 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
     public Object[] getElements(Object inputElement) {
 
         List<Object> elementList = new LinkedList<>();
-        elementList.addAll(da.getModelAccessor().getAllocation().stream().filter(e -> e instanceof Repository)
-                .collect(Collectors.toCollection(LinkedList::new)));
-        elementList.addAll(da.getModelAccessor().getRepository());
+//        .stream().filter(e-> (!e.getEntityName().equals("FailureTypes"))||(!e.getEntityName().equals("PrimitiveDataTypes"))).collect(Collectors.toCollection(LinkedList::new))
+        
+        elementList.addAll(da.getModelAccessor().getAllocation());
+        elementList.addAll(da.getModelAccessor().getRepository().stream().filter(e-> (!e.getEntityName().equals("FailureTypes"))||(!e.getEntityName().equals("PrimitiveDataTypes"))).collect(Collectors.toCollection(LinkedList::new)));
+        for(Repository repo:da.getModelAccessor().getRepository()) {
+            System.out.println("Testtest " +repo.getEntityName());
+        }
         elementList.addAll(da.getModelAccessor().getResourceEnvironment());
         elementList.addAll(da.getModelAccessor().getSubSystem());
         elementList.addAll(da.getModelAccessor().getSystem());
@@ -58,14 +62,12 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
         } else if (parentElement instanceof UsageModel) {
             return ((UsageModel) parentElement).getUsageScenario_UsageModel().toArray();
         } else if (parentElement instanceof UsageScenario) {
-            Object[] elements = { ((UsageScenario) parentElement).getScenarioBehaviour_UsageScenario() };
-            return elements;
+            return new Object[] { ((UsageScenario) parentElement).getScenarioBehaviour_UsageScenario() };
         } else if (parentElement instanceof ScenarioBehaviour) {
             return ((ScenarioBehaviour) parentElement).getActions_ScenarioBehaviour().stream()
                     .filter(e -> e instanceof EntryLevelSystemCall).collect(Collectors.toCollection(LinkedList::new))
                     .toArray();
         } else if (parentElement instanceof Repository) {
-
             return ((Repository) parentElement).eContents().stream().filter(e -> e instanceof BasicComponent)
                     .collect(Collectors.toCollection(LinkedList::new)).toArray();
         } else if (parentElement instanceof BasicComponent) {

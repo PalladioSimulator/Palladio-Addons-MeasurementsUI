@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
-import org.palladiosimulator.measurementsui.fileaccess.DataGathering;
+import org.palladiosimulator.measurementsui.fileaccess.ValidProjectAccessor;
 import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
 
 
@@ -18,7 +18,7 @@ import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
  */
 public final class DataApplication {
 
-    private DataGathering dataGathering;
+    private ValidProjectAccessor dataGathering;
     private ModelAccessor modelAccessor;
     private Session session;
     private URI sessionResourceURI;
@@ -31,7 +31,7 @@ public final class DataApplication {
      * initializes DataGathering and ModelAccesor
      */
     private DataApplication() {
-        this.dataGathering = new DataGathering();
+        this.dataGathering = new ValidProjectAccessor();
         this.modelAccessor = new ModelAccessor();
 
     }
@@ -132,7 +132,7 @@ public final class DataApplication {
      * 
      * @return DataGathering instance
      */
-    public DataGathering getDataGathering() {
+    public ValidProjectAccessor getDataGathering() {
         return dataGathering;
     }
 

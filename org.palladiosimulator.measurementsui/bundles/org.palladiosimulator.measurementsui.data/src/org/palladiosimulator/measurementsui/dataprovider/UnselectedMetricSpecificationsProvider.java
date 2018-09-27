@@ -1,10 +1,15 @@
 package org.palladiosimulator.measurementsui.dataprovider;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
+import org.palladiosimulator.measurementsui.extensionpoint.evaluation.EvaluateExtensions;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -12,6 +17,17 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
+import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.EntryLevelSystemCallMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ExternalCallActionMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.LinkingResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 
 /**
  * This class creates and manages the Monitors used for the 3rd Wizard Page
@@ -33,11 +49,20 @@ public class UnselectedMetricSpecificationsProvider {
      *            The Monitor that gets passed from the previous Wizard Page
      * @return the Monitor with the missing Metric Description<->Measurement Specification pairs
      */
-    public Monitor createMonitorWithMissingMetricDescriptions(Monitor passedMonitor) {
+    public void createMonitorWithMissingMetricDescriptions(Monitor passedMonitor, Monitor unusedMonitor) {
         MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();
+
         // Only way to get all Metric Descriptions from scratch
         MetricSetDescription dummyMetricDesc = MetricDescriptionConstants.COST_OVER_TIME;
         EList<MetricDescription> allMetricDescriptions = dummyMetricDesc.getRepository().getMetricDescriptions();
+
+        EList<MetricDescription> validMetricDescriptionList = new BasicEList<>();
+        if (passedMonitor != null) {
+            if (getAllValidMetricDescriptionsForMeasuringPoint(passedMonitor) != null) {
+                validMetricDescriptionList
+                        .addAll(getAllValidMetricDescriptionsForMeasuringPoint(passedMonitor).keySet());
+            }
+        }
 
         EList<MeasurementSpecification> mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
 
@@ -53,12 +78,74 @@ public class UnselectedMetricSpecificationsProvider {
             findNonMatchingMetricDescriptions(metricDescriptionsInPassedMonitor, allMetricDescriptions,
                     nonMatchingMetricDesciptions);
 
-            return createMonitorWithMissingDescriptions(monFactory, nonMatchingMetricDesciptions);
+            createMonitorWithMissingDescriptions(monFactory, nonMatchingMetricDesciptions, unusedMonitor);
 
         } else {
-            return createMonitorWithMissingDescriptions(monFactory, allMetricDescriptions);
+            createMonitorWithMissingDescriptions(monFactory, allMetricDescriptions, unusedMonitor);
         }
 
+    }
+
+    /**
+     * returns the map of valid MetricDescription, boolean(suggested) for the corresponding
+     * Measuring Point.
+     * 
+     * @param passedMP
+     * @return the map Of MetricDescription, boolean(suggested) pairs.
+     */
+    private Map<MetricDescription, Boolean> getAllValidMetricDescriptionsForMeasuringPoint(Monitor passedMonitor) {
+        if (passedMonitor.getMeasuringPoint() != null) {
+
+            MeasuringPoint passedMP = passedMonitor.getMeasuringPoint();
+            EvaluateExtensions evaluateExtensions = new EvaluateExtensions();
+            evaluateExtensions.loadExtensions();
+
+            if (passedMP instanceof UsageScenarioMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getUsageScenarioMeasuringPointMetrics();
+
+            } else if (passedMP instanceof AssemblyOperationMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getAssemblyOperationMeasuringPointMetrics();
+
+            } else if (passedMP instanceof AssemblyPassiveResourceMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getAssemblyPassiveResourceMeasuringPointMetrics();
+
+            } else if (passedMP instanceof ResourceContainerMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getResourceContainerMeasuringPointMetrics();
+
+            } else if (passedMP instanceof ResourceEnvironmentMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getResourceEnvironmentMeasuringPointMetrics();
+
+            } else if (passedMP instanceof SubSystemOperationMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getSubSystemOperationMeasuringPointMetrics();
+
+            } else if (passedMP instanceof SystemOperationMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getSystemOperationMeasuringPointMetrics();
+
+            } else if (passedMP instanceof EntryLevelSystemCallMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getEntryLevelSystemCallMeasuringPointMetrics();
+
+            } else if (passedMP instanceof LinkingResourceMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getLinkingResourceMeasuringPointMetrics();
+
+            } else if (passedMP instanceof ExternalCallActionMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getExternalCallActionMeasuringPointMetrics();
+
+            } else if (passedMP instanceof ActiveResourceMeasuringPoint) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getActiveResourceMeasuringPointMetrics();
+            }
+        }
+        return null;
     }
 
     /**
@@ -70,8 +157,7 @@ public class UnselectedMetricSpecificationsProvider {
      * @return
      */
     private Monitor createMonitorWithMissingDescriptions(MonitorRepositoryFactory monFactory,
-            EList<MetricDescription> listOfMetricDescriptions) {
-        Monitor tempMon = monFactory.createMonitor();
+            EList<MetricDescription> listOfMetricDescriptions, Monitor tempMon) {
         EList<MeasurementSpecification> mSpecList = new BasicEList<>();
         createMeasurementSpecificationsForEveryMetricDescription(listOfMetricDescriptions, monFactory, mSpecList);
         setMetricDescriptionForEveryMeasurementSpecification(listOfMetricDescriptions, mSpecList);

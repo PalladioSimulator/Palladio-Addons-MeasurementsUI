@@ -70,5 +70,13 @@
          </property>
       </product>
    </extension>
+   <extension
+         id="measurementsuiData"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.ui.ide.workbench"
+            name="HelloWorldMenu.product">
+      </product>
+   </extension>
 
 </plugin>

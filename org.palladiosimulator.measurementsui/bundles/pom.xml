@@ -1,24 +1,27 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.palladiosimulator</groupId>
-    <artifactId>org.palladiosimulator.measurementsui.root</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>org.palladiosimulator.measurementsui.bundles</artifactId>
-  <packaging>pom</packaging>
-  
-   <modules>
-        <module>org.palladiosimulator.measurementsui.data</module>
-        <module>org.palladiosimulator.measurementsui.emptymeasuringpoints</module>
-        <module>org.palladiosimulator.measurementsui.monitorrepositoryview</module>
-        <module>org.palladiosimulator.measurementsui.propertiespage</module>
-        <module>org.palladiosimulator.measurementsui.measuringview</module>
-        <module>org.palladiosimulator.measurementsui.viewer</module>
-        <module>org.palladiosimulator.measurementsui.wizard</module>
-        <module>org.palladiosimulator.measurementsui.newMonitor</module>
-         <module>org.palladiosimulator.measurementsui.selectmeasurement</module>
-         <module>org.palladiosimulator.measurementsui.selectmeasurements.emptyview</module>
-         <module>emptymeasuringpointswizard</module>
-    </modules>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.palladiosimulator</groupId>
+		<artifactId>org.palladiosimulator.measurementsui.root</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>org.palladiosimulator.measurementsui.bundles</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>org.palladiosimulator.measurementsui.data</module>
+		<module>org.palladiosimulator.measurementsui.emptymeasuringpoints</module>
+		<module>org.palladiosimulator.measurementsui.emptymeasuringpointswizard</module>
+		<module>org.palladiosimulator.measurementsui.extension.contributions</module>
+		<module>org.palladiosimulator.measurementsui.extensionpoint.definitions</module>
+		<module>org.palladiosimulator.measurementsui.measurementsdashboard</module>
+		<module>org.palladiosimulator.measurementsui.measurementspecification</module>
+		<module>org.palladiosimulator.measurementsui.monitorrepositoryview</module>
+		<module>org.palladiosimulator.measurementsui.propertiespage</module>
+		<module>org.palladiosimulator.measurementsui.selectmeasurement</module>
+		<module>org.palladiosimulator.measurementsui.selectmeasurements.emptyview</module>
+		<module>org.palladiosimulator.measurementsui.viewer</module>
+		<module>org.palladiosimulator.measurementsui.wizard</module>
+	</modules>
 </project>

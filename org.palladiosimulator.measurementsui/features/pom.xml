@@ -8,7 +8,7 @@
   <artifactId>org.palladiosimulator.features</artifactId>
   <packaging>pom</packaging>
       <modules>
-        <module>HelloWorldMenu.feature</module>
+        <module>org.palladiosimulator.measurementsui.data.feature</module>
     </modules>
   
 </project>
