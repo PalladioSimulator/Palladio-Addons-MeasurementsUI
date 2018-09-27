@@ -138,13 +138,13 @@ public class MeasuringPointsLabelProvider implements ILabelProvider {
                         + ((LinkingResource) element).getResourceEnvironment_LinkingResource().getEntityName();
 
             } else if (element instanceof ExternalCallAction) {
-                NamedElement callyMcCallface = (NamedElement) ((ExternalCallAction) element)
+                NamedElement externalCallAction = (NamedElement) ((ExternalCallAction) element)
                         .getResourceDemandingBehaviour_AbstractAction().eContainer();
-                ResourceDemandingSEFF callysFriend = (ResourceDemandingSEFF) ((ExternalCallAction) element)
+                ResourceDemandingSEFF resourceDemandingSEFF = (ResourceDemandingSEFF) ((ExternalCallAction) element)
                         .eContainer();
                 return ((ExternalCallAction) element).getEntityName() + " from the "
-                        + callysFriend.toString().replace("[TRANSIENT]", "") + LOCATED_IN
-                        + callyMcCallface.getEntityName();
+                        + resourceDemandingSEFF.toString().replace("[TRANSIENT]", "") + LOCATED_IN
+                        + externalCallAction.getEntityName();
 
             } else if (element instanceof EntryLevelSystemCall) {
                 NamedElement entryLevelSystemCall = (NamedElement) ((EntryLevelSystemCall) element)
