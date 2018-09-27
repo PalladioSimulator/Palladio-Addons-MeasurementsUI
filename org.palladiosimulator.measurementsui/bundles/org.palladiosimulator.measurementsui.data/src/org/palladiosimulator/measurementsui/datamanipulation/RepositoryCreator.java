@@ -85,7 +85,6 @@ public final class RepositoryCreator {
        
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(adapterFactory,
                 commandStack);
-        commandStack.flush();
 		final Resource resource = editingDomain.getResourceSet().createResource(measuringPointRepositoryfileURI);
 
 		EClass measuringPointRepository = this.measuringpointPackage.getMeasuringPointRepository();
@@ -122,7 +121,6 @@ public final class RepositoryCreator {
         BasicCommandStack commandStack = new BasicCommandStack();
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(adapterFactory,
                 commandStack);
-        commandStack.flush();
 		final Resource resource = editingDomain.getResourceSet().createResource(monitorRepositoryfileURI);
 
 		EClass monitorRepository = this.monitorPackage.getMonitorRepository();

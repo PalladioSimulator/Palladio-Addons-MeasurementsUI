@@ -168,12 +168,10 @@ public class ModelAccessor {
     	
     	if (!monitorRepositoryExists()) {
     		addMonitorRepository(RepositoryCreator.getInstance().createMonitorRepository(project));
-    		java.lang.System.out.println("Create Monitor Repository");
     	}
     	
     	if (!measuringPointRepositoryExists()) {
     		addMeasuringPointRepository(RepositoryCreator.getInstance().createMeasuringPointRepository(project));
-    		java.lang.System.out.println("Create measuringRepository");
     	}
     		
     }
