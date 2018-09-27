@@ -51,6 +51,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.simulizar.ui.listeners.WorkspaceListener;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.MonitorTreeViewer;
@@ -143,7 +144,7 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        dataApplication.loadData(0);
+        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
     }
 
     /**
@@ -152,9 +153,8 @@ public class MeasurementsDashboardView {
      */
     private void createWorkspaceListener() {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IResourceChangeListener listener = e -> Display.getDefault().asyncExec(this::updateMeasuringPointView);
 
-        workspace.addResourceChangeListener(listener, 1);
+        workspace.addResourceChangeListener(new WorkspaceListener(this), 1);
     }
 
     /**
@@ -428,7 +428,7 @@ public class MeasurementsDashboardView {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
-                dataApplication.loadData(selectionIndex);
+                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex));
                 updateTreeViewer();
             }
 
@@ -444,7 +444,7 @@ public class MeasurementsDashboardView {
     /**
      * Adds every project in the workspace that has an .aird file to the projectsComboBox
      */
-    private void updateProjectComboBox() {
+    public void updateProjectComboBox() {
 
         int selectionIndex = -1;
         projectsComboDropDown.removeAll();
@@ -463,20 +463,19 @@ public class MeasurementsDashboardView {
     }
 
     /**
-     * Reloads the dashboard view and updates it, if something changed
-     */
-    private void updateMeasuringPointView() {
-        updateProjectComboBox();
-        dataApplication.updateData();
-        updateTreeViewer();
-    }
-
-    /**
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
-    private void updateTreeViewer() {
+    public void updateTreeViewer() {
         monitorTreeViewer.update();
         measuringTreeViewer.update();
+    }
+    
+    /**
+     * Returns the instance of dataApplication
+     * @return dataApplication instance
+     */
+    public DataApplication getDataApplication() {
+        return dataApplication;
     }
 
     /**
@@ -491,4 +490,6 @@ public class MeasurementsDashboardView {
     public void save(MDirtyable dirty) throws IOException {
         monitorTreeViewer.save(dirty);
     }
+
+ 
 }
