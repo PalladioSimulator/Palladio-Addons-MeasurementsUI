@@ -113,7 +113,6 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		Composite compositeMiddle = new Composite(container, SWT.NONE);
 		FillLayout fillLayoutMiddle = new FillLayout();
 		fillLayoutMiddle.type = SWT.CENTER;
-		fillLayoutMiddle.marginHeight = 100;
 		fillLayoutMiddle.marginWidth = 40;
 		fillLayoutMiddle.spacing = 10;
 		compositeMiddle.setLayout(fillLayoutMiddle);
