@@ -65,7 +65,23 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		layoutParentContainer.makeColumnsEqualWidth = false;
 		container.setLayout(layoutParentContainer);
 		
-		Composite compositeLeft = new Composite(container, SWT.NONE);
+		TableViewer tableViewerLeft = initLeftSubComposite(container);
+		Composite compositeMiddle = initMiddleSubComposite(container);
+		TableViewer tableViewerRight = initRightSubComposite(container);
+
+		addButtons(tableViewerLeft, compositeMiddle, tableViewerRight);
+		
+		setPageComplete(true);
+		setControl(container);
+	}
+
+    /**
+     * Initializes the GUI elements of the left sub composite which contains available measurements.
+     * @param container the parent container
+     * @return the tableViewer that is used for further user interactions
+     */
+    private TableViewer initLeftSubComposite(Composite container) {
+        Composite compositeLeft = new Composite(container, SWT.NONE);
 		FillLayout fillLayoutLeft = new FillLayout();
 		SelectMeasurementsViewer selectMeasurementsViewerLeft = new SelectMeasurementsViewer(compositeLeft,
 				metricDescriptionSelectionWizardModel);
@@ -109,81 +125,109 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		});
 		compositeLeft.setLayout(fillLayoutLeft);
 		compositeLeft.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        return tableViewerLeft;
+    }
 
-		Composite compositeMiddle = new Composite(container, SWT.NONE);
-		FillLayout fillLayoutMiddle = new FillLayout();
-		fillLayoutMiddle.type = SWT.CENTER;
-		fillLayoutMiddle.marginWidth = 40;
-		fillLayoutMiddle.spacing = 10;
-		compositeMiddle.setLayout(fillLayoutMiddle);
+    /**
+     * Initializes the middle sub composite, where later buttons are added for moving selecting measurements.
+     * @param container the parent container
+     * @return the composite object
+     */
+    private Composite initMiddleSubComposite(Composite container) {
+        Composite compositeMiddle = new Composite(container, SWT.NONE);
+    	FillLayout fillLayoutMiddle = new FillLayout();
+    	fillLayoutMiddle.type = SWT.CENTER;
+    	fillLayoutMiddle.marginWidth = 40;
+    	fillLayoutMiddle.spacing = 10;
+    	compositeMiddle.setLayout(fillLayoutMiddle);
+        return compositeMiddle;
+    }
+
+    /**
+     * Initializes the GUI elements of the right sub composite which contains selected measurements.
+     * @param container the parent container
+     * @return the tableViewer that is used for further user interactions
+     */
+    private TableViewer initRightSubComposite(Composite container) {
+        Composite compositeRight = new Composite(container, SWT.NONE);
+    	FillLayout fillLayoutRight = new FillLayout();
+    	EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(compositeRight,
+    			metricDescriptionSelectionWizardModel);
+    	TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
+    	tableViewerRight.setLabelProvider(new ITableLabelProvider() {
+    
+    		public void removeListener(ILabelProviderListener listener) {
+    		    // not used
+    		}
+    
+    		public Image getColumnImage(Object element, int columnIndex) {
+    			return null;
+    		}
+    
+    		public String getColumnText(Object element, int columnIndex) {
+    			String result = "";
+    			MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
+    			if (columnIndex == 1) {
+    				if (measurementSpecification.isTriggersSelfAdaptations()) {
+    					result = CHECKBOX_CHECKED;
+    				} else {
+    					result = CHECKBOX_UNCHECKED;
+    				}
+    				return result;
+    			} else {
+    				result = measurementSpecification.getMetricDescription().getName();
+    				return result;
+    			}
+    		}
+    
+    		public void addListener(ILabelProviderListener listener) {
+    		    // not used
+    		}
+    
+    		public void dispose() {
+    		    // not used
+    		}
+    
+    		public boolean isLabelProperty(Object element, String property) {
+    			return false;
+    		}
+    	});
+    	compositeRight.setLayout(fillLayoutRight);
+    	compositeRight.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+    	tableViewerRight.getTable().getColumn(1).setWidth(125);
+    	
+    	CellEditor[] cellEditor = new CellEditor[2];
+        cellEditor[0] = null;
+        cellEditor[1] = new CheckboxCellEditor(tableViewerRight.getTable());
+        tableViewerRight.setCellEditors(cellEditor);
+        String[] columnNames = { "Selected", "Self Adaptive" };
+        tableViewerRight.setColumnProperties(columnNames);
+        tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(
+                tableViewerRight, metricDescriptionSelectionWizardModel));
+    	
+        return tableViewerRight;
+    }
+
+    /**
+     * Add the buttons for moving measurements.
+     * @param tableViewerLeft contains the available measurements
+     * @param compositeMiddle the middle composite where the buttons are located
+     * @param tableViewerRight contains the selected measurements
+     */
+    private void addButtons(TableViewer tableViewerLeft, Composite compositeMiddle, TableViewer tableViewerRight) {
+        Button rightOne = new Button(compositeMiddle, SWT.NONE);
+        rightOne.setText("Add >");
+        rightOne.addListener(SWT.Selection, e -> {
+            IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
+            for (Object currentElement : selection.toList()) {
+                MeasurementSpecification measurement = (MeasurementSpecification) currentElement;
+                metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
+            }
+            getContainer().updateButtons();
+        });
 		
-		Button rightAll = new Button(compositeMiddle, SWT.PUSH);
-		rightAll.setText("-->");
-		rightAll.addListener(SWT.Selection, e -> {
-			metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
-			getContainer().updateButtons();
-		});
-
-		Button rightOne = new Button(compositeMiddle, SWT.NONE);
-		rightOne.setText(">");
-		rightOne.addListener(SWT.Selection, e -> {
-			IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
-			for (Object currentElement : selection.toList()) {
-    			MeasurementSpecification measurement = (MeasurementSpecification) currentElement;
-    			metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
-			}
-			getContainer().updateButtons();
-		});
-
-		Composite compositeRight = new Composite(container, SWT.NONE);
-		FillLayout fillLayoutRight = new FillLayout();
-		EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(compositeRight,
-				metricDescriptionSelectionWizardModel);
-		TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
-		tableViewerRight.setLabelProvider(new ITableLabelProvider() {
-
-			public void removeListener(ILabelProviderListener listener) {
-			    // not used
-			}
-
-			public Image getColumnImage(Object element, int columnIndex) {
-				return null;
-			}
-
-			public String getColumnText(Object element, int columnIndex) {
-				String result = "";
-				MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
-				if (columnIndex == 1) {
-					if (measurementSpecification.isTriggersSelfAdaptations()) {
-						result = CHECKBOX_CHECKED;
-					} else {
-						result = CHECKBOX_UNCHECKED;
-					}
-					return result;
-				} else {
-					result = measurementSpecification.getMetricDescription().getName();
-					return result;
-				}
-			}
-
-			public void addListener(ILabelProviderListener listener) {
-			    // not used
-			}
-
-			public void dispose() {
-			    // not used
-			}
-
-			public boolean isLabelProperty(Object element, String property) {
-				return false;
-			}
-		});
-		compositeRight.setLayout(fillLayoutRight);
-		compositeRight.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		tableViewerRight.getTable().getColumn(1).setWidth(125);
-
 		Button leftOne = new Button(compositeMiddle, SWT.NONE);
-		leftOne.setText("<");
+		leftOne.setText("< Remove");
 		leftOne.addListener(SWT.Selection, e -> {
 			IStructuredSelection selection = tableViewerRight.getStructuredSelection();
 			for (Object currentElement : selection.toList()) {
@@ -192,29 +236,38 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			}
 			getContainer().updateButtons();
 		});
+		
+		addLabelForSpacingButtons(compositeMiddle);
+        
+        Button rightAll = new Button(compositeMiddle, SWT.PUSH);
+        rightAll.setText("Add All >>");
+        rightAll.addListener(SWT.Selection, e -> {
+            metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
+            getContainer().updateButtons();
+        });
 
 		Button leftAll = new Button(compositeMiddle, SWT.NONE);
-		leftAll.setText("<--");
+		leftAll.setText("<< Remove All");
 		leftAll.addListener(SWT.Selection, e -> {
 			metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
 			getContainer().updateButtons();
 		});
 
-		Label emptyLabelForSpacing = new Label(compositeMiddle, SWT.NONE);
-        emptyLabelForSpacing.setText(" ");
+		addLabelForSpacingButtons(compositeMiddle);
 		
-		Button addSuggestion = new Button(compositeMiddle, SWT.NONE);
+		Button addSuggestion = new Button(compositeMiddle, SWT.BOTTOM);
 		addSuggestion.setText("Add Suggestions");
+    }
 
-		CellEditor[] cellEditor = new CellEditor[2];
-		cellEditor[0] = null;
-		cellEditor[1] = new CheckboxCellEditor(tableViewerRight.getTable());
-		tableViewerRight.setCellEditors(cellEditor);
-		tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(
-		        tableViewerRight, metricDescriptionSelectionWizardModel));
-		setPageComplete(true);
-		setControl(container);
-	}
+    /**
+     * Used for spacing the buttons in the middle composite
+     * @param compositeMiddle the given middle composite
+     */
+    private void addLabelForSpacingButtons(Composite compositeMiddle) {
+        Label emptyLabelForSpacing = new Label(compositeMiddle, SWT.NONE);
+        emptyLabelForSpacing.setText(" ");
+    }
+    
 	@Override
 	public void setVisible(boolean visible) {
 	    if(visible) {

@@ -34,7 +34,7 @@ module tableform {
 	}
 	featureCaptionProvider{
 		text{
-			MeasurementSpecification : metricDescription -> "Metric Description"
+			MeasurementSpecification : metricDescription -> "Available"
 		}
 		
 	}
