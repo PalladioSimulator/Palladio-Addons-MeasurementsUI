@@ -129,9 +129,10 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		rightOne.setText(">");
 		rightOne.addListener(SWT.Selection, e -> {
 			IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
-			Object firstElement = selection.getFirstElement();
-			MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
-			metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurment);
+			for (Object currentElement : selection.toList()) {
+    			MeasurementSpecification measurement = (MeasurementSpecification) currentElement;
+    			metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
+			}
 			getContainer().updateButtons();
 		});
 
@@ -186,9 +187,10 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		leftOne.setText("<");
 		leftOne.addListener(SWT.Selection, e -> {
 			IStructuredSelection selection = tableViewerRight.getStructuredSelection();
-			Object firstElement = selection.getFirstElement();
-			MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
-			metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurment);
+			for (Object currentElement : selection.toList()) {
+			    MeasurementSpecification measurement = (MeasurementSpecification) currentElement;
+			    metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
+			}
 			getContainer().updateButtons();
 		});
 
