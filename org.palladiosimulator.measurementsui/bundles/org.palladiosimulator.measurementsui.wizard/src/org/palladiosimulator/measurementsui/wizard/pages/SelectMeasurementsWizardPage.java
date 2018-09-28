@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -179,7 +180,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		});
 		compositeRight.setLayout(fillLayoutRight);
 		compositeRight.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		tableViewerRight.getTable().getColumn(1).setWidth(75);
+		tableViewerRight.getTable().getColumn(1).setWidth(125);
 
 		Button leftOne = new Button(compositeMiddle, SWT.NONE);
 		leftOne.setText("<");
@@ -198,6 +199,9 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			getContainer().updateButtons();
 		});
 
+		Label emptyLabelForSpacing = new Label(compositeMiddle, SWT.NONE);
+        emptyLabelForSpacing.setText(" ");
+		
 		Button addSuggestion = new Button(compositeMiddle, SWT.NONE);
 		addSuggestion.setText("Add Suggestions");
 
@@ -205,8 +209,6 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		cellEditor[0] = null;
 		cellEditor[1] = new CheckboxCellEditor(tableViewerRight.getTable());
 		tableViewerRight.setCellEditors(cellEditor);
-		String[] columnNames = { "Metric Description", "Self Adapting" };
-		tableViewerRight.setColumnProperties(columnNames);
 		tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(
 		        tableViewerRight, metricDescriptionSelectionWizardModel));
 		setPageComplete(true);
