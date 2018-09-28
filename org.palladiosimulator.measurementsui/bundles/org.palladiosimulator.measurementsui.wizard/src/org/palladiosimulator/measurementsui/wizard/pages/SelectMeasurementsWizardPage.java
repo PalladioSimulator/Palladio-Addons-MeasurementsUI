@@ -10,6 +10,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.palladiosimulator.measurementsui.wizard.handlers.SelectMeasurementCheckboxCellModifier;
 import org.palladiosimulator.measurementsui.wizard.viewer.EmptySelectMeasurementsViewer;
 import org.palladiosimulator.measurementsui.wizard.viewer.SelectMeasurementsViewer;
@@ -57,8 +59,10 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.FILL);
-		FillLayout fillLayoutParentContainer = new FillLayout();
-		container.setLayout(fillLayoutParentContainer);
+		GridLayout layoutParentContainer = new GridLayout();
+		layoutParentContainer.numColumns = 3;
+		layoutParentContainer.makeColumnsEqualWidth = false;
+		container.setLayout(layoutParentContainer);
 		
 		Composite compositeLeft = new Composite(container, SWT.NONE);
 		FillLayout fillLayoutLeft = new FillLayout();
@@ -103,6 +107,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			}
 		});
 		compositeLeft.setLayout(fillLayoutLeft);
+		compositeLeft.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 		Composite compositeMiddle = new Composite(container, SWT.NONE);
 		FillLayout fillLayoutMiddle = new FillLayout();
@@ -173,6 +178,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			}
 		});
 		compositeRight.setLayout(fillLayoutRight);
+		compositeRight.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		tableViewerRight.getTable().getColumn(1).setWidth(75);
 
 		Button leftOne = new Button(compositeMiddle, SWT.NONE);
