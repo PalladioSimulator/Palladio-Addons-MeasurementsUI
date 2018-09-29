@@ -17,9 +17,7 @@ import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
@@ -77,9 +75,9 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		layoutParentContainer.makeColumnsEqualWidth = false;
 		container.setLayout(layoutParentContainer);
 		
-		TableViewer tableViewerLeft = initLeftSubComposite(container);
+		TableViewer tableViewerLeft = initLeftTableViewer(container);
 		Composite compositeMiddle = initMiddleSubComposite(container);
-		TableViewer tableViewerRight = initRightSubComposite(container);
+		TableViewer tableViewerRight = initRightTableViewer(container);
 
 		addButtons(tableViewerLeft, compositeMiddle, tableViewerRight);
 		
@@ -88,11 +86,11 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 	}
 
     /**
-     * Initializes the GUI elements of the left sub composite which contains available measurements.
-     * @param container the parent container
-     * @return the tableViewer that is used for further user interactions
+     * Initializes the left TableViewer which contains available measurements.
+     * @param container the parent container which contains the TableViewer
+     * @return the TableViewer that is used for further user interactions
      */
-    private TableViewer initLeftSubComposite(Composite container) {
+    private TableViewer initLeftTableViewer(Composite container) {
         Composite compositeLeft = new Composite(container, SWT.NONE);
 		FillLayout fillLayoutLeft = new FillLayout();
 		SelectMeasurementsViewer selectMeasurementsViewerLeft = new SelectMeasurementsViewer(compositeLeft,
@@ -146,7 +144,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
             }
         };
         final DragSource dragSource = new DragSource(tableViewerLeft.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
-        dragSource.setTransfer(new Transfer[] { transfer });
+        dragSource.setTransfer(transfer);
         dragSource.addDragListener(dragAdapter);
         
         final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
@@ -162,7 +160,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
             }
         };
         final DropTarget dropTarget = new DropTarget(tableViewerLeft.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
-        dropTarget.setTransfer(new Transfer[] { transfer });
+        dropTarget.setTransfer(transfer);
         dropTarget.addDropListener(dropAdapter);
 		
         return tableViewerLeft;
@@ -171,7 +169,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
     /**
      * Initializes the middle sub composite, where later buttons are added for moving selecting measurements.
      * @param container the parent container
-     * @return the composite object
+     * @return the Composite object
      */
     private Composite initMiddleSubComposite(Composite container) {
         Composite compositeMiddle = new Composite(container, SWT.NONE);
@@ -184,11 +182,11 @@ public class SelectMeasurementsWizardPage extends WizardPage {
     }
 
     /**
-     * Initializes the GUI elements of the right sub composite which contains selected measurements.
-     * @param container the parent container
-     * @return the tableViewer that is used for further user interactions
+     * Initializes the right TableViewer which contains selected measurements.
+     * @param container the parent container which contains the TableViewer
+     * @return the TableViewer that is used for further user interactions
      */
-    private TableViewer initRightSubComposite(Composite container) {
+    private TableViewer initRightTableViewer(Composite container) {
         Composite compositeRight = new Composite(container, SWT.NONE);
     	FillLayout fillLayoutRight = new FillLayout();
     	EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(compositeRight,
@@ -253,7 +251,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
             }
         };
         final DragSource dragSource = new DragSource(tableViewerRight.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
-        dragSource.setTransfer(new Transfer[] { transfer });
+        dragSource.setTransfer(transfer);
         dragSource.addDragListener(dragAdapter);
         
         final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
@@ -269,7 +267,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
             }
         };
         final DropTarget dropTarget = new DropTarget(tableViewerRight.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
-        dropTarget.setTransfer(new Transfer[] { transfer });
+        dropTarget.setTransfer(transfer);
         dropTarget.addDropListener(dropAdapter);
     	
         return tableViewerRight;
@@ -337,8 +335,9 @@ public class SelectMeasurementsWizardPage extends WizardPage {
     
 	@Override
 	public void setVisible(boolean visible) {
-	    if(visible) {
-	        metricDescriptionSelectionWizardModel.initUnusedMetrics(metricDescriptionSelectionWizardModel.getUsedMetricsMonitor());
+	    if (visible) {
+	        metricDescriptionSelectionWizardModel.initUnusedMetrics(
+	                metricDescriptionSelectionWizardModel.getUsedMetricsMonitor());
 	    }
 	    super.setVisible(visible);
 	}
