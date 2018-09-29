@@ -14,6 +14,8 @@ import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationInterface;
+import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.PassiveResource;
 import org.palladiosimulator.pcm.repository.Role;
@@ -50,7 +52,7 @@ import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 public class MeasuringPointSelectionWizardModel implements WizardModel {
 
     private static final String CREATE_MEASURINGPOINT_INFO_TEXT = "Select the element of your Models which should be "
-            + "monitored during a simulation run. ";
+            + "monitored during a simulation run. Models for which a measuring point can be created are highlighted in green.";
     private static final String EDIT_MEASURINGPOINT_INFO_TEXT = "Select a different measuring Point.";
 
     private static final String CREATE_MEASURINGPOINT_TITLE = "Create Measuring Point";
@@ -428,12 +430,25 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<EObject> getSignatures() {
 
-        List<EObject> activeresources = da.getModelAccessor().getRepository().stream()
-                .flatMap(e -> e.eContents().stream()).filter(e -> e instanceof OperationInterface)
-                .collect(Collectors.toList());
-
-        return activeresources.stream().flatMap(e -> e.eContents().stream())
-                .filter(e -> e instanceof OperationSignature).collect(Collectors.toList());
+    	if(currentSecondStageModel instanceof OperationProvidedRole){
+    		OperationProvidedRole model = (OperationProvidedRole) currentSecondStageModel;
+    		List<EObject> list = new LinkedList<>();
+    				list.addAll(model.getProvidedInterface__OperationProvidedRole().getSignatures__OperationInterface());
+    		return list;
+    		
+    	}else if (currentSecondStageModel instanceof OperationRequiredRole) {
+    		OperationRequiredRole model = (OperationRequiredRole) currentSecondStageModel;
+    		List<EObject> list = new LinkedList<>();
+    				list.addAll(model.getRequiredInterface__OperationRequiredRole().getSignatures__OperationInterface());
+    		return list;
+    	}
+    	return new LinkedList<>();
+//        List<EObject> activeresources = da.getModelAccessor().getRepository().stream()
+//                .flatMap(e -> e.eContents().stream()).filter(e -> e instanceof OperationInterface)
+//                .collect(Collectors.toList());
+//
+//        return activeresources.stream().flatMap(e -> e.eContents().stream())
+//                .filter(e -> e instanceof OperationSignature).collect(Collectors.toList());
 
     }
 

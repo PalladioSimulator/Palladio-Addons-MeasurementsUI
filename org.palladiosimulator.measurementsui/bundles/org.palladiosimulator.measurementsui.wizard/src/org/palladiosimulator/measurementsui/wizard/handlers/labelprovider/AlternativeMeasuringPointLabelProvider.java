@@ -4,9 +4,14 @@ import java.util.LinkedList;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
+import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ITableColorProvider;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.provider.AssemblyContextItemProvider;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
@@ -42,7 +47,7 @@ import org.palladiosimulator.pcm.usagemodel.provider.ScenarioBehaviourItemProvid
 import org.palladiosimulator.pcm.usagemodel.provider.UsageModelItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.UsageScenarioItemProvider;
 
-public class AlternativeMeasuringPointLabelProvider implements ILabelProvider {
+public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IColorProvider {
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
@@ -67,6 +72,9 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider {
 		// TODO Auto-generated method stub
 
 	}
+	
+
+
 
 	@Override
 	public Image getImage(Object element) {
@@ -179,6 +187,27 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider {
 
 		}
 
+	}
+
+
+
+	@Override
+	public Color getForeground(Object element) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getBackground(Object element) {
+		if(element instanceof ResourceEnvironment||element instanceof ResourceContainer||
+		element instanceof ProcessingResourceSpecification||element instanceof AssemblyContext||
+		element instanceof EntryLevelSystemCall||
+		element instanceof ExternalCallAction||element instanceof LinkingResource||
+		element instanceof SubSystem||element instanceof org.palladiosimulator.pcm.system.System||
+		element instanceof UsageScenario) {
+			return Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
+		}
+		return null;
 	}
 
 }

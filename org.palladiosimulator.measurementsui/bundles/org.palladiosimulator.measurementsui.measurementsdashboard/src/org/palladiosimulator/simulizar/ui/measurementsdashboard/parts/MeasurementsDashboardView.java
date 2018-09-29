@@ -46,6 +46,7 @@ import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizard.main.MeasurementsWizard;
+import org.palladiosimulator.measurementsui.wizard.main.StandardSetWizard;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
@@ -333,6 +334,14 @@ public class MeasurementsDashboardView {
         Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
         createStandardButton.setText("Create Standard Set");
         createStandardButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        createStandardButton.addListener(SWT.Selection, e -> {
+            StandardSetWizard wizard = new StandardSetWizard();
+            Shell parentShell = wizard.getShell();
+            WizardDialog dialog = new WizardDialog(parentShell, wizard);
+            dialog.setPageSize(720, 400);
+            dialog.setMinimumPageSize(720, 400);
+            dialog.open();
+        });
 
     }
 

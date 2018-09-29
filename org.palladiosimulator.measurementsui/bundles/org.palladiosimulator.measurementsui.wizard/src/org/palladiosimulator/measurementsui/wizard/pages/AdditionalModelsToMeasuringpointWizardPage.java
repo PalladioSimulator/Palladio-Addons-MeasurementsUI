@@ -1,5 +1,7 @@
 package org.palladiosimulator.measurementsui.wizard.pages;
 
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -69,6 +71,16 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
                 selectionWizardModel.getAllAdditionalModels()[0]);
         secondModelTreeViewer.setSelection(initialSelection);
         secondModelTreeViewer.setLabelProvider(new AdditionalMeasuringpointLabelProvider());
+        secondModelTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
+			
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				nextPressed();
+				getContainer().showPage( getNextPage());
+				 
+				
+			}
+		});
     }
 
     /**

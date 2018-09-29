@@ -76,7 +76,7 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
 			List<Object> appendingBasicComponentObjects = new LinkedList<>();
 			appendingBasicComponentObjects
 					.addAll(((BasicComponent) parentElement).getServiceEffectSpecifications__BasicComponent());
-			appendingBasicComponentObjects.addAll(((BasicComponent) parentElement).getPassiveResource_BasicComponent());
+//			appendingBasicComponentObjects.addAll(((BasicComponent) parentElement).getPassiveResource_BasicComponent());
 			return appendingBasicComponentObjects.toArray();
 		} else if (parentElement instanceof ResourceDemandingSEFF) {
 			return ((ResourceDemandingSEFF) parentElement).getSteps_Behaviour().stream()
