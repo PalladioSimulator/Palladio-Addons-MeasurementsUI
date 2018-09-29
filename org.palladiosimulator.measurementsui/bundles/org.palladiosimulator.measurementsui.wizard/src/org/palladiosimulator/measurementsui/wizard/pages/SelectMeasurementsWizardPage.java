@@ -1,15 +1,27 @@
 package org.palladiosimulator.measurementsui.wizard.pages;
 
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -125,6 +137,18 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		});
 		compositeLeft.setLayout(fillLayoutLeft);
 		compositeLeft.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+        final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+        final DragSourceAdapter dragAdapter = new DragSourceAdapter() {
+            @Override
+            public void dragSetData(final DragSourceEvent event) {
+                transfer.setSelection(new StructuredSelection(tableViewerLeft.getTable().getSelection()));
+            }
+        };
+        final DragSource dragSource = new DragSource(tableViewerLeft.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
+        dragSource.setTransfer(new Transfer[] { transfer });
+        dragSource.addDragListener(dragAdapter);
+		
         return tableViewerLeft;
     }
 
@@ -204,6 +228,23 @@ public class SelectMeasurementsWizardPage extends WizardPage {
         tableViewerRight.setColumnProperties(columnNames);
         tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(
                 tableViewerRight, metricDescriptionSelectionWizardModel));
+        
+        final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+        final DropTargetAdapter dragAdapter = new DropTargetAdapter() {
+            @Override
+            public void drop(final DropTargetEvent event) {
+                final StructuredSelection droppedSelection = (StructuredSelection) transfer.getSelection();
+                for (Object currentElement : droppedSelection.toList()) {
+                    TableItem tableItem = (TableItem) currentElement;
+                    MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
+                    metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
+                }
+
+            }
+        };
+        final DropTarget dropTarget = new DropTarget(tableViewerRight.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
+        dropTarget.setTransfer(new Transfer[] { transfer });
+        dropTarget.addDropListener(dragAdapter);
     	
         return tableViewerRight;
     }
