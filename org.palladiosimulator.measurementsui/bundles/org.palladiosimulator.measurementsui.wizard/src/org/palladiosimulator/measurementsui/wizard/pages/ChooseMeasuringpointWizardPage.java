@@ -219,7 +219,9 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
 				TreeItem item = (TreeItem) e.item;
 
+
 				if (item.getData() instanceof MeasuringPoint) {
+
 
 					selectionWizardModel.setFinishable(true);
 					validatedNextPressed = true;

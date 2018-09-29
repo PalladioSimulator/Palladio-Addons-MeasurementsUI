@@ -19,12 +19,16 @@ import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -32,7 +36,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
@@ -45,6 +51,8 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.simulizar.ui.listeners.WorkspaceListener;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.MonitorTreeViewer;
 
@@ -63,6 +71,17 @@ public class MeasurementsDashboardView {
     private DataApplication dataApplication;
     private Button deleteButton;
     private Button editButton;
+    private MeasurementsFilter filter;
+    private Text searchText;
+    
+    private static final String EDITTEXT_GRAYEDOUT = "Edit...";
+    private static final String DELETETEXT_GRAYEDOUT = "Delete...";
+    private static final String EDITTEXT_MONITOR = "Edit Monitor";
+    private static final String DELETETEXT_MONITOR = "Delete Monitor";
+    private static final String EDITTEXT_MEASUREMENT = "Edit Measurement";
+    private static final String DELETETEXT_MEASUREMENT = "Delete Measurement";
+    private static final String EDITTEXT_PROCESSINGTYPE = "Edit ProcessingType";
+    
 
     @Inject
     private MDirtyable dirty;
@@ -88,21 +107,30 @@ public class MeasurementsDashboardView {
         initializeApplication();
         createWorkspaceListener();
         createProjectsSelectionComboBox(parent);
+
         SashForm outerContainer = new SashForm(parent, SWT.FILL);
         outerContainer.setLayout(new GridLayout(1, true));
         outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        SashForm treeContainer = new SashForm(outerContainer, SWT.VERTICAL);
-        treeContainer.setLayout(new GridLayout(1, true));
+        Composite leftContainer = new Composite(outerContainer, SWT.VERTICAL);
+        leftContainer.setLayout(new GridLayout(1, false));
+        leftContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+
+        createFilterGadgets(leftContainer);
 
         Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
         buttonContainer.setLayout(new GridLayout(1, true));
 
         outerContainer.setWeights(new int[] { 3, 1 });
 
+        SashForm treeContainer = new SashForm(leftContainer, SWT.VERTICAL);
+        treeContainer.setLayout(new GridLayout(1, false));
+        treeContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        treeContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+
         Composite monitorContainer = createTreeComposite(treeContainer);
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
-
+        treeContainer.setWeights(new int[] { 10, 5 });
         createViewButtons(buttonContainer);
 
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
@@ -116,7 +144,7 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        dataApplication.loadData(0);
+        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
     }
 
     /**
@@ -125,9 +153,8 @@ public class MeasurementsDashboardView {
      */
     private void createWorkspaceListener() {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IResourceChangeListener listener = e -> Display.getDefault().asyncExec(this::updateMeasuringPointView);
 
-        workspace.addResourceChangeListener(listener, 1);
+        workspace.addResourceChangeListener(new WorkspaceListener(this), 1);
     }
 
     /**
@@ -142,7 +169,9 @@ public class MeasurementsDashboardView {
         MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService,
                 dataApplication);
         measurementsTreeViewer.addMouseListener();
-        addSelectionListener(measurementsTreeViewer.getViewer());
+        measurementsTreeViewer.getViewer().addFilter(filter);
+        addSelectionListener(measurementsTreeViewer);
+
         return measurementsTreeViewer;
     }
 
@@ -156,7 +185,8 @@ public class MeasurementsDashboardView {
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
         EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
                 dirty, commandService, dataApplication);
-        addSelectionListener(emptyMeasuringPointsTreeViewer.getViewer());
+        emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
+        addSelectionListener(emptyMeasuringPointsTreeViewer);
         return emptyMeasuringPointsTreeViewer;
     }
 
@@ -166,30 +196,33 @@ public class MeasurementsDashboardView {
      * @param treeViewer
      *            a viewer where the SelectionListener will be added to.
      */
-    private void addSelectionListener(Viewer treeViewer) {
-        treeViewer.addSelectionChangedListener(event -> {
+    private void addSelectionListener(MeasurementsTreeViewer treeViewer) {
+        treeViewer.getViewer().addSelectionChangedListener(event -> {
             IStructuredSelection selection = (IStructuredSelection) event.getSelection();
             selectionService.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
 
             Object selectionObject = selection.getFirstElement();
-            if (selectionObject instanceof MonitorRepository || selectionObject instanceof MeasuringPointRepository) {
+
+            editButton.setText(EDITTEXT_GRAYEDOUT);
+            deleteButton.setText(DELETETEXT_GRAYEDOUT);
+            
+            if (selectionObject == null || selectionObject instanceof MonitorRepository
+                    || selectionObject instanceof MeasuringPointRepository) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
-                editButton.setText("Edit...");
             } else {
                 editButton.setEnabled(true);
                 if (selectionObject instanceof ProcessingType) {
                     deleteButton.setEnabled(false);
-                    editButton.setText("Edit ProcessingType");
-                    deleteButton.setText("Delete...");
+                    editButton.setText(EDITTEXT_PROCESSINGTYPE);
                 } else {
                     deleteButton.setEnabled(true);
                     if (selectionObject instanceof Monitor) {
-                        editButton.setText("Edit Monitor");
-                        deleteButton.setText("Delete Monitor");
+                        editButton.setText(EDITTEXT_MONITOR);
+                        deleteButton.setText(DELETETEXT_MONITOR);
                     } else if (selectionObject instanceof MeasurementSpecification) {
-                        editButton.setText("Edit Measurement");
-                        deleteButton.setText("Delete Measurement");
+                        editButton.setText(EDITTEXT_MEASUREMENT);
+                        deleteButton.setText(DELETETEXT_MEASUREMENT);
                     }
                 }
             }
@@ -208,6 +241,77 @@ public class MeasurementsDashboardView {
         composite.setLayout(new FillLayout());
         composite.setLayoutData(new GridData(GridData.FILL_BOTH));
         return composite;
+    }
+
+    /**
+     * Creates all gadgets which are used to filter the tree viewers.
+     * 
+     * @param parent
+     */
+    private void createFilterGadgets(Composite parent) {
+        Composite filterContainer = new Composite(parent, SWT.NONE);
+        filterContainer.setLayout(new GridLayout(6, false));
+        filterContainer.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
+        filterContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+
+        filter = new MeasurementsFilter();
+        final Label filterLabel = new Label(filterContainer, SWT.NONE);
+        filterLabel.setText("Filter:");
+
+        searchText = new Text(filterContainer, SWT.BORDER | SWT.SEARCH);
+        searchText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        searchText.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filterTreeViewer();
+            }
+        });
+
+        final Label filterActiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
+        filterActiveCheckboxLabel.setText("Active\nMonitors");
+        final Button filterActiveCheckbox = new Button(filterContainer, SWT.CHECK);
+        filterActiveCheckbox.setSelection(true);
+        filterActiveCheckbox.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                filter.setFilterActiveMonitors(!filterActiveCheckbox.getSelection());
+                filterTreeViewer();
+            }
+        });
+
+        final Label filterInactiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
+        filterInactiveCheckboxLabel.setText("Inactive\nMonitors");
+        final Button filterInactiveCheckbox = new Button(filterContainer, SWT.CHECK);
+        filterInactiveCheckbox.setSelection(true);
+        filterInactiveCheckbox.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                filter.setFilterInactiveMonitors(!filterInactiveCheckbox.getSelection());
+                filterTreeViewer();
+            }
+        });
+    }
+
+    /**
+     * filter the monitorTreeViewer and measuringTreeViewer according to the search text entered in the textbox.
+     * If there is going to be no item shown in a tree all items will be made visible again.
+     */
+    private void filterTreeViewer() {
+        TreeViewer treeViewer = (TreeViewer) monitorTreeViewer.getViewer();
+        treeViewer.collapseAll();
+        treeViewer.expandToLevel(2);
+        filter.setSearchText(searchText.getText());
+        monitorTreeViewer.getViewer().refresh();
+        measuringTreeViewer.getViewer().refresh();
+        filter.setSearchText("");
+        TreeViewer measuringTree = (TreeViewer) measuringTreeViewer.getViewer();
+        if (measuringTree.getTree().getTopItem().getItems().length <= 1) {
+            measuringTreeViewer.getViewer().refresh();
+        }
+        TreeViewer monitorTree = (TreeViewer) monitorTreeViewer.getViewer();
+        if (monitorTree.getTree().getTopItem().getItems().length <= 1) {
+            monitorTreeViewer.getViewer().refresh();
+        }
     }
 
     /**
@@ -260,7 +364,7 @@ public class MeasurementsDashboardView {
      */
     private void createDeleteButton(Composite parent) {
         deleteButton = new Button(parent, SWT.PUSH);
-        deleteButton.setText("Delete...");
+        deleteButton.setText(DELETETEXT_GRAYEDOUT);
         deleteButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         deleteButton.addListener(SWT.Selection, e -> {
@@ -280,7 +384,7 @@ public class MeasurementsDashboardView {
      */
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
-        editButton.setText("Edit...");
+        editButton.setText(EDITTEXT_GRAYEDOUT);
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         editButton.addListener(SWT.Selection, e -> {
             MeasurementsWizard wizard;
@@ -324,7 +428,7 @@ public class MeasurementsDashboardView {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
-                dataApplication.loadData(selectionIndex);
+                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex));
                 updateTreeViewer();
             }
 
@@ -340,7 +444,7 @@ public class MeasurementsDashboardView {
     /**
      * Adds every project in the workspace that has an .aird file to the projectsComboBox
      */
-    private void updateProjectComboBox() {
+    public void updateProjectComboBox() {
 
         int selectionIndex = -1;
         projectsComboDropDown.removeAll();
@@ -359,20 +463,19 @@ public class MeasurementsDashboardView {
     }
 
     /**
-     * Reloads the dashboard view and updates it, if something changed
-     */
-    private void updateMeasuringPointView() {
-        updateProjectComboBox();
-        dataApplication.updateData();
-        updateTreeViewer();
-    }
-
-    /**
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
-    private void updateTreeViewer() {
+    public void updateTreeViewer() {
         monitorTreeViewer.update();
         measuringTreeViewer.update();
+    }
+    
+    /**
+     * Returns the instance of dataApplication
+     * @return dataApplication instance
+     */
+    public DataApplication getDataApplication() {
+        return dataApplication;
     }
 
     /**
@@ -387,4 +490,6 @@ public class MeasurementsDashboardView {
     public void save(MDirtyable dirty) throws IOException {
         monitorTreeViewer.save(dirty);
     }
+
+ 
 }

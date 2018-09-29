@@ -7,7 +7,6 @@ import org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorReposit
 import org.palladiosimulator.monitorrepository.ProcessingType
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType
 
-
 /* mpview EMF Parsley Dsl Module file */
 module monitorrepositoryview {
 	parts {
@@ -31,11 +30,19 @@ module monitorrepositoryview {
 	labelProvider {
 		text {
 			Monitor mon -> {
-				mon.entityName
+				if (mon.measuringPoint !== null) {
+					mon.entityName + " [" + mon.measuringPoint.toString.replaceAll("\\[[^\\[]*\\]$", "") + "]";
+				} else {
+					mon.entityName + " [There is no MeasuringPoint set!]";
+				}
 			}
 
 			MeasurementSpecification ms -> {
-				ms.name
+				"MeasurementSpecification: " + ms.metricDescription.getName
+			}
+			ProcessingType proc -> {
+				// Remove the "[TRANSIENT]" substring from the label 
+				proc.toString.replaceAll("\\[[^\\[]*\\]$", "")
 			}
 		}
 
@@ -90,14 +97,16 @@ module monitorrepositoryview {
 					"Measuringpoint",
 					monitor,
 					[
-						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.MEASURING_POINT_SELECTION, monitor);
+						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.MEASURING_POINT_SELECTION,
+							monitor);
 					]
 				),
 				actionChange(
 					"Measurement Specifications",
 					monitor,
 					[
-						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
+						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
+							monitor);
 					]
 				)
 			]), separator]
@@ -118,8 +127,9 @@ module monitorrepositoryview {
 						measurement,
 						[
 							val monitor = measurement.eContainer as Monitor
-							MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
-							
+							MonitorRepositorySaveableTreeFormView.openWizard(
+								WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
+
 						]
 					),
 					actionChange(
