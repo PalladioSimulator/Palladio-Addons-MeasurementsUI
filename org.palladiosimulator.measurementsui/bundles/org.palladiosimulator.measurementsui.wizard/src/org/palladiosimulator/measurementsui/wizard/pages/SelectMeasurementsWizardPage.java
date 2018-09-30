@@ -1,15 +1,28 @@
 package org.palladiosimulator.measurementsui.wizard.pages;
 
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.palladiosimulator.measurementsui.wizard.handlers.SelectMeasurementCheckboxCellModifier;
 import org.palladiosimulator.measurementsui.wizard.viewer.EmptySelectMeasurementsViewer;
 import org.palladiosimulator.measurementsui.wizard.viewer.SelectMeasurementsViewer;
@@ -57,10 +70,28 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.FILL);
-		FillLayout fillLayoutParentContainer = new FillLayout();
-		container.setLayout(fillLayoutParentContainer);
+		GridLayout layoutParentContainer = new GridLayout();
+		layoutParentContainer.numColumns = 3;
+		layoutParentContainer.makeColumnsEqualWidth = false;
+		container.setLayout(layoutParentContainer);
 		
-		Composite compositeLeft = new Composite(container, SWT.NONE);
+		TableViewer tableViewerLeft = initLeftTableViewer(container);
+		Composite compositeMiddle = initMiddleSubComposite(container);
+		TableViewer tableViewerRight = initRightTableViewer(container);
+
+		addButtons(tableViewerLeft, compositeMiddle, tableViewerRight);
+		
+		setPageComplete(true);
+		setControl(container);
+	}
+
+    /**
+     * Initializes the left TableViewer which contains available measurements.
+     * @param container the parent container which contains the TableViewer
+     * @return the TableViewer that is used for further user interactions
+     */
+    private TableViewer initLeftTableViewer(Composite container) {
+        Composite compositeLeft = new Composite(container, SWT.NONE);
 		FillLayout fillLayoutLeft = new FillLayout();
 		SelectMeasurementsViewer selectMeasurementsViewerLeft = new SelectMeasurementsViewer(compositeLeft,
 				metricDescriptionSelectionWizardModel);
@@ -103,113 +134,210 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 			}
 		});
 		compositeLeft.setLayout(fillLayoutLeft);
-
-		Composite compositeMiddle = new Composite(container, SWT.NONE);
-		FillLayout fillLayoutMiddle = new FillLayout();
-		fillLayoutMiddle.type = SWT.CENTER;
-		fillLayoutMiddle.marginHeight = 100;
-		fillLayoutMiddle.marginWidth = 40;
-		fillLayoutMiddle.spacing = 10;
-		compositeMiddle.setLayout(fillLayoutMiddle);
+		compositeLeft.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		Button rightAll = new Button(compositeMiddle, SWT.PUSH);
-		rightAll.setText("-->");
-		rightAll.addListener(SWT.Selection, e -> {
-			metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
-			getContainer().updateButtons();
-		});
+        final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+        final DragSourceAdapter dragAdapter = new DragSourceAdapter() {
+            @Override
+            public void dragSetData(final DragSourceEvent event) {
+                transfer.setSelection(new StructuredSelection(tableViewerLeft.getTable().getSelection()));
+            }
+        };
+        final DragSource dragSource = new DragSource(tableViewerLeft.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
+        dragSource.setTransfer(transfer);
+        dragSource.addDragListener(dragAdapter);
+        
+        final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
+            @Override
+            public void drop(final DropTargetEvent event) {
+                final StructuredSelection droppedSelection = (StructuredSelection) transfer.getSelection();
+                for (Object currentElement : droppedSelection.toList()) {
+                    TableItem tableItem = (TableItem) currentElement;
+                    MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
+                    metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
+                }
 
-		Button rightOne = new Button(compositeMiddle, SWT.NONE);
-		rightOne.setText(">");
-		rightOne.addListener(SWT.Selection, e -> {
-			IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
-			Object firstElement = selection.getFirstElement();
-			MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
-			metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurment);
-			getContainer().updateButtons();
-		});
+            }
+        };
+        final DropTarget dropTarget = new DropTarget(tableViewerLeft.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
+        dropTarget.setTransfer(transfer);
+        dropTarget.addDropListener(dropAdapter);
+		
+        return tableViewerLeft;
+    }
 
-		Composite compositeRight = new Composite(container, SWT.NONE);
-		FillLayout fillLayoutRight = new FillLayout();
-		EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(compositeRight,
-				metricDescriptionSelectionWizardModel);
-		TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
-		tableViewerRight.setLabelProvider(new ITableLabelProvider() {
+    /**
+     * Initializes the middle sub composite, where later buttons are added for moving selecting measurements.
+     * @param container the parent container
+     * @return the Composite object
+     */
+    private Composite initMiddleSubComposite(Composite container) {
+        Composite compositeMiddle = new Composite(container, SWT.NONE);
+    	FillLayout fillLayoutMiddle = new FillLayout();
+    	fillLayoutMiddle.type = SWT.CENTER;
+    	fillLayoutMiddle.marginWidth = 40;
+    	fillLayoutMiddle.spacing = 10;
+    	compositeMiddle.setLayout(fillLayoutMiddle);
+        return compositeMiddle;
+    }
 
-			public void removeListener(ILabelProviderListener listener) {
-			    // not used
-			}
+    /**
+     * Initializes the right TableViewer which contains selected measurements.
+     * @param container the parent container which contains the TableViewer
+     * @return the TableViewer that is used for further user interactions
+     */
+    private TableViewer initRightTableViewer(Composite container) {
+        Composite compositeRight = new Composite(container, SWT.NONE);
+    	FillLayout fillLayoutRight = new FillLayout();
+    	EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(compositeRight,
+    			metricDescriptionSelectionWizardModel);
+    	TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
+    	tableViewerRight.setLabelProvider(new ITableLabelProvider() {
+    
+    		public void removeListener(ILabelProviderListener listener) {
+    		    // not used
+    		}
+    
+    		public Image getColumnImage(Object element, int columnIndex) {
+    			return null;
+    		}
+    
+    		public String getColumnText(Object element, int columnIndex) {
+    			String result = "";
+    			MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
+    			if (columnIndex == 1) {
+    				if (measurementSpecification.isTriggersSelfAdaptations()) {
+    					result = CHECKBOX_CHECKED;
+    				} else {
+    					result = CHECKBOX_UNCHECKED;
+    				}
+    				return result;
+    			} else {
+    				result = measurementSpecification.getMetricDescription().getName();
+    				return result;
+    			}
+    		}
+    
+    		public void addListener(ILabelProviderListener listener) {
+    		    // not used
+    		}
+    
+    		public void dispose() {
+    		    // not used
+    		}
+    
+    		public boolean isLabelProperty(Object element, String property) {
+    			return false;
+    		}
+    	});
+    	compositeRight.setLayout(fillLayoutRight);
+    	compositeRight.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+    	tableViewerRight.getTable().getColumn(1).setWidth(125);
+    	
+    	CellEditor[] cellEditor = new CellEditor[2];
+        cellEditor[0] = null;
+        cellEditor[1] = new CheckboxCellEditor(tableViewerRight.getTable());
+        tableViewerRight.setCellEditors(cellEditor);
+        String[] columnNames = { "Selected", "Self Adaptive" };
+        tableViewerRight.setColumnProperties(columnNames);
+        tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(
+                tableViewerRight, metricDescriptionSelectionWizardModel));
+        
+        final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+        final DragSourceAdapter dragAdapter = new DragSourceAdapter() {
+            @Override
+            public void dragSetData(final DragSourceEvent event) {
+                transfer.setSelection(new StructuredSelection(tableViewerRight.getTable().getSelection()));
+            }
+        };
+        final DragSource dragSource = new DragSource(tableViewerRight.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
+        dragSource.setTransfer(transfer);
+        dragSource.addDragListener(dragAdapter);
+        
+        final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
+            @Override
+            public void drop(final DropTargetEvent event) {
+                final StructuredSelection droppedSelection = (StructuredSelection) transfer.getSelection();
+                for (Object currentElement : droppedSelection.toList()) {
+                    TableItem tableItem = (TableItem) currentElement;
+                    MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
+                    metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
+                }
 
-			public Image getColumnImage(Object element, int columnIndex) {
-				return null;
-			}
+            }
+        };
+        final DropTarget dropTarget = new DropTarget(tableViewerRight.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
+        dropTarget.setTransfer(transfer);
+        dropTarget.addDropListener(dropAdapter);
+    	
+        return tableViewerRight;
+    }
 
-			public String getColumnText(Object element, int columnIndex) {
-				String result = "";
-				MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
-				if (columnIndex == 1) {
-					if (measurementSpecification.isTriggersSelfAdaptations()) {
-						result = CHECKBOX_CHECKED;
-					} else {
-						result = CHECKBOX_UNCHECKED;
-					}
-					return result;
-				} else {
-					result = measurementSpecification.getMetricDescription().getName();
-					return result;
-				}
-			}
-
-			public void addListener(ILabelProviderListener listener) {
-			    // not used
-			}
-
-			public void dispose() {
-			    // not used
-			}
-
-			public boolean isLabelProperty(Object element, String property) {
-				return false;
-			}
-		});
-		compositeRight.setLayout(fillLayoutRight);
-		tableViewerRight.getTable().getColumn(1).setWidth(75);
-
+    /**
+     * Add the buttons for moving measurements.
+     * @param tableViewerLeft contains the available measurements
+     * @param compositeMiddle the middle composite where the buttons are located
+     * @param tableViewerRight contains the selected measurements
+     */
+    private void addButtons(TableViewer tableViewerLeft, Composite compositeMiddle, TableViewer tableViewerRight) {
+        Button rightOne = new Button(compositeMiddle, SWT.NONE);
+        rightOne.setText("Add >");
+        rightOne.addListener(SWT.Selection, e -> {
+            IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
+            for (Object currentElement : selection.toList()) {
+                MeasurementSpecification measurement = (MeasurementSpecification) currentElement;
+                metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
+            }
+            getContainer().updateButtons();
+        });
+		
 		Button leftOne = new Button(compositeMiddle, SWT.NONE);
-		leftOne.setText("<");
+		leftOne.setText("< Remove");
 		leftOne.addListener(SWT.Selection, e -> {
 			IStructuredSelection selection = tableViewerRight.getStructuredSelection();
-			Object firstElement = selection.getFirstElement();
-			MeasurementSpecification measurment = (MeasurementSpecification) firstElement;
-			metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurment);
+			for (Object currentElement : selection.toList()) {
+			    MeasurementSpecification measurement = (MeasurementSpecification) currentElement;
+			    metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
+			}
 			getContainer().updateButtons();
 		});
+		
+		addLabelForSpacingButtons(compositeMiddle);
+        
+        Button rightAll = new Button(compositeMiddle, SWT.PUSH);
+        rightAll.setText("Add All >>");
+        rightAll.addListener(SWT.Selection, e -> {
+            metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
+            getContainer().updateButtons();
+        });
 
 		Button leftAll = new Button(compositeMiddle, SWT.NONE);
-		leftAll.setText("<--");
+		leftAll.setText("<< Remove All");
 		leftAll.addListener(SWT.Selection, e -> {
 			metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
 			getContainer().updateButtons();
 		});
 
-		Button addSuggestion = new Button(compositeMiddle, SWT.NONE);
+		addLabelForSpacingButtons(compositeMiddle);
+		
+		Button addSuggestion = new Button(compositeMiddle, SWT.BOTTOM);
 		addSuggestion.setText("Add Suggestions");
+    }
 
-		CellEditor[] cellEditor = new CellEditor[2];
-		cellEditor[0] = null;
-		cellEditor[1] = new CheckboxCellEditor(tableViewerRight.getTable());
-		tableViewerRight.setCellEditors(cellEditor);
-		String[] columnNames = { "Metric Description", "Self Adapting" };
-		tableViewerRight.setColumnProperties(columnNames);
-		tableViewerRight.setCellModifier(new SelectMeasurementCheckboxCellModifier(
-		        tableViewerRight, metricDescriptionSelectionWizardModel));
-		setPageComplete(true);
-		setControl(container);
-	}
+    /**
+     * Used for spacing the buttons in the middle composite
+     * @param compositeMiddle the given middle composite
+     */
+    private void addLabelForSpacingButtons(Composite compositeMiddle) {
+        Label emptyLabelForSpacing = new Label(compositeMiddle, SWT.NONE);
+        emptyLabelForSpacing.setText(" ");
+    }
+    
 	@Override
 	public void setVisible(boolean visible) {
-	    if(visible) {
-	        metricDescriptionSelectionWizardModel.initUnusedMetrics(metricDescriptionSelectionWizardModel.getUsedMetricsMonitor());
+	    if (visible) {
+	        metricDescriptionSelectionWizardModel.initUnusedMetrics(
+	                metricDescriptionSelectionWizardModel.getUsedMetricsMonitor());
 	    }
 	    super.setVisible(visible);
 	}
