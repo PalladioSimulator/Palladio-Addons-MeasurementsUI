@@ -6,6 +6,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.palladiosimulator.measurementsui.fileaccess.ValidProjectAccessor;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
 
 
@@ -23,6 +24,7 @@ public final class DataApplication {
     private Session session;
     private URI sessionResourceURI;
     private IProject project;
+    private MonitorRepository monitorRepository;
 
     private static DataApplication instance;
     
@@ -58,7 +60,7 @@ public final class DataApplication {
      * 
      * @param project to load data from
      */
-    public void loadData(IProject project) {
+    public void loadData(IProject project, int monitorRepositorySelectionIndex) {
     	this.project = project;
     	
         initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
@@ -66,7 +68,10 @@ public final class DataApplication {
 
         if (session != null) {
             this.modelAccessor.initializeModels(session);
-            this.modelAccessor.checkIfRepositoriesExist(project);
+            this.modelAccessor.checkIfRepositoriesExist(project);        
+            updateMonitorRepository(monitorRepositorySelectionIndex);
+            
+           
         } else {
             System.err.println("No Models are initiated. Make sure a Session is open.");
         }
@@ -83,6 +88,8 @@ public final class DataApplication {
         if (session != null) {
             this.modelAccessor.initializeModels(session);
             this.modelAccessor.checkIfRepositoriesExist(project);
+            
+            
         } else {
             System.err.println("No Models are initiated. Make sure a Session is open.");
         }
@@ -118,6 +125,12 @@ public final class DataApplication {
             System.err.println("MAke sure a Session can be initiated. A valid URI must be present.");
         }
     }
+    
+    public void updateMonitorRepository(int selectionIndex) {
+        if(this.modelAccessor.monitorRepositoryExists()&& this.modelAccessor.getMonitorRepository().size()>selectionIndex) {
+            this.monitorRepository = this.modelAccessor.getMonitorRepository().get(selectionIndex);
+        }
+    }
 
     /**
      * Returns an instance of ModelAccessor which can be used to access all pcm models after they
@@ -147,5 +160,9 @@ public final class DataApplication {
 	public IProject getProject() {
 		return project;
 	}
+	
+    public MonitorRepository getMonitorRepository() {
+        return monitorRepository;
+    }
 
 }
