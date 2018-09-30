@@ -214,15 +214,16 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 			}
 
 		});
-		
+
 		createTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
-			
+
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				nextPressed();
-				getContainer().showPage( getNextPage());
-				 
-				
+				if (isMeasuringPointCreatable(createTreeViewer.getStructuredSelection().getFirstElement())) {
+					nextPressed();
+					getContainer().showPage(getNextPage());
+				}
+
 			}
 		});
 		createMeasuringTabbedItem.setControl(all);
@@ -279,13 +280,14 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 			}
 		});
 		emptyMeasuringpointViewer.addDoubleClickListener(new IDoubleClickListener() {
-			
+
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
-				nextPressed();
-				getContainer().showPage( getNextPage());
-				 
-				
+				if (isMeasuringPointCreatable(emptyMeasuringpointViewer.getStructuredSelection().getFirstElement())) {
+					nextPressed();
+					getContainer().showPage(getNextPage());
+				}
+
 			}
 		});
 		existingMeasuringTabbedItem.setControl(all);
@@ -448,8 +450,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 	private boolean isMeasuringPointCreatable(Object item) {
 		if (item instanceof MeasuringPoint || item instanceof ResourceEnvironment || item instanceof ResourceContainer
 				|| item instanceof ProcessingResourceSpecification || item instanceof AssemblyContext
-				|| item instanceof AssemblyContext || item instanceof EntryLevelSystemCall
-				|| item instanceof ExternalCallAction || item instanceof LinkingResource || item instanceof SubSystem
+				|| item instanceof EntryLevelSystemCall || item instanceof ExternalCallAction
+				|| item instanceof LinkingResource || item instanceof SubSystem
 				|| item instanceof org.palladiosimulator.pcm.system.System || item instanceof UsageScenario) {
 			return true;
 

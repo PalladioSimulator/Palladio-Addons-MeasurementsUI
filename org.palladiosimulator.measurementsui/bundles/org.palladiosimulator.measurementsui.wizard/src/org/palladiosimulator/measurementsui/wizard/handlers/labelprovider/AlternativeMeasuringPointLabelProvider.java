@@ -4,12 +4,16 @@ import java.util.LinkedList;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.IColorProvider;
+import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -38,16 +42,22 @@ import org.palladiosimulator.pcm.subsystem.SubSystem;
 import org.palladiosimulator.pcm.subsystem.provider.SubSystemItemProvider;
 import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.system.provider.SystemItemProvider;
+import org.palladiosimulator.pcm.usagemodel.Branch;
+import org.palladiosimulator.pcm.usagemodel.BranchTransition;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
+import org.palladiosimulator.pcm.usagemodel.Loop;
 import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.pcm.usagemodel.provider.BranchItemProvider;
+import org.palladiosimulator.pcm.usagemodel.provider.BranchTransitionItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.EntryLevelSystemCallItemProvider;
+import org.palladiosimulator.pcm.usagemodel.provider.LoopItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.ScenarioBehaviourItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.UsageModelItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.UsageScenarioItemProvider;
 
-public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IColorProvider {
+public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IColorProvider, IFontProvider {
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
@@ -135,6 +145,18 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IC
 				UsageModelItemProvider mod = new UsageModelItemProvider(factory);
 				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
 			}
+			else if (object instanceof Branch) {
+				BranchItemProvider mod = new BranchItemProvider(factory);
+				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+			}
+			else if (object instanceof BranchTransition) {
+				BranchTransitionItemProvider mod = new BranchTransitionItemProvider(factory);
+				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+			}
+			else if (object instanceof Loop) {
+				 LoopItemProvider mod= new LoopItemProvider(factory);
+				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+			}
 
 		}
 
@@ -181,6 +203,8 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IC
 			} else if (element instanceof UsageModel) {
 				return ((UsageModel) element).toString().replace("[TRANSIENT]", "");
 
+			}else if (element instanceof BranchTransition) {
+				return ((BranchTransition)element).toString().replace("[TRANSIENT]", "");
 			}
 
 			return ((NamedElement) element).getEntityName();
@@ -199,14 +223,30 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IC
 
 	@Override
 	public Color getBackground(Object element) {
+//		if(element instanceof ResourceEnvironment||element instanceof ResourceContainer||
+//		element instanceof ProcessingResourceSpecification||element instanceof AssemblyContext||
+//		element instanceof EntryLevelSystemCall||
+//		element instanceof ExternalCallAction||element instanceof LinkingResource||
+//		element instanceof SubSystem||element instanceof org.palladiosimulator.pcm.system.System||
+//		element instanceof UsageScenario) {
+//			return Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
+//		}
+		return null;
+	}
+
+	@Override
+	public Font getFont(Object element) {
 		if(element instanceof ResourceEnvironment||element instanceof ResourceContainer||
-		element instanceof ProcessingResourceSpecification||element instanceof AssemblyContext||
-		element instanceof EntryLevelSystemCall||
-		element instanceof ExternalCallAction||element instanceof LinkingResource||
-		element instanceof SubSystem||element instanceof org.palladiosimulator.pcm.system.System||
-		element instanceof UsageScenario) {
-			return Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
-		}
+				element instanceof ProcessingResourceSpecification||element instanceof AssemblyContext||
+				element instanceof EntryLevelSystemCall||
+				element instanceof ExternalCallAction||element instanceof LinkingResource||
+				element instanceof SubSystem||element instanceof org.palladiosimulator.pcm.system.System||
+				element instanceof UsageScenario) {
+			
+			Font font= JFaceResources.getBannerFont();
+			
+					return font;
+				}
 		return null;
 	}
 

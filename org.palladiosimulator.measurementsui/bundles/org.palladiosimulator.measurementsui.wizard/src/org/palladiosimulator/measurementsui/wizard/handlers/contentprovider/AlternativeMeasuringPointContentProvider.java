@@ -13,7 +13,10 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import org.palladiosimulator.pcm.usagemodel.Branch;
+import org.palladiosimulator.pcm.usagemodel.BranchTransition;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
+import org.palladiosimulator.pcm.usagemodel.Loop;
 import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
@@ -67,7 +70,7 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
 			return new Object[] { ((UsageScenario) parentElement).getScenarioBehaviour_UsageScenario() };
 		} else if (parentElement instanceof ScenarioBehaviour) {
 			return ((ScenarioBehaviour) parentElement).getActions_ScenarioBehaviour().stream()
-					.filter(e -> e instanceof EntryLevelSystemCall).collect(Collectors.toCollection(LinkedList::new))
+					.filter(e-> e instanceof EntryLevelSystemCall || e instanceof Branch|| e instanceof BranchTransition || e instanceof Loop).collect(Collectors.toCollection(LinkedList::new))
 					.toArray();
 		} else if (parentElement instanceof Repository) {
 			return ((Repository) parentElement).eContents().stream().filter(e -> e instanceof BasicComponent)
@@ -82,6 +85,14 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
 			return ((ResourceDemandingSEFF) parentElement).getSteps_Behaviour().stream()
 					.filter(e -> e instanceof ExternalCallAction).collect(Collectors.toCollection(LinkedList::new))
 					.toArray();
+		}else if (parentElement instanceof Branch) {
+			return ((Branch) parentElement).getBranchTransitions_Branch().toArray();
+		}else if (parentElement instanceof Loop) {
+			return ((Loop) parentElement).getBodyBehaviour_Loop().getActions_ScenarioBehaviour().stream()
+					.filter(e-> e instanceof EntryLevelSystemCall || e instanceof Branch|| e instanceof BranchTransition || e instanceof Loop).collect(Collectors.toCollection(LinkedList::new))
+					.toArray();
+		}else if (parentElement instanceof BranchTransition) {
+			return new Object[] {((BranchTransition) parentElement).getBranchedBehaviour_BranchTransition()};
 		}
 
 		return new Object[0];
@@ -105,8 +116,8 @@ return !((ResourceContainer) element).getActiveResourceSpecifications_ResourceCo
 		} else if (element instanceof UsageScenario) {
 		return	((UsageScenario) element).getScenarioBehaviour_UsageScenario()!=null;
 		} else if (element instanceof ScenarioBehaviour) {
-			return !((ScenarioBehaviour) element).getActions_ScenarioBehaviour().stream()
-					.filter(e -> e instanceof EntryLevelSystemCall).collect(Collectors.toCollection(LinkedList::new)).isEmpty();
+			return !((ScenarioBehaviour) element).getActions_ScenarioBehaviour().stream().filter(e-> e instanceof EntryLevelSystemCall)
+					.collect(Collectors.toCollection(LinkedList::new)).isEmpty();
 		} else if (element instanceof Repository) {
 			return !((Repository) element).eContents().stream().filter(e -> e instanceof BasicComponent)
 			.collect(Collectors.toCollection(LinkedList::new)).isEmpty();
@@ -115,6 +126,12 @@ return !((ResourceContainer) element).getActiveResourceSpecifications_ResourceCo
 		} else if (element instanceof ResourceDemandingSEFF) {
 return !((ResourceDemandingSEFF) element).getSteps_Behaviour().stream()
 		.filter(e -> e instanceof ExternalCallAction).collect(Collectors.toCollection(LinkedList::new)).isEmpty();
+		}else if (element instanceof Branch) {
+			return !((Branch) element).getBranchTransitions_Branch().isEmpty();
+		}else if (element instanceof BranchTransition) {
+			return !((BranchTransition) element).getBranchedBehaviour_BranchTransition().getActions_ScenarioBehaviour().isEmpty();
+		}else if (element instanceof Loop) {
+			return !((Loop) element).getBodyBehaviour_Loop().getActions_ScenarioBehaviour().isEmpty();
 		}
 		return false;
 	}

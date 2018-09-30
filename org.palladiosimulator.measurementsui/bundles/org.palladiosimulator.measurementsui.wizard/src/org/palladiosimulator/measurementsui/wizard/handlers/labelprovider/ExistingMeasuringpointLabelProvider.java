@@ -1,9 +1,14 @@
 package org.palladiosimulator.measurementsui.wizard.handlers.labelprovider;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.provider.MeasuringPointItemProvider;
+import org.palladiosimulator.pcm.provider.PcmItemProviderAdapterFactory;
+import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
 
 public class ExistingMeasuringpointLabelProvider implements ILabelProvider{
 
@@ -33,8 +38,12 @@ public class ExistingMeasuringpointLabelProvider implements ILabelProvider{
 
     @Override
     public Image getImage(Object element) {
-        // TODO Auto-generated method stub
-        return null;
+        		PcmItemProviderAdapterFactory factory = new PcmItemProviderAdapterFactory();
+        		EObject object = (EObject) element;
+        			MeasuringPointItemProvider provider = new MeasuringPointItemProvider(factory);
+        		
+
+        return ExtendedImageRegistry.getInstance().getImage(provider.getImage(object));
     }
 
     @Override
