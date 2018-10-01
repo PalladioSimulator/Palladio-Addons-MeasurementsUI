@@ -161,7 +161,11 @@ public class MeasuringPointsLabelProvider implements ILabelProvider, IFontProvid
 		}
 
 	}
-
+/**
+ * constructs the string for the label for entry level system calls
+ * @param element the entry level system call model
+ * @return String name of the entry level system call
+ */
 	private String getEntryLevelSystemCallText(Object element) {
 		if (((EntryLevelSystemCall) element).getScenarioBehaviour_AbstractUserAction()
 				.eContainer() instanceof BranchTransition) {
@@ -181,7 +185,11 @@ public class MeasuringPointsLabelProvider implements ILabelProvider, IFontProvid
 					+ scenarioBehaviour.getEntityName() + LOCATED_IN + entryLevelSystemCall.getEntityName();
 		}
 	}
-
+/**
+ * constructs the string for the label for external actions
+ * @param element the external action model
+ * @return String name of the external action
+ */
 	private String getExternalActionText(Object element) {
 		NamedElement externalCallAction = (NamedElement) ((ExternalCallAction) element)
 				.getResourceDemandingBehaviour_AbstractAction().eContainer();

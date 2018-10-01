@@ -12,8 +12,12 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public class StandardSetCreationSelectionWizardPage extends WizardPage {
-	Button[] radios = new Button[2];
+	private Button[] radios = new Button[2];
 
+	/**
+	 * constructor for the first wizardpage
+	 * @param pageName name of the wizardpage
+	 */
 	public StandardSetCreationSelectionWizardPage(String pageName) {
 
 		super("wizardpage");

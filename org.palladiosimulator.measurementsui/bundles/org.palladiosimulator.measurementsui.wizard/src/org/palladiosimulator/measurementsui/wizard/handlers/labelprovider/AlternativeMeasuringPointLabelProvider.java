@@ -94,6 +94,12 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider, I
 
 	}
 
+	/**
+	 * retrieves the image for the models in the tree viewer
+	 * @param element model in the tree viewer
+	 * @param factory the pcm factory
+	 * @return Image
+	 */
 	private Image getModelImage(Object element, PcmItemProviderAdapterFactory factory) {
 		EObject object = (EObject) element;
 		if (object instanceof UsageScenario) {

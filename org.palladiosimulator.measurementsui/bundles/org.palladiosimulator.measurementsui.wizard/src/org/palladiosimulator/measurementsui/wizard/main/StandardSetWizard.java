@@ -23,22 +23,38 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
 	private ResourceEditorImpl editor;
 	private DataApplication dataApplication;
 
+	/**
+	 * returns the first wizard page of the standard set wizard
+	 * @return first wizardpage
+	 */
 	public StandardSetCreationSelectionWizardPage getPage1() {
 		return standardSetChoiceWizardPage;
 	}
-
+/**
+ * sets the first wizard page of the standard set wizard
+ * @param page1 first wizard page
+ */
 	public void setPage1(StandardSetCreationSelectionWizardPage page1) {
 		this.standardSetChoiceWizardPage = page1;
 	}
-
+    /**
+     * returns the second wizard page of the standard set wizard
+     * @return second wizardpage
+     */
 	public StandardSetMeasuringPointSelectionWizardPage getPage2() {
 		return measuringPointSelectionWizardPage;
 	}
-
+/**
+ * sets the second wizard page of the standard set wizard
+ * @param page2 second wizard page
+ */
 	public void setPage2(StandardSetMeasuringPointSelectionWizardPage page2) {
 		this.measuringPointSelectionWizardPage = page2;
 	}
 
+	/**
+	 * constructor for the wizard 
+	 */
 	public StandardSetWizard() {
 		editor = ResourceEditorImpl.getInstance();
 		dataApplication = DataApplication.getInstance();
@@ -62,7 +78,7 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
 	@Override
 	public boolean performFinish() {
 		StandardSetCreationProvider provider = new StandardSetCreationProvider();
-		if (measuringPointSelectionWizardPage.isAdd()) {
+		if (measuringPointSelectionWizardPage.isLoadMonitorAndMeasuringpoint()) {
 			Object[] tempmonitor = measuringPointSelectionWizardPage.getViewer().getCheckedElements();
 
 			Monitor[] monitors = new Monitor[tempmonitor.length];

@@ -1,8 +1,5 @@
 /**
- * 
- */
-/**
- * @author zss3
+ * @author zss3, Domas Mikalkinas
  *
  */
 package org.palladiosimulator.measurementsui.wizardmodel.pages;

@@ -54,7 +54,8 @@ import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 public class MeasuringPointSelectionWizardModel implements WizardModel {
 
     private static final String CREATE_MEASURINGPOINT_INFO_TEXT = "Select the element of your Models which should be "
-            + "monitored during a simulation run. Models for which a measuring point can be created are highlighted with a bold font.";
+            + "monitored during a simulation run. Models for which a measuring point "
+            + "can be created are highlighted with a bold font.";
     private static final String EDIT_MEASURINGPOINT_INFO_TEXT = "Select a different measuring Point.";
 
     private static final String CREATE_MEASURINGPOINT_TITLE = "Create Measuring Point";
@@ -64,36 +65,12 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     private boolean isEditing;
     private boolean finishable = true;
 
-    /**
-     * indicates whether the wizard model is complete, so the wizard can finish
-     * @return boolean
-     */
-    public boolean isFinishable() {
-        return finishable;
-    }
-
-    /**
-     * sets the wizard model to finishable, if true, the wizard can perform the finish operations
-     * @param finishable
-     */
-    public void setFinishable(boolean finishable) {
-        this.finishable = finishable;
-    }
-
-    public boolean isEditing() {
-        return isEditing;
-    }
-
-    public void setEditing(boolean isEditing) {
-        this.isEditing = isEditing;
-    }
-
     private ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
     private Object currentSelectionFirstMeasuringModel;
     private Object currentSecondStageModel;
     private Object currentThirdStageModel;
 
-    private DataApplication da = DataApplication.getInstance();
+    private DataApplication dataApplication = DataApplication.getInstance();
 
     /**
      * 
@@ -109,13 +86,69 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     }
 
     /**
+     * helper method to add the measuringpoint to the monitor
      * 
-     * @param monitor
-     *            the monitor which is currently used in the wizard
+     * @param measuringPoint
+     *            the measuringpoint to be added to the monitor
+     */
+    public void addMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
+        monitor.setMeasuringPoint(measuringPoint);
+
+    }
+
+    /**
+     * adds a measuringpoint to the given repository
+     * 
+     * @param measuringPoint
+     *            the measuringpoint to be added to the measuringpoint repository
+     */
+    public void addMeasuringPointToRepository(MeasuringPoint measuringPoint) {
+        MeasuringPointRepository measuringPointRepository = DataApplication.getInstance().getModelAccessor()
+                .getMeasuringPointRepository().get(0);
+        ResourceEditorImpl.getInstance().addMeasuringPointToRepository(measuringPointRepository, measuringPoint);
+    }
+
+    /**
+     * checks whether the monitor repository and measuringpoint of a monitor is set. If this is the
+     * case the wizard can be finished
+     */
+    @Override
+    public boolean canFinish() {
+        return (this.monitor.getMeasuringPoint() != null) && finishable;
+    }
+
+    /**
+     * returns the info text of the wizard page
+     */
+    @Override
+    public String getInfoText() {
+        if (this.monitor.getMeasuringPoint() != null) {
+            return EDIT_MEASURINGPOINT_INFO_TEXT;
+        }
+        return CREATE_MEASURINGPOINT_INFO_TEXT;
+    }
+
+    @Override
+    public boolean nextStep() {
+        return false;
+    }
+
+    /**
+     * returns the title text of the wizard page
+     */
+    @Override
+    public String getTitleText() {
+        if (this.monitor.getMeasuringPoint() != null) {
+            return CREATE_MEASURINGPOINT_TITLE;
+        }
+        return EDIT_MEASURINGPOINT_TITLE;
+
+    }
+
+    /**
+     * 
      * @param measuringPoint
      *            the measuringpoint which needs to be added to the monitor
-     * @param isEditing
-     *            indicates, whether it is in edit mode or not
      */
     public void setMeasuringPointDependingOnEditMode(MeasuringPoint measuringPoint) {
         if (isEditing) {
@@ -270,73 +303,13 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     }
 
     /**
-     * helper method to add the measuringpoint to the monitor
-     * 
-     * @param measuringPoint
-     *            the measuringpoint to be added to the monitor
-     */
-    public void addMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
-        monitor.setMeasuringPoint(measuringPoint);
-
-    }
-
-    /**
-     * adds a measuringpoint to the given repository
-     * 
-     * @param measuringPoint
-     *            the measuringpoint to be added to the measuringpoint repository
-     */
-    public void addMeasuringPointToRepository(MeasuringPoint measuringPoint) {
-        MeasuringPointRepository measuringPointRepository = DataApplication.getInstance().getModelAccessor()
-                .getMeasuringPointRepository().get(0);
-        ResourceEditorImpl.getInstance().addMeasuringPointToRepository(measuringPointRepository, measuringPoint);
-    }
-
-    /**
-     * checks whether the monitor repository and measuringpoint of a monitor is set. If this is the
-     * case the wizard can be finished
-     */
-    @Override
-    public boolean canFinish() {
-        return (this.monitor.getMeasuringPoint() != null) && finishable;
-    }
-
-    /**
-     * returns the info text of the wizard page
-     */
-    @Override
-    public String getInfoText() {
-        if (this.monitor.getMeasuringPoint() != null) {
-            return EDIT_MEASURINGPOINT_INFO_TEXT;
-        }
-        return CREATE_MEASURINGPOINT_INFO_TEXT;
-    }
-
-    @Override
-    public boolean nextStep() {
-        return false;
-    }
-
-    /**
-     * returns the title text of the wizard page
-     */
-    @Override
-    public String getTitleText() {
-        if (this.monitor.getMeasuringPoint() != null) {
-            return CREATE_MEASURINGPOINT_TITLE;
-        }
-        return EDIT_MEASURINGPOINT_TITLE;
-
-    }
-
-    /**
      * iterates over all system elements and returns all assembly contexts
      * 
      * @return List<AssemblyContext>
      */
     public List<AssemblyContext> getAssemblyContexts() {
 
-        return da.getModelAccessor().getSystem().stream()
+        return dataApplication.getModelAccessor().getSystem().stream()
                 .flatMap(e -> e.getAssemblyContexts__ComposedStructure().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -348,7 +321,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<ResourceContainer> getResourceContainer() {
 
-        return da.getModelAccessor().getResourceEnvironment().stream()
+        return dataApplication.getModelAccessor().getResourceEnvironment().stream()
                 .flatMap(e -> e.getResourceContainer_ResourceEnvironment().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -372,7 +345,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<LinkingResource> getLinkingResources() {
 
-        return da.getModelAccessor().getResourceEnvironment().stream()
+        return dataApplication.getModelAccessor().getResourceEnvironment().stream()
                 .flatMap(e -> e.getLinkingResources__ResourceEnvironment().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -384,7 +357,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<UsageScenario> getUsageScenarios() {
 
-        return da.getModelAccessor().getUsageModel().stream().flatMap(e -> e.getUsageScenario_UsageModel().stream())
+        return dataApplication.getModelAccessor().getUsageModel().stream().flatMap(e -> e.getUsageScenario_UsageModel().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -424,6 +397,13 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 
     }
 
+    /**
+     * gets nested branch elements
+     * 
+     * @param branch
+     *            the branch to investigate
+     * @return list of deeper nested Abstract user actions
+     */
     private List<AbstractUserAction> getBranchNestedEntryLevelSystemCalls(Branch branch) {
         List<AbstractUserAction> actions = new LinkedList<>();
         for (BranchTransition trans : branch.getBranchTransitions_Branch()) {
@@ -453,7 +433,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public List<EObject> getComponents() {
 
-        return da.getModelAccessor().getRepository().stream().flatMap(e -> e.eContents().stream())
+        return dataApplication.getModelAccessor().getRepository().stream().flatMap(e -> e.eContents().stream())
                 .filter(e -> e instanceof BasicComponent).collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -500,9 +480,9 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     public Object[] getAllSecondPageObjects() {
 
         List<Object> allmodels = new LinkedList<>();
-        addOnlyFilledLists(allmodels, da.getModelAccessor().getResourceEnvironment());
-        addOnlyFilledLists(allmodels, da.getModelAccessor().getSystem());
-        addOnlyFilledLists(allmodels, da.getModelAccessor().getSubSystem());
+        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getResourceEnvironment());
+        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getSystem());
+        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getSubSystem());
         addOnlyFilledLists(allmodels, getAssemblyContexts());
         addOnlyFilledLists(allmodels, getResourceContainer());
         addOnlyFilledLists(allmodels, getActiveResources());
@@ -514,6 +494,12 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         return allmodels.toArray();
     }
 
+    /**
+     * retrieves all measuring points, which exist and casts them to an object array for the
+     * treeviewer
+     * 
+     * @return array of all existing measuring points
+     */
     public Object[] getExistingMeasuringPoints() {
         if (isEditing()) {
             List<MeasuringPoint> points = DataApplication.getInstance().getModelAccessor()
@@ -657,5 +643,43 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public void setCurrentThirdStageModel(Object currentThirdStageModel) {
         this.currentThirdStageModel = currentThirdStageModel;
+    }
+
+    /**
+     * indicates whether the wizard model is complete, so the wizard can finish
+     * 
+     * @return boolean
+     */
+    public boolean isFinishable() {
+        return finishable;
+    }
+
+    /**
+     * sets the wizard model to finishable, if true, the wizard can perform the finish operations
+     * 
+     * @param finishable
+     *            boolean indicating whether finish operations of wizard can be performed or not
+     */
+    public void setFinishable(boolean finishable) {
+        this.finishable = finishable;
+    }
+
+    /**
+     * indicates whether the wizard is in editing mode or not
+     * 
+     * @return boolean
+     */
+    public boolean isEditing() {
+        return isEditing;
+    }
+
+    /**
+     * sets the wizard models editing flag, true means it is in editing mode
+     * 
+     * @param isEditing
+     *            flag for editing mode
+     */
+    public void setEditing(boolean isEditing) {
+        this.isEditing = isEditing;
     }
 }
