@@ -85,7 +85,10 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      *            the specification which will be added to the monitor
      */
     public void addMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-        provider.moveMeasurementSpecificationToMonitor(selectedMeasurementSpecification, usedMetricsMonitor, isEditing);
+        if(selectedMeasurementSpecification != null) {
+            provider.moveMeasurementSpecificationToMonitor(selectedMeasurementSpecification, usedMetricsMonitor, isEditing); 
+        }
+        
     }
 
     /**
@@ -95,8 +98,11 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      *            the specification which will be added to the monitor
      */
     public void removeMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-        provider.removeMeasurementSpecificationFromMonitor(selectedMeasurementSpecification, unusedMetricsMonitor,
-                isEditing);
+        if(selectedMeasurementSpecification != null) {
+            provider.removeMeasurementSpecificationFromMonitor(selectedMeasurementSpecification, unusedMetricsMonitor,
+                    isEditing);
+        }
+        
     }
 
     /**
