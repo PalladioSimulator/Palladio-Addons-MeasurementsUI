@@ -45,7 +45,7 @@ public class MonitorTreeViewer extends MeasurementsTreeViewer {
 
     @Override
     protected EObject getModelRepository() {
-        return dataApplication.getModelAccessor().getMonitorRepository().get(0);
+    	return dataApplication.getMonitorRepository();
     }
 
     @Override
