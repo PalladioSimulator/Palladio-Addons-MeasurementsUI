@@ -61,7 +61,7 @@ public abstract class ComponentViewer {
      * Returns the parsley EditingDomain
      */
     protected void initEditingDomain() {
-        editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository());
+        this.editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository());
     }
 
     /**

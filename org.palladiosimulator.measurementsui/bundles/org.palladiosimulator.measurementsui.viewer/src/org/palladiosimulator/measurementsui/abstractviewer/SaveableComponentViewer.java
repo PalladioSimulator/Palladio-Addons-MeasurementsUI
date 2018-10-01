@@ -31,8 +31,8 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
      * @param commandService
      *            a service of the eclipse application in order to make the tree view saveable
      * @param dataApplication
-     *            the connection to the data binding. This is needed in order to get the repository of
-     *            the current project.
+     *            the connection to the data binding. This is needed in order to get the repository
+     *            of the current project.
      */
     protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
             DataApplication dataApplication) {
@@ -58,6 +58,9 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
     protected Resource updateResource(EObject model) {
         resource = super.updateResource(model);
         initResourceChangedListener(editingDomain);
+        // For some mysterious reason the editing domain has to be set null here else parsley's
+        // context menu won't function anymore
+        editingDomain = null;
         return resource;
     }
 

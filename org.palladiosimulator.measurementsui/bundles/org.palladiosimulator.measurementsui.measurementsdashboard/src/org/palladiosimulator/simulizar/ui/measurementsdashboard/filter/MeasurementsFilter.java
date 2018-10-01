@@ -72,7 +72,8 @@ public class MeasurementsFilter extends ViewerFilter {
             return false;
         }
         final String monitorMatch = monitor.getEntityName() + "$" + monitor.getId() + "$" + monitor.toString()
-                + "$monitor$" + monitor.getMeasuringPoint().getStringRepresentation();
+                + "$monitor$" + monitor.getMeasuringPoint().getStringRepresentation() + "$"
+                + monitor.getMeasuringPoint().toString();
         if (monitorMatch.replace(" ", "").trim().toLowerCase().matches(searchText)) {
             return true;
         }
