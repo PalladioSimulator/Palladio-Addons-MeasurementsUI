@@ -589,6 +589,7 @@ public class MeasurementsDashboardView {
     @Persist
     public void save(MDirtyable dirty) throws IOException {
         monitorTreeViewer.save(dirty);
+        measuringTreeViewer.save(dirty);
     }
 
  
