@@ -116,7 +116,7 @@ public class WorkspaceListener implements IResourceChangeListener {
     private void updateDashboardView() {
         if (deletedProject != null || addedProject != null || changedProject != null) {
 
-            Display.getDefault().syncExec(new Runnable() {
+            Display.getDefault().asyncExec(new Runnable() {
 
                 @Override
                 public void run() {
