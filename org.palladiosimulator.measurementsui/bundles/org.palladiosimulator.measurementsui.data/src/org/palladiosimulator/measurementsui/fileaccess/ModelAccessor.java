@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.fileaccess;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -188,6 +189,19 @@ public class ModelAccessor {
         this.subsystemList.clear();
         this.monitorRepositoryList.clear();
         this.measuringPointRepositoryList.clear();
+    }
+    
+    /**
+     * Checks whether any palladio core models exist
+     * @return boolean whether models exist or not
+     */
+    public boolean modelsExist() {
+        if(this.allocationList.isEmpty() && this.systemList.isEmpty() && this.subsystemList.isEmpty() &&
+                this.repositoryList.isEmpty() && this.resourceEnvironmentList.isEmpty() &&
+                this.usageModelList.isEmpty()){
+            return false;
+        }
+        return true;
     }
     
     /**

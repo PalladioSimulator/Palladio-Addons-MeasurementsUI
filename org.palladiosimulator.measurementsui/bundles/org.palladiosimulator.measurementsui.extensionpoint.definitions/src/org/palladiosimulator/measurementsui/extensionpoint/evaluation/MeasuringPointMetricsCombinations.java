@@ -61,7 +61,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addActiveResourceMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.activeResourceMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -69,7 +69,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addAssemblyOperationMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.assemblyOperationMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -77,7 +77,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addAssemblyPassiveResourceMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.assemblyPassiveResourceMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -85,7 +85,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addEntryLevelSystemCallMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.entryLevelSystemCallMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -93,7 +93,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addExternalCallActionMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.externalCallActionMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -101,7 +101,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addLinkingResourceMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.linkingResourceMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -109,7 +109,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addResourceContainerMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.resourceContainerMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -117,7 +117,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addResourceEnvironmentMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.resourceEnvironmentMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -125,7 +125,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addSubSystemOperationMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.subSystemOperationMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	/**
@@ -133,7 +133,7 @@ public class MeasuringPointMetricsCombinations {
 	 * @param possibleMetricDescription
 	 */
 	public void addSystemOperationMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
+		this.systemOperationMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
 				possibleMetricDescription.addtoSuggestedList());
 	}
 	

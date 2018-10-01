@@ -122,18 +122,18 @@ public class WorkspaceListener implements IResourceChangeListener {
                 public void run() {
 
                     if (deletedProject != null && deletedProject.equals(dataApplication.getProject())) {
-                        
-                        // currently selected project was deleted -> load different project
-                        if (addedProject == null) {
-                            dataApplication.loadData(
-                                    dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
-                            dashboardView.updateProjectComboBox();
-                            dashboardView.updateTreeViewer();
+
+						// currently selected project was deleted -> load different project
+						if (addedProject == null) {
+							dashboardView.updateMeasurementsDashboardView(
+									dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
+							dashboardView.updateProjectComboBox();
+
                         } else {
                             // the name of the currently selected project was changed                    
-                            dataApplication.loadData(addedProject);
+                            dashboardView.updateMeasurementsDashboardView(addedProject);
                             dashboardView.updateProjectComboBox();
-                            dashboardView.updateTreeViewer();
+
                         }
                         
                         // some project got added/deleted or name changed -> update comboBox with Projects
@@ -142,8 +142,8 @@ public class WorkspaceListener implements IResourceChangeListener {
                         
                         //a monitor or measuringPoint was added/deleted in the selected project -> update data and view
                     } else if (changedProject != null) {
-                        dataApplication.loadData(changedProject);
-                        dashboardView.updateTreeViewer();
+                        dashboardView.updateMeasurementsDashboardView(changedProject);
+                        dashboardView.updateMonitorRepositoryComboBox();
                     }
 
                 }

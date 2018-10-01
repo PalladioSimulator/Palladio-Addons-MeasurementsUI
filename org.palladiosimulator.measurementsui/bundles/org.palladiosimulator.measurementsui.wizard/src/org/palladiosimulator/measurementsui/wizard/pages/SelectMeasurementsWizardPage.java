@@ -157,6 +157,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
                     metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
                 }
 
+                getContainer().updateButtons();
             }
         };
         final DropTarget dropTarget = new DropTarget(tableViewerLeft.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
@@ -165,6 +166,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		
         return tableViewerLeft;
     }
+
 
     /**
      * Initializes the middle sub composite, where later buttons are added for moving selecting measurements.
@@ -263,7 +265,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
                     MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
                     metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
                 }
-
+                getContainer().updateButtons();
             }
         };
         final DropTarget dropTarget = new DropTarget(tableViewerRight.getTable(), DND.DROP_MOVE | DND.DROP_COPY);

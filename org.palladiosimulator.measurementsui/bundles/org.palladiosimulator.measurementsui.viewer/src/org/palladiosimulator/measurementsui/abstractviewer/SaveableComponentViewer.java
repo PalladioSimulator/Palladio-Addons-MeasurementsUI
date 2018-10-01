@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -31,8 +32,8 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
      * @param commandService
      *            a service of the eclipse application in order to make the tree view saveable
      * @param dataApplication
-     *            the connection to the data binding. This is needed in order to get the repository of
-     *            the current project.
+     *            the connection to the data binding. This is needed in order to get the repository
+     *            of the current project.
      */
     protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
             DataApplication dataApplication) {
@@ -58,6 +59,9 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
     protected Resource updateResource(EObject model) {
         resource = super.updateResource(model);
         initResourceChangedListener(editingDomain);
+        // For some mysterious reason the editing domain has to be set null here else parsley's
+        // context menu won't function anymore
+        editingDomain = null;
         return resource;
     }
 
@@ -75,6 +79,28 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
                 commandService.getCommand(SAVE_COMMAND).isEnabled();
             }
         });
+    }
+    
+    /**
+     * Undos every command on the command stack
+     */
+    public void undo() {
+        initEditingDomain();
+        CommandStack commandStack = editingDomain.getCommandStack();
+        while(commandStack.canUndo()) {
+            commandStack.undo();
+        }
+    }
+    
+    /**
+     * Redos every command on the command stack
+     */
+    public void redo() {
+        initEditingDomain();
+        CommandStack commandStack = editingDomain.getCommandStack();
+        while(commandStack.canRedo()) {
+            commandStack.redo();
+        }
     }
 
     /**

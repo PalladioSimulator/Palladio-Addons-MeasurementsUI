@@ -17,6 +17,7 @@ import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -69,6 +70,7 @@ public class MeasurementsDashboardView {
     private MeasurementsTreeViewer monitorTreeViewer;
     private MeasurementsTreeViewer measuringTreeViewer;
     private Combo projectsComboDropDown;
+    private Combo monitorRepositoriesComboDropDown;
     private DataApplication dataApplication;
     private Button deleteButton;
     private Button editButton;
@@ -82,6 +84,10 @@ public class MeasurementsDashboardView {
     private static final String EDITTEXT_MEASUREMENT = "Edit Measurement";
     private static final String DELETETEXT_MEASUREMENT = "Delete Measurement";
     private static final String EDITTEXT_PROCESSINGTYPE = "Edit ProcessingType";
+    private static final String INFOTEXT_NO_PCM_MODELS = "You need to create your"
+            + " palladio core models before you can create measuring points."
+            + " They are used to model your systems architecture and chrakteristics."
+            + " Use the buttons on the toolbar on top to start creating.";
     
 
     @Inject
@@ -107,7 +113,7 @@ public class MeasurementsDashboardView {
         parent.setLayout(new GridLayout(1, true));
         initializeApplication();
         createWorkspaceListener();
-        createProjectsSelectionComboBox(parent);
+        createSelectionComboBoxes(parent);
 
         SashForm outerContainer = new SashForm(parent, SWT.FILL);
         outerContainer.setLayout(new GridLayout(1, true));
@@ -145,7 +151,7 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
+        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0),0);
     }
 
     /**
@@ -327,9 +333,9 @@ public class MeasurementsDashboardView {
         createDeleteButton(buttonContainer);
         createEditButton(buttonContainer);
 
-        Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
-        assignMonitorButton.setText("Assign to Monitor");
-        assignMonitorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+//        Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
+//        assignMonitorButton.setText("Assign to Monitor");
+//        assignMonitorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
         createStandardButton.setText("Create Standard Set");
@@ -356,12 +362,18 @@ public class MeasurementsDashboardView {
         newMpButton.setText("Add new Measuring Point");
         newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         newMpButton.addListener(SWT.Selection, e -> {
-            MeasurementsWizard wizard = new MeasurementsWizard();
-            Shell parentShell = wizard.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.setPageSize(720, 400);
-            dialog.setMinimumPageSize(720, 400);
-            dialog.open();
+            if(!dataApplication.getModelAccessor().modelsExist()) {
+                MessageDialog.openInformation(null, "No PCM Models found Info", INFOTEXT_NO_PCM_MODELS);
+            } else {
+                checkDirtyState();
+                MeasurementsWizard wizard = new MeasurementsWizard();
+                Shell parentShell = wizard.getShell();
+                WizardDialog dialog = new WizardDialog(parentShell, wizard);
+                dialog.setPageSize(720, 400);
+                dialog.setMinimumPageSize(720, 400);
+                dialog.open();
+
+            }
         });
     }
 
@@ -374,6 +386,7 @@ public class MeasurementsDashboardView {
     private void createDeleteButton(Composite parent) {
         deleteButton = new Button(parent, SWT.PUSH);
         deleteButton.setText(DELETETEXT_GRAYEDOUT);
+        deleteButton.setEnabled(false);
         deleteButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         deleteButton.addListener(SWT.Selection, e -> {
@@ -394,8 +407,10 @@ public class MeasurementsDashboardView {
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
         editButton.setText(EDITTEXT_GRAYEDOUT);
+        editButton.setEnabled(false);
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         editButton.addListener(SWT.Selection, e -> {
+            checkDirtyState();
             MeasurementsWizard wizard;
             Object selection = selectionService.getSelection();
             ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
@@ -419,7 +434,29 @@ public class MeasurementsDashboardView {
             dialog.setPageSize(720, 400);
             dialog.setMinimumPageSize(720, 400);
             dialog.open();
+
         });
+    }
+
+    /**
+     * Checks whether the state of the view is dirty and
+     * asks the user to save before continuing
+     * @return boolean
+     */
+    private void checkDirtyState() {
+        
+        if(dirty.isDirty()) {
+            boolean result = MessageDialog.openQuestion(null, "", "Do you want to save your changes?");
+            if (result){
+                try {
+                    save(dirty);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+               } else {
+                   undoChanges();
+               }
+        }   
     }
 
     /**
@@ -437,8 +474,9 @@ public class MeasurementsDashboardView {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
-                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex));
+                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex),0);
                 updateTreeViewer();
+                updateMonitorRepositoryComboBox();
             }
 
             @Override
@@ -449,13 +487,79 @@ public class MeasurementsDashboardView {
         });
         projectsComboDropDown.select(0);
     }
+    
+    /**
+     * Creates the ComboBoxes for project and monitorRepository
+     * at the top of the view
+     * @param parent
+     * 				a composite where the comboboxes are palced in
+     */
+    private void createSelectionComboBoxes(Composite parent) {
+        Composite container = new Composite(parent, SWT.NONE);
+        container.setLayout(new GridLayout(2, false));
+        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        createProjectsSelectionComboBox(container);
+        createMonitorRepositorySelectionComboBox(container);
+    }
+    
+    /**
+     * Creates a ComboBox at the top of the view where
+     * user can select a monitorRepository
+     * @param parent 
+     * 				a composite where the combobox is placed in
+     */
+    private void createMonitorRepositorySelectionComboBox(Composite parent) {     
+            monitorRepositoriesComboDropDown = new Combo(parent, SWT.DROP_DOWN);
+            monitorRepositoriesComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+            updateMonitorRepositoryComboBox();
+            monitorRepositoriesComboDropDown.addSelectionListener(new SelectionListener() {
+                 @Override
+                public void widgetSelected(SelectionEvent e) {
+                    int selectionIndex = monitorRepositoriesComboDropDown.getSelectionIndex();
+                    dataApplication.updateMonitorRepository(selectionIndex);
+                    updateTreeViewer();
+                }
+                 @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
+                    monitorRepositoriesComboDropDown.select(0);
+                 }
+            });
+            monitorRepositoriesComboDropDown.select(0);         
+        
+    }
+    
+    /**
+     * If more then 1 monitorRepository exists in the current project
+     * this updates the MonitorRepositoryComboBox
+     */
+    public void updateMonitorRepositoryComboBox() {
+       
+            monitorRepositoriesComboDropDown.setEnabled(true);
+            int selectionIndex = 0;
+            monitorRepositoriesComboDropDown.removeAll();
+            List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
+            for (int i = 0; i < allMonitorRepositories.size(); i++) {
+                MonitorRepository monitorRepository = allMonitorRepositories.get(i);
+                 if (monitorRepository.equals(dataApplication.getMonitorRepository())) {
+                    selectionIndex = i;
+                }
+                 monitorRepositoriesComboDropDown.add(i+1 + ". " +monitorRepository.getEntityName());
+            }
+            monitorRepositoriesComboDropDown.select(selectionIndex);
+         
+            if (dataApplication.getModelAccessor().getMonitorRepository().size()<=1) {
+                monitorRepositoriesComboDropDown.setEnabled(false);
+            }
+            
+        
+    }
 
     /**
      * Adds every project in the workspace that has an .aird file to the projectsComboBox
      */
     public void updateProjectComboBox() {
 
-        int selectionIndex = -1;
+        int selectionIndex = 0;
         projectsComboDropDown.removeAll();
         List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
         for (int i = 0; i < allProjects.size(); i++) {
@@ -470,11 +574,29 @@ public class MeasurementsDashboardView {
         projectsComboDropDown.select(selectionIndex);
 
     }
+    
+    /**
+     * Updates the dashboard by reloading the data
+     * and refreshing the views
+     * @param project to update
+     */
+    public void updateMeasurementsDashboardView(IProject project) {
+    	dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
+    	updateTreeViewer();
+    }
+  
+    /**
+     * Undos all changes previously done on the dashboard
+     */
+    private void undoChanges() {
+        monitorTreeViewer.undo();
+        measuringTreeViewer.undo();
+    }
 
     /**
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
-    public void updateTreeViewer() {
+    private void updateTreeViewer() {
         monitorTreeViewer.update();
         measuringTreeViewer.update();
     }
@@ -498,6 +620,7 @@ public class MeasurementsDashboardView {
     @Persist
     public void save(MDirtyable dirty) throws IOException {
         monitorTreeViewer.save(dirty);
+        measuringTreeViewer.save(dirty);
     }
 
  
