@@ -3,6 +3,8 @@ package org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
@@ -47,6 +49,11 @@ public class EmptyMeasuringPointsTreeViewer extends MeasurementsTreeViewer {
     @Override
     protected void initInjector() {
         injector = EmptymeasuringpointsInjectorProvider.getInjector();
+    }
+    
+    @Override
+    protected void initEditingDomain() {
+        this.editingDomain = injector.getInstance(EditingDomain.class);
     }
 
     @Override
