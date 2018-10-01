@@ -1,5 +1,8 @@
 package org.palladiosimulator.measurementsui.wizard.pages;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -20,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.dataprovider.StandardSetCreationProvider;
 import org.palladiosimulator.measurementsui.wizard.main.StandardSetWizard;
 import org.palladiosimulator.monitorrepository.Monitor;
@@ -27,6 +31,14 @@ import org.palladiosimulator.monitorrepository.Monitor;
 public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
 	CheckboxTableViewer viewer;
 	boolean add = true;
+	public boolean isAdd() {
+		return add;
+	}
+
+	public void setAdd(boolean add) {
+		this.add = add;
+	}
+
 	Composite composite;
 	Composite tableviewerComposite;
 
@@ -103,7 +115,12 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
 	public void loadOnlyMeasuringpointInput() {
 		createMonitorColumns(tableviewerComposite, viewer);
 		add = false;
-		viewer.setInput(set.createMonitorForEveryResource().toArray());
+		List<MeasuringPoint> measuringpoints = new LinkedList<>();
+		List<Monitor> monitors =set.createMonitorForEveryResource();
+		for(Monitor monitor: monitors) {
+			measuringpoints.add(monitor.getMeasuringPoint());
+		}
+		viewer.setInput(measuringpoints.toArray());
 		viewer.refresh();
 
 	}
@@ -160,8 +177,8 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
 		col.setLabelProvider(new ColumnLabelProvider() {
 			@Override
 			public String getText(Object element) {
-				Monitor p = (Monitor) element;
-				return p.getMeasuringPoint().getStringRepresentation();
+				MeasuringPoint p = (MeasuringPoint) element;
+				return p.getStringRepresentation();
 			}
 		});
 

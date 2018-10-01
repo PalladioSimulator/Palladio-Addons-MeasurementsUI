@@ -162,7 +162,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 		});
 		AlternativeMeasuringPointContentProvider createContentProvider = new AlternativeMeasuringPointContentProvider();
 		PatternFilter filter = new PatternFilter();
-		FilteredTree tree = new FilteredTree(createMPcomposite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, filter, true);
+		FilteredTree tree = new FilteredTree(createMPcomposite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL, filter, true);
 		createTreeViewer = tree.getViewer();
 		createTreeViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		createTreeViewer.setContentProvider(createContentProvider);
@@ -194,22 +194,31 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
 				TreeItem item = (TreeItem) e.item;
 
-				if (isMeasuringPointCreatable(item.getData())) {
-					selectionWizardModel.setFinishable(true);
-					validatedNextPressed = true;
-					getContainer().updateButtons();
-					setPageComplete(true);
-					showMessage(item);
+				if(item !=null) {
+					if (isMeasuringPointCreatable(item.getData())) {
+						selectionWizardModel.setFinishable(true);
+						validatedNextPressed = true;
+						getContainer().updateButtons();
+						setPageComplete(true);
+						showMessage(item);
 
-				}
+					}
 
-				else {
+					else {
+						selectionWizardModel.setFinishable(false);
+						validatedNextPressed = false;
+						setPageComplete(false);
+						getContainer().updateButtons();
+						setErrorMessage("Choose a model for which a measuring point will be created.");
+					}
+				}else {
 					selectionWizardModel.setFinishable(false);
 					validatedNextPressed = false;
 					setPageComplete(false);
 					getContainer().updateButtons();
 					setErrorMessage("Choose a model for which a measuring point will be created.");
 				}
+				
 
 			}
 
@@ -252,7 +261,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 		existingMPcomposite.setLayout(new GridLayout(1, true));
 		existingMPcomposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		PatternFilter filter = new PatternFilter();
-		FilteredTree tree = new FilteredTree(existingMPcomposite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL, filter,
+		FilteredTree tree = new FilteredTree(existingMPcomposite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL, filter,
 				true);
 		emptyMeasuringpointViewer = tree.getViewer();
 		emptyMeasuringpointViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
