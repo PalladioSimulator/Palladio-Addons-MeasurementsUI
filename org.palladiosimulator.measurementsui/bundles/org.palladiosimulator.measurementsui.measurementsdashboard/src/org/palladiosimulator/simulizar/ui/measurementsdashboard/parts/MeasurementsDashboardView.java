@@ -386,6 +386,7 @@ public class MeasurementsDashboardView {
     private void createDeleteButton(Composite parent) {
         deleteButton = new Button(parent, SWT.PUSH);
         deleteButton.setText(DELETETEXT_GRAYEDOUT);
+        deleteButton.setEnabled(false);
         deleteButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         deleteButton.addListener(SWT.Selection, e -> {
@@ -406,6 +407,7 @@ public class MeasurementsDashboardView {
     private void createEditButton(Composite parent) {
         editButton = new Button(parent, SWT.PUSH);
         editButton.setText(EDITTEXT_GRAYEDOUT);
+        editButton.setEnabled(false);
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         editButton.addListener(SWT.Selection, e -> {
             checkDirtyState();
