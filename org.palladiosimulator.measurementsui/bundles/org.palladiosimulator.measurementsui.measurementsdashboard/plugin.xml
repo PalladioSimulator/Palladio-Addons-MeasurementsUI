@@ -19,5 +19,20 @@
          <propertyCategory></propertyCategory>
       </propertyContributor>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.palladiosimulator.simulizar.ui.perspective">
+         <view
+               closeable="true"
+               id="test.partDescFragment.ASampleE4View"
+               minimized="false"
+               moveable="true"
+               ratio="0.50f"
+               relationship="stack"
+               relative="org.eclipse.ui.editorss">
+         </view>
+      </perspectiveExtension>
+   </extension>
 
 </plugin>

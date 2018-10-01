@@ -11,4 +11,20 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.palladiosimulator.simulizar.ui.perspective">
+         <view
+               closeable="false"
+               id="propertiespage"
+               minimized="false"
+               moveable="true"
+               relationship="stack"
+               relative="de.uka.ipd.sdq.codegen.simucontroller.gui.DockStatusViewPart"
+               standalone="false"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
 </plugin>
