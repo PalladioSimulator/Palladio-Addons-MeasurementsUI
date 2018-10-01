@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -78,6 +79,28 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
                 commandService.getCommand(SAVE_COMMAND).isEnabled();
             }
         });
+    }
+    
+    /**
+     * Undos every command on the command stack
+     */
+    public void undo() {
+        initEditingDomain();
+        CommandStack commandStack = editingDomain.getCommandStack();
+        while(commandStack.canUndo()) {
+            commandStack.undo();
+        }
+    }
+    
+    /**
+     * Redos every command on the command stack
+     */
+    public void redo() {
+        initEditingDomain();
+        CommandStack commandStack = editingDomain.getCommandStack();
+        while(commandStack.canRedo()) {
+            commandStack.redo();
+        }
     }
 
     /**

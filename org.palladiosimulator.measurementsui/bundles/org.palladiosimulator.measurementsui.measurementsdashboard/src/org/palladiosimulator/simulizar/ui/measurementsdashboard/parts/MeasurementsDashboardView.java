@@ -84,6 +84,10 @@ public class MeasurementsDashboardView {
     private static final String EDITTEXT_MEASUREMENT = "Edit Measurement";
     private static final String DELETETEXT_MEASUREMENT = "Delete Measurement";
     private static final String EDITTEXT_PROCESSINGTYPE = "Edit ProcessingType";
+    private static final String INFOTEXT_NO_PCM_MODELS = "You need to create your"
+            + " palladio core models before you can create measuring points."
+            + " They are used to model your systems architecture and chrakteristics."
+            + " Use the buttons on the toolbar on top to start creating.";
     
 
     @Inject
@@ -359,15 +363,16 @@ public class MeasurementsDashboardView {
         newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         newMpButton.addListener(SWT.Selection, e -> {
             if(!dataApplication.getModelAccessor().modelsExist()) {
-                MessageDialog.openInformation(null, "Info", "Info for you");
-                
+                MessageDialog.openInformation(null, "No PCM Models found Info", INFOTEXT_NO_PCM_MODELS);
             } else {
-            MeasurementsWizard wizard = new MeasurementsWizard();
-            Shell parentShell = wizard.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.setPageSize(720, 400);
-            dialog.setMinimumPageSize(720, 400);
-            dialog.open();
+                checkDirtyState();
+                MeasurementsWizard wizard = new MeasurementsWizard();
+                Shell parentShell = wizard.getShell();
+                WizardDialog dialog = new WizardDialog(parentShell, wizard);
+                dialog.setPageSize(720, 400);
+                dialog.setMinimumPageSize(720, 400);
+                dialog.open();
+
             }
         });
     }
@@ -403,6 +408,7 @@ public class MeasurementsDashboardView {
         editButton.setText(EDITTEXT_GRAYEDOUT);
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         editButton.addListener(SWT.Selection, e -> {
+            checkDirtyState();
             MeasurementsWizard wizard;
             Object selection = selectionService.getSelection();
             ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
@@ -426,13 +432,29 @@ public class MeasurementsDashboardView {
             dialog.setPageSize(720, 400);
             dialog.setMinimumPageSize(720, 400);
             dialog.open();
+
         });
     }
-    
-    private void checkForModels() {
-        if(!dataApplication.getModelAccessor().modelsExist()) {
-            
-        }
+
+    /**
+     * Checks whether the state of the view is dirty and
+     * asks the user to save before continuing
+     * @return boolean
+     */
+    private void checkDirtyState() {
+        
+        if(dirty.isDirty()) {
+            boolean result = MessageDialog.openQuestion(null, "", "Do you want to save your changes?");
+            if (result){
+                try {
+                    save(dirty);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+               } else {
+                   undoChanges();
+               }
+        }   
     }
 
     /**
@@ -561,6 +583,13 @@ public class MeasurementsDashboardView {
     	updateTreeViewer();
     }
   
+    /**
+     * Undos all changes previously done on the dashboard
+     */
+    private void undoChanges() {
+        monitorTreeViewer.undo();
+        measuringTreeViewer.undo();
+    }
 
     /**
      * Updates the Monitor and Measuringpoint Tree Viewer
