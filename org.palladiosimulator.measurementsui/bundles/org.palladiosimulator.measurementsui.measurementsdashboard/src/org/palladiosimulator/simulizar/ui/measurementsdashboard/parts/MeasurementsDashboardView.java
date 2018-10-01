@@ -69,6 +69,7 @@ public class MeasurementsDashboardView {
     private MeasurementsTreeViewer monitorTreeViewer;
     private MeasurementsTreeViewer measuringTreeViewer;
     private Combo projectsComboDropDown;
+    private Combo monitorRepositoriesComboDropDown;
     private DataApplication dataApplication;
     private Button deleteButton;
     private Button editButton;
@@ -107,7 +108,7 @@ public class MeasurementsDashboardView {
         parent.setLayout(new GridLayout(1, true));
         initializeApplication();
         createWorkspaceListener();
-        createProjectsSelectionComboBox(parent);
+        createSelectionComboBoxes(parent);
 
         SashForm outerContainer = new SashForm(parent, SWT.FILL);
         outerContainer.setLayout(new GridLayout(1, true));
@@ -145,7 +146,7 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
+        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0),0);
     }
 
     /**
@@ -437,8 +438,9 @@ public class MeasurementsDashboardView {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
-                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex));
+                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex),0);
                 updateTreeViewer();
+                updateMonitorRepositoryComboBox();
             }
 
             @Override
@@ -449,13 +451,79 @@ public class MeasurementsDashboardView {
         });
         projectsComboDropDown.select(0);
     }
+    
+    /**
+     * Creates the ComboBoxes for project and monitorRepository
+     * at the top of the view
+     * @param parent
+     * 				a composite where the comboboxes are palced in
+     */
+    private void createSelectionComboBoxes(Composite parent) {
+        Composite container = new Composite(parent, SWT.NONE);
+        container.setLayout(new GridLayout(2, false));
+        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        createProjectsSelectionComboBox(container);
+        createMonitorRepositorySelectionComboBox(container);
+    }
+    
+    /**
+     * Creates a ComboBox at the top of the view where
+     * user can select a monitorRepository
+     * @param parent 
+     * 				a composite where the combobox is placed in
+     */
+    private void createMonitorRepositorySelectionComboBox(Composite parent) {     
+            monitorRepositoriesComboDropDown = new Combo(parent, SWT.DROP_DOWN);
+            monitorRepositoriesComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+            updateMonitorRepositoryComboBox();
+            monitorRepositoriesComboDropDown.addSelectionListener(new SelectionListener() {
+                 @Override
+                public void widgetSelected(SelectionEvent e) {
+                    int selectionIndex = monitorRepositoriesComboDropDown.getSelectionIndex();
+                    dataApplication.updateMonitorRepository(selectionIndex);
+                    updateTreeViewer();
+                }
+                 @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
+                    monitorRepositoriesComboDropDown.select(0);
+                 }
+            });
+            monitorRepositoriesComboDropDown.select(0);         
+        
+    }
+    
+    /**
+     * If more then 1 monitorRepository exists in the current project
+     * this updates the MonitorRepositoryComboBox
+     */
+    public void updateMonitorRepositoryComboBox() {
+         if (dataApplication.getModelAccessor().getMonitorRepository().size()<=1) {
+            monitorRepositoriesComboDropDown.setVisible(false);
+        } else {
+            monitorRepositoriesComboDropDown.setVisible(true);
+            int selectionIndex = 0;
+            monitorRepositoriesComboDropDown.removeAll();
+            List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
+            for (int i = 0; i < allMonitorRepositories.size(); i++) {
+                MonitorRepository monitorRepository = allMonitorRepositories.get(i);
+                 if (monitorRepository.equals(dataApplication.getMonitorRepository())) {
+                    selectionIndex = i;
+                }
+                 monitorRepositoriesComboDropDown.add(i+1 + ". " +monitorRepository.getEntityName());
+            }
+            monitorRepositoriesComboDropDown.select(selectionIndex);
+         
+           
+            
+        }
+    }
 
     /**
      * Adds every project in the workspace that has an .aird file to the projectsComboBox
      */
     public void updateProjectComboBox() {
 
-        int selectionIndex = -1;
+        int selectionIndex = 0;
         projectsComboDropDown.removeAll();
         List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
         for (int i = 0; i < allProjects.size(); i++) {
@@ -470,11 +538,22 @@ public class MeasurementsDashboardView {
         projectsComboDropDown.select(selectionIndex);
 
     }
+    
+    /**
+     * Updates the dashboard by reloading the data
+     * and refreshing the views
+     * @param project to update
+     */
+    public void updateMeasurementsDashboardView(IProject project) {
+    	dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
+    	updateTreeViewer();
+    }
+  
 
     /**
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
-    public void updateTreeViewer() {
+    private void updateTreeViewer() {
         monitorTreeViewer.update();
         measuringTreeViewer.update();
     }
