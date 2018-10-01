@@ -4,8 +4,11 @@ import java.util.LinkedList;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.provider.AssemblyContextItemProvider;
@@ -40,8 +43,10 @@ import org.palladiosimulator.pcm.usagemodel.provider.UsageModelItemProvider;
  * @author Domas Mikalkinas
  *
  */
-public class MeasuringPointsLabelProvider implements ILabelProvider {
+public class MeasuringPointsLabelProvider implements ILabelProvider, IFontProvider {
 
+	private static final String FROM_THE = " from the ";
+	private static final String TRANSIENT = "[TRANSIENT]";
 	private static final String LOCATED_IN = " located in ";
 
 	@Override
@@ -140,42 +145,68 @@ public class MeasuringPointsLabelProvider implements ILabelProvider {
 						+ ((LinkingResource) element).getResourceEnvironment_LinkingResource().getEntityName();
 
 			} else if (element instanceof ExternalCallAction) {
-				NamedElement externalCallAction = (NamedElement) ((ExternalCallAction) element)
-						.getResourceDemandingBehaviour_AbstractAction().eContainer();
-				ResourceDemandingSEFF resourceDemandingSEFF = (ResourceDemandingSEFF) ((ExternalCallAction) element)
-						.eContainer();
-				return ((ExternalCallAction) element).getEntityName() + " from the "
-						+ resourceDemandingSEFF.toString().replace("[TRANSIENT]", "") + LOCATED_IN
-						+ externalCallAction.getEntityName();
+				return getExternalActionText(element);
 
 			} else if (element instanceof EntryLevelSystemCall) {
-				if (((EntryLevelSystemCall) element).getScenarioBehaviour_AbstractUserAction()
-						.eContainer() instanceof BranchTransition) {
-					BranchTransition entryLevelSystemCall = (BranchTransition) ((EntryLevelSystemCall) element)
-							.getScenarioBehaviour_AbstractUserAction().eContainer();
-					ScenarioBehaviour scenarioBehaviour = ((EntryLevelSystemCall) element)
-							.getScenarioBehaviour_AbstractUserAction();
-					return ((EntryLevelSystemCall) element).getEntityName() + " from the "
-							+ scenarioBehaviour.getEntityName() + LOCATED_IN
-							+ entryLevelSystemCall.toString().replace("[TRANSIENT]", "");
-				} else {
-					NamedElement entryLevelSystemCall = (NamedElement) ((EntryLevelSystemCall) element)
-							.getScenarioBehaviour_AbstractUserAction().eContainer();
-					ScenarioBehaviour scenarioBehaviour = ((EntryLevelSystemCall) element)
-							.getScenarioBehaviour_AbstractUserAction();
-					return ((EntryLevelSystemCall) element).getEntityName() + " from the "
-							+ scenarioBehaviour.getEntityName() + LOCATED_IN + entryLevelSystemCall.getEntityName();
-				}
+				return getEntryLevelSystemCallText(element);
 
 			} else if (element instanceof UsageScenario) {
 				return ((UsageScenario) element).getEntityName() + LOCATED_IN
-						+ ((UsageScenario) element).getUsageModel_UsageScenario().toString().replace("[TRANSIENT]", "");
+						+ ((UsageScenario) element).getUsageModel_UsageScenario().toString().replace(TRANSIENT, "");
 
 			}
 
 			return ((NamedElement) element).getEntityName();
 
 		}
+
+	}
+/**
+ * constructs the string for the label for entry level system calls
+ * @param element the entry level system call model
+ * @return String name of the entry level system call
+ */
+	private String getEntryLevelSystemCallText(Object element) {
+		if (((EntryLevelSystemCall) element).getScenarioBehaviour_AbstractUserAction()
+				.eContainer() instanceof BranchTransition) {
+			BranchTransition entryLevelSystemCall = (BranchTransition) ((EntryLevelSystemCall) element)
+					.getScenarioBehaviour_AbstractUserAction().eContainer();
+			ScenarioBehaviour scenarioBehaviour = ((EntryLevelSystemCall) element)
+					.getScenarioBehaviour_AbstractUserAction();
+			return ((EntryLevelSystemCall) element).getEntityName() + FROM_THE
+					+ scenarioBehaviour.getEntityName() + LOCATED_IN
+					+ entryLevelSystemCall.toString().replace(TRANSIENT, "");
+		} else {
+			NamedElement entryLevelSystemCall = (NamedElement) ((EntryLevelSystemCall) element)
+					.getScenarioBehaviour_AbstractUserAction().eContainer();
+			ScenarioBehaviour scenarioBehaviour = ((EntryLevelSystemCall) element)
+					.getScenarioBehaviour_AbstractUserAction();
+			return ((EntryLevelSystemCall) element).getEntityName() + FROM_THE
+					+ scenarioBehaviour.getEntityName() + LOCATED_IN + entryLevelSystemCall.getEntityName();
+		}
+	}
+/**
+ * constructs the string for the label for external actions
+ * @param element the external action model
+ * @return String name of the external action
+ */
+	private String getExternalActionText(Object element) {
+		NamedElement externalCallAction = (NamedElement) ((ExternalCallAction) element)
+				.getResourceDemandingBehaviour_AbstractAction().eContainer();
+		ResourceDemandingSEFF resourceDemandingSEFF = (ResourceDemandingSEFF) ((ExternalCallAction) element)
+				.eContainer();
+		return ((ExternalCallAction) element).getEntityName() + FROM_THE
+				+ resourceDemandingSEFF.toString().replace(TRANSIENT, "") + LOCATED_IN
+				+ externalCallAction.getEntityName();
+	}
+
+	@Override
+	public Font getFont(Object element) {
+		if (!(element instanceof LinkedList)) {
+
+			return JFaceResources.getBannerFont();
+		}
+		return null;
 
 	}
 

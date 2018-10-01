@@ -156,6 +156,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
                     MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
                     metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
                 }
+
                 getContainer().updateButtons();
             }
         };
@@ -165,6 +166,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		
         return tableViewerLeft;
     }
+
 
     /**
      * Initializes the middle sub composite, where later buttons are added for moving selecting measurements.
