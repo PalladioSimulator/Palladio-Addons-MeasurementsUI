@@ -192,6 +192,19 @@ public class ModelAccessor {
     }
     
     /**
+     * Checks whether any palladio core models exist
+     * @return boolean whether models exist or not
+     */
+    public boolean modelsExist() {
+        if(this.allocationList.isEmpty() && this.systemList.isEmpty() && this.subsystemList.isEmpty() &&
+                this.repositoryList.isEmpty() && this.resourceEnvironmentList.isEmpty() &&
+                this.usageModelList.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+    
+    /**
      * Checks whether there exists a MonitorRepository
      * 
      * @return boolean whether a monitorRepository exists
