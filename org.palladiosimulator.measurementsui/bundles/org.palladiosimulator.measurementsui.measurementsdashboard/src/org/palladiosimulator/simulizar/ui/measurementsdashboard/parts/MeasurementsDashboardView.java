@@ -452,6 +452,7 @@ public class MeasurementsDashboardView {
     private void createSelectionComboBoxes(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new GridLayout(2, false));
+        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         createProjectsSelectionComboBox(container);
         createMonitorRepositorySelectionComboBox(container);
     }
@@ -491,7 +492,7 @@ public class MeasurementsDashboardView {
             monitorRepositoriesComboDropDown.setVisible(false);
         } else {
             monitorRepositoriesComboDropDown.setVisible(true);
-            int selectionIndex = -1;
+            int selectionIndex = 0;
             monitorRepositoriesComboDropDown.removeAll();
             List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
             for (int i = 0; i < allMonitorRepositories.size(); i++) {
@@ -499,9 +500,12 @@ public class MeasurementsDashboardView {
                  if (monitorRepository.equals(dataApplication.getMonitorRepository())) {
                     selectionIndex = i;
                 }
-                 monitorRepositoriesComboDropDown.add(monitorRepository.getEntityName());
+                 monitorRepositoriesComboDropDown.add(i+1 + ". " +monitorRepository.getEntityName());
             }
             monitorRepositoriesComboDropDown.select(selectionIndex);
+         
+           
+            
         }
     }
 
@@ -510,7 +514,7 @@ public class MeasurementsDashboardView {
      */
     public void updateProjectComboBox() {
 
-        int selectionIndex = -1;
+        int selectionIndex = 0;
         projectsComboDropDown.removeAll();
         List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
         for (int i = 0; i < allProjects.size(); i++) {
