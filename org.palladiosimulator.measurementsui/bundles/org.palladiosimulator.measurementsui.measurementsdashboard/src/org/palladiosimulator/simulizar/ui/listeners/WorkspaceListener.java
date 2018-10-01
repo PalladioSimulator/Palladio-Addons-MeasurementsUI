@@ -142,7 +142,6 @@ public class WorkspaceListener implements IResourceChangeListener {
                         
                         //a monitor or measuringPoint was added/deleted in the selected project -> update data and view
                     } else if (changedProject != null) {
-                    	System.out.println("Change Event activated");
                         dashboardView.updateMeasurementsDashboardView(changedProject);
                         dashboardView.updateMonitorRepositoryComboBox();
                     }
