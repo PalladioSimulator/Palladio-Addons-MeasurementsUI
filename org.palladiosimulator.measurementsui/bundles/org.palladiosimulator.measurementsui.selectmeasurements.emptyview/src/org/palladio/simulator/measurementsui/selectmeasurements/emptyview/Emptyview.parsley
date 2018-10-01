@@ -27,8 +27,8 @@ module org.palladio.simulator.measurementsui.selectmeasurements.emptyview {
 	}
 	featureCaptionProvider{
 		text{
-			MeasurementSpecification : metricDescription -> "Metric Description"
-			MeasurementSpecification : triggersSelfAdaptations -> "trigger self adapting"
+			MeasurementSpecification : metricDescription -> "Selected"
+			MeasurementSpecification : triggersSelfAdaptations -> "Self Adaptive"
 		}
 		
 	}

@@ -3,31 +3,29 @@ package org.palladiosimulator.measurementsui.wizard.pages;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.dataprovider.StandardSetCreationProvider;
-import org.palladiosimulator.measurementsui.wizard.main.StandardSetWizard;
 import org.palladiosimulator.monitorrepository.Monitor;
 
+
+/**
+ * Wizard page for the creation of standard sets. This is the second page on which you choose what what monitors/measuringpoints should be created.
+ * @author Domas Mikalkinas
+ *
+ */
 public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
 	CheckboxTableViewer viewer;
 	boolean add = true;

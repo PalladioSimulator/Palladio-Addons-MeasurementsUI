@@ -5,6 +5,9 @@ import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -34,6 +37,29 @@ public final class ProcessingTypeEditingSupport extends MeasurementSpecification
         ((ComboBoxViewerCellEditor) cellEditor).setContenProvider(new ArrayContentProvider());
         String[] possibleProcessingTypes = processingTypeSelectionWizardModel.providePossibleProcessingTypes();
         ((ComboBoxViewerCellEditor) cellEditor).setInput(possibleProcessingTypes);
+        
+        enableTableRowUpdateOnValueChange();
+    }
+
+    /**
+     * This work-around causes the combo box to update the table row immediately after clicking a
+     * new selection from the drop down list. Otherwise you would have to additionally hit enter to
+     * update the table row (since combo boxes are also text boxes).
+     */
+    private void enableTableRowUpdateOnValueChange() {
+        CCombo comboBox = (CCombo) cellEditor.getControl();
+        comboBox.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                comboBox.setEnabled(false);
+                comboBox.setEnabled(true);
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                // not used here, but the existence of this method is required
+            }
+        });
     }
 
     @Override

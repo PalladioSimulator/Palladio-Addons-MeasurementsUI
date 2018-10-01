@@ -5,6 +5,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+
+/**
+ * Wizard page for the creation of standard sets. This is the first page on which you choose what kind of standard set should be created.
+ * @author Domas Mikalkinas
+ *
+ */
 public class StandardSetCreationSelectionWizardPage extends WizardPage {
 	Button[] radios = new Button[2];
 

@@ -6,13 +6,13 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
+import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.usagemodel.Branch;
 import org.palladiosimulator.pcm.usagemodel.BranchTransition;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
@@ -20,7 +20,6 @@ import org.palladiosimulator.pcm.usagemodel.Loop;
 import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.pcm.system.System;
 
 /**
  * An alternative content provider for a hierarchical view of the
@@ -36,8 +35,6 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
 	public Object[] getElements(Object inputElement) {
 
 		List<Object> elementList = new LinkedList<>();
-
-		// elementList.addAll(da.getModelAccessor().getAllocation());
 
 		elementList.addAll(da.getModelAccessor().getRepository().stream().filter(
 				e -> (!e.getEntityName().equals("FailureTypes")) && (!e.getEntityName().equals("PrimitiveDataTypes")))
@@ -79,7 +76,6 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
 			List<Object> appendingBasicComponentObjects = new LinkedList<>();
 			appendingBasicComponentObjects
 					.addAll(((BasicComponent) parentElement).getServiceEffectSpecifications__BasicComponent());
-//			appendingBasicComponentObjects.addAll(((BasicComponent) parentElement).getPassiveResource_BasicComponent());
 			return appendingBasicComponentObjects.toArray();
 		} else if (parentElement instanceof ResourceDemandingSEFF) {
 			return ((ResourceDemandingSEFF) parentElement).getSteps_Behaviour().stream()
