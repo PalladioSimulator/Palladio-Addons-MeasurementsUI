@@ -126,9 +126,16 @@ public final class DataApplication {
         }
     }
     
+    /**
+     * Updates the currently selected monitorRepository based on the
+     * selectionIndex
+     * @param selectionIndex which monitorRepository should be selected
+     */
     public void updateMonitorRepository(int selectionIndex) {
-        if(this.modelAccessor.monitorRepositoryExists()&& this.modelAccessor.getMonitorRepository().size()>selectionIndex) {
+        if (this.modelAccessor.monitorRepositoryExists() && this.modelAccessor.getMonitorRepository().size() > selectionIndex && selectionIndex >= 0) {
             this.monitorRepository = this.modelAccessor.getMonitorRepository().get(selectionIndex);
+        } else {
+            this.monitorRepository = this.modelAccessor.getMonitorRepository().get(0);
         }
     }
 

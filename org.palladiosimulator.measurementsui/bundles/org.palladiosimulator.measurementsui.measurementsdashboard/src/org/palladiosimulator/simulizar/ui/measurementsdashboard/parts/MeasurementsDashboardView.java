@@ -17,6 +17,7 @@ import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -357,12 +358,17 @@ public class MeasurementsDashboardView {
         newMpButton.setText("Add new Measuring Point");
         newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         newMpButton.addListener(SWT.Selection, e -> {
+            if(!dataApplication.getModelAccessor().modelsExist()) {
+                MessageDialog.openInformation(null, "Info", "Info for you");
+                
+            } else {
             MeasurementsWizard wizard = new MeasurementsWizard();
             Shell parentShell = wizard.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, wizard);
             dialog.setPageSize(720, 400);
             dialog.setMinimumPageSize(720, 400);
             dialog.open();
+            }
         });
     }
 
@@ -421,6 +427,12 @@ public class MeasurementsDashboardView {
             dialog.setMinimumPageSize(720, 400);
             dialog.open();
         });
+    }
+    
+    private void checkForModels() {
+        if(!dataApplication.getModelAccessor().modelsExist()) {
+            
+        }
     }
 
     /**
@@ -497,10 +509,8 @@ public class MeasurementsDashboardView {
      * this updates the MonitorRepositoryComboBox
      */
     public void updateMonitorRepositoryComboBox() {
-         if (dataApplication.getModelAccessor().getMonitorRepository().size()<=1) {
-            monitorRepositoriesComboDropDown.setVisible(false);
-        } else {
-            monitorRepositoriesComboDropDown.setVisible(true);
+       
+            monitorRepositoriesComboDropDown.setEnabled(true);
             int selectionIndex = 0;
             monitorRepositoriesComboDropDown.removeAll();
             List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
@@ -513,9 +523,11 @@ public class MeasurementsDashboardView {
             }
             monitorRepositoriesComboDropDown.select(selectionIndex);
          
-           
+            if (dataApplication.getModelAccessor().getMonitorRepository().size()<=1) {
+                monitorRepositoriesComboDropDown.setEnabled(false);
+            }
             
-        }
+        
     }
 
     /**

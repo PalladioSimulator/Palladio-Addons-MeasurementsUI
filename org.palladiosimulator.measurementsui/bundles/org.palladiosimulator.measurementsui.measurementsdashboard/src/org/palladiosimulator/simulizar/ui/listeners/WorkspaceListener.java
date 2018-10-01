@@ -89,7 +89,6 @@ public class WorkspaceListener implements IResourceChangeListener {
                 @Override
                 public boolean visit(IResourceDelta delta) throws CoreException {
                     IResource res = delta.getResource();
-                    System.out.println("Ressource: "+ res.getClass() + " "+ res.getFullPath());
                     int flags = delta.getFlags();
                     if(delta.getKind() == IResourceDelta.CHANGED) {
                         if (res instanceof IFile && (res.getFileExtension().equals("monitorrepository")||
@@ -143,7 +142,6 @@ public class WorkspaceListener implements IResourceChangeListener {
                         
                         //a monitor or measuringPoint was added/deleted in the selected project -> update data and view
                     } else if (changedProject != null) {
-                    	System.out.println("Change Event activated");
                         dashboardView.updateMeasurementsDashboardView(changedProject);
                         dashboardView.updateMonitorRepositoryComboBox();
                     }
