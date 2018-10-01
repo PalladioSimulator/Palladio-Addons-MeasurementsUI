@@ -329,9 +329,9 @@ public class MeasurementsDashboardView {
         createDeleteButton(buttonContainer);
         createEditButton(buttonContainer);
 
-        Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
-        assignMonitorButton.setText("Assign to Monitor");
-        assignMonitorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+//        Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
+//        assignMonitorButton.setText("Assign to Monitor");
+//        assignMonitorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
         createStandardButton.setText("Create Standard Set");
