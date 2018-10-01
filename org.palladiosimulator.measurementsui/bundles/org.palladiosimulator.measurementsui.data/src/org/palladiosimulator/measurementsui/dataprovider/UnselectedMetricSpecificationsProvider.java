@@ -62,27 +62,29 @@ public class UnselectedMetricSpecificationsProvider {
                 validMetricDescriptionList
                         .addAll(getAllValidMetricDescriptionsForMeasuringPoint(passedMonitor).keySet());
             }
-        }
+            
+            EList<MeasurementSpecification> mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
 
-        EList<MeasurementSpecification> mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
+            if (!mSpecsOfPassedMonitor.isEmpty()) {
+                mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
+                EList<MetricDescription> metricDescriptionsInPassedMonitor = new BasicEList<>();
 
-        if (!mSpecsOfPassedMonitor.isEmpty()) {
-            mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
-            EList<MetricDescription> metricDescriptionsInPassedMonitor = new BasicEList<>();
+                for (MeasurementSpecification aMSpec : mSpecsOfPassedMonitor) {
+                    metricDescriptionsInPassedMonitor.add(aMSpec.getMetricDescription());
+                }
+                EList<MetricDescription> nonMatchingMetricDesciptions = new BasicEList<>();
 
-            for (MeasurementSpecification aMSpec : mSpecsOfPassedMonitor) {
-                metricDescriptionsInPassedMonitor.add(aMSpec.getMetricDescription());
+                findNonMatchingMetricDescriptions(metricDescriptionsInPassedMonitor, allMetricDescriptions,
+                        nonMatchingMetricDesciptions);
+
+                createMonitorWithMissingDescriptions(monFactory, nonMatchingMetricDesciptions, unusedMonitor);
+
+            } else {
+                createMonitorWithMissingDescriptions(monFactory, allMetricDescriptions, unusedMonitor);
             }
-            EList<MetricDescription> nonMatchingMetricDesciptions = new BasicEList<>();
-
-            findNonMatchingMetricDescriptions(metricDescriptionsInPassedMonitor, allMetricDescriptions,
-                    nonMatchingMetricDesciptions);
-
-            createMonitorWithMissingDescriptions(monFactory, nonMatchingMetricDesciptions, unusedMonitor);
-
-        } else {
-            createMonitorWithMissingDescriptions(monFactory, allMetricDescriptions, unusedMonitor);
         }
+
+        
 
     }
 

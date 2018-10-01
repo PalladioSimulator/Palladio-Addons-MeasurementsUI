@@ -7,6 +7,8 @@ import java.util.Map;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -90,6 +92,11 @@ public class StandardSetCreationProvider {
             provider.createMeasurementSpecificationsForEveryMetricDescription(suggestedMetricDescriptionsList, factory,
                     mSpecList);
             provider.setMetricDescriptionForEveryMeasurementSpecification(suggestedMetricDescriptionsList, mSpecList);
+            ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
+            for (MeasurementSpecification aMSpec : mSpecList) {
+                aMSpec.setProcessingType(MonitorRepositoryFactory.eINSTANCE.createFeedThrough());
+            }
+            monitor.eSet(monitor.eClass().getEStructuralFeature("measurementSpecifications"), mSpecList);
         }
     }
 
