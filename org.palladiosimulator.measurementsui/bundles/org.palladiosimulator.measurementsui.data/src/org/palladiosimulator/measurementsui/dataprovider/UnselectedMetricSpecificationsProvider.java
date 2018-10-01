@@ -74,13 +74,13 @@ public class UnselectedMetricSpecificationsProvider {
                 }
                 EList<MetricDescription> nonMatchingMetricDesciptions = new BasicEList<>();
 
-                findNonMatchingMetricDescriptions(metricDescriptionsInPassedMonitor, allMetricDescriptions,
+                findNonMatchingMetricDescriptions(metricDescriptionsInPassedMonitor, validMetricDescriptionList,
                         nonMatchingMetricDesciptions);
 
                 createMonitorWithMissingDescriptions(monFactory, nonMatchingMetricDesciptions, unusedMonitor);
 
             } else {
-                createMonitorWithMissingDescriptions(monFactory, allMetricDescriptions, unusedMonitor);
+                createMonitorWithMissingDescriptions(monFactory, validMetricDescriptionList, unusedMonitor);
             }
         }
 
