@@ -10,6 +10,8 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSele
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 
+import com.google.common.primitives.Doubles;
+
 /**
  * This class enables editing support for the ProcessingType property columns on the 4th wizard page
  * (for specification of measurements).
@@ -87,6 +89,7 @@ public final class ProcessingTypePropertyEditingSupport extends MeasurementSpeci
     @Override
     protected void setValue(Object element, Object value) {
         String valueString = (String) value;
+        Double valueDouble = Doubles.tryParse(valueString);
         MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
         ProcessingType selectedProcessingType = measurementSpecification.getProcessingType();
         String selectedProcessingTypeString = super.processingTypeSelectionWizardModel
@@ -94,9 +97,9 @@ public final class ProcessingTypePropertyEditingSupport extends MeasurementSpeci
 
         List<String> processingTypeProperties = this.processingTypeSelectionWizardModel
                 .fieldsForThisProcessingType(selectedProcessingTypeString);
-        if (processingTypeProperties.size() > this.propertyColumnIndex) {
+        if (processingTypeProperties.size() > this.propertyColumnIndex && valueDouble != null) {
             this.processingTypeSelectionWizardModel.editAProcessingTypeAttribute(measurementSpecification,
-                    processingTypeProperties.get(this.propertyColumnIndex), Double.valueOf(valueString));
+                    processingTypeProperties.get(this.propertyColumnIndex), valueDouble);
         }
 
         this.tableViewer.refresh();
