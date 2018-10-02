@@ -72,15 +72,14 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
         secondModelTreeViewer.setSelection(initialSelection);
         secondModelTreeViewer.setLabelProvider(new AdditionalMeasuringpointLabelProvider());
         secondModelTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
-			
-			@Override
-			public void doubleClick(DoubleClickEvent event) {
-				nextPressed();
-				getContainer().showPage( getNextPage());
-				 
-				
-			}
-		});
+
+            @Override
+            public void doubleClick(DoubleClickEvent event) {
+                nextPressed();
+                getContainer().showPage(getNextPage());
+
+            }
+        });
     }
 
     /**

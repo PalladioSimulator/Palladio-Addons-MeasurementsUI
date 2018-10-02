@@ -8,47 +8,49 @@ import org.eclipse.swt.graphics.Image;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.provider.MeasuringPointItemProvider;
 import org.palladiosimulator.pcm.provider.PcmItemProviderAdapterFactory;
-import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
 
-public class ExistingMeasuringpointLabelProvider implements ILabelProvider{
+/**
+ * label provider for the first wizard page of the measuringpoint creation process
+ * 
+ * @author Domas Mikalkinas
+ *
+ */
+public class ExistingMeasuringpointLabelProvider implements ILabelProvider {
 
     @Override
     public void addListener(ILabelProviderListener listener) {
-        // TODO Auto-generated method stub
-        
+        // not needed
     }
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-        
+        // not needed
     }
 
     @Override
     public boolean isLabelProperty(Object element, String property) {
-        // TODO Auto-generated method stub
+        // not needed
         return false;
     }
 
     @Override
     public void removeListener(ILabelProviderListener listener) {
-        // TODO Auto-generated method stub
-        
+        // not needed
+
     }
 
     @Override
     public Image getImage(Object element) {
-        		PcmItemProviderAdapterFactory factory = new PcmItemProviderAdapterFactory();
-        		EObject object = (EObject) element;
-        			MeasuringPointItemProvider provider = new MeasuringPointItemProvider(factory);
-        		
+        PcmItemProviderAdapterFactory factory = new PcmItemProviderAdapterFactory();
+        EObject object = (EObject) element;
+        MeasuringPointItemProvider provider = new MeasuringPointItemProvider(factory);
 
         return ExtendedImageRegistry.getInstance().getImage(provider.getImage(object));
     }
 
     @Override
     public String getText(Object element) {
-        return ((MeasuringPoint)element).getStringRepresentation();
+        return ((MeasuringPoint) element).getStringRepresentation();
     }
 
 }

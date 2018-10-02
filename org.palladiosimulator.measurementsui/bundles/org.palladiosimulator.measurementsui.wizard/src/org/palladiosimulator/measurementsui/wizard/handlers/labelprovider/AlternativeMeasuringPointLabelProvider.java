@@ -5,17 +5,11 @@ import java.util.LinkedList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ITableColorProvider;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.provider.AssemblyContextItemProvider;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
@@ -56,35 +50,36 @@ import org.palladiosimulator.pcm.usagemodel.provider.LoopItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.ScenarioBehaviourItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.UsageModelItemProvider;
 import org.palladiosimulator.pcm.usagemodel.provider.UsageScenarioItemProvider;
+/**
+ * An alternative label provider for the first step of the measuringpoint creation wizard pages
+ * 
+ * @author Domas Mikalkinas
+ *
+ */
+public class AlternativeMeasuringPointLabelProvider implements ILabelProvider, IFontProvider {
 
-public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IColorProvider, IFontProvider {
+	private static final String TRANSIENT = "[TRANSIENT]";
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-
+		// not needed
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
-
+		// not needed
 	}
 
 	@Override
 	public boolean isLabelProperty(Object element, String property) {
-		// TODO Auto-generated method stub
+		// not needed
 		return false;
 	}
 
 	@Override
 	public void removeListener(ILabelProviderListener listener) {
-		// TODO Auto-generated method stub
-
+		// not needed
 	}
-	
-
-
 
 	@Override
 	public Image getImage(Object element) {
@@ -93,74 +88,80 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IC
 		if (element instanceof LinkedList) {
 			return null;
 		} else {
-			EObject object = (EObject) element;
-			if (object instanceof UsageScenario) {
-				UsageScenarioItemProvider mod = new UsageScenarioItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof ResourceEnvironment) {
-				ResourceEnvironmentItemProvider mod = new ResourceEnvironmentItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-
-			} else if (object instanceof System) {
-				SystemItemProvider mod = new SystemItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof AssemblyContext) {
-				AssemblyContextItemProvider mod = new AssemblyContextItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof ResourceContainer) {
-				ResourceContainerItemProvider mod = new ResourceContainerItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof ProcessingResourceSpecification) {
-				ProcessingResourceTypeItemProvider mod = new ProcessingResourceTypeItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof LinkingResource) {
-				LinkingResourceItemProvider mod = new LinkingResourceItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof ExternalCallAction) {
-				ExternalCallActionItemProvider mod = new ExternalCallActionItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof EntryLevelSystemCall) {
-				EntryLevelSystemCallItemProvider mod = new EntryLevelSystemCallItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof SubSystem) {
-				SubSystemItemProvider mod = new SubSystemItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof PassiveResource) {
-				PassiveResourceItemProvider mod = new PassiveResourceItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			} else if (object instanceof Repository) {
-				RepositoryItemProvider mod = new RepositoryItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-				
-			}else if (object instanceof BasicComponent) {
-				BasicComponentItemProvider mod = new BasicComponentItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			}else if (object instanceof ResourceDemandingSEFF) {
-				ResourceDemandingSEFFItemProvider mod = new ResourceDemandingSEFFItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			}else if (object instanceof ScenarioBehaviour) {
-				ScenarioBehaviourItemProvider mod = new ScenarioBehaviourItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			}else if (object instanceof UsageModel) {
-				UsageModelItemProvider mod = new UsageModelItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			}
-			else if (object instanceof Branch) {
-				BranchItemProvider mod = new BranchItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			}
-			else if (object instanceof BranchTransition) {
-				BranchTransitionItemProvider mod = new BranchTransitionItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			}
-			else if (object instanceof Loop) {
-				 LoopItemProvider mod= new LoopItemProvider(factory);
-				return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
-			}
+			return getModelImage(element, factory);
 
 		}
 
-		return null;
+	}
+
+	/**
+	 * retrieves the image for the models in the tree viewer
+	 * @param element model in the tree viewer
+	 * @param factory the pcm factory
+	 * @return Image
+	 */
+	private Image getModelImage(Object element, PcmItemProviderAdapterFactory factory) {
+		EObject object = (EObject) element;
+		if (object instanceof UsageScenario) {
+			UsageScenarioItemProvider mod = new UsageScenarioItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof ResourceEnvironment) {
+			ResourceEnvironmentItemProvider mod = new ResourceEnvironmentItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof System) {
+			SystemItemProvider mod = new SystemItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof AssemblyContext) {
+			AssemblyContextItemProvider mod = new AssemblyContextItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof ResourceContainer) {
+			ResourceContainerItemProvider mod = new ResourceContainerItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof ProcessingResourceSpecification) {
+			ProcessingResourceTypeItemProvider mod = new ProcessingResourceTypeItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof LinkingResource) {
+			LinkingResourceItemProvider mod = new LinkingResourceItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof ExternalCallAction) {
+			ExternalCallActionItemProvider mod = new ExternalCallActionItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof EntryLevelSystemCall) {
+			EntryLevelSystemCallItemProvider mod = new EntryLevelSystemCallItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof SubSystem) {
+			SubSystemItemProvider mod = new SubSystemItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof PassiveResource) {
+			PassiveResourceItemProvider mod = new PassiveResourceItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof Repository) {
+			RepositoryItemProvider mod = new RepositoryItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof BasicComponent) {
+			BasicComponentItemProvider mod = new BasicComponentItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof ResourceDemandingSEFF) {
+			ResourceDemandingSEFFItemProvider mod = new ResourceDemandingSEFFItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof ScenarioBehaviour) {
+			ScenarioBehaviourItemProvider mod = new ScenarioBehaviourItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof UsageModel) {
+			UsageModelItemProvider mod = new UsageModelItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof Branch) {
+			BranchItemProvider mod = new BranchItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof BranchTransition) {
+			BranchTransitionItemProvider mod = new BranchTransitionItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else if (object instanceof Loop) {
+			LoopItemProvider mod = new LoopItemProvider(factory);
+			return ExtendedImageRegistry.getInstance().getImage(mod.getImage(object));
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -199,12 +200,12 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IC
 				return ((UsageScenario) element).getEntityName();
 
 			} else if (element instanceof ResourceDemandingSEFF) {
-				return ((ResourceDemandingSEFF) element).toString().replace("[TRANSIENT]", "");
+				return ((ResourceDemandingSEFF) element).toString().replace(TRANSIENT, "");
 			} else if (element instanceof UsageModel) {
-				return ((UsageModel) element).toString().replace("[TRANSIENT]", "");
+				return ((UsageModel) element).toString().replace(TRANSIENT, "");
 
-			}else if (element instanceof BranchTransition) {
-				return ((BranchTransition)element).toString().replace("[TRANSIENT]", "");
+			} else if (element instanceof BranchTransition) {
+				return ((BranchTransition) element).toString().replace(TRANSIENT, "");
 			}
 
 			return ((NamedElement) element).getEntityName();
@@ -213,40 +214,16 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider,IC
 
 	}
 
-
-
-	@Override
-	public Color getForeground(Object element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Color getBackground(Object element) {
-//		if(element instanceof ResourceEnvironment||element instanceof ResourceContainer||
-//		element instanceof ProcessingResourceSpecification||element instanceof AssemblyContext||
-//		element instanceof EntryLevelSystemCall||
-//		element instanceof ExternalCallAction||element instanceof LinkingResource||
-//		element instanceof SubSystem||element instanceof org.palladiosimulator.pcm.system.System||
-//		element instanceof UsageScenario) {
-//			return Display.getCurrent().getSystemColor(SWT.COLOR_GREEN);
-//		}
-		return null;
-	}
-
 	@Override
 	public Font getFont(Object element) {
-		if(element instanceof ResourceEnvironment||element instanceof ResourceContainer||
-				element instanceof ProcessingResourceSpecification||element instanceof AssemblyContext||
-				element instanceof EntryLevelSystemCall||
-				element instanceof ExternalCallAction||element instanceof LinkingResource||
-				element instanceof SubSystem||element instanceof org.palladiosimulator.pcm.system.System||
-				element instanceof UsageScenario) {
-			
-			Font font= JFaceResources.getBannerFont();
-			
-					return font;
-				}
+		if (element instanceof ResourceEnvironment || element instanceof ResourceContainer
+				|| element instanceof ProcessingResourceSpecification || element instanceof AssemblyContext
+				|| element instanceof EntryLevelSystemCall || element instanceof ExternalCallAction
+				|| element instanceof LinkingResource || element instanceof SubSystem
+				|| element instanceof org.palladiosimulator.pcm.system.System || element instanceof UsageScenario) {
+
+			return JFaceResources.getBannerFont();
+		}
 		return null;
 	}
 

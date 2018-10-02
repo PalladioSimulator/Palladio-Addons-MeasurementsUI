@@ -1,10 +1,7 @@
 package org.palladiosimulator.measurementsui.wizard.main;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
-import org.eclipse.equinox.log.SynchronousLogListener;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -13,86 +10,109 @@ import org.palladiosimulator.measurementsui.wizard.pages.StandardSetCreationSele
 import org.palladiosimulator.measurementsui.wizard.pages.StandardSetMeasuringPointSelectionWizardPage;
 import org.palladiosimulator.monitorrepository.Monitor;
 
-public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard{
+/**
+ * This is the wizard for the standard set creation.
+ * 
+ * @author Domas Mikalkinas
+ *
+ */
+public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
 
-	private StandardSetCreationSelectionWizardPage page1;
-	private StandardSetMeasuringPointSelectionWizardPage page2;
-    private ResourceEditorImpl editor;
-    private DataApplication dataApp;
-	
-	
+	private StandardSetCreationSelectionWizardPage standardSetChoiceWizardPage;
+	private StandardSetMeasuringPointSelectionWizardPage measuringPointSelectionWizardPage;
+	private ResourceEditorImpl editor;
+	private DataApplication dataApplication;
+
+	/**
+	 * returns the first wizard page of the standard set wizard
+	 * @return first wizardpage
+	 */
 	public StandardSetCreationSelectionWizardPage getPage1() {
-		return page1;
+		return standardSetChoiceWizardPage;
 	}
-
+/**
+ * sets the first wizard page of the standard set wizard
+ * @param page1 first wizard page
+ */
 	public void setPage1(StandardSetCreationSelectionWizardPage page1) {
-		this.page1 = page1;
+		this.standardSetChoiceWizardPage = page1;
 	}
-
+    /**
+     * returns the second wizard page of the standard set wizard
+     * @return second wizardpage
+     */
 	public StandardSetMeasuringPointSelectionWizardPage getPage2() {
-		return page2;
+		return measuringPointSelectionWizardPage;
 	}
-
+/**
+ * sets the second wizard page of the standard set wizard
+ * @param page2 second wizard page
+ */
 	public void setPage2(StandardSetMeasuringPointSelectionWizardPage page2) {
-		this.page2 = page2;
+		this.measuringPointSelectionWizardPage = page2;
 	}
 
+	/**
+	 * constructor for the wizard 
+	 */
 	public StandardSetWizard() {
-		editor= ResourceEditorImpl.getInstance();
-		dataApp = DataApplication.getInstance();
-		setWindowTitle("Create a standard set");	
-		page1= new StandardSetCreationSelectionWizardPage("Select which standard set should be created.");
-		page2= new StandardSetMeasuringPointSelectionWizardPage("Select all monitors which should be created.");
+		editor = ResourceEditorImpl.getInstance();
+		dataApplication = DataApplication.getInstance();
+		setWindowTitle("Create a standard set");
+		standardSetChoiceWizardPage = new StandardSetCreationSelectionWizardPage(
+				"Select which standard set should be created.");
+		measuringPointSelectionWizardPage = new StandardSetMeasuringPointSelectionWizardPage(
+				"Select all monitors which should be created.");
 	}
-	
+
 	@Override
 	public void addPages() {
-		addPage(page1);
-		addPage(page2);
+		addPage(standardSetChoiceWizardPage);
+		addPage(measuringPointSelectionWizardPage);
 	}
-	
+
+	/**
+	 * Retrieves all elements from the list, adds metric descriptions to it and
+	 * saves it to the respective files
+	 */
 	@Override
 	public boolean performFinish() {
 		StandardSetCreationProvider provider = new StandardSetCreationProvider();
-		if(page2.isAdd()) {
-			Object[] tempmonitor= page2.getViewer().getCheckedElements();
-		
-			
-			
-			Monitor[] monitors= new Monitor[tempmonitor.length];
+		if (measuringPointSelectionWizardPage.isLoadMonitorAndMeasuringpoint()) {
+			Object[] tempmonitor = measuringPointSelectionWizardPage.getViewer().getCheckedElements();
+
+			Monitor[] monitors = new Monitor[tempmonitor.length];
 			System.arraycopy(tempmonitor, 0, monitors, 0, tempmonitor.length);
 			provider.addMetricDescriptionsToAllMonitors(monitors);
-			for(Monitor monitor: monitors) {
-				
-				 editor.addMonitorToRepository(dataApp.getModelAccessor().getMonitorRepository().get(0), monitor);
-			        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
-			                monitor.getMeasuringPoint());
-			        editor.setMeasuringPointToMonitor(monitor, monitor.getMeasuringPoint());
-			        try {
-			            dataApp.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
-			            dataApp.getModelAccessor().getMonitorRepository().get(0).eResource().save(null);
-			        } catch (IOException e) {
-			            // TODO Auto-generated catch block
-			            e.printStackTrace();
-			        }
+			for (Monitor monitor : monitors) {
+
+				editor.addMonitorToRepository(dataApplication.getModelAccessor().getMonitorRepository().get(0),
+						monitor);
+				editor.addMeasuringPointToRepository(
+						dataApplication.getModelAccessor().getMeasuringPointRepository().get(0),
+						monitor.getMeasuringPoint());
+				editor.setMeasuringPointToMonitor(monitor, monitor.getMeasuringPoint());
+				try {
+					dataApplication.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
+					dataApplication.getModelAccessor().getMonitorRepository().get(0).eResource().save(null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			
-		}else {
-			for(Object tempmeasuringpoint: page2.getViewer().getCheckedElements()) {
-				MeasuringPoint measuringpoint= (MeasuringPoint)tempmeasuringpoint;
-			        editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
-			                measuringpoint);
-			        try {
-			            dataApp.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
-			        } catch (IOException e) {
-			            // TODO Auto-generated catch block
-			            e.printStackTrace();
-			        }
+
+		} else {
+			for (Object tempmeasuringpoint : measuringPointSelectionWizardPage.getViewer().getCheckedElements()) {
+				MeasuringPoint measuringpoint = (MeasuringPoint) tempmeasuringpoint;
+				editor.addMeasuringPointToRepository(
+						dataApplication.getModelAccessor().getMeasuringPointRepository().get(0), measuringpoint);
+				try {
+					dataApplication.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return true;
 	}
 
-	
-	
 }

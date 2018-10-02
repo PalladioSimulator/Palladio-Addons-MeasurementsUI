@@ -43,7 +43,7 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
     public void initUnusedMetrics(Monitor usedMonitor) {
         provider.createMonitorWithMissingMetricDescriptions(usedMonitor, unusedMetricsMonitor);
     }
-    
+
     @Override
     public boolean canFinish() {
         return !metricListIsEmpty();
@@ -85,7 +85,11 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      *            the specification which will be added to the monitor
      */
     public void addMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-        provider.moveMeasurementSpecificationToMonitor(selectedMeasurementSpecification, usedMetricsMonitor, isEditing);
+        if (selectedMeasurementSpecification != null) {
+            provider.moveMeasurementSpecificationToMonitor(selectedMeasurementSpecification, usedMetricsMonitor,
+                    isEditing);
+        }
+
     }
 
     /**
@@ -95,8 +99,11 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      *            the specification which will be added to the monitor
      */
     public void removeMeasurementSpecification(MeasurementSpecification selectedMeasurementSpecification) {
-        provider.removeMeasurementSpecificationFromMonitor(selectedMeasurementSpecification, unusedMetricsMonitor,
-                isEditing);
+        if (selectedMeasurementSpecification != null) {
+            provider.removeMeasurementSpecificationFromMonitor(selectedMeasurementSpecification, unusedMetricsMonitor,
+                    isEditing);
+        }
+
     }
 
     /**
@@ -111,6 +118,13 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
      */
     public void removeAllMetricDescriptions() {
         provider.removeAllMeasurementSpecificationsFromMonitor(usedMetricsMonitor, unusedMetricsMonitor, isEditing);
+    }
+
+    /**
+     * Moves only the suggested Metric Specs to the monitor.
+     */
+    public void moveAllSuggested() {
+        provider.moveSuggestedMeasurementSpecificationsToMonitor(unusedMetricsMonitor, usedMetricsMonitor, isEditing);
     }
 
     /**

@@ -1,15 +1,19 @@
 package org.palladiosimulator.measurementsui.wizard.handlers.contentprovider;
 
-import java.util.List;
-
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
-
+/**
+ * content provider for existing measuring points
+ * @author Domas Mikalkinas
+ *
+ */
 public class ExistingMeasuringpointContentProvider implements ITreeContentProvider {
-    MeasuringPointSelectionWizardModel wizardModel;
+    private MeasuringPointSelectionWizardModel wizardModel;
 
+    /**
+     * constructor for the content provider
+     * @param wizardModel wizard model for the second wizard page
+     */
     public ExistingMeasuringpointContentProvider(MeasuringPointSelectionWizardModel wizardModel) {
         this.wizardModel = wizardModel;
     }
@@ -22,19 +26,19 @@ public class ExistingMeasuringpointContentProvider implements ITreeContentProvid
 
     @Override
     public Object[] getChildren(Object parentElement) {
-        // TODO Auto-generated method stub
-        return null;
+    	// not needed
+        return new Object[0];
     }
 
     @Override
     public Object getParent(Object element) {
-        // TODO Auto-generated method stub
+    	// not needed
         return null;
     }
 
     @Override
     public boolean hasChildren(Object element) {
-        // TODO Auto-generated method stub
+    	// not needed
         return false;
     }
 

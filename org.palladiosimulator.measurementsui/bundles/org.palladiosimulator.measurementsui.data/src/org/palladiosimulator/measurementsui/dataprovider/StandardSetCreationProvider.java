@@ -66,7 +66,7 @@ public class StandardSetCreationProvider {
      */
     public void addMetricDescriptionsToAllMonitors(Monitor[] monitorArray) {
         for (Monitor aMonitor : monitorArray) {
-            addValidMetricDescriptionsToMonitor(aMonitor);
+            addSuggestedValidMetricDescriptionsToMonitor(aMonitor);
         }
     }
 
@@ -76,7 +76,7 @@ public class StandardSetCreationProvider {
      * 
      * @param monitor
      */
-    public void addValidMetricDescriptionsToMonitor(Monitor monitor) {
+    public void addSuggestedValidMetricDescriptionsToMonitor(Monitor monitor) {
         EList<MetricDescription> suggestedMetricDescriptionsList = new BasicEList<>();
         UnselectedMetricSpecificationsProvider provider = new UnselectedMetricSpecificationsProvider();
         Map<MetricDescription, Boolean> validMetricDescriptions = provider
@@ -92,7 +92,6 @@ public class StandardSetCreationProvider {
             provider.createMeasurementSpecificationsForEveryMetricDescription(suggestedMetricDescriptionsList, factory,
                     mSpecList);
             provider.setMetricDescriptionForEveryMeasurementSpecification(suggestedMetricDescriptionsList, mSpecList);
-            ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
             for (MeasurementSpecification aMSpec : mSpecList) {
                 aMSpec.setProcessingType(MonitorRepositoryFactory.eINSTANCE.createFeedThrough());
             }
