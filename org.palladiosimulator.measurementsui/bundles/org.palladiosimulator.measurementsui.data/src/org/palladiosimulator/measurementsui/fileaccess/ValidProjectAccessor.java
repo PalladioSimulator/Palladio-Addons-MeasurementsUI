@@ -48,20 +48,8 @@ public class ValidProjectAccessor {
         IProject[] wsProjects = wsRoot.getProjects();
         for (IProject project : wsProjects) {
             if (selectedProject != null && project.getName().equals(selectedProject)) {
-                try {
-                    IResource[] allMembers = project.members();
-                    for (IResource oneMember : allMembers) {
-                        if (oneMember.getFileExtension() != null) {
-                            if (oneMember.getFileExtension().equals("aird")) {
-                                return oneMember.getFullPath().toString();
-                            }
-                        }
-                    }
-                } catch (CoreException e) {
-                    LOGGER.log(Level.FINEST, e.toString(), e);
-                }
+                return getAirdFileOfProject(project);
             }
-
         }
         return null;
     }
@@ -74,14 +62,12 @@ public class ValidProjectAccessor {
      *            in which to search for
      * 
      */
-    public String getAirdFile(IProject project) {
+    public String getAirdFileOfProject(IProject project) {
         try {
             IResource[] allMembers = project.members();
             for (IResource oneMember : allMembers) {
-                if (oneMember.getFileExtension() != null) {
-                    if (oneMember.getFileExtension().equals("aird")) {
-                        return oneMember.getFullPath().toString();
-                    }
+                if (oneMember.getFileExtension() != null && oneMember.getFileExtension().equals("aird")) {
+                    return oneMember.getFullPath().toString();
                 }
             }
         } catch (CoreException e) {
@@ -104,10 +90,8 @@ public class ValidProjectAccessor {
         try {
             IResource[] allMembers = project.members();
             for (IResource oneMember : allMembers) {
-                if (oneMember.getFileExtension() != null) {
-                    if (oneMember.getFileExtension().equals(fileEnding)) {
-                        return oneMember.getLocationURI().toString().replace("file:", "");
-                    }
+                if (oneMember.getFileExtension() != null && oneMember.getFileExtension().equals(fileEnding)) {
+                    return oneMember.getLocationURI().toString().replace("file:", "");
                 }
             }
         } catch (CoreException e) {
@@ -130,10 +114,8 @@ public class ValidProjectAccessor {
             try {
                 IResource[] allMembers = project.members();
                 for (IResource oneMember : allMembers) {
-                    if (oneMember.getFileExtension() != null) {
-                        if (oneMember.getFileExtension().equals("aird")) {
-                            allAirdProjects.add(project);
-                        }
+                    if (oneMember.getFileExtension() != null && oneMember.getFileExtension().equals("aird")) {
+                        allAirdProjects.add(project);
                     }
                 }
             } catch (CoreException e) {

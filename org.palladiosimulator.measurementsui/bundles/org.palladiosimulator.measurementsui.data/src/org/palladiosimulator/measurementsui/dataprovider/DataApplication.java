@@ -63,7 +63,7 @@ public final class DataApplication {
     public void loadData(IProject project, int monitorRepositorySelectionIndex) {
     	this.project = project;
     	
-        initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
+        initializeSessionResourceURI(this.dataGathering.getAirdFileOfProject(this.project));
         initializeSession(sessionResourceURI);
 
         if (session != null) {
@@ -83,7 +83,7 @@ public final class DataApplication {
      * through a new session
      */
     public void updateData() { 
-        initializeSessionResourceURI(this.dataGathering.getAirdFile(this.project));
+        initializeSessionResourceURI(this.dataGathering.getAirdFileOfProject(this.project));
         initializeSession(sessionResourceURI);
         if (session != null) {
             this.modelAccessor.initializeModels(session);
