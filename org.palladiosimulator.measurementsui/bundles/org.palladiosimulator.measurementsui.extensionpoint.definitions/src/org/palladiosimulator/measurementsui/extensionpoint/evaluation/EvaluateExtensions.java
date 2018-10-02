@@ -7,13 +7,20 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.extensionpoint.definition.IMeasuringPointMetricsWorkingCombinations;
+import org.palladiosimulator.metricspec.MetricSpecPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.EntryLevelSystemCallMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.ExternalCallActionMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.LinkingResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
+import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
@@ -71,7 +78,16 @@ public class EvaluateExtensions {
 		} catch (CoreException ex) {
 			System.out.println(ex.getMessage());
 		}
+		
+	
 
+		EClassifier classif = PcmmeasuringpointPackage.eINSTANCE.getEClassifier("UsageScenarioMeasuringPoint");
+		if (classif != null && classif instanceof EClass) {
+		  // At this point, you have the right EClass, 
+		  // you can now create an instance using the factory
+		  EObject myinstance = PcmmeasuringpointFactory.eINSTANCE.create((EClass)classif);
+		}
+		
 		for (IMeasuringPointMetricsWorkingCombinations iPossibleMetricDescription : possibleMetricDescriptionExtensions) {
 
 			if (iPossibleMetricDescription.getMeasuringPoint() instanceof UsageScenarioMeasuringPoint) {

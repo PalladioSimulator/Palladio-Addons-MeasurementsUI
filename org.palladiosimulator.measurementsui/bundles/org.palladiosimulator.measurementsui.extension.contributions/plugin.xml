@@ -4,32 +4,10 @@
    <extension
          point="org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations">
       <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client3"
-            class="org.palladiosimulator.measurementsui.extension.contributions.ResponseTimeWithUsageScenarioMeasuringPoint">
-      </client>
-      <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client1"
-            class="org.palladiosimulator.measurementsui.extension.contributions.ResponseTimeWithAssemblyOperation">
-      </client>
-      <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client2"
-            class="org.palladiosimulator.measurementsui.extension.contributions.PointInTimeWithUsageScenario">
-      </client>
-      <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client3"
-            class="org.palladiosimulator.measurementsui.extension.contributions.ResponseTimeWithExternalCallAction">
-      </client>
-      <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client4"
-            class="org.palladiosimulator.measurementsui.extension.contributions.StateOfActiveResourceWithActiveResource">
-      </client>
-      <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client5"
-            class="org.palladiosimulator.measurementsui.extension.contributions.StateOfActiveResourceWithResourceContainer">
-      </client>
-      <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client6"
-            class="org.palladiosimulator.measurementsui.extension.contributions.StateOfPassiveResourceWithAssemblyPassiveResource">
+            Client_ID="org.palladiosimulator.measurementsui.extension.contributions.ResponseTimeWithUsageScenario"
+            ID="ResponseTimeWithUsageScenario"
+            MeasuringPoint="UsageScenarioMeasuringPoint"
+            MetricDescription="_6rYmYs7nEeOX_4BzImuHbA">
       </client>
    </extension>
 

@@ -55,17 +55,35 @@ For example, if i want to measure a Usage Scenario, a user would create a UsageS
 
    <element name="client">
       <complexType>
-         <attribute name="class" type="string" use="required">
+         <attribute name="ID" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.measurementsui.extensionpoint.definition.IMeasuringPointMetricsWorkingCombinations"/>
-               </appinfo>
             </annotation>
          </attribute>
-         <attribute name="ID" type="string" use="required">
+         <attribute name="MeasuringPoint" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The full eClass simple name of the MeasuringPoint for this extension point. You can access the name with MeasuringPoint.class.getSimpleName(). Only valid palladio MeasuringPoints will be processed (e.g. &quot;UsageScenarioMeasuringPoint&quot;).
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="MetricDescription" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The ID of the MetricDescription. These IDs are defined in the github project Palladio-QuAL-MetricSpecification.
+Specifically in the commonMetrics.metricspec file (https://github.com/PalladioSimulator/Palladio-QuAL-MetricSpecification/blob/master/bundles/org.palladiosimulator.metricspec.resources/models/commonMetrics.metricspec)
+Example, as of Oktober 2018: If you want to declare the ResponseTime in your extension as MetricDescription you would insert &quot;_6rYmYs7nEeOX_4BzImuHbA&quot; into this field.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="Name">
+      <complexType>
+         <attribute name="Name" type="string">
             <annotation>
                <documentation>
                   
