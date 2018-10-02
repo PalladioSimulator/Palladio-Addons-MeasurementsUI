@@ -164,4 +164,15 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 
     }
 
+    /**
+     * Provides the textual description for the metric description of a measurement specification.
+     * Used for showing the description of the metric description in the title of the third page.
+     * 
+     * @param aMeasurementSpecification
+     * @return The textual Description in String form
+     */
+    public String getTextualDescriptionForMetricDescription(MeasurementSpecification aMeasurementSpecification) {
+        return provider.provideTextualDescriptionForMetricDescription(aMeasurementSpecification.getMetricDescription());
+    }
+
 }
