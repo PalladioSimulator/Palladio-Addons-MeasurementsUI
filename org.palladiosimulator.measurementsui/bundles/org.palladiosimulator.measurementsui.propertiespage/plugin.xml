@@ -16,7 +16,7 @@
       <perspectiveExtension
             targetID="org.palladiosimulator.simulizar.ui.perspective">
          <view
-               closeable="false"
+               closeable="true"
                id="propertiespage"
                minimized="false"
                moveable="true"

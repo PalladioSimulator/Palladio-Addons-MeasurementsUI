@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.e4.core.commands.ECommandService;
@@ -311,14 +310,6 @@ public class MeasurementsDashboardView {
         monitorTreeViewer.getViewer().refresh();
         measuringTreeViewer.getViewer().refresh();
         filter.setSearchText("");
-        TreeViewer measuringTree = (TreeViewer) measuringTreeViewer.getViewer();
-        if (measuringTree.getTree().getTopItem().getItems().length <= 1) {
-            measuringTreeViewer.getViewer().refresh();
-        }
-        TreeViewer monitorTree = (TreeViewer) monitorTreeViewer.getViewer();
-        if (monitorTree.getTree().getTopItem().getItems().length <= 1) {
-            monitorTreeViewer.getViewer().refresh();
-        }
     }
 
     /**
@@ -332,10 +323,6 @@ public class MeasurementsDashboardView {
         createNewMeasuringpointButton(buttonContainer);
         createDeleteButton(buttonContainer);
         createEditButton(buttonContainer);
-
-//        Button assignMonitorButton = new Button(buttonContainer, SWT.PUSH);
-//        assignMonitorButton.setText("Assign to Monitor");
-//        assignMonitorButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
         Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
         createStandardButton.setText("Create Standard Set");

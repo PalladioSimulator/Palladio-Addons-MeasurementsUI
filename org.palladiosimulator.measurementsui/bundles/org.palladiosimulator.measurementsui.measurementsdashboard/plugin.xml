@@ -25,7 +25,7 @@
             targetID="org.palladiosimulator.simulizar.ui.perspective">
          <view
                closeable="true"
-               id="test.partDescFragment.ASampleE4View"
+               id="org.palladiosimulator.measurementsui.dashboardview"
                minimized="false"
                moveable="true"
                ratio="0.50f"

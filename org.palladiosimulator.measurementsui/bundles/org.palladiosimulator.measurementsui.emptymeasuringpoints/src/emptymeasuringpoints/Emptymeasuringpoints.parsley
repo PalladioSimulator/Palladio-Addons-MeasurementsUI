@@ -17,7 +17,11 @@ module emptymeasuringpoints {
 	bindings{
 		type IContentProvider -> CustomContentProvider
 	}
-	
+	labelProvider {
+		image {
+			MeasuringPoint -> "MeasuringPoint.png"
+		}
+	}
 	menuBuilder {
 		menus{
 			MeasuringPointRepository mpr-> #[

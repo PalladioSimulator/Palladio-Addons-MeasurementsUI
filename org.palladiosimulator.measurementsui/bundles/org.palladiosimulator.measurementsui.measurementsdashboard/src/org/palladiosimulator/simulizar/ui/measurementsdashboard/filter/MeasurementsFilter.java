@@ -71,9 +71,13 @@ public class MeasurementsFilter extends ViewerFilter {
         if (filterInactiveMonitors && !monitor.isActivated()) {
             return false;
         }
-        final String monitorMatch = monitor.getEntityName() + "$" + monitor.getId() + "$" + monitor.toString()
-                + "$monitor$" + monitor.getMeasuringPoint().getStringRepresentation() + "$"
-                + monitor.getMeasuringPoint().toString();
+        String monitorMatch = monitor.getEntityName() + "$" + monitor.getId() + "$" + monitor.toString()
+                + "$monitor";
+        MeasuringPoint measuringPointFromMonitor = monitor.getMeasuringPoint();
+        if (measuringPointFromMonitor != null) {
+            monitorMatch += "$" + monitor.getMeasuringPoint().getStringRepresentation() + "$"
+                    + monitor.getMeasuringPoint().toString();
+        }
         if (monitorMatch.replace(" ", "").trim().toLowerCase().matches(searchText)) {
             return true;
         }
