@@ -330,4 +330,14 @@ public class UnselectedMetricSpecificationsProvider {
         }
         return nonMatchingMetricDesciptions;
     }
+
+    /**
+     * Returns the textualDescription of a Metric Description.
+     * 
+     * @param aMetricDescription
+     * @return
+     */
+    public String provideTextualDescriptionForMetricDescription(MetricDescription aMetricDescription) {
+        return aMetricDescription.getTextualDescription();
+    }
 }
