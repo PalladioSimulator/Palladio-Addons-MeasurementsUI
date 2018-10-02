@@ -324,6 +324,10 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 		
 		Button addSuggestion = new Button(compositeMiddle, SWT.BOTTOM);
 		addSuggestion.setText("Add Suggestions");
+		addSuggestion.addListener(SWT.Selection, e -> {
+		    metricDescriptionSelectionWizardModel.moveAllSuggested();
+		    getContainer().updateButtons();
+		});
     }
 
     /**

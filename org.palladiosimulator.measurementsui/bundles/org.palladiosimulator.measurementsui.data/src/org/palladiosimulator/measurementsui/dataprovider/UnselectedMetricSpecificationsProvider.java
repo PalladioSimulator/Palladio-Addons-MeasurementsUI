@@ -62,7 +62,7 @@ public class UnselectedMetricSpecificationsProvider {
                 validMetricDescriptionList
                         .addAll(getAllValidMetricDescriptionsForMeasuringPoint(passedMonitor).keySet());
             }
-            
+
             EList<MeasurementSpecification> mSpecsOfPassedMonitor = passedMonitor.getMeasurementSpecifications();
 
             if (!mSpecsOfPassedMonitor.isEmpty()) {
@@ -83,8 +83,6 @@ public class UnselectedMetricSpecificationsProvider {
                 createMonitorWithMissingDescriptions(monFactory, validMetricDescriptionList, unusedMonitor);
             }
         }
-
-        
 
     }
 
@@ -221,6 +219,38 @@ public class UnselectedMetricSpecificationsProvider {
                     sendingMonitor.getMeasurementSpecifications());
         } else {
             receivingMonitor.getMeasurementSpecifications().addAll(sendingMonitor.getMeasurementSpecifications());
+        }
+
+    }
+
+    /**
+     * Moves the Metric Descriptions that are flagged as suggested to the receiving Monitor. Checks
+     * if receiving Monitor does not already have the Metric Description.
+     * 
+     * @param sendingMonitor
+     * @param receivingMonitor
+     * @param isInEditMode
+     */
+    public void moveSuggestedMeasurementSpecificationsToMonitor(Monitor sendingMonitor, Monitor receivingMonitor,
+            boolean isInEditMode) {
+        EList<MeasurementSpecification> allMSpecs = sendingMonitor.getMeasurementSpecifications();
+        EList<MeasurementSpecification> moveList = new BasicEList<>();
+        Map<MetricDescription, Boolean> validMap = getAllValidMetricDescriptionsForMeasuringPoint(receivingMonitor);
+        EList<MeasurementSpecification> mSpecsInReceivingMonitor = receivingMonitor.getMeasurementSpecifications();
+        for (Map.Entry<MetricDescription, Boolean> entry : validMap.entrySet()) {
+            if (entry.getValue()) {
+                for (MeasurementSpecification aMSpec : allMSpecs) {
+                    if (aMSpec.getMetricDescription() == entry.getKey() && !mSpecsInReceivingMonitor.contains(aMSpec)) {
+                        moveList.add(aMSpec);
+                    }
+                }
+
+            }
+        }
+        if (isInEditMode) {
+            editor.addMeasurementSpecificationsToMonitor(receivingMonitor, moveList);
+        } else {
+            receivingMonitor.getMeasurementSpecifications().addAll(moveList);
         }
 
     }
