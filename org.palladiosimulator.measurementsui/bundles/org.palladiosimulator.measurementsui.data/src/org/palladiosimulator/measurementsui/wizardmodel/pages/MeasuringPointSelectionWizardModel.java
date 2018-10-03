@@ -9,6 +9,8 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.util.MeasurementsPackage;
+import org.palladiosimulator.measurementsui.util.MeasurementsSwitch;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -157,7 +159,32 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             monitor.setMeasuringPoint(measuringPoint);
         }
     }
-
+    MeasurementsSwitch<MeasuringPoint> measuringSwitch = new MeasurementsSwitch<MeasuringPoint>() {
+    	PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
+        PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
+        
+    
+        @Override
+        public MeasuringPoint caseProcessingResourceSpecification(ProcessingResourceSpecification processingResourceSpecification) {
+			return null;
+			}
+    
+        @Override
+        public MeasuringPoint caseUsageScenario(UsageScenario usageScenario) {
+        	java.lang.System.out.println("Test"+ usageScenario.getEntityName());
+        	return (UsageScenarioMeasuringPoint) pcmMeasuringPointFactory
+            .create(PcmmeasuringpointPackage.eINSTANCE.getUsageScenarioMeasuringPoint());
+        }
+        
+    	@Override
+    	public MeasuringPoint caseResourceContainer(ResourceContainer resourceContainer) {
+    		// TODO Auto-generated method stub
+    		return (ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
+                    .create(PcmmeasuringpointPackage.eINSTANCE.getResourceContainerMeasuringPoint());
+    	}
+    	
+    	
+    };
     /**
      * checks which element from the measuringpoint wizard is selected, creates the corresponding
      * measuring point and adds it to the monitor
@@ -170,16 +197,21 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
         PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
 
+   
         if (model instanceof ResourceContainer) {
+        
             ResourceContainer container = (ResourceContainer) model;
-            ResourceContainerMeasuringPoint mp = (ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getResourceContainerMeasuringPoint());
+            
+            ResourceContainerMeasuringPoint mp = (ResourceContainerMeasuringPoint) measuringSwitch.doSwitch((EObject) model);
+//            		(ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
+//                    .create(PcmmeasuringpointPackage.eINSTANCE.getResourceContainerMeasuringPoint());
 
             mp.setResourceContainer(container);
             mp.setStringRepresentation(container.getEntityName());
             mp.setResourceURIRepresentation(container.eResource().getURI().toString() + "#" + container.getId());
             setMeasuringPointDependingOnEditMode(mp);
-        } else if (model instanceof ProcessingResourceSpecification) {
+        } 
+        else if (model instanceof ProcessingResourceSpecification) {
             ProcessingResourceSpecification processingResourceSpecification = (ProcessingResourceSpecification) model;
             ActiveResourceMeasuringPoint mp = (ActiveResourceMeasuringPoint) pcmMeasuringPointFactory
                     .create(PcmmeasuringpointPackage.eINSTANCE.getActiveResourceMeasuringPoint());
@@ -191,7 +223,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
                     + processingResourceSpecification.getId());
             setMeasuringPointDependingOnEditMode(mp);
 
-        } else if (model instanceof AssemblyContext && currentSecondStageModel instanceof PassiveResource) {
+        } 
+        else if (model instanceof AssemblyContext && currentSecondStageModel instanceof PassiveResource) {
             AssemblyContext assemblyContext = (AssemblyContext) model;
             PassiveResource passiveResource = (PassiveResource) currentSecondStageModel;
 
@@ -290,8 +323,8 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
 
         } else if (model instanceof UsageScenario) {
             UsageScenario usageScenario = (UsageScenario) model;
-            UsageScenarioMeasuringPoint mp = (UsageScenarioMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getUsageScenarioMeasuringPoint());
+            UsageScenarioMeasuringPoint mp = (UsageScenarioMeasuringPoint) measuringSwitch.doSwitch(MeasurementsPackage.USAGE_SCENARIO,(EObject) model);
+            		
             mp.setUsageScenario(usageScenario);
             mp.setStringRepresentation(usageScenario.getEntityName());
             mp.setResourceURIRepresentation(
