@@ -11,12 +11,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.parts.MeasurementsDashboardView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class implements the IResourceChangeListener to listen to changes
  * in the workspace and update our GUI accordingly
  * 
- * @author Lasse
+ * @author Lasse Merz
  *
  */
 public class WorkspaceListener implements IResourceChangeListener {
@@ -27,6 +29,8 @@ public class WorkspaceListener implements IResourceChangeListener {
    
    private MeasurementsDashboardView dashboardView;
    private DataApplication dataApplication;
+   
+   private final Logger logger = LoggerFactory.getLogger(WorkspaceListener.class);
     
     
     /**
@@ -104,7 +108,7 @@ public class WorkspaceListener implements IResourceChangeListener {
                 }
             });
         } catch (CoreException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }                       
 
     } 

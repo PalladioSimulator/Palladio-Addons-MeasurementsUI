@@ -1,6 +1,5 @@
 package org.palladiosimulator.measurementsui.fileaccess;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +36,7 @@ import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
  * Class for accessing all Palladio models of a Modelling Project (.aird file available)
  * Offers access to each model.
  * 
- * @author Lasse
+ * @author Lasse Merz
  *
  */
 public class ModelAccessor {

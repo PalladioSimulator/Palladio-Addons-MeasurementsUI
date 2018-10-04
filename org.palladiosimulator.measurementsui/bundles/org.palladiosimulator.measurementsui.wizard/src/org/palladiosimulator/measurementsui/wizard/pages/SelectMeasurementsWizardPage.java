@@ -36,7 +36,7 @@ import org.eclipse.swt.graphics.Image;
 /**
  * This class handles the GUI part of the third wizard page for selecting measurements.
  * 
- * @author mehmet, Ba
+ * @author Mehmet Ali Tepeli, Ba-Anh Vu
  * @author Florian Nieuwenhuizen: Added Infotext depending on selected Metric Description (Methods
  *         showMessage & updateMessageAccordingToSelectedMeasuringPoint)
  *

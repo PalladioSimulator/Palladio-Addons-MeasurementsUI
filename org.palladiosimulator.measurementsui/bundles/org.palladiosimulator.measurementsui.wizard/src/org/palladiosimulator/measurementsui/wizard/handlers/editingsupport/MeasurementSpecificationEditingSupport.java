@@ -10,7 +10,7 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSele
  * This class models the editing support for the columns on the 4th wizard page (for
  * specification of selected measurements).
  * 
- * @author Ba
+ * @author Ba-Anh Vu
  */
 public abstract class MeasurementSpecificationEditingSupport extends EditingSupport {
 

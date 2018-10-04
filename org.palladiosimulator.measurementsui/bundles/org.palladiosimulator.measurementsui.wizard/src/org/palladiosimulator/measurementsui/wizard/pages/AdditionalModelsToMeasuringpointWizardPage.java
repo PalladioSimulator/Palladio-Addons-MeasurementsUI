@@ -13,6 +13,8 @@ import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.Addi
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AdditionalMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.pcm.repository.PassiveResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the wizard page for the second step of the creation of a measuring point. It only needs
@@ -27,6 +29,8 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
     private AdditionalMeasuringpointContentProvider additionalMeasuringpointContentProvider;
     private boolean selected = false;
     private MeasuringPointSelectionWizardModel selectionWizardModel;
+    
+    private final Logger logger = LoggerFactory.getLogger(AdditionalModelsToMeasuringpointWizardPage.class);
 
     /**
      * the constructor with the needed wizard model
@@ -127,7 +131,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
                 selected = false;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn(ex.getMessage());
         }
         return validatedNextPressed;
     }

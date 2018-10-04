@@ -16,7 +16,7 @@ import com.google.common.primitives.Doubles;
  * This class enables editing support for the ProcessingType property columns on the 4th wizard page
  * (for specification of measurements).
  * 
- * @author Mehmet, Ba
+ * @author Mehmet Ali Tepeli, Ba-Anh Vu
  *
  */
 public final class ProcessingTypePropertyEditingSupport extends MeasurementSpecificationEditingSupport {
