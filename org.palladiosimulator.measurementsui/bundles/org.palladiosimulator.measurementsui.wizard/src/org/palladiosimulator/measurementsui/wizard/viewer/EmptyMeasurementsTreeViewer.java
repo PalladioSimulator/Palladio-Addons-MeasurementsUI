@@ -1,5 +1,7 @@
 package org.palladiosimulator.measurementsui.wizard.viewer;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTreeViewer;
@@ -28,8 +30,11 @@ public class EmptyMeasurementsTreeViewer extends WizardTreeViewer {
     }
 
     @Override
-    protected EObject getModelRepository() {
-        return dataApplication.getModelAccessor().getMeasuringPointRepository().get(0);
+    protected Optional<EObject> getModelRepository() {
+        if(dataApplication.getModelAccessor().measuringPointRepositoryExists()) {
+            return Optional.of(dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+        }
+        return Optional.empty();
     }
 
     @Override

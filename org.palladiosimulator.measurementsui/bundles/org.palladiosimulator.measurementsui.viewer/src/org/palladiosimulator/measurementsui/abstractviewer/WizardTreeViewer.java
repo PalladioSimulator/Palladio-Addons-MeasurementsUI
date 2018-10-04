@@ -45,7 +45,9 @@ public abstract class WizardTreeViewer extends ComponentViewer {
     public void update() {
         Object[] expandedElements = treeViewer.getExpandedElements();
         initEditingDomain();
-        resource = updateResource(getModelRepository());
+        if(getModelRepository().isPresent()) {
+            resource = updateResource(getModelRepository().get());
+        }
         treeFactory.initialize(treeViewer, resource);
         treeViewer.setExpandedElements(expandedElements);
         treeViewer.refresh();

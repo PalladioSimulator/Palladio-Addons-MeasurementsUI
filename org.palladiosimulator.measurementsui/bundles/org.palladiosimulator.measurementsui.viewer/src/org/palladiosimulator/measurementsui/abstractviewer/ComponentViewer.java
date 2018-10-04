@@ -1,5 +1,7 @@
 package org.palladiosimulator.measurementsui.abstractviewer;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -41,7 +43,7 @@ public abstract class ComponentViewer {
      * 
      * @return the repository of the current view. For Example the monitorrepository
      */
-    protected abstract EObject getModelRepository();
+    protected abstract Optional<EObject> getModelRepository();
 
     /**
      * Initialize the connection between the e4 plugin and the Parsley TreeView
@@ -61,8 +63,9 @@ public abstract class ComponentViewer {
      * Returns the parsley EditingDomain
      */
     protected void initEditingDomain() {
-        this.editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository());
-        //this.editingDomain = injector.getInstance(EditingDomain.class);
+        if(getModelRepository().isPresent()) {
+            this.editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository().get());
+        }
     }
 
     /**

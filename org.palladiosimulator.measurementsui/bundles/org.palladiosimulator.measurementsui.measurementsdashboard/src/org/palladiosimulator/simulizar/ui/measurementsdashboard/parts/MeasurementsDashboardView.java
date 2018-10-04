@@ -90,7 +90,7 @@ public class MeasurementsDashboardView {
     private static final String EDITTEXT_PROCESSINGTYPE = "Edit ProcessingType";
     private static final String INFOTEXT_NO_PCM_MODELS = "You need to create your"
             + " palladio core models before you can create measuring points."
-            + " They are used to model your systems architecture and chrakteristics."
+            + " They are used to model your systems architecture and characteristics."
             + " Use the buttons on the toolbar on top to start creating.";
     
     private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
@@ -164,7 +164,9 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0),0);
+        if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+            dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0),0);
+        }
     }
 
     /**
