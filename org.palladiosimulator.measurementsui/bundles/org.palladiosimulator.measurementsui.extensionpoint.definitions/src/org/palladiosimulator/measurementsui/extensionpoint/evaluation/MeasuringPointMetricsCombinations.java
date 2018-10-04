@@ -3,7 +3,6 @@ package org.palladiosimulator.measurementsui.extensionpoint.evaluation;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.palladiosimulator.measurementsui.extensionpoint.definition.IMeasuringPointMetricsWorkingCombinations;
 import org.palladiosimulator.metricspec.MetricDescription;
 
 
@@ -49,92 +48,15 @@ public class MeasuringPointMetricsCombinations {
 	}
 	
 	/**
-	 * Adds a working MetricDescription to the UsageScenarioMeasuringPoint
-	 * @param possibleMetricDescription
+	 * Puts a new entry in the given MeasuringPoint map depending on the MetricDescription and the 
+	 * boolean suggestedMetric
+	 * 
+	 * @param measuringPointMap to add the entry to
+	 * @param metricDescription to add to the map
+	 * @param suggestedMetric to add to the map
 	 */
-	public void addUsageScenarioMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.usageScenarioMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the ResourceMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addActiveResourceMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.activeResourceMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the AssemblyOperationMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addAssemblyOperationMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.assemblyOperationMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the AssemblyPassiveResourceMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addAssemblyPassiveResourceMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.assemblyPassiveResourceMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the EntryLevelSystemCallMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addEntryLevelSystemCallMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.entryLevelSystemCallMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the ExternalCallActionMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addExternalCallActionMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.externalCallActionMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the LinkingResourceMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addLinkingResourceMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.linkingResourceMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the ResourceContainerMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addResourceContainerMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.resourceContainerMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the ResourceEnvironmentMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addResourceEnvironmentMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.resourceEnvironmentMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the SubSystemOperationMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addSubSystemOperationMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.subSystemOperationMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
-	}
-	/**
-	 * Adds a working MetricDescription to the SystemOperationMeasuringPoint
-	 * @param possibleMetricDescription
-	 */
-	public void addSystemOperationMeasuringPointMetric(IMeasuringPointMetricsWorkingCombinations possibleMetricDescription) {
-		this.systemOperationMeasuringPointMetrics.put(possibleMetricDescription.getMetricDescription(),
-				possibleMetricDescription.addtoSuggestedList());
+	public void addMetricDescriptionToMap(Map<MetricDescription, Boolean> measuringPointMap, MetricDescription metricDescription, boolean suggestedMetric) {
+	    measuringPointMap.put(metricDescription, suggestedMetric);
 	}
 	
 	/**

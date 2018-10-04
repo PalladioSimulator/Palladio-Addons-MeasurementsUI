@@ -13,6 +13,10 @@ With that information we can show users a list of only working Metric Descriptio
 Furthermore you can define which of the working Metric Descriptions should be suggested to a user as default measures. This helps newer/not experienced users to start and learn what you can measure in a simulation.
 
 For example, if i want to measure a Usage Scenario, a user would create a UsageScenarioMeasuringPoint and a corresponding Monitor. Afterwards he needs to define the Measurement Specifications with the Metric Descirptions he wants to measure. This Extensionpoint should define which options he has in this step(e.g ResponseTime,...). If i don&apos;t know which Metric Descriptions to use it should further held with suggesting useful ones.
+
+MeasuringPoint: You can select one off 11 currently existing PcmMeasuringPoints
+MetricDescription: You need to provide the ID according to the MetricDescription defined in the commonMetrics.metricspec file of the Palladio-QuAL-MetricSpecification project: &lt;href=&quot;https://github.com/PalladioSimulator/Palladio-QuAL-MetricSpecification/blob/master/bundles/org.palladiosimulator.metricspec.resources/models/commonMetrics.metricspec&quot;&gt;
+SuggestedMetricDescription: true/false
       </documentation>
    </annotation>
 
@@ -55,20 +59,67 @@ For example, if i want to measure a Usage Scenario, a user would create a UsageS
 
    <element name="client">
       <complexType>
-         <attribute name="class" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.measurementsui.extensionpoint.definition.IMeasuringPointMetricsWorkingCombinations"/>
-               </appinfo>
-            </annotation>
-         </attribute>
          <attribute name="ID" type="string" use="required">
             <annotation>
                <documentation>
                   
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="Name" type="string">
+            <annotation>
+               <documentation>
+                  Name of the extension. Should be meaningful, to understand what this extension contributes. For example UsageScenarioWithResponseTime.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="MeasuringPoint" use="required">
+            <annotation>
+               <documentation>
+                  The full eClass simple name of the MeasuringPoint for this extension point. Choose the one you want to add a working MetricDescription to.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="ActiveResourceMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="AssemblyOperationMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="AssemblyPassiveResourceMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="EntryLevelSystemCallMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="ExternalCallActionMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="LinkingResourceMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="ResourceContainerMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="ResourceEnvironmentMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="SubSystemOperationMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="SystemOperationMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="UsageScenarioMeasuringPoint">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+         <attribute name="MetricDescription" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The ID of the MetricDescription. These IDs are defined in the github project Palladio-QuAL-MetricSpecification.
+Specifically in the commonMetrics.metricspec file (https://github.com/PalladioSimulator/Palladio-QuAL-MetricSpecification/blob/master/bundles/org.palladiosimulator.metricspec.resources/models/commonMetrics.metricspec)
+Example, as of Oktober 2018: If you want to declare the ResponseTime in your extension as MetricDescription you would insert &quot;_6rYmYs7nEeOX_4BzImuHbA&quot; into this field.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="SuggestedMetricDescription" type="boolean" use="required">
+            <annotation>
+               <documentation>
+                  Define, whether the MetricDesciption should be suggested to users to use for this MeasuringPoint.
+BasicMetricDescriptions should not be suggested(e.g Point in time) but SetMetricDescriptions should (e.g Response time tuple).
                </documentation>
             </annotation>
          </attribute>
@@ -80,7 +131,7 @@ For example, if i want to measure a Usage Scenario, a user would create a UsageS
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         Eclipse 4.8
       </documentation>
    </annotation>
 
@@ -91,33 +142,12 @@ For example, if i want to measure a Usage Scenario, a user would create a UsageS
       <documentation>
          This is a simple example, if you want to define that you can measure the ResponseTime of a UsageScenario and that ResponseTime should be a suggested Metric Description:
 
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.measurementsui.extensionpoint.definition.IMeasuringPointMetricsWorkingCombinations;
-import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 
-public class ResponseTimeWithUsageScenarioMeasuringPoint implements IMeasuringPointMetricsWorkingCombinations {
-
-
-    @Override
-    public MetricDescription getMetricDescription() {
-       return MetricDescriptionConstants.RESPONSE_TIME_METRIC;
-        
-    }
-
-    @Override
-    public MeasuringPoint getMeasuringPoint() {
-       return PcmmeasuringpointFactory.eINSTANCE.createUsageScenarioMeasuringPoint();
-      
-    }
-
-    @Override
-    public boolean addtoSuggestedList() {     
-        return true;
-    }
-
-}
+ID: client1
+MeasuringPoint: UsageScenarioMeasuringPoint
+MetricDescription: _6rYmYs7nEeOX_4BzImuHbA
+SuggestedMetricDescription: true
+Name: UsageScenarioWithResponseTime
       </documentation>
    </annotation>
 
@@ -126,7 +156,11 @@ public class ResponseTimeWithUsageScenarioMeasuringPoint implements IMeasuringPo
          <meta.section type="apiinfo"/>
       </appinfo>
       <documentation>
-         [Enter API information here.]
+         ID: an ID to differenciate between extensions
+MeasuringPoint: Enum of the 11 currently existent and supported MeasuringPoints. If this changes the enum in this extensionpoint has to be changed aswell.
+MetricDescription: ID of the MetricDescription, like they are defined in https://github.com/PalladioSimulator/Palladio-QuAL-MetricSpecification/blob/master/bundles/org.palladiosimulator.metricspec.resources/models/commonMetrics.metricspec. If this file changes or the corresponding implementation, this extensionpoint has to be adapted.
+SuggestedMetricDescription: boolean whether the metricDescription should be added to the suggested list of MetricDescription for the MeasuringPoint.
+Name: a meaningful name for the extension.
       </documentation>
    </annotation>
 
@@ -135,7 +169,8 @@ public class ResponseTimeWithUsageScenarioMeasuringPoint implements IMeasuringPo
          <meta.section type="implementation"/>
       </appinfo>
       <documentation>
-         [Enter information about supplied implementation of this extension point.]
+         In the package org.palladiosimulator.measurementsui.extension.contributions we implemented some extensions to this extension point.
+You can excess them by opening the plugin.xml file and switching to the Extensions tab.
       </documentation>
    </annotation>
 
