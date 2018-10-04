@@ -9,6 +9,8 @@ import org.palladiosimulator.measurementsui.dataprovider.StandardSetCreationProv
 import org.palladiosimulator.measurementsui.wizard.pages.StandardSetCreationSelectionWizardPage;
 import org.palladiosimulator.measurementsui.wizard.pages.StandardSetMeasuringPointSelectionWizardPage;
 import org.palladiosimulator.monitorrepository.Monitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the wizard for the standard set creation.
@@ -22,6 +24,8 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
 	private StandardSetMeasuringPointSelectionWizardPage measuringPointSelectionWizardPage;
 	private ResourceEditorImpl editor;
 	private DataApplication dataApplication;
+	
+	private final Logger logger = LoggerFactory.getLogger(StandardSetWizard.class);
 
 	/**
 	 * returns the first wizard page of the standard set wizard
@@ -96,7 +100,7 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
 					dataApplication.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
 					dataApplication.getModelAccessor().getMonitorRepository().get(0).eResource().save(null);
 				} catch (IOException e) {
-					e.printStackTrace();
+				    logger.warn("IOException when attempting to save changes from standard set wizard. Stacktrace: {}", e.getMessage());
 				}
 			}
 
@@ -108,7 +112,7 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
 				try {
 					dataApplication.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
 				} catch (IOException e) {
-					e.printStackTrace();
+				    logger.warn("IOException when attempting to save changes from standard set wizard. Stacktrace: {}", e.getMessage());
 				}
 			}
 		}

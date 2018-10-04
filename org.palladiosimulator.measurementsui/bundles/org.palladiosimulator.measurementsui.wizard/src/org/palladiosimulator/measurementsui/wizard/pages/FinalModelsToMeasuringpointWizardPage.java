@@ -12,6 +12,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.FinalMeasuringpointContentProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AdditionalMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -25,6 +27,8 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSele
 public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
     private TreeViewer finalSelectionTreeViewer;
     private MeasuringPointSelectionWizardModel selectionWizardModel;
+    
+    private final Logger logger = LoggerFactory.getLogger(FinalModelsToMeasuringpointWizardPage.class);
 
     /**
      * the constructor with the needed wizard model
@@ -91,10 +95,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
                 return this;
             }
         }
-
         return super.getWizard().getPage("wizardPage");
-
-        //
     }
 
     /**
@@ -110,7 +111,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
             selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn(ex.getMessage());
         }
         return validatedNextPressed;
     }

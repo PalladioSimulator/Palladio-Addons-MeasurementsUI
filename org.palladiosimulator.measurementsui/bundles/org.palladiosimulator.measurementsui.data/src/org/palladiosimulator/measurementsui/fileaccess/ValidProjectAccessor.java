@@ -12,19 +12,19 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used to get valid projects from the workspace. Mainly used for finding the .aird file of projects
  * to determine if wizard work-flow can be applied on the project.
  * 
- * @author Florian
+ * @author Florian Nieuwenhuizen
  *
  */
 public class ValidProjectAccessor {
 
-    private static final Logger LOGGER = Logger.getLogger(ValidProjectAccessor.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(ValidProjectAccessor.class);
 
     /**
      * This Method returns the path to the ".aird" file depeding on the selected project.
@@ -48,20 +48,8 @@ public class ValidProjectAccessor {
         IProject[] wsProjects = wsRoot.getProjects();
         for (IProject project : wsProjects) {
             if (selectedProject != null && project.getName().equals(selectedProject)) {
-                try {
-                    IResource[] allMembers = project.members();
-                    for (IResource oneMember : allMembers) {
-                        if (oneMember.getFileExtension() != null) {
-                            if (oneMember.getFileExtension().equals("aird")) {
-                                return oneMember.getFullPath().toString();
-                            }
-                        }
-                    }
-                } catch (CoreException e) {
-                    LOGGER.log(Level.FINEST, e.toString(), e);
-                }
+                return getAirdFileOfProject(project);
             }
-
         }
         return null;
     }
@@ -74,18 +62,16 @@ public class ValidProjectAccessor {
      *            in which to search for
      * 
      */
-    public String getAirdFile(IProject project) {
+    public String getAirdFileOfProject(IProject project) {
         try {
             IResource[] allMembers = project.members();
             for (IResource oneMember : allMembers) {
-                if (oneMember.getFileExtension() != null) {
-                    if (oneMember.getFileExtension().equals("aird")) {
-                        return oneMember.getFullPath().toString();
-                    }
+                if (oneMember.getFileExtension() != null && oneMember.getFileExtension().equals("aird")) {
+                    return oneMember.getFullPath().toString();
                 }
             }
         } catch (CoreException e) {
-            LOGGER.log(Level.FINEST, e.toString(), e);
+            logger.warn(e.toString());
         }
         return null;
     }
@@ -104,14 +90,12 @@ public class ValidProjectAccessor {
         try {
             IResource[] allMembers = project.members();
             for (IResource oneMember : allMembers) {
-                if (oneMember.getFileExtension() != null) {
-                    if (oneMember.getFileExtension().equals(fileEnding)) {
-                        return oneMember.getLocationURI().toString().replace("file:", "");
-                    }
+                if (oneMember.getFileExtension() != null && oneMember.getFileExtension().equals(fileEnding)) {
+                    return oneMember.getLocationURI().toString().replace("file:", "");
                 }
             }
         } catch (CoreException e) {
-            LOGGER.log(Level.FINEST, e.toString(), e);
+            logger.warn(e.toString());
         }
         return null;
     }
@@ -130,14 +114,12 @@ public class ValidProjectAccessor {
             try {
                 IResource[] allMembers = project.members();
                 for (IResource oneMember : allMembers) {
-                    if (oneMember.getFileExtension() != null) {
-                        if (oneMember.getFileExtension().equals("aird")) {
-                            allAirdProjects.add(project);
-                        }
+                    if (oneMember.getFileExtension() != null && oneMember.getFileExtension().equals("aird")) {
+                        allAirdProjects.add(project);
                     }
                 }
             } catch (CoreException e) {
-                LOGGER.log(Level.FINEST, e.toString(), e);
+                logger.warn(e.toString());
             }
         }
         return allAirdProjects;
@@ -157,7 +139,7 @@ public class ValidProjectAccessor {
                 return firstElement.toString().split("/")[1];
             }
         } catch (NullPointerException e) {
-            LOGGER.log(Level.FINEST, "Make sure a project is selected", e);
+            logger.warn("No project selected. Make sure a project is selected");
         }
         return null;
     }

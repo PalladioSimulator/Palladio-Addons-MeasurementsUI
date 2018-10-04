@@ -9,7 +9,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 /**
  * Class for editing resources without use of parsley
  * 
- * @author Florian
+ * @author Florian Nieuwenhuizen
  *
  */
 public final class ResourceEditorImpl implements ResourceEditor {

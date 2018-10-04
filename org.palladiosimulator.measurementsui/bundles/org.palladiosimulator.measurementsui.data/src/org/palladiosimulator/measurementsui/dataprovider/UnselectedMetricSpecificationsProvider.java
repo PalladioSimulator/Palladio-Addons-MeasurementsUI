@@ -32,9 +32,7 @@ import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 /**
  * This class creates and manages the Monitors used for the 3rd Wizard Page
  * 
- * @TODO: adapt moveMetricSpecificationBetweenMonitors to work with an array of selected Metric
- *        Descriptions, to allow moving multiple selected
- * @author Florian
+ * @author Florian Nieuwenhuizen
  *
  */
 public class UnselectedMetricSpecificationsProvider {
@@ -47,7 +45,6 @@ public class UnselectedMetricSpecificationsProvider {
      * 
      * @param passedMonitor
      *            The Monitor that gets passed from the previous Wizard Page
-     * @return the Monitor with the missing Metric Description<->Measurement Specification pairs
      */
     public void createMonitorWithMissingMetricDescriptions(Monitor passedMonitor, Monitor unusedMonitor) {
         MonitorRepositoryFactory monFactory = MonitorRepositoryPackage.eINSTANCE.getMonitorRepositoryFactory();

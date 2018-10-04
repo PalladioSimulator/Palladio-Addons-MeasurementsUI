@@ -18,7 +18,7 @@ import org.eclipse.jface.util.Policy;
 /**
  * This class handles the GUI part of the fourth wizard page for measurement specification.
  * 
- * @author Mehmet, Ba
+ * @author Mehmet Ali Tepeli, Ba-Anh Vu
  *
  */
 public class MeasurementSpecificationWizardPage extends WizardPage {

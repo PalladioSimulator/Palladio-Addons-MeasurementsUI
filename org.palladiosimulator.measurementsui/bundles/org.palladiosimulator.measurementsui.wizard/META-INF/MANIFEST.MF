@@ -32,5 +32,6 @@ Export-Package: org.palladiosimulator.measurementsui.wizard.handlers,
 Import-Package: emptymeasuringpoints,
  org.palladio.simulator.measurementsui.selectmeasurements.emptyview,
  org.palladiosimulator.measurementsui.measurementspecification,
+ org.slf4j;version="1.7.2",
  tableform
 

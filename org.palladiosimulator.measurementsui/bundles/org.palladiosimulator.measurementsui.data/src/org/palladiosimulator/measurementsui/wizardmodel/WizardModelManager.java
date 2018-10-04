@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.EnumMap;
 
 import org.eclipse.emf.common.command.CommandStack;
-import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -16,6 +15,8 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWiz
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class manages all WizardModels used in the wizard
@@ -33,6 +34,8 @@ public class WizardModelManager {
 
     private EnumMap<WizardModelType, WizardModel> wizardModels = new EnumMap<WizardModelType, WizardModel>(
             WizardModelType.class);
+    
+    final Logger logger = LoggerFactory.getLogger(WizardModelManager.class);
 
     /**
      * Creates a new empty monitor which will be edited in the wizard pages
@@ -84,8 +87,7 @@ public class WizardModelManager {
             dataApp.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
             dataApp.getMonitorRepository().eResource().save(null);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.warn("IOException when attempting to save changes made in Wizard. Stacktrace : {}", e.getMessage());
         }
 
     }

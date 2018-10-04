@@ -56,6 +56,8 @@ import org.palladiosimulator.simulizar.ui.listeners.WorkspaceListener;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.MonitorTreeViewer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Eclipse e4 view which gives the user an overview of all existing Monitors and MeasuringPoints in
@@ -88,7 +90,8 @@ public class MeasurementsDashboardView {
             + " They are used to model your systems architecture and chrakteristics."
             + " Use the buttons on the toolbar on top to start creating.";
     
-
+    private final Logger logger = LoggerFactory.getLogger(MeasurementsDashboardView.class);
+    
     @Inject
     private MDirtyable dirty;
 
@@ -438,7 +441,7 @@ public class MeasurementsDashboardView {
                 try {
                     save(dirty);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.warn("IOException when attempting to save the dirty state. Stacktrace: {}", e.getMessage());
                 }
                } else {
                    undoChanges();

@@ -24,7 +24,7 @@ import org.palladiosimulator.pcm.subsystem.SubSystem;
  * add a valid MeasurementSpecification <-> Metric Description pair with the Processing Type set to
  * "Feed Through".
  * 
- * @author Florian
+ * @author Florian Nieuwenhuizen
  *
  */
 public class StandardSetCreationProvider {
@@ -35,7 +35,7 @@ public class StandardSetCreationProvider {
      * @return List of Monitors with MPs assigned for every resource
      */
     public List<Monitor> createMonitorForEveryResource() {
-        List<Monitor> monitorList = new LinkedList<Monitor>();
+        List<Monitor> monitorList = new LinkedList<>();
 
         Monitor tempMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
         MeasuringPointSelectionWizardModel model = new MeasuringPointSelectionWizardModel(tempMonitor, false);

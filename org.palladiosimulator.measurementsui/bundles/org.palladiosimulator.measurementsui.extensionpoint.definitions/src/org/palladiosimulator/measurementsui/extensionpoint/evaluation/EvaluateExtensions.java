@@ -19,106 +19,111 @@ import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * This class is used to evaluate our Extensionpoint measuringPointMetricsWorkingCombinations.
- * It loads all Extensions connected to this Extensionpoint and adds them
- * to the MeasuringPointMetricsCombinations object accordingly.
+ * This class is used to evaluate our Extensionpoint measuringPointMetricsWorkingCombinations. It
+ * loads all Extensions connected to this Extensionpoint and adds them to the
+ * MeasuringPointMetricsCombinations object accordingly.
  * 
- * @author Lasse
+ * @author Lasse Merz
  *
  */
 public class EvaluateExtensions {
 
-	private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
-	private final MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
+    private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
+    private final MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
+    private final Logger logger = LoggerFactory.getLogger(EvaluateExtensions.class);
 
-	/**
-	 * Constructor which creates an object of MeasuringPointMetricsCombinations
-	 */
-	public EvaluateExtensions() {
-		this.measuringPointMetricsCombinations = new MeasuringPointMetricsCombinations();
-	}
-	
-	/**
-	 * Returns the instance of MeasuringPointMetricsCombinations
-	 * @return MeasuringPointMetricsCombinations
-	 */
-	public MeasuringPointMetricsCombinations getMeasuringPointmetricsCombinations() {
-		return this.measuringPointMetricsCombinations;
-	}
+    /**
+     * Constructor which creates an object of MeasuringPointMetricsCombinations
+     */
+    public EvaluateExtensions() {
+        this.measuringPointMetricsCombinations = new MeasuringPointMetricsCombinations();
+    }
 
-	/**
-	 * Loads all Extensions to the Extensionpoint from the ExtensionRegistry
-	 * and adds their content accordingly to the MeasuringPointMetricsCombinations obejct
-	 */
-	public void loadExtensions() {
+    /**
+     * Returns the instance of MeasuringPointMetricsCombinations
+     * 
+     * @return MeasuringPointMetricsCombinations
+     */
+    public MeasuringPointMetricsCombinations getMeasuringPointmetricsCombinations() {
+        return this.measuringPointMetricsCombinations;
+    }
 
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
+    /**
+     * Loads all Extensions to the Extensionpoint from the ExtensionRegistry and adds their content
+     * accordingly to the MeasuringPointMetricsCombinations obejct
+     */
+    public void loadExtensions() {
 
-		IConfigurationElement[] configurationElements = registry.getConfigurationElementsFor(ID);
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
 
-		List<IMeasuringPointMetricsWorkingCombinations> possibleMetricDescriptionExtensions = new LinkedList<>();
+        IConfigurationElement[] configurationElements = registry.getConfigurationElementsFor(ID);
 
-		try {
-			for (IConfigurationElement configurationElement : configurationElements) {
-				final Object possibleMetricDescription = configurationElement.createExecutableExtension("class");
-				if (possibleMetricDescription instanceof IMeasuringPointMetricsWorkingCombinations) {
-					possibleMetricDescriptionExtensions.add((IMeasuringPointMetricsWorkingCombinations) possibleMetricDescription);
-				}
-			}
+        List<IMeasuringPointMetricsWorkingCombinations> possibleMetricDescriptionExtensions = new LinkedList<>();
 
-		} catch (CoreException ex) {
-			System.out.println(ex.getMessage());
-		}
+        try {
+            for (IConfigurationElement configurationElement : configurationElements) {
+                final Object possibleMetricDescription = configurationElement.createExecutableExtension("class");
+                if (possibleMetricDescription instanceof IMeasuringPointMetricsWorkingCombinations) {
+                    possibleMetricDescriptionExtensions
+                            .add((IMeasuringPointMetricsWorkingCombinations) possibleMetricDescription);
+                }
+            }
 
-		for (IMeasuringPointMetricsWorkingCombinations iPossibleMetricDescription : possibleMetricDescriptionExtensions) {
+        } catch (CoreException ex) {
+            logger.warn(ex.getMessage());
+        }
 
-			if (iPossibleMetricDescription.getMeasuringPoint() instanceof UsageScenarioMeasuringPoint) {
-				this.measuringPointMetricsCombinations.addUsageScenarioMeasuringPointMetric(iPossibleMetricDescription);
+        for (IMeasuringPointMetricsWorkingCombinations iPossibleMetricDescription : possibleMetricDescriptionExtensions) {
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof AssemblyOperationMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addAssemblyOperationMeasuringPointMetric(iPossibleMetricDescription);
+            if (iPossibleMetricDescription.getMeasuringPoint() instanceof UsageScenarioMeasuringPoint) {
+                this.measuringPointMetricsCombinations.addUsageScenarioMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription
-					.getMeasuringPoint() instanceof AssemblyPassiveResourceMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addAssemblyPassiveResourceMeasuringPointMetric(iPossibleMetricDescription);
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof AssemblyOperationMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addAssemblyOperationMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof ResourceContainerMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addResourceContainerMeasuringPointMetric(iPossibleMetricDescription);
+            } else if (iPossibleMetricDescription
+                    .getMeasuringPoint() instanceof AssemblyPassiveResourceMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addAssemblyPassiveResourceMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof ResourceEnvironmentMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addResourceEnvironmentMeasuringPointMetric(iPossibleMetricDescription);
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof ResourceContainerMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addResourceContainerMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof SubSystemOperationMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addSubSystemOperationMeasuringPointMetric(iPossibleMetricDescription);
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof ResourceEnvironmentMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addResourceEnvironmentMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof SystemOperationMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addSystemOperationMeasuringPointMetric(iPossibleMetricDescription);
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof SubSystemOperationMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addSubSystemOperationMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof EntryLevelSystemCallMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addEntryLevelSystemCallMeasuringPointMetric(iPossibleMetricDescription);
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof SystemOperationMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addSystemOperationMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof LinkingResourceMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addLinkingResourceMeasuringPointMetric(iPossibleMetricDescription);
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof EntryLevelSystemCallMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addEntryLevelSystemCallMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof ExternalCallActionMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addExternalCallActionMeasuringPointMetric(iPossibleMetricDescription);
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof LinkingResourceMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addLinkingResourceMeasuringPointMetric(iPossibleMetricDescription);
 
-			} else if (iPossibleMetricDescription.getMeasuringPoint() instanceof ActiveResourceMeasuringPoint) {
-				this.measuringPointMetricsCombinations
-						.addActiveResourceMeasuringPointMetric(iPossibleMetricDescription);
-			}
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof ExternalCallActionMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addExternalCallActionMeasuringPointMetric(iPossibleMetricDescription);
 
-		}
-	}
+            } else if (iPossibleMetricDescription.getMeasuringPoint() instanceof ActiveResourceMeasuringPoint) {
+                this.measuringPointMetricsCombinations
+                        .addActiveResourceMeasuringPointMetric(iPossibleMetricDescription);
+            }
+
+        }
+    }
 }
