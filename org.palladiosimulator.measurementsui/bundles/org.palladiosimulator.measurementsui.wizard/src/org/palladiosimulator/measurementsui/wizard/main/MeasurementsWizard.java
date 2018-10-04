@@ -134,7 +134,7 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     
     @Override
     public boolean performFinish() {
-        page2.performAddingOperations(true);
+        page2.performAddingOperations();
         wizardManager.finish();
         return true;
     }

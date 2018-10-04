@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ASCII"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2" id="_fs0rMG8dEeiSd4fITWARWQ" entityName="New Repository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_FzwmAG8eEeiSd4fITWARWQ" entityName="Hompage">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_MBVikG8eEeiSd4fITWARWQ" entityName="Hompage.IHompage.OperationProvidedRole1" providedInterface__OperationProvidedRole="_kBoIQG8dEeiSd4fITWARWQ"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_N36CoG8eEeiSd4fITWARWQ" entityName="Hompage.IImageServer.OperationRequiredRole1" requiredInterface__OperationRequiredRole="_pmJgwG8dEeiSd4fITWARWQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_MBsu8G8eEeiSd4fITWARWQ" describedService__SEFF="_uefvwG8dEeiSd4fITWARWQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_MBsu8W8eEeiSd4fITWARWQ" successor_AbstractAction="_SjSMoG8eEeiSd4fITWARWQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_MBsu8m8eEeiSd4fITWARWQ" predecessor_AbstractAction="_SjSMoG8eEeiSd4fITWARWQ"/>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_SjSMoG8eEeiSd4fITWARWQ" entityName="ExternalCallAction1" predecessor_AbstractAction="_MBsu8W8eEeiSd4fITWARWQ" successor_AbstractAction="_MBsu8m8eEeiSd4fITWARWQ" calledService_ExternalService="_89r9MG8dEeiSd4fITWARWQ" role_ExternalService="_N36CoG8eEeiSd4fITWARWQ"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_HmbdgG8eEeiSd4fITWARWQ" entityName="ImgaeServer">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_NHZywG8eEeiSd4fITWARWQ" entityName="ImgaeServer.IImageServer.OperationProvidedRole1" providedInterface__OperationProvidedRole="_pmJgwG8dEeiSd4fITWARWQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_NIR8gG8eEeiSd4fITWARWQ" describedService__SEFF="_89r9MG8dEeiSd4fITWARWQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_NIR8gW8eEeiSd4fITWARWQ" successor_AbstractAction="_ayK5oG8eEeiSd4fITWARWQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_NIR8gm8eEeiSd4fITWARWQ" predecessor_AbstractAction="_ayK5oG8eEeiSd4fITWARWQ"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_ayK5oG8eEeiSd4fITWARWQ" entityName="InternalAction1" predecessor_AbstractAction="_NIR8gW8eEeiSd4fITWARWQ" successor_AbstractAction="_NIR8gm8eEeiSd4fITWARWQ">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="DoublePMF[(50.0; 0.5)(20.0; 0.4)(10.0; 0.1)]"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="100"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_BIjHoQ3KEdyouMqirZIhzQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_kBoIQG8dEeiSd4fITWARWQ" entityName="IHompage">
+    <signatures__OperationInterface id="_uefvwG8dEeiSd4fITWARWQ" entityName="getPictures">
+      <parameters__OperationSignature parameterName="PetName">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_pmJgwG8dEeiSd4fITWARWQ" entityName="IImageServer">
+    <signatures__OperationInterface id="_89r9MG8dEeiSd4fITWARWQ" entityName="providePictures">
+      <parameters__OperationSignature parameterName="PetName">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+</repository:Repository>

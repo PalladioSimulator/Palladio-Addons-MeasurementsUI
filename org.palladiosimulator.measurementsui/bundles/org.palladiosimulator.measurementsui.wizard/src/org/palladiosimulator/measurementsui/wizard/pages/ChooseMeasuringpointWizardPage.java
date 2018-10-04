@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -45,8 +44,6 @@ import org.palladiosimulator.pcm.subsystem.SubSystem;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This is the wizard page for the first step of the creation of a measuring point. It creates all
@@ -64,15 +61,13 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
     private MeasuringPointSelectionWizardModel selectionWizardModel;
     private boolean selected = false;
-    private boolean validatedNextPressed;
 
     private TabFolder tabFolder;
     private Button[] radios = new Button[2];
 
     private String filterString;
 
-    private final Logger logger = LoggerFactory.getLogger(ChooseMeasuringpointWizardPage.class);
-    
+
     /**
      * Constructor for the second wizard page, sets structural features like the title, the name of
      * the page and the description
@@ -192,20 +187,17 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
                 if (item != null) {
                     if (isMeasuringPointCreatable(item.getData())) {
                         selectionWizardModel.setFinishable(true);
-                        validatedNextPressed = true;
                         getContainer().updateButtons();
                         setPageComplete(true);
                         showMessage(item);
                     } else {
                         selectionWizardModel.setFinishable(false);
-                        validatedNextPressed = false;
                         setPageComplete(false);
                         getContainer().updateButtons();
                         setErrorMessage("Choose a model for which a measuring point will be created.");
                     }
                 } else {
                     selectionWizardModel.setFinishable(false);
-                    validatedNextPressed = false;
                     setPageComplete(false);
                     getContainer().updateButtons();
                     setErrorMessage("Choose a model for which a measuring point will be created.");
@@ -220,7 +212,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
             @Override
             public void doubleClick(DoubleClickEvent event) {
                 if (isMeasuringPointCreatable(createTreeViewer.getStructuredSelection().getFirstElement())) {
-                    nextPressed();
+                    performAddingOperations();
                     getContainer().showPage(getNextPage());
                 }
 
@@ -276,7 +268,6 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
                 if (item.getData() instanceof MeasuringPoint) {
 
                     selectionWizardModel.setFinishable(true);
-                    validatedNextPressed = true;
                     getContainer().updateButtons();
                     setPageComplete(true);
                     showMessage(item);
@@ -289,7 +280,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
             @Override
             public void doubleClick(DoubleClickEvent event) {
                 if (isMeasuringPointCreatable(emptyMeasuringpointViewer.getStructuredSelection().getFirstElement())) {
-                    nextPressed();
+                    performAddingOperations();
                     getContainer().showPage(getNextPage());
                 }
 
@@ -307,10 +298,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
         boolean isNextPressed = "nextPressed"
                 .equalsIgnoreCase(Thread.currentThread().getStackTrace()[2].getMethodName());
         if (isNextPressed) {
-            boolean validatedNextPress = this.nextPressed();
-            if (!validatedNextPress) {
-                return this;
-            }
+            performAddingOperations();
         }
         if (selected) {
 
@@ -367,54 +355,35 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
     }
 
     /**
-     * @see WizardDialog#nextPressed()
-     * @see WizardPage#getNextPage()
-     * @return boolean validates whether the next button is pressed or not
-     */
-    protected boolean nextPressed() {
-        validatedNextPressed = true;
-        validatedNextPressed = performAddingOperations(validatedNextPressed);
-        return validatedNextPressed;
-    }
-
-    /**
      * adds the created measuringpoint to the monitor
      * 
      * @param validatedNextPressed
      * @return boolean if next page can be shown
      */
-    public boolean performAddingOperations(boolean validatedNextPressed) {
+    public void performAddingOperations() {
         getContainer().updateButtons();
-        try {
 
-            if (tabFolder.getSelectionIndex() == 1) {
-                if (emptyMeasuringpointViewer.getStructuredSelection().getFirstElement() instanceof MeasuringPoint) {
-                    setErrorMessage(null);
-                    setPageComplete(true);
-                    selectionWizardModel.setMeasuringPointDependingOnEditMode(
-                            (MeasuringPoint) emptyMeasuringpointViewer.getStructuredSelection().getFirstElement());
-                }
-            } else {
-                if (createTreeViewer.getStructuredSelection().getFirstElement() instanceof AssemblyContext
-                        || createTreeViewer.getStructuredSelection().getFirstElement() instanceof SubSystem
-                        || createTreeViewer.getStructuredSelection()
-                                .getFirstElement() instanceof org.palladiosimulator.pcm.system.System) {
-                    selectionWizardModel
-                            .setCurrentSelection(createTreeViewer.getStructuredSelection().getFirstElement());
-                    selected = true;
-                } else {
-                    selectionWizardModel
-                            .setCurrentSelection(createTreeViewer.getStructuredSelection().getFirstElement());
-                    selectionWizardModel
-                            .createMeasuringPoint(createTreeViewer.getStructuredSelection().getFirstElement());
-                    selected = false;
-                }
+        if (tabFolder.getSelectionIndex() == 1) {
+            if (emptyMeasuringpointViewer.getStructuredSelection().getFirstElement() instanceof MeasuringPoint) {
+                setErrorMessage(null);
+                setPageComplete(true);
+                selectionWizardModel.setMeasuringPointDependingOnEditMode(
+                        (MeasuringPoint) emptyMeasuringpointViewer.getStructuredSelection().getFirstElement());
             }
-
-        } catch (Exception ex) {
-            logger.warn(ex.getMessage());
+        } else {
+            if (createTreeViewer.getStructuredSelection().getFirstElement() instanceof AssemblyContext
+                    || createTreeViewer.getStructuredSelection().getFirstElement() instanceof SubSystem
+                    || createTreeViewer.getStructuredSelection()
+                            .getFirstElement() instanceof org.palladiosimulator.pcm.system.System) {
+                selectionWizardModel.setCurrentSelection(createTreeViewer.getStructuredSelection().getFirstElement());
+                selected = true;
+            } else {
+                selectionWizardModel.setCurrentSelection(createTreeViewer.getStructuredSelection().getFirstElement());
+                selectionWizardModel.createMeasuringPoint(createTreeViewer.getStructuredSelection().getFirstElement());
+                selected = false;
+            }
         }
-        return validatedNextPressed;
+
     }
 
     /**
@@ -442,7 +411,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
     }
 
     /**
-     * sets the initial selection of the item
+     * sets the initial selection of the item. Sets it automatically to a element, which is a valid
+     * model for a measuringpoint
      * 
      * @param isEditing
      *            flag if it is editing mode or not
@@ -464,6 +434,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
                 if (isMeasuringPointCreatable(iter.next())) {
                     ISelection selection = new StructuredSelection(temp.get(0));
                     createTreeViewer.setSelection(selection);
+                    
                     break;
                 }
             }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ASCII"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2" id="_a6fdQG8gEeiSd4fITWARWQ" entityName="New Allocation">
+  <targetResourceEnvironment_Allocation href="PetsResourceEnvironment.resourceenvironment#/0"/>
+  <system_Allocation href="PetsAssembly.system#_UD51YG8fEeiSd4fITWARWQ"/>
+  <allocationContexts_Allocation id="_n2bvQG8gEeiSd4fITWARWQ" entityName="Allocation_Assembly_Hompage">
+    <resourceContainer_AllocationContext href="PetsResourceEnvironment.resourceenvironment#_MkC8IG8gEeiSd4fITWARWQ"/>
+    <assemblyContext_AllocationContext href="PetsAssembly.system#_hlXPQG8fEeiSd4fITWARWQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_DjD1EG8mEeiSd4fITWARWQ" entityName="Allocation_Assembly_ImgaeServer">
+    <resourceContainer_AllocationContext href="PetsResourceEnvironment.resourceenvironment#_og_V4G8lEeiSd4fITWARWQ"/>
+    <assemblyContext_AllocationContext href="PetsAssembly.system#_ivOaUG8fEeiSd4fITWARWQ"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>

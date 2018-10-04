@@ -9,19 +9,17 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.util.CreateMeasuringPointSwitch;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 import org.palladiosimulator.pcm.repository.OperationRequiredRole;
-import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.PassiveResource;
-import org.palladiosimulator.pcm.repository.Role;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.subsystem.SubSystem;
@@ -32,19 +30,6 @@ import org.palladiosimulator.pcm.usagemodel.BranchTransition;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.Loop;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.EntryLevelSystemCallMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.ExternalCallActionMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.LinkingResourceMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
-import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
-import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 
 /**
  * 
@@ -157,7 +142,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
             monitor.setMeasuringPoint(measuringPoint);
         }
     }
-
     /**
      * checks which element from the measuringpoint wizard is selected, creates the corresponding
      * measuring point and adds it to the monitor
@@ -166,140 +150,11 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      *            the model, which indicates which measuringpoint needs to be created
      */
     public void createMeasuringPoint(Object model) {
-
-        PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
-        PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
-
-        if (model instanceof ResourceContainer) {
-            ResourceContainer container = (ResourceContainer) model;
-            ResourceContainerMeasuringPoint mp = (ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getResourceContainerMeasuringPoint());
-
-            mp.setResourceContainer(container);
-            mp.setStringRepresentation(container.getEntityName());
-            mp.setResourceURIRepresentation(container.eResource().getURI().toString() + "#" + container.getId());
-            setMeasuringPointDependingOnEditMode(mp);
-        } else if (model instanceof ProcessingResourceSpecification) {
-            ProcessingResourceSpecification processingResourceSpecification = (ProcessingResourceSpecification) model;
-            ActiveResourceMeasuringPoint mp = (ActiveResourceMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getActiveResourceMeasuringPoint());
-
-            mp.setActiveResource(processingResourceSpecification);
-            mp.setStringRepresentation(processingResourceSpecification
-                    .getActiveResourceType_ActiveResourceSpecification().getEntityName());
-            mp.setResourceURIRepresentation(processingResourceSpecification.eResource().getURI().toString() + "#"
-                    + processingResourceSpecification.getId());
-            setMeasuringPointDependingOnEditMode(mp);
-
-        } else if (model instanceof AssemblyContext && currentSecondStageModel instanceof PassiveResource) {
-            AssemblyContext assemblyContext = (AssemblyContext) model;
-            PassiveResource passiveResource = (PassiveResource) currentSecondStageModel;
-
-            AssemblyPassiveResourceMeasuringPoint mp = (AssemblyPassiveResourceMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getAssemblyPassiveResourceMeasuringPoint());
-
-            mp.setAssembly(assemblyContext);
-            mp.setPassiveResource(passiveResource);
-            mp.setStringRepresentation(assemblyContext.getEntityName() + "_" + passiveResource.getEntityName());
-            mp.setResourceURIRepresentation(
-                    assemblyContext.eResource().getURI().toString() + "#" + assemblyContext.getId());
-            setMeasuringPointDependingOnEditMode(mp);
-
-        } else if (model instanceof AssemblyContext) {
-            AssemblyContext assemblyContext = (AssemblyContext) model;
-            OperationSignature operationSignature = (OperationSignature) currentThirdStageModel;
-            Role role = (Role) currentSecondStageModel;
-            AssemblyOperationMeasuringPoint mp = (AssemblyOperationMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getAssemblyOperationMeasuringPoint());
-
-            mp.setAssembly(assemblyContext);
-            mp.setOperationSignature(operationSignature);
-            mp.setRole(role);
-            mp.setStringRepresentation(assemblyContext.getEntityName());
-            mp.setResourceURIRepresentation(
-                    assemblyContext.eResource().getURI().toString() + "#" + (assemblyContext).getId());
-            setMeasuringPointDependingOnEditMode(mp);
-
-        } else if (model instanceof EntryLevelSystemCall) {
-            EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) model;
-            EntryLevelSystemCallMeasuringPoint mp = (EntryLevelSystemCallMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getEntryLevelSystemCallMeasuringPoint());
-
-            mp.setEntryLevelSystemCall(entryLevelSystemCall);
-            mp.setStringRepresentation(entryLevelSystemCall.getEntityName());
-            mp.setResourceURIRepresentation(
-                    entryLevelSystemCall.eResource().getURI().toString() + "#" + entryLevelSystemCall.getId());
-            setMeasuringPointDependingOnEditMode(mp);
-
-        } else if (model instanceof ExternalCallAction) {
-            ExternalCallAction externalCallAction = (ExternalCallAction) model;
-            ExternalCallActionMeasuringPoint mp = (ExternalCallActionMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getExternalCallActionMeasuringPoint());
-
-            mp.setExternalCall(externalCallAction);
-            mp.setStringRepresentation(externalCallAction.getEntityName());
-            mp.setResourceURIRepresentation(
-                    externalCallAction.eResource().getURI().toString() + "#" + externalCallAction.getId());
-            setMeasuringPointDependingOnEditMode(mp);
-        } else if (model instanceof LinkingResource) {
-            LinkingResource linkingResource = (LinkingResource) model;
-            LinkingResourceMeasuringPoint mp = (LinkingResourceMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getLinkingResourceMeasuringPoint());
-
-            mp.setLinkingResource(linkingResource);
-            mp.setStringRepresentation(linkingResource.getEntityName());
-            mp.setResourceURIRepresentation(
-                    linkingResource.eResource().getURI().toString() + "#" + linkingResource.getId());
-            setMeasuringPointDependingOnEditMode(mp);
-        } else if (model instanceof ResourceEnvironment) {
-            ResourceEnvironment resourceEnvironment = (ResourceEnvironment) model;
-            ResourceEnvironmentMeasuringPoint mp = (ResourceEnvironmentMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getResourceEnvironmentMeasuringPoint());
-
-            mp.setResourceEnvironment(resourceEnvironment);
-            mp.setStringRepresentation(resourceEnvironment.getEntityName());
-            mp.setResourceURIRepresentation(resourceEnvironment.eResource().getURI().toString() + "#/0");
-            setMeasuringPointDependingOnEditMode(mp);
-        } else if (model instanceof SubSystem) {
-            SubSystem subSystem = (SubSystem) model;
-            OperationSignature operationSignature = (OperationSignature) currentThirdStageModel;
-            Role role = (Role) currentSecondStageModel;
-            SubSystemOperationMeasuringPoint mp = (SubSystemOperationMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getSubSystemOperationMeasuringPoint());
-
-            mp.setSubsystem(subSystem);
-            mp.setOperationSignature(operationSignature);
-            mp.setRole(role);
-            mp.setStringRepresentation(subSystem.getEntityName());
-            mp.setResourceURIRepresentation((subSystem.eResource().getURI().toString() + "#" + subSystem.getId()));
-            setMeasuringPointDependingOnEditMode(mp);
-
-        } else if (model instanceof System) {
-            System system = (System) model;
-            OperationSignature operationSignature = (OperationSignature) currentThirdStageModel;
-            Role role = (Role) currentSecondStageModel;
-            SystemOperationMeasuringPoint mp = (SystemOperationMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getSystemOperationMeasuringPoint());
-
-            mp.setSystem(system);
-            mp.setOperationSignature(operationSignature);
-            mp.setRole(role);
-            mp.setStringRepresentation(system.getEntityName());
-            mp.setResourceURIRepresentation(system.eResource().getURI().toString() + "#" + system.getId());
-            setMeasuringPointDependingOnEditMode(mp);
-
-        } else if (model instanceof UsageScenario) {
-            UsageScenario usageScenario = (UsageScenario) model;
-            UsageScenarioMeasuringPoint mp = (UsageScenarioMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getUsageScenarioMeasuringPoint());
-            mp.setUsageScenario(usageScenario);
-            mp.setStringRepresentation(usageScenario.getEntityName());
-            mp.setResourceURIRepresentation(
-                    usageScenario.eResource().getURI().toString() + "#" + usageScenario.getId());
-            setMeasuringPointDependingOnEditMode(mp);
-
-        }
-
+        CreateMeasuringPointSwitch measuringSwitch = new CreateMeasuringPointSwitch();
+        measuringSwitch.setSecondStageModel(currentSecondStageModel);
+        measuringSwitch.setThirdStageModel(currentThirdStageModel);
+        MeasuringPoint measuringPoint = measuringSwitch.doSwitch((EObject) model);
+            setMeasuringPointDependingOnEditMode(measuringPoint);
     }
 
     /**
@@ -490,7 +345,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         addOnlyFilledLists(allmodels, getUsageScenarios());
         addOnlyFilledLists(allmodels, getExternalCallActions());
         addOnlyFilledLists(allmodels, getEntryLevelSystemCalls());
-
+        
         return allmodels.toArray();
     }
 

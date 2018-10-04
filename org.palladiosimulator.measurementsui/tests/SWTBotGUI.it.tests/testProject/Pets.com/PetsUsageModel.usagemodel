@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ASCII"?>
+<usagemodel:UsageModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:usagemodel="http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2">
+  <usageScenario_UsageModel id="_u3zgQG8gEeiSd4fITWARWQ" entityName="UsageScenario">
+    <scenarioBehaviour_UsageScenario id="_xVpbsG8gEeiSd4fITWARWQ" entityName="ScenarioBehaviour">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_xVpbsW8gEeiSd4fITWARWQ" entityName="System" successor="_2fpbYG8gEeiSd4fITWARWQ"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_xVpbsm8gEeiSd4fITWARWQ" predecessor="_Ew4sYG8hEeiSd4fITWARWQ"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_2fpbYG8gEeiSd4fITWARWQ" entityName="EntryLevelSystemCall1" successor="_Ew4sYG8hEeiSd4fITWARWQ" predecessor="_xVpbsW8gEeiSd4fITWARWQ">
+        <providedRole_EntryLevelSystemCall href="PetsAssembly.system#_yUQOcG8fEeiSd4fITWARWQ"/>
+        <operationSignature__EntryLevelSystemCall href="PetsRepository.repository#_uefvwG8dEeiSd4fITWARWQ"/>
+      </actions_ScenarioBehaviour>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Branch" id="_Ew4sYG8hEeiSd4fITWARWQ" entityName="Look at Pictures or Search new ones" successor="_xVpbsm8gEeiSd4fITWARWQ" predecessor="_2fpbYG8gEeiSd4fITWARWQ">
+        <branchTransitions_Branch branchProbability="0.5">
+          <branchedBehaviour_BranchTransition id="_GjLJYG8hEeiSd4fITWARWQ">
+            <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_GjLJYW8hEeiSd4fITWARWQ" entityName="Branch1" successor="_gdnSIG8hEeiSd4fITWARWQ"/>
+            <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_GjLwcG8hEeiSd4fITWARWQ" entityName="Branch1" predecessor="_gdnSIG8hEeiSd4fITWARWQ"/>
+            <actions_ScenarioBehaviour xsi:type="usagemodel:Delay" id="_gdnSIG8hEeiSd4fITWARWQ" entityName="Look at pictures" successor="_GjLwcG8hEeiSd4fITWARWQ" predecessor="_GjLJYW8hEeiSd4fITWARWQ">
+              <timeSpecification_Delay specification="30.0"/>
+            </actions_ScenarioBehaviour>
+          </branchedBehaviour_BranchTransition>
+        </branchTransitions_Branch>
+        <branchTransitions_Branch branchProbability="0.5">
+          <branchedBehaviour_BranchTransition id="_ZSUJEG8hEeiSd4fITWARWQ">
+            <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_ZSUwIG8hEeiSd4fITWARWQ" entityName="Branch2" successor="_4_MKgG8hEeiSd4fITWARWQ"/>
+            <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_ZSUwIW8hEeiSd4fITWARWQ" entityName="Branch2" predecessor="_4_MKgG8hEeiSd4fITWARWQ"/>
+            <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_4_MKgG8hEeiSd4fITWARWQ" entityName="EntryLevelSystemCall1" successor="_ZSUwIW8hEeiSd4fITWARWQ" predecessor="_ZSUwIG8hEeiSd4fITWARWQ">
+              <providedRole_EntryLevelSystemCall href="PetsAssembly.system#_yUQOcG8fEeiSd4fITWARWQ"/>
+              <operationSignature__EntryLevelSystemCall href="PetsRepository.repository#_uefvwG8dEeiSd4fITWARWQ"/>
+            </actions_ScenarioBehaviour>
+          </branchedBehaviour_BranchTransition>
+        </branchTransitions_Branch>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+    <workload_UsageScenario xsi:type="usagemodel:ClosedWorkload" population="2">
+      <thinkTime_ClosedWorkload specification="10.0"/>
+    </workload_UsageScenario>
+  </usageScenario_UsageModel>
+</usagemodel:UsageModel>

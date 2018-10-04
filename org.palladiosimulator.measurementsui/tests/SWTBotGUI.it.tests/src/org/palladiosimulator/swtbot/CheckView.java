@@ -2,6 +2,8 @@ package org.palladiosimulator.swtbot;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
@@ -40,8 +42,10 @@ public class CheckView {
         bot.tree().select("General").expandNode("General").select("Existing Projects into Workspace");
         bot.button("Next >").click();
         bot.radio("Select root directory:").click();
-        bot.comboBox().setText("/Users/birasanthpushpanathan/Downloads/Pets.com");
-        bot.button("Refresh").click();
+        String basePath = new File("").getAbsolutePath();
+        String path = new File("/testProject/Pets.com")
+                .getAbsolutePath();
+        bot.comboBox().setText(basePath+path);        bot.button("Refresh").click();
         bot.button("Finish").click();
         bot.closeAllShells();
 
@@ -80,7 +84,6 @@ public class CheckView {
         bot.button("Add new Measuring Point");
         bot.button("Delete...");
         bot.button("Edit...");
-        bot.button("Assign to Monitor");
         bot.button("Create Standard Set");
     }
 
@@ -115,8 +118,10 @@ public class CheckView {
 
     public static void closeWelcomePage() {
         for (SWTBotView view : bot.views()) {
-            if (view.getTitle().equals("Welcome")) {
-                view.close();
+            if(view!=null) {
+                if (view.getTitle().equals("Welcome")) {
+                    view.close();
+                }
             }
         }
     }
