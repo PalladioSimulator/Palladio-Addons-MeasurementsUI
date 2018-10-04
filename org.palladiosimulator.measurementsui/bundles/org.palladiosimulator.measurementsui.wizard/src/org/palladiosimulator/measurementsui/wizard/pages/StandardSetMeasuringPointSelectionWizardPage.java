@@ -144,7 +144,6 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
         List<Monitor> monitors = set.createMonitorForEveryResource();
         for (Monitor monitor : monitors) {
             measuringpoints.add(monitor.getMeasuringPoint());
-            System.out.println(monitor.getMeasuringPoint());
         }
         viewer.setInput(measuringpoints.toArray());
         viewer.refresh();

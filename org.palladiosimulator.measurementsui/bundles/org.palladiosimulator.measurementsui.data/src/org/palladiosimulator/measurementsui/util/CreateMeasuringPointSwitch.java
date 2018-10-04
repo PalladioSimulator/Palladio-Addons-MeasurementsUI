@@ -1,8 +1,6 @@
 package org.palladiosimulator.measurementsui.util;
 
-import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.PassiveResource;
@@ -70,8 +68,7 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
         }else {
             OperationSignature operationSignature = (OperationSignature) thirdStageModel;
             Role role = (Role) secondStageModel;
-            AssemblyOperationMeasuringPoint mp = (AssemblyOperationMeasuringPoint) pcmMeasuringPointFactory
-                    .create(PcmmeasuringpointPackage.eINSTANCE.getAssemblyOperationMeasuringPoint());
+            AssemblyOperationMeasuringPoint mp =  pcmMeasuringPointFactory.createAssemblyOperationMeasuringPoint(); 
 
             mp.setAssembly(assemblyContext);
             mp.setOperationSignature(operationSignature);
