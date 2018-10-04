@@ -10,16 +10,20 @@ import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewe
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.monitorrepository.Monitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * DropListener which specifies what happens if a MeasuringPoint is dropped into a container.
  * 
- * @author zss3
+ * @author David Schuetz
  *
  */
 public class MeasuringpointDropListener extends ViewerDropAdapter {
     private MeasurementsTreeViewer measurementTreeViewer;
 
+    private final Logger logger = LoggerFactory.getLogger(MeasuringpointDropListener.class);
+    
     /**
      * 
      * @param measurementTreeViewer
@@ -38,8 +42,7 @@ public class MeasuringpointDropListener extends ViewerDropAdapter {
         try {
             measurementTreeViewer.save();
         } catch (IOException e) {
-            // TODO Use a logger here
-            e.printStackTrace();
+            logger.warn("IOException when attempting to perform Drop. Stacktrace: {}", e.getMessage());
         }
         return false;
     }

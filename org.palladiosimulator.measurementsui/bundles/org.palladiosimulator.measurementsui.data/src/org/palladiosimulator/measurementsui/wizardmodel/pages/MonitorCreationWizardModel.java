@@ -7,7 +7,7 @@ import org.palladiosimulator.monitorrepository.Monitor;
 /**
  * This class provides provides all necessary data for the first
  * Wizard page, to create or Edit a Monitor. 
- * @author Lasse
+ * @author Lasse Merz
  *
  */
 public class MonitorCreationWizardModel implements WizardModel {

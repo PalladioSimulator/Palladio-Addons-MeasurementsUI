@@ -30,14 +30,16 @@ import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 
 /**
- * This class is used to evaluate our Extensionpoint measuringPointMetricsWorkingCombinations.
- * It loads all Extensions connected to this Extensionpoint and adds them
- * to the MeasuringPointMetricsCombinations object accordingly.
+ * This class is used to evaluate our Extensionpoint measuringPointMetricsWorkingCombinations. It
+ * loads all Extensions connected to this Extensionpoint and adds them to the
+ * MeasuringPointMetricsCombinations object accordingly.
  * 
- * @author Lasse
+ * @author Lasse Merz
  *
  */
 public class EvaluateExtensions {
@@ -47,6 +49,9 @@ public class EvaluateExtensions {
 	private static final String EXTENSION_POINT_ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
 	public static final String PATHMAP_METRIC_SPEC_MODELS_COMMON_METRICS_METRICSPEC = "pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec";
     private static final Map<?, ?> OPTIONS = Collections.emptyMap();
+    private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
+    private final MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
+    private final Logger logger = LoggerFactory.getLogger(EvaluateExtensions.class);
 
 	/**
 	 * Constructor which creates an object of MeasuringPointMetricsCombinations
@@ -76,8 +81,7 @@ public class EvaluateExtensions {
         try {
             metricDescriptionConstants.load(OPTIONS);
         } catch (final IOException e) {
-            // TODO Auto-generated catch block. Use eclipse error log instead?
-            e.printStackTrace();
+            logger.warn("IOException when loading metric description constants from {0}. Stacktrace: {1}",PATHMAP_METRIC_SPEC_MODELS_COMMON_METRICS_METRICSPEC, ex.getMessage());
            
         }
 	}
@@ -114,13 +118,20 @@ public class EvaluateExtensions {
 	  return Optional.empty();
 	}
 
-	/**
-	 * Loads all Extensions to the Extensionpoint from the ExtensionRegistry
-	 * and adds their content accordingly to the MeasuringPointMetricsCombinations obejct
-	 */
-	public void loadExtensions() {
+    /**
+     * Returns the instance of MeasuringPointMetricsCombinations
+     * 
+     * @return MeasuringPointMetricsCombinations
+     */
+    public MeasuringPointMetricsCombinations getMeasuringPointmetricsCombinations() {
+        return this.measuringPointMetricsCombinations;
+    }
 
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
+    /**
+     * Loads all Extensions to the Extensionpoint from the ExtensionRegistry and adds their content
+     * accordingly to the MeasuringPointMetricsCombinations obejct
+     */
+    public void loadExtensions() {
 
 		IConfigurationElement[] configurationElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID);
 

@@ -28,4 +28,5 @@ Export-Package: org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.fileaccess,
  org.palladiosimulator.measurementsui.wizardmodel,
  org.palladiosimulator.measurementsui.wizardmodel.pages
-Import-Package: org.palladiosimulator.measurementsui.extensionpoint.evaluation
+Import-Package: org.palladiosimulator.measurementsui.extensionpoint.evaluation,
+ org.slf4j;version="1.7.2"

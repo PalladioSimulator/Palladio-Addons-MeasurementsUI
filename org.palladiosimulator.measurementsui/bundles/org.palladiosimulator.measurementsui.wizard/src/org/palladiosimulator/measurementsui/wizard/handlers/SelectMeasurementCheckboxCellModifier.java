@@ -8,7 +8,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
 /**
  * This handles the checkbox action for the self adapting column in the 3rd wizard page (measurement selection).
- * @author mehme
+ * @author Mehmet Ali Tepeli
  *
  */
 public class SelectMeasurementCheckboxCellModifier implements ICellModifier {

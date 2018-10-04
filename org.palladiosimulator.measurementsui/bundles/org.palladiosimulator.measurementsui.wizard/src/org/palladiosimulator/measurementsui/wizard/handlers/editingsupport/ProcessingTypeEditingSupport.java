@@ -16,7 +16,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
  * This class enables editing support for the 2nd column on the 4th wizard page (for
  * ProcessingTypes).
  * 
- * @author Mehmet, Ba
+ * @author Mehmet Ali Tepeli, Ba-Anh Vu
  *
  */
 public final class ProcessingTypeEditingSupport extends MeasurementSpecificationEditingSupport {

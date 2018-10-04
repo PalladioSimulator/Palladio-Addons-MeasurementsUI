@@ -12,5 +12,6 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.13.0",
 Import-Package: org.palladiosimulator.edp2.models.measuringpoint,
  org.palladiosimulator.metricspec,
  org.palladiosimulator.pcmmeasuringpoint,
- org.palladiosimulator.pcmmeasuringpoint.util
+ org.palladiosimulator.pcmmeasuringpoint.util,
+ org.slf4j;version="1.7.2"
 Export-Package: org.palladiosimulator.measurementsui.extensionpoint.evaluation

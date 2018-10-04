@@ -30,4 +30,5 @@ Export-Package: org.palladiosimulator.measurementsui.abstractviewer,
  org.palladiosimulator.measurementsui.abstractviewer.listener
 Import-Package: org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.dataprovider,
- org.palladiosimulator.measurementsui.wizardmodel
+ org.palladiosimulator.measurementsui.wizardmodel,
+ org.slf4j;version="1.7.2"

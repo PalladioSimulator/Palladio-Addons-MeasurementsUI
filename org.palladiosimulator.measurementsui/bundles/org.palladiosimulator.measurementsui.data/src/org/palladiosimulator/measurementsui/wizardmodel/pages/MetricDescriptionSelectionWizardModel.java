@@ -40,6 +40,12 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
 
     }
 
+    /**
+     * unusedMetrics initialized when page is visible, since information from second page is
+     * required to correctly initialize the unusedMetrics Monitor.
+     * 
+     * @param usedMonitor
+     */
     public void initUnusedMetrics(Monitor usedMonitor) {
         provider.createMonitorWithMissingMetricDescriptions(usedMonitor, unusedMetricsMonitor);
     }
@@ -141,13 +147,6 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
         } else {
             mspec.setTriggersSelfAdaptations(!mspec.isTriggersSelfAdaptations());
         }
-    }
-
-    /**
-     * Add all suggested MetricDescriptions to the monitor
-     */
-    public void addSuggestions() {
-        // TODO: Not implemented yet.
     }
 
     /**

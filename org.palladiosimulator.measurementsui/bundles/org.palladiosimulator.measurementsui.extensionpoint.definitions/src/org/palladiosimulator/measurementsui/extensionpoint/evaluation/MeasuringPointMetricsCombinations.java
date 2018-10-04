@@ -11,7 +11,7 @@ import org.palladiosimulator.metricspec.MetricDescription;
  * Metric Descriptions. There is a HashMap for each of the 11 MeasuringPoints
  * where the keys are all Metric Descriptions that work and the value is a
  * boolean whether they should be suggested or not.
- * @author Lasse
+ * @author Lasse Merz
  *
  */
 public class MeasuringPointMetricsCombinations {
