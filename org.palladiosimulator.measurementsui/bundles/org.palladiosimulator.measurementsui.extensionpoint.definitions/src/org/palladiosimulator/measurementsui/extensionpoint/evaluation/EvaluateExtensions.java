@@ -44,12 +44,13 @@ public class EvaluateExtensions {
 
     private MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
     private Resource metricDescriptionConstants;
-	private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
+	private static final String EXTENSION_POINT_ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
 	public static final String PATHMAP_METRIC_SPEC_MODELS_COMMON_METRICS_METRICSPEC = "pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec";
     private static final Map<?, ?> OPTIONS = Collections.emptyMap();
 
 	/**
 	 * Constructor which creates an object of MeasuringPointMetricsCombinations
+	 * and loads the MetricDescriptionConstants
 	 */
 	public EvaluateExtensions() {
 		this.measuringPointMetricsCombinations = new MeasuringPointMetricsCombinations();
@@ -121,7 +122,7 @@ public class EvaluateExtensions {
 
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 
-		IConfigurationElement[] configurationElements = registry.getConfigurationElementsFor(ID);
+		IConfigurationElement[] configurationElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID);
 
 		for (IConfigurationElement configurationElement : configurationElements) {		 
 		    
