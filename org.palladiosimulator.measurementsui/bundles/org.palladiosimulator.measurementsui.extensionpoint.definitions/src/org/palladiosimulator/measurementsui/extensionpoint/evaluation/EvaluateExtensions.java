@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import org.eclipse.core.internal.registry.ExtensionRegistry;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -44,7 +45,8 @@ import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
  */
 public class EvaluateExtensions {
 
-    private MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
+
+
     private Resource metricDescriptionConstants;
 	private static final String EXTENSION_POINT_ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
 	public static final String PATHMAP_METRIC_SPEC_MODELS_COMMON_METRICS_METRICSPEC = "pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec";
@@ -81,7 +83,7 @@ public class EvaluateExtensions {
         try {
             metricDescriptionConstants.load(OPTIONS);
         } catch (final IOException e) {
-            logger.warn("IOException when loading metric description constants from {0}. Stacktrace: {1}",PATHMAP_METRIC_SPEC_MODELS_COMMON_METRICS_METRICSPEC, ex.getMessage());
+            logger.warn("IOException when loading metric description constants from {0}. Stacktrace: {1}",PATHMAP_METRIC_SPEC_MODELS_COMMON_METRICS_METRICSPEC, e.getMessage());
            
         }
 	}
@@ -118,14 +120,6 @@ public class EvaluateExtensions {
 	  return Optional.empty();
 	}
 
-    /**
-     * Returns the instance of MeasuringPointMetricsCombinations
-     * 
-     * @return MeasuringPointMetricsCombinations
-     */
-    public MeasuringPointMetricsCombinations getMeasuringPointmetricsCombinations() {
-        return this.measuringPointMetricsCombinations;
-    }
 
     /**
      * Loads all Extensions to the Extensionpoint from the ExtensionRegistry and adds their content
@@ -133,6 +127,7 @@ public class EvaluateExtensions {
      */
     public void loadExtensions() {
 
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IConfigurationElement[] configurationElements = registry.getConfigurationElementsFor(EXTENSION_POINT_ID);
 
 		for (IConfigurationElement configurationElement : configurationElements) {		 
