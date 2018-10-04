@@ -4,10 +4,16 @@
    <extension
          point="org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations">
       <client
-            Client_ID="org.palladiosimulator.measurementsui.extension.contributions.ResponseTimeWithUsageScenario"
-            ID="ResponseTimeWithUsageScenario"
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client1"
             MeasuringPoint="UsageScenarioMeasuringPoint"
-            MetricDescription="_6rYmYs7nEeOX_4BzImuHbA">
+            MetricDescription="_NCRBos7pEeOX_4BzImuHbA"
+            SuggestedMetricDescription="true">
+      </client>
+      <client
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client2"
+            MeasuringPoint="UsageScenarioMeasuringPoint"
+            MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
+            SuggestedMetricDescription="true">
       </client>
    </extension>
 

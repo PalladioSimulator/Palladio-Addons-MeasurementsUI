@@ -62,12 +62,38 @@ For example, if i want to measure a Usage Scenario, a user would create a UsageS
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="MeasuringPoint" type="string" use="required">
+         <attribute name="MeasuringPoint" use="required">
             <annotation>
                <documentation>
-                  The full eClass simple name of the MeasuringPoint for this extension point. You can access the name with MeasuringPoint.class.getSimpleName(). Only valid palladio MeasuringPoints will be processed (e.g. &quot;UsageScenarioMeasuringPoint&quot;).
+                  The full eClass simple name of the MeasuringPoint for this extension point. Choose the one you want to add a working MetricDescription to.
                </documentation>
             </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="ActiveResourceMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="AssemblyOperationMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="AssemblyPassiveResourceMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="EntryLevelSystemCallMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="ExternalCallActionMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="LinkingResourceMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="ResourceContainerMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="ResourceEnvironmentMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="SubSystemOperationMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="SystemOperationMeasuringPoint">
+                  </enumeration>
+                  <enumeration value="UsageScenarioMeasuringPoint">
+                  </enumeration>
+               </restriction>
+            </simpleType>
          </attribute>
          <attribute name="MetricDescription" type="string" use="required">
             <annotation>
@@ -78,15 +104,11 @@ Example, as of Oktober 2018: If you want to declare the ResponseTime in your ext
                </documentation>
             </annotation>
          </attribute>
-      </complexType>
-   </element>
-
-   <element name="Name">
-      <complexType>
-         <attribute name="Name" type="string">
+         <attribute name="SuggestedMetricDescription" type="boolean" use="required">
             <annotation>
                <documentation>
-                  
+                  Define, whether the MetricDesciption should be suggested to users to use for this MeasuringPoint.
+BasicMetricDescriptions should not be suggested(e.g Point in time) but SetMetricDescriptions should (e.g Response time tuple).
                </documentation>
             </annotation>
          </attribute>
