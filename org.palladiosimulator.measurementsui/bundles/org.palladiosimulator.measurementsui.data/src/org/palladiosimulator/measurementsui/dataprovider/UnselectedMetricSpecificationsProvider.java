@@ -237,7 +237,11 @@ public class UnselectedMetricSpecificationsProvider {
         for (Map.Entry<MetricDescription, Boolean> entry : validMap.entrySet()) {
             if (entry.getValue()) {
                 for (MeasurementSpecification aMSpec : allMSpecs) {
-                    if (aMSpec.getMetricDescription() == entry.getKey() && !mSpecsInReceivingMonitor.contains(aMSpec)) {
+                    System.out.println(!mSpecsInReceivingMonitor.contains(aMSpec));
+                    System.out.println(aMSpec.getMetricDescription().getName());
+                    System.out.println(entry.getKey().getName());
+                    if (aMSpec.getMetricDescription().getName().equals(entry.getKey().getName())
+                            && !mSpecsInReceivingMonitor.contains(aMSpec)) {
                         moveList.add(aMSpec);
                     }
                 }
