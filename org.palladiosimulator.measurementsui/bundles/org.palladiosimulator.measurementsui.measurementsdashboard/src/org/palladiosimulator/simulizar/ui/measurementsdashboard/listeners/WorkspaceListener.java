@@ -1,13 +1,10 @@
-package org.palladiosimulator.simulizar.ui.listeners;
+package org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.parts.MeasurementsDashboardView;
@@ -24,7 +21,6 @@ import org.slf4j.LoggerFactory;
 public class WorkspaceListener implements IResourceChangeListener {
     
    private IProject addedProject;
-   private IProject changedProject;
    private IProject deletedProject;
    
    private MeasurementsDashboardView dashboardView;
@@ -51,7 +47,6 @@ public class WorkspaceListener implements IResourceChangeListener {
     public void resourceChanged(IResourceChangeEvent event) {
         deletedProject = null;
         addedProject = null;
-        changedProject = null;
         IResourceDelta delta = event.getDelta();
         for (IResourceDelta deltaElement : delta.getAffectedChildren()) {
             IResource res = deltaElement.getResource();
@@ -67,58 +62,20 @@ public class WorkspaceListener implements IResourceChangeListener {
                     deletedProject = (IProject) res;
                 }
                 break;
-            case IResourceDelta.CHANGED:
-                //only listen to changes in currently viewed project of the dashboard view
-                if(res instanceof IProject && res.equals(dataApplication.getProject())) {  
-                    checkChangedEvent(deltaElement);
-                }
-                break;
             default:
                 break;
             }
-
         }  
         updateDashboardView();
 
     }
-    /**
-     * Checks the ChangeEvent specially
-     * we only need to update our view if content was changed
-     * in the "monitorrepository" or "measuringpoint" file
-     * @param delta
-     */
-    private void checkChangedEvent(IResourceDelta delta) {
-        try {
-            delta.accept(new IResourceDeltaVisitor() {                                   
-                @Override
-                public boolean visit(IResourceDelta delta) throws CoreException {
-                    IResource res = delta.getResource();
-                    int flags = delta.getFlags();
-                    if(delta.getKind() == IResourceDelta.CHANGED) {
-                        if (res instanceof IFile && (res.getFileExtension().equals("monitorrepository")||
-                                (res.getFileExtension().equals("measuringpoint")))) {
-                            if ((flags & IResourceDelta.CONTENT) != 0) {
-                                changedProject = res.getProject();
-                            }
-
-                        }
-                    }
-
-                    return true;
-                }
-            });
-        } catch (CoreException e) {
-            logger.warn(e.getMessage());
-        }                       
-
-    } 
     
     /**
      * Updates the parts of our Dashboard view accordinglyt the changes
      * in the workspace
      */
     private void updateDashboardView() {
-        if (deletedProject != null || addedProject != null || changedProject != null) {
+        if (deletedProject != null || addedProject != null) {
 
             Display.getDefault().asyncExec(new Runnable() {
 
@@ -143,19 +100,9 @@ public class WorkspaceListener implements IResourceChangeListener {
                         // some project got added/deleted or name changed -> update comboBox with Projects
                     } else if (addedProject != null || deletedProject != null) {
                         dashboardView.updateProjectComboBox();
-                        
-                        //a monitor or measuringPoint was added/deleted in the selected project -> update data and view
-                    } else if (changedProject != null) {
-                        dashboardView.updateMeasurementsDashboardView(changedProject);
-                        dashboardView.updateMonitorRepositoryComboBox();
                     }
-
                 }
             });
-
         }
-
     }
-
-
 }
