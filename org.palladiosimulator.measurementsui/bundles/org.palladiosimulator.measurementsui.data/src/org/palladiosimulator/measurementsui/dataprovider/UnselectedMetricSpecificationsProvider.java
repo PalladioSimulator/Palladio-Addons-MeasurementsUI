@@ -237,7 +237,8 @@ public class UnselectedMetricSpecificationsProvider {
         for (Map.Entry<MetricDescription, Boolean> entry : validMap.entrySet()) {
             if (entry.getValue()) {
                 for (MeasurementSpecification aMSpec : allMSpecs) {
-                    if (aMSpec.getMetricDescription() == entry.getKey() && !mSpecsInReceivingMonitor.contains(aMSpec)) {
+                    if (aMSpec.getMetricDescription().getName().equals(entry.getKey().getName())
+                            && !mSpecsInReceivingMonitor.contains(aMSpec)) {
                         moveList.add(aMSpec);
                     }
                 }

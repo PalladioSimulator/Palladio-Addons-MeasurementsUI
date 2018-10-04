@@ -1,5 +1,7 @@
 package org.palladiosimulator.swtbot;
 
+import java.io.File;
+
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
@@ -65,7 +67,6 @@ public class ImportProjectAfterOpen {
         bot.button("Add new Measuring Point");
         bot.button("Delete...");
         bot.button("Edit...");
-        bot.button("Assign to Monitor");
         bot.button("Create Standard Set");
       
     }
@@ -79,15 +80,20 @@ public class ImportProjectAfterOpen {
         bot.tree().select("General").expandNode("General").select("Existing Projects into Workspace");
         bot.button("Next >").click();
         bot.radio("Select root directory:").click();
-        bot.comboBox().setText("/Users/birasanthpushpanathan/Downloads/Pets.com");
-        bot.button("Refresh").click();
-        bot.button("Finish").click();
-        bot.closeAllShells();
+        String basePath = new File("").getAbsolutePath();
+        String path = new File("/testProject/Pets.com")
+                .getAbsolutePath();
+        bot.comboBox().setText(basePath+path);        bot.button("Refresh").click();
+        if(bot.button("Finish").isEnabled()) {
+            bot.button("Finish").click();
+         }else {
+            bot.button("Cancel").click();
+        }        bot.closeAllShells();
     }
 
     public static void closeWelcomePage() {
         for (SWTBotView view : bot.views()) {
-            if (view.getTitle().equals("Welcome")) {
+            if (view!=null &&view.getTitle().equals("Welcome")) {
                 view.close();
             }
         }

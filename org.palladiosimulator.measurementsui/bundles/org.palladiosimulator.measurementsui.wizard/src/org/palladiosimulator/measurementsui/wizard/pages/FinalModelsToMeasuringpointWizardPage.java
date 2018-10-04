@@ -27,8 +27,7 @@ import org.slf4j.LoggerFactory;
 public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
     private TreeViewer finalSelectionTreeViewer;
     private MeasuringPointSelectionWizardModel selectionWizardModel;
-    
-    private final Logger logger = LoggerFactory.getLogger(FinalModelsToMeasuringpointWizardPage.class);
+
 
     /**
      * the constructor with the needed wizard model
@@ -87,14 +86,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
      */
     @Override
     public org.eclipse.jface.wizard.IWizardPage getNextPage() {
-        boolean isNextPressed = "nextPressed"
-                .equalsIgnoreCase(Thread.currentThread().getStackTrace()[2].getMethodName());
-        if (isNextPressed) {
-            boolean validatedNextPress = this.nextPressed();
-            if (!validatedNextPress) {
-                return this;
-            }
-        }
+        nextPressed();
         return super.getWizard().getPage("wizardPage");
     }
 
@@ -104,15 +96,9 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
      * @return boolean validates whether the next button is pressed or not
      */
     protected boolean nextPressed() {
-        boolean validatedNextPressed = true;
-        try {
-            selectionWizardModel
-                    .setCurrentThirdStageModel(finalSelectionTreeViewer.getStructuredSelection().getFirstElement());
-            selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
-
-        } catch (Exception ex) {
-            logger.warn(ex.getMessage());
-        }
-        return validatedNextPressed;
+        selectionWizardModel
+                .setCurrentThirdStageModel(finalSelectionTreeViewer.getStructuredSelection().getFirstElement());
+        selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
+        return true;
     }
 }

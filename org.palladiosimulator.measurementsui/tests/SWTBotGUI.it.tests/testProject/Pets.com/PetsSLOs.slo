@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slo:ServiceLevelObjectiveRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:slo="http://palladiosimulator.org/ServiceLevelObjective/1.0">
+  <servicelevelobjectives id="_Z-9yQG-mEei-NJ06bcCfCw" name="ResponseTimeSLO" description="Response Time should be less than 8 seconds">
+    <upperThreshold xsi:type="slo:HardThreshold" id="_b9SgIm-mEei-NJ06bcCfCw" thresholdLimit="8 s"/>
+    <measurementSpecification href="PetsMonitor.monitorrepository#_6xHFAG8qEeiSd4fITWARWQ"/>
+  </servicelevelobjectives>
+</slo:ServiceLevelObjectiveRepository>
