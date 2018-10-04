@@ -123,33 +123,28 @@ public class EvaluateExtensions {
 
 		IConfigurationElement[] configurationElements = registry.getConfigurationElementsFor(ID);
 
-
-
-		for (IConfigurationElement configurationElement : configurationElements) {
+		for (IConfigurationElement configurationElement : configurationElements) {		 
+		    
 		    String measuringPointClassname = configurationElement.getAttribute("MeasuringPoint");
-		    String metricDescriptionId = configurationElement.getAttribute("MeasuringPoint");
+		    String metricDescriptionId = configurationElement.getAttribute("MetricDescription");
 		    String suggestedMetric = configurationElement.getAttribute("SuggestedMetricDescription");
 
-		    if(getMeasuringPoint(measuringPointClassname).isPresent() && getMetricDescription(metricDescriptionId).isPresent() && (suggestedMetric.equalsIgnoreCase("true") || suggestedMetric.equalsIgnoreCase("false"))) {
+		    if(getMeasuringPoint(measuringPointClassname).isPresent() && getMetricDescription(metricDescriptionId).isPresent() &&
+		            (suggestedMetric.equalsIgnoreCase("true") || suggestedMetric.equalsIgnoreCase("false"))) {
 		        MeasuringPoint measuringPointObject = getMeasuringPoint(measuringPointClassname).get();
-		        MetricDescription metricDescriptionObejct = getMetricDescription(metricDescriptionId).get();
+		       
+		        MetricDescription metricDescriptionObject = getMetricDescription(metricDescriptionId).get();
 		        boolean suggestedMetricBoolean = Boolean.valueOf(suggestedMetric);
-		        
-		        PcmmeasuringpointSwitch<MeasuringPoint> measuringPointSwitch = getPcmMeasuringPointSwitch(metricDescriptionObejct, suggestedMetricBoolean);
-		        measuringPointSwitch.doSwitch(measuringPointObject);
-		        
-		        
+
+		        PcmmeasuringpointSwitch<MeasuringPoint> measuringPointSwitch = getPcmMeasuringPointSwitch(metricDescriptionObject, suggestedMetricBoolean);
+		        measuringPointSwitch.doSwitch(measuringPointObject);		             
 		    }
-
-
 		}
-
-		
 	}
 
 	/**
-	 * Creates a PcmmeasuringpointSwitch instance which adds the given MetricDescription
-	 * and boolean to its corresponding map
+	 * Creates a PcmmeasuringpointSwitch instance, which switches depending on the different MeasuringPoints.
+	 * It adds the given MetricDescription and boolean to its corresponding map.
 	 * 
 	 * @param metricDescription to add to its MeasuringPoint map
 	 * @param suggestedMetric to add to its MeasuringPoint map
@@ -158,7 +153,7 @@ public class EvaluateExtensions {
     private  PcmmeasuringpointSwitch<MeasuringPoint> getPcmMeasuringPointSwitch(MetricDescription metricDescription, boolean suggestedMetric){
 
 	    return new PcmmeasuringpointSwitch<MeasuringPoint>() {
-	        
+	        	        
 	        @Override
 	        public MeasuringPoint caseActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint object) {
 	            measuringPointMetricsCombinations.addMetricDescriptionToMap(measuringPointMetricsCombinations.getActiveResourceMeasuringPointMetrics(), metricDescription, suggestedMetric);

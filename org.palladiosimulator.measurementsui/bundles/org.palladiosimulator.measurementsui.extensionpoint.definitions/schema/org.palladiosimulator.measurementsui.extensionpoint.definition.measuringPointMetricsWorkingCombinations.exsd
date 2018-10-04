@@ -62,6 +62,13 @@ For example, if i want to measure a Usage Scenario, a user would create a UsageS
                </documentation>
             </annotation>
          </attribute>
+         <attribute name="Name" type="string">
+            <annotation>
+               <documentation>
+                  Name of the extension. Should be meaningful, to understand what this extension contributes. For example UsageScenarioWithResponseTime.
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="MeasuringPoint" use="required">
             <annotation>
                <documentation>
