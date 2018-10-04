@@ -42,7 +42,7 @@ public class AddMonitorWizardPage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        Composite container = new Composite(parent, SWT.NONE);
+        final Composite container = new Composite(parent, SWT.NONE);
         
         setGridLayout(container);
 
@@ -60,7 +60,7 @@ public class AddMonitorWizardPage extends WizardPage {
      * @param container the given composite
      */
     private void setGridLayout(Composite container) {
-        GridLayout gridLayout = new GridLayout();
+        final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         container.setLayout(gridLayout);
     }
@@ -71,7 +71,7 @@ public class AddMonitorWizardPage extends WizardPage {
      * @param labelText the given text of the label
      */
     private void addLabel(Composite container, String labelText) {
-        Label nameLabel = new Label(container, SWT.NONE);
+        final Label nameLabel = new Label(container, SWT.NONE);
         nameLabel.setText(labelText);
     }
 
@@ -80,7 +80,7 @@ public class AddMonitorWizardPage extends WizardPage {
      * @param container the given composite
      */
     private void addTextBox(Composite container) {
-        Text nameText = new Text(container, SWT.BORDER);
+        final Text nameText = new Text(container, SWT.BORDER);
         nameText.setText(this.model.getMonitor().getEntityName());
         nameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         nameText.addModifyListener(e -> {
@@ -98,7 +98,7 @@ public class AddMonitorWizardPage extends WizardPage {
      * @param container the given composite
      */
     private void addCheckbox(Composite container) {
-        Button activatedCheckbox = new Button(container, SWT.CHECK);
+        final Button activatedCheckbox = new Button(container, SWT.CHECK);
         activatedCheckbox.setSelection(this.model.getMonitor().isActivated());
         activatedCheckbox.addSelectionListener(new SelectionListener() {
             @Override
