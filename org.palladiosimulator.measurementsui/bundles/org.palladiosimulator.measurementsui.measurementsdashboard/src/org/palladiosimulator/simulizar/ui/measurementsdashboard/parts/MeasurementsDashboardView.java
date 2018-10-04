@@ -12,6 +12,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.core.commands.EHandlerService;
 import org.eclipse.e4.ui.di.Persist;
+import org.eclipse.e4.ui.internal.workbench.handlers.SaveAllHandler;
 import org.eclipse.e4.ui.internal.workbench.handlers.SaveHandler;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
@@ -53,6 +54,8 @@ import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RedoHandler;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.UndoHandler;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners.WorkspaceListener;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.MonitorTreeViewer;
@@ -89,6 +92,11 @@ public class MeasurementsDashboardView {
             + " palladio core models before you can create measuring points."
             + " They are used to model your systems architecture and chrakteristics."
             + " Use the buttons on the toolbar on top to start creating.";
+    
+    private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
+    private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
+    private static final String UNDO_COMMAND = "org.eclipse.ui.edit.undo";
+    private static final String REDO_COMMAND = "org.eclipse.ui.edit.redo";
     
     private final Logger logger = LoggerFactory.getLogger(MeasurementsDashboardView.class);
     
@@ -145,7 +153,10 @@ public class MeasurementsDashboardView {
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         measuringTreeViewer = createEmptyMeasuringPointsTreeViewer(undefinedMeasuringContainer);
 
-        handlerService.activateHandler("org.eclipse.ui.file.save", new SaveHandler());
+        handlerService.activateHandler(SAVE_COMMAND, new SaveHandler());
+        handlerService.activateHandler(SAVEALL_COMMAND, new SaveAllHandler());
+        handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
+        handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
     }
 
     /**
@@ -613,5 +624,12 @@ public class MeasurementsDashboardView {
         measuringTreeViewer.save(dirty);
     }
 
+    public void undo() {
+        monitorTreeViewer.undo();
+    }
+    
+    public void redo() {
+        monitorTreeViewer.redo();
+    }
  
 }

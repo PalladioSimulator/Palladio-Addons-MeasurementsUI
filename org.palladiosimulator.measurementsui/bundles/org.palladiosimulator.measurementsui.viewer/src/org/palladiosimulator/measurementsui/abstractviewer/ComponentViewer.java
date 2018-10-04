@@ -62,6 +62,7 @@ public abstract class ComponentViewer {
      */
     protected void initEditingDomain() {
         this.editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository());
+        //this.editingDomain = injector.getInstance(EditingDomain.class);
     }
 
     /**
