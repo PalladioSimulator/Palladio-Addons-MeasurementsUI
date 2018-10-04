@@ -12,6 +12,7 @@ import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecifica
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
+import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.subsystem.SubSystem;
 import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.usagemodel.Branch;
@@ -19,6 +20,7 @@ import org.palladiosimulator.pcm.usagemodel.BranchTransition;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.Loop;
 import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
+import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 
 /**
@@ -135,10 +137,31 @@ public class MeasurementsSwitch<T> {
             T result = this.caseBasicComponent(basicComponent);
             result = useDefaultCase(theEObject, result);
             return result;
+        } else if(theEObject instanceof UsageModel){
+            final UsageModel usageModel = (UsageModel) theEObject;
+            T result = this.caseUsageModel(usageModel);
+            result = useDefaultCase(theEObject, result);
+            return result;
+        }
+        else if(theEObject instanceof ResourceDemandingSEFF){
+            final ResourceDemandingSEFF resourceDemandingSeff = (ResourceDemandingSEFF) theEObject;
+            T result = this.caseResourceDemandingSEFF(resourceDemandingSeff);
+            result = useDefaultCase(theEObject, result);
+            return result;
         }
 
         return null;
 
+    }
+
+    public T caseResourceDemandingSEFF(ResourceDemandingSEFF resourceDemandingSeff) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public T caseUsageModel(UsageModel usageModel) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     private T useDefaultCase(final EObject theEObject, T result) {

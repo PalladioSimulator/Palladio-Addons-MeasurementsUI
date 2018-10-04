@@ -4,8 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.measurementsui.util.AlternativeMeasuringPointChildrenSwitch;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
@@ -28,21 +30,21 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
  *
  */
 public class AlternativeMeasuringPointContentProvider implements ITreeContentProvider {
-    private DataApplication da = DataApplication.getInstance();
+    private DataApplication dataApplication = DataApplication.getInstance();
 
     @Override
     public Object[] getElements(Object inputElement) {
 
         List<Object> elementList = new LinkedList<>();
 
-        elementList.addAll(da.getModelAccessor().getRepository().stream().filter(
+        elementList.addAll(dataApplication.getModelAccessor().getRepository().stream().filter(
                 e -> (!e.getEntityName().equals("FailureTypes")) && (!e.getEntityName().equals("PrimitiveDataTypes")))
                 .collect(Collectors.toCollection(LinkedList::new)));
 
-        elementList.addAll(da.getModelAccessor().getResourceEnvironment());
-        elementList.addAll(da.getModelAccessor().getSubSystem());
-        elementList.addAll(da.getModelAccessor().getSystem());
-        elementList.addAll(da.getModelAccessor().getUsageModel());
+        elementList.addAll(dataApplication.getModelAccessor().getResourceEnvironment());
+        elementList.addAll(dataApplication.getModelAccessor().getSubSystem());
+        elementList.addAll(dataApplication.getModelAccessor().getSystem());
+        elementList.addAll(dataApplication.getModelAccessor().getUsageModel());
         return elementList.toArray();
     }
 
@@ -51,51 +53,10 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
      */
     @Override
     public Object[] getChildren(Object parentElement) {
-        if (parentElement instanceof System) {
-            return ((System) parentElement).getAssemblyContexts__ComposedStructure().toArray();
+AlternativeMeasuringPointChildrenSwitch childrenSwitch = new AlternativeMeasuringPointChildrenSwitch();
+return childrenSwitch.doSwitch((EObject) parentElement);
 
-        } else if (parentElement instanceof ResourceEnvironment) {
-            List<Object> elements = new LinkedList<>();
-            elements.addAll(((ResourceEnvironment) parentElement).getLinkingResources__ResourceEnvironment());
-            elements.addAll(((ResourceEnvironment) parentElement).getResourceContainer_ResourceEnvironment());
-            return elements.toArray();
-
-        } else if (parentElement instanceof ResourceContainer) {
-            return ((ResourceContainer) parentElement).getActiveResourceSpecifications_ResourceContainer().toArray();
-
-        } else if (parentElement instanceof UsageModel) {
-            return ((UsageModel) parentElement).getUsageScenario_UsageModel().toArray();
-        } else if (parentElement instanceof UsageScenario) {
-            return new Object[] { ((UsageScenario) parentElement).getScenarioBehaviour_UsageScenario() };
-        } else if (parentElement instanceof ScenarioBehaviour) {
-            return ((ScenarioBehaviour) parentElement).getActions_ScenarioBehaviour().stream()
-                    .filter(e -> e instanceof EntryLevelSystemCall || e instanceof Branch
-                            || e instanceof BranchTransition || e instanceof Loop)
-                    .collect(Collectors.toCollection(LinkedList::new)).toArray();
-        } else if (parentElement instanceof Repository) {
-            return ((Repository) parentElement).eContents().stream().filter(e -> e instanceof BasicComponent)
-                    .collect(Collectors.toCollection(LinkedList::new)).toArray();
-        } else if (parentElement instanceof BasicComponent) {
-            List<Object> appendingBasicComponentObjects = new LinkedList<>();
-            appendingBasicComponentObjects
-                    .addAll(((BasicComponent) parentElement).getServiceEffectSpecifications__BasicComponent());
-            return appendingBasicComponentObjects.toArray();
-        } else if (parentElement instanceof ResourceDemandingSEFF) {
-            return ((ResourceDemandingSEFF) parentElement).getSteps_Behaviour().stream()
-                    .filter(e -> e instanceof ExternalCallAction).collect(Collectors.toCollection(LinkedList::new))
-                    .toArray();
-        } else if (parentElement instanceof Branch) {
-            return ((Branch) parentElement).getBranchTransitions_Branch().toArray();
-        } else if (parentElement instanceof Loop) {
-            return ((Loop) parentElement).getBodyBehaviour_Loop().getActions_ScenarioBehaviour().stream()
-                    .filter(e -> e instanceof EntryLevelSystemCall || e instanceof Branch
-                            || e instanceof BranchTransition || e instanceof Loop)
-                    .collect(Collectors.toCollection(LinkedList::new)).toArray();
-        } else if (parentElement instanceof BranchTransition) {
-            return new Object[] { ((BranchTransition) parentElement).getBranchedBehaviour_BranchTransition() };
-        }
-
-        return new Object[0];
+        
     }
 
     @Override
