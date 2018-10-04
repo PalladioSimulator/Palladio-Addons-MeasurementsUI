@@ -12,19 +12,19 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used to get valid projects from the workspace. Mainly used for finding the .aird file of projects
  * to determine if wizard work-flow can be applied on the project.
  * 
- * @author Florian
+ * @author Florian Nieuwenhuizen
  *
  */
 public class ValidProjectAccessor {
 
-    private static final Logger LOGGER = Logger.getLogger(ValidProjectAccessor.class.getName());
+    private final Logger logger = LoggerFactory.getLogger(ValidProjectAccessor.class);
 
     /**
      * This Method returns the path to the ".aird" file depeding on the selected project.
@@ -71,7 +71,7 @@ public class ValidProjectAccessor {
                 }
             }
         } catch (CoreException e) {
-            LOGGER.log(Level.FINEST, e.toString(), e);
+            logger.warn(e.toString());
         }
         return null;
     }
@@ -95,7 +95,7 @@ public class ValidProjectAccessor {
                 }
             }
         } catch (CoreException e) {
-            LOGGER.log(Level.FINEST, e.toString(), e);
+            logger.warn(e.toString());
         }
         return null;
     }
@@ -119,7 +119,7 @@ public class ValidProjectAccessor {
                     }
                 }
             } catch (CoreException e) {
-                LOGGER.log(Level.FINEST, e.toString(), e);
+                logger.warn(e.toString());
             }
         }
         return allAirdProjects;
@@ -139,7 +139,7 @@ public class ValidProjectAccessor {
                 return firstElement.toString().split("/")[1];
             }
         } catch (NullPointerException e) {
-            LOGGER.log(Level.FINEST, "Make sure a project is selected", e);
+            logger.warn("No project selected. Make sure a project is selected");
         }
         return null;
     }

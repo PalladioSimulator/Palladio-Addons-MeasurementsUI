@@ -7,14 +7,15 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.palladiosimulator.measurementsui.fileaccess.ValidProjectAccessor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
 
-
 /**
- * This class manages the current project of the workspace which is
- * selected and provides access to all necessary data from this
- * project.
- * @author Lasse
+ * This class manages the current project of the workspace which is selected and provides access to
+ * all necessary data from this project.
+ * 
+ * @author Lasse Merz
  *
  */
 public final class DataApplication {
@@ -27,13 +28,11 @@ public final class DataApplication {
     private MonitorRepository monitorRepository;
 
     private static DataApplication instance;
-    
-    
 
+    private final Logger logger = LoggerFactory.getLogger(DataApplication.class);
 
     /**
-     * Private constructor for singelton pattern
-     * initializes DataGathering and ModelAccesor
+     * Private constructor for singelton pattern initializes DataGathering and ModelAccesor
      */
     private DataApplication() {
         this.dataGathering = new ValidProjectAccessor();
@@ -43,6 +42,7 @@ public final class DataApplication {
 
     /**
      * Get the instance of DataApplication
+     * 
      * @return instance of DataApplication
      */
     public static DataApplication getInstance() {
@@ -54,44 +54,42 @@ public final class DataApplication {
 
     /**
      * Loads all palladio component models Models given a project is selected and it has a .aird
-     * file(modeling Project nature).
-     * Initializes a session correspondig to the project, which is used to load the models.
-     * Checks for Monitor-/MeasuringPoint-Repositories and creates them if none exist.
+     * file(modeling Project nature). Initializes a session correspondig to the project, which is
+     * used to load the models. Checks for Monitor-/MeasuringPoint-Repositories and creates them if
+     * none exist.
      * 
-     * @param project to load data from
+     * @param project
+     *            to load data from
      */
     public void loadData(IProject project, int monitorRepositorySelectionIndex) {
-    	this.project = project;
-    	
+        this.project = project;
+
         initializeSessionResourceURI(this.dataGathering.getAirdFileOfProject(this.project));
         initializeSession(sessionResourceURI);
 
         if (session != null) {
             this.modelAccessor.initializeModels(session);
-            this.modelAccessor.checkIfRepositoriesExist(project);        
+            this.modelAccessor.checkIfRepositoriesExist(project);
             updateMonitorRepository(monitorRepositorySelectionIndex);
-            
-           
+
         } else {
-            System.err.println("No Models are initiated. Make sure a Session is open.");
+            logger.warn("No Models are initiated. Make sure a Session is open.");
         }
 
     }
-    
+
     /**
-     * Updates the models by reloading them
-     * through a new session
+     * Updates the models by reloading them through a new session
      */
-    public void updateData() { 
+    public void updateData() {
         initializeSessionResourceURI(this.dataGathering.getAirdFileOfProject(this.project));
         initializeSession(sessionResourceURI);
         if (session != null) {
             this.modelAccessor.initializeModels(session);
             this.modelAccessor.checkIfRepositoriesExist(project);
-            
-            
+
         } else {
-            System.err.println("No Models are initiated. Make sure a Session is open.");
+            logger.warn("No Models are initiated. Make sure a Session is open.");
         }
     }
 
@@ -106,7 +104,7 @@ public final class DataApplication {
         try {
             this.sessionResourceURI = URI.createPlatformResourceURI(airdPath, true);
         } catch (NullPointerException e) {
-            System.err.println("No valid path to an air file");
+            logger.warn("No valid path to an air file");
         }
 
     }
@@ -122,17 +120,19 @@ public final class DataApplication {
         try {
             this.session = SessionManager.INSTANCE.getSession(sessionResourceURI, new NullProgressMonitor());
         } catch (Exception e) {
-            System.err.println("MAke sure a Session can be initiated. A valid URI must be present.");
+            logger.warn("Make sure a Session can be initiated. A valid URI must be present.");
         }
     }
-    
+
     /**
-     * Updates the currently selected monitorRepository based on the
-     * selectionIndex
-     * @param selectionIndex which monitorRepository should be selected
+     * Updates the currently selected monitorRepository based on the selectionIndex
+     * 
+     * @param selectionIndex
+     *            which monitorRepository should be selected
      */
     public void updateMonitorRepository(int selectionIndex) {
-        if (this.modelAccessor.monitorRepositoryExists() && this.modelAccessor.getMonitorRepository().size() > selectionIndex && selectionIndex >= 0) {
+        if (this.modelAccessor.monitorRepositoryExists()
+                && this.modelAccessor.getMonitorRepository().size() > selectionIndex && selectionIndex >= 0) {
             this.monitorRepository = this.modelAccessor.getMonitorRepository().get(selectionIndex);
         } else {
             this.monitorRepository = this.modelAccessor.getMonitorRepository().get(0);
@@ -160,14 +160,14 @@ public final class DataApplication {
     }
 
     /**
-     * Returns the project to which the dataApplication is
-     * currently connected
+     * Returns the project to which the dataApplication is currently connected
+     * 
      * @return current Project
      */
-	public IProject getProject() {
-		return project;
-	}
-	
+    public IProject getProject() {
+        return project;
+    }
+
     public MonitorRepository getMonitorRepository() {
         return monitorRepository;
     }

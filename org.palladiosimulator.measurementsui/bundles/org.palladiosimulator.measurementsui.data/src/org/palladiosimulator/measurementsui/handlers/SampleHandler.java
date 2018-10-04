@@ -3,30 +3,14 @@ package org.palladiosimulator.measurementsui.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.emf.common.util.EList;
-import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
-import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.extensionpoint.evaluation.EvaluateExtensions;
-import org.palladiosimulator.measurementsui.fileaccess.ValidProjectAccessor;
-import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.monitorrepository.Monitor;
-
 
 
 
 public class SampleHandler extends AbstractHandler {
-     
+
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-	    
-        EvaluateExtensions  ex = new EvaluateExtensions ();
-        ex.loadExtensions();
-        Object o = ex.getMeasuringPointmetricsCombinations().getUsageScenarioMeasuringPointMetrics().keySet();
-        System.out.println(o);
-        
-        
 
 //          IExtensionRegistry registry = Platform.getExtensionRegistry();
 //

@@ -45,6 +45,8 @@ import org.palladiosimulator.pcm.subsystem.SubSystem;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This is the wizard page for the first step of the creation of a measuring point. It creates all
@@ -69,6 +71,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 
     private String filterString;
 
+    private final Logger logger = LoggerFactory.getLogger(ChooseMeasuringpointWizardPage.class);
+    
     /**
      * Constructor for the second wizard page, sets structural features like the title, the name of
      * the page and the description
@@ -408,7 +412,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn(ex.getMessage());
         }
         return validatedNextPressed;
     }
