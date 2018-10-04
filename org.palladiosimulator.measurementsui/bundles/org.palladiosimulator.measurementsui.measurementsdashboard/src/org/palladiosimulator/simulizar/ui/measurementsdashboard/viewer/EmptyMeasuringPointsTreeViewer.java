@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer;
 
+import java.util.Optional;
+
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.ecore.EObject;
@@ -8,6 +10,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringPointDragListener;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -40,8 +43,11 @@ public class EmptyMeasuringPointsTreeViewer extends MeasurementsTreeViewer {
     }
 
     @Override
-    protected EObject getModelRepository() {
-        return dataApplication.getModelAccessor().getMeasuringPointRepository().get(0);
+    protected Optional<EObject> getModelRepository() {
+        if(dataApplication.getModelAccessor().measuringPointRepositoryExists()) {
+            return Optional.of((EObject)dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+        }
+        return Optional.empty();
     }
 
     @Override

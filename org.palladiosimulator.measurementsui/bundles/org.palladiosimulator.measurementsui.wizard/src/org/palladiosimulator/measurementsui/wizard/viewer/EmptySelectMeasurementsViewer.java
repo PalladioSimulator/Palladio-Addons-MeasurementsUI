@@ -1,5 +1,7 @@
 package org.palladiosimulator.measurementsui.wizard.viewer;
 
+import java.util.Optional;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.palladio.simulator.measurementsui.selectmeasurements.emptyview.EmptyviewInjectorProvider;
@@ -25,9 +27,9 @@ public class EmptySelectMeasurementsViewer extends WizardTableViewer {
 	}
 
 	@Override
-	protected EObject getModelRepository() {
+	protected Optional<EObject> getModelRepository() {
 		MetricDescriptionSelectionWizardModel model = (MetricDescriptionSelectionWizardModel) wizardModel;
-		return model.getUsedMetricsMonitor();
+		return Optional.of(model.getUsedMetricsMonitor());
 	}
 
 }

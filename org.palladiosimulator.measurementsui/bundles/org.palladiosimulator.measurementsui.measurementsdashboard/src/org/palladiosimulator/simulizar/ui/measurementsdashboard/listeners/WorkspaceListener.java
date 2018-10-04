@@ -85,10 +85,12 @@ public class WorkspaceListener implements IResourceChangeListener {
                     if (deletedProject != null && deletedProject.equals(dataApplication.getProject())) {
 
 						// currently selected project was deleted -> load different project
-						if (addedProject == null) {
-							dashboardView.updateMeasurementsDashboardView(
-									dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
-							dashboardView.updateProjectComboBox();
+                        if (addedProject == null) {
+                            if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+                                dashboardView.updateMeasurementsDashboardView(
+                                        dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
+                            }
+                            dashboardView.updateProjectComboBox();
 
                         } else {
                             // the name of the currently selected project was changed                    
@@ -99,6 +101,9 @@ public class WorkspaceListener implements IResourceChangeListener {
                         
                         // some project got added/deleted or name changed -> update comboBox with Projects
                     } else if (addedProject != null || deletedProject != null) {
+                        if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+                            dashboardView.updateMeasurementsDashboardView(addedProject);
+                        }
                         dashboardView.updateProjectComboBox();
                     }
                 }

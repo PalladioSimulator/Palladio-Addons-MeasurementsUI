@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer;
 
+import java.util.Optional;
+
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.emf.ecore.EObject;
@@ -44,8 +46,11 @@ public class MonitorTreeViewer extends MeasurementsTreeViewer {
     }
 
     @Override
-    protected EObject getModelRepository() {
-    	return dataApplication.getMonitorRepository();
+    protected Optional<EObject> getModelRepository() {
+        if(dataApplication.getMonitorRepository() != null) {
+            return Optional.of(dataApplication.getMonitorRepository());
+        }
+    	return Optional.empty();
     }
 
     @Override

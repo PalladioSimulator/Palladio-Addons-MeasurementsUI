@@ -38,7 +38,7 @@ public abstract class WizardTableViewer extends ComponentViewer {
         tableFactory = injector.getInstance(ViewerFactory.class);
         tableViewer = tableFactory.createTableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI,
                 MonitorRepositoryPackage.eINSTANCE.getMeasurementSpecification());
-        tableViewer.setInput(getModelRepository());
+        tableViewer.setInput(getModelRepository().get());
     }
 
     @Override
