@@ -155,10 +155,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         measuringSwitch.setThirdStageModel(currentThirdStageModel);
         MeasuringPoint measuringPoint = measuringSwitch.doSwitch((EObject) model);
             setMeasuringPointDependingOnEditMode(measuringPoint);
-            
-
-
-
     }
 
     /**

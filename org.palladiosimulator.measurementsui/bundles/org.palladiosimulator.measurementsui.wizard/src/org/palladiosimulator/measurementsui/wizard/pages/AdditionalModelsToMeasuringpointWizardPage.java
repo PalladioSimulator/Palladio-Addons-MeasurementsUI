@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -13,8 +14,6 @@ import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.Addi
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AdditionalMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.pcm.repository.PassiveResource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This is the wizard page for the second step of the creation of a measuring point. It only needs
@@ -29,8 +28,6 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
     private AdditionalMeasuringpointContentProvider additionalMeasuringpointContentProvider;
     private boolean selected = false;
     private MeasuringPointSelectionWizardModel selectionWizardModel;
-    
-    private final Logger logger = LoggerFactory.getLogger(AdditionalModelsToMeasuringpointWizardPage.class);
 
     /**
      * the constructor with the needed wizard model
@@ -94,10 +91,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
         boolean isNextPressed = "nextPressed"
                 .equalsIgnoreCase(Thread.currentThread().getStackTrace()[2].getMethodName());
         if (isNextPressed) {
-            boolean validatedNextPress = this.nextPressed();
-            if (!validatedNextPress) {
-                return this;
-            }
+            nextPressed();
         }
         if (selected) {
             FinalModelsToMeasuringpointWizardPage page = (FinalModelsToMeasuringpointWizardPage) super.getWizard()
@@ -116,23 +110,19 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
      * @see WizardPage#getNextPage()
      * @return boolean validates whether the next button is pressed or not
      */
-    protected boolean nextPressed() {
-        boolean validatedNextPressed = true;
-        try {
-            if (!(secondModelTreeViewer.getStructuredSelection().getFirstElement() instanceof PassiveResource)) {
+    protected void nextPressed() {
 
-                selectionWizardModel
-                        .setCurrentSecondStageModel(secondModelTreeViewer.getStructuredSelection().getFirstElement());
-                selected = true;
-            } else {
-                selectionWizardModel
-                        .setCurrentSecondStageModel(secondModelTreeViewer.getStructuredSelection().getFirstElement());
-                selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
-                selected = false;
-            }
-        } catch (Exception ex) {
-            logger.warn(ex.getMessage());
+        if (!(secondModelTreeViewer.getStructuredSelection().getFirstElement() instanceof PassiveResource)) {
+
+            selectionWizardModel
+                    .setCurrentSecondStageModel(secondModelTreeViewer.getStructuredSelection().getFirstElement());
+            selected = true;
+        } else {
+            selectionWizardModel
+                    .setCurrentSecondStageModel(secondModelTreeViewer.getStructuredSelection().getFirstElement());
+            selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
+            selected = false;
         }
-        return validatedNextPressed;
+
     }
 }

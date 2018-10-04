@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:emfprofileapplication="http://www.modelversioning.org/emfprofile/application/1.1" xmlns:resourceenvironment="http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2">
+  <resourceenvironment:ResourceEnvironment entityName="New ResourceEnvironment">
+    <linkingResources__ResourceEnvironment id="_uQt40G8lEeiSd4fITWARWQ" entityName="Network" connectedResourceContainers_LinkingResource="_MkC8IG8gEeiSd4fITWARWQ _og_V4G8lEeiSd4fITWARWQ">
+      <communicationLinkResourceSpecifications_LinkingResource id="_uQuf4G8lEeiSd4fITWARWQ">
+        <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
+        <latency_CommunicationLinkResourceSpecification specification="0"/>
+        <throughput_CommunicationLinkResourceSpecification specification="1000000"/>
+      </communicationLinkResourceSpecifications_LinkingResource>
+    </linkingResources__ResourceEnvironment>
+    <resourceContainer_ResourceEnvironment id="_MkC8IG8gEeiSd4fITWARWQ" entityName="WebServer">
+      <activeResourceSpecifications_ResourceContainer id="_R3hn8G8gEeiSd4fITWARWQ">
+        <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+        <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        <processingRate_ProcessingResourceSpecification specification="10"/>
+      </activeResourceSpecifications_ResourceContainer>
+      <activeResourceSpecifications_ResourceContainer id="_XPfyMG8gEeiSd4fITWARWQ">
+        <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#FCFS"/>
+        <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_BIjHoQ3KEdyouMqirZIhzQ"/>
+        <processingRate_ProcessingResourceSpecification specification="10"/>
+      </activeResourceSpecifications_ResourceContainer>
+    </resourceContainer_ResourceEnvironment>
+    <resourceContainer_ResourceEnvironment id="_og_V4G8lEeiSd4fITWARWQ" entityName="ImgaeServer">
+      <activeResourceSpecifications_ResourceContainer id="_qNG5cG8lEeiSd4fITWARWQ">
+        <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+        <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        <processingRate_ProcessingResourceSpecification specification="10"/>
+      </activeResourceSpecifications_ResourceContainer>
+      <activeResourceSpecifications_ResourceContainer id="_sDvq8G8lEeiSd4fITWARWQ">
+        <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#FCFS"/>
+        <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_BIjHoQ3KEdyouMqirZIhzQ"/>
+        <processingRate_ProcessingResourceSpecification specification="30"/>
+      </activeResourceSpecifications_ResourceContainer>
+    </resourceContainer_ResourceEnvironment>
+  </resourceenvironment:ResourceEnvironment>
+  <emfprofileapplication:ProfileApplication>
+    <importedProfiles nsURI="org.palladiosimulator.architecturaltemplates.catalog.profiles.dynamicverticalscalingresourcecontainer" location="platform:/plugin/org.palladiosimulator.architecturaltemplates.catalog/profiles/DynamicVerticalScalingResourceContainer.emfprofile_diagram"/>
+  </emfprofileapplication:ProfileApplication>
+</xmi:XMI>

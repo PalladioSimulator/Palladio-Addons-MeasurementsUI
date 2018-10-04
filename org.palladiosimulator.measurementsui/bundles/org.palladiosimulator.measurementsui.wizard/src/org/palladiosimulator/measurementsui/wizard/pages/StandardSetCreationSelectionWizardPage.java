@@ -39,6 +39,7 @@ public class StandardSetCreationSelectionWizardPage extends WizardPage {
 		radios[1].setBounds(10, 30, 300, 30);
 
 		setControl(container);
+		
 		setPageComplete(true);
 
 	}
@@ -49,15 +50,7 @@ public class StandardSetCreationSelectionWizardPage extends WizardPage {
 	 */
 	@Override
 	public org.eclipse.jface.wizard.IWizardPage getNextPage() {
-		boolean isNextPressed = "nextPressed"
-				.equalsIgnoreCase(Thread.currentThread().getStackTrace()[2].getMethodName());
-		if (isNextPressed) {
-			boolean validatedNextPress = this.nextPressed();
-			if (!validatedNextPress) {
-				return this;
-			}
 
-		}
 		StandardSetMeasuringPointSelectionWizardPage page2 = (StandardSetMeasuringPointSelectionWizardPage) super.getNextPage();
 		if (radios[0].getSelection()) {
 			page2.loadMonitorAndMeasuringpointInput();
@@ -71,14 +64,6 @@ public class StandardSetCreationSelectionWizardPage extends WizardPage {
 
 	}
 
-	/**
-	 * @see WizardDialog#nextPressed()
-	 * @see WizardPage#getNextPage()
-	 * @return boolean validates whether the next button is pressed or not
-	 */
-	protected boolean nextPressed() {
-
-		return true;
-	}
+	
 
 }

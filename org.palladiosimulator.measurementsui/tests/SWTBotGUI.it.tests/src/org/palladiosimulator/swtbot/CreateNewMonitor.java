@@ -7,6 +7,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+
 import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
@@ -55,8 +57,10 @@ public class CreateNewMonitor {
         bot.tree().select("General").expandNode("General").select("Existing Projects into Workspace");
         bot.button("Next >").click();
         bot.radio("Select root directory:").click();
-        bot.comboBox().setText("/Users/birasanthpushpanathan/Downloads/Pets.com");
-        bot.button("Refresh").click();
+        String basePath = new File("").getAbsolutePath();
+        String path = new File("/testProject/Pets.com")
+                .getAbsolutePath();
+        bot.comboBox().setText(basePath+path);        bot.button("Refresh").click();
         bot.button("Finish").click();
         bot.closeAllShells();
 
@@ -104,11 +108,11 @@ public class CreateNewMonitor {
         Widget measuringpointViewWidget = addView.getWidget();
         bot.activeView();
         bot.button("Add new Measuring Point").click();
-        SWTBotCheckBox addCheck = bot.checkBoxWithLabel("Activated");
+        SWTBotCheckBox addCheck = bot.checkBoxWithLabel("");
         if (addCheck.isChecked())
             addCheck.click();
 
-        SWTBotText text = bot.textWithLabel("Name").setText("test");
+        SWTBotText text = bot.textWithLabel("").setText("test");
         if (addCheck.isChecked() == false)
             addCheck.click();
         bot.button("Next >").click();
@@ -136,7 +140,7 @@ public class CreateNewMonitor {
 
     public static void closeWelcomePage() {
         for (SWTBotView view : bot.views()) {
-            if (view.getTitle().equals("Welcome")) {
+            if (view!=null &&view.getTitle().equals("Welcome")) {
                 view.close();
             }
         }

@@ -28,10 +28,10 @@ import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 
-public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoint>{
-    PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
-    PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
-    
+public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoint> {
+    private PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
+    private PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
+
     private Object secondStageModel;
     private Object thirdStageModel;
 
@@ -51,11 +51,10 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
         this.thirdStageModel = thirdStageModel;
     }
 
-
     @Override
     public MeasuringPoint caseAssemblyContext(AssemblyContext assemblyContext) {
-       
-        if(secondStageModel instanceof PassiveResource) {
+
+        if (secondStageModel instanceof PassiveResource) {
             PassiveResource passiveResource = (PassiveResource) secondStageModel;
             AssemblyPassiveResourceMeasuringPoint mp = (AssemblyPassiveResourceMeasuringPoint) pcmMeasuringPointFactory
                     .create(PcmmeasuringpointPackage.eINSTANCE.getAssemblyPassiveResourceMeasuringPoint());
@@ -65,10 +64,10 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
             mp.setResourceURIRepresentation(
                     assemblyContext.eResource().getURI().toString() + "#" + assemblyContext.getId());
             return mp;
-        }else {
+        } else {
             OperationSignature operationSignature = (OperationSignature) thirdStageModel;
             Role role = (Role) secondStageModel;
-            AssemblyOperationMeasuringPoint mp =  pcmMeasuringPointFactory.createAssemblyOperationMeasuringPoint(); 
+            AssemblyOperationMeasuringPoint mp = pcmMeasuringPointFactory.createAssemblyOperationMeasuringPoint();
 
             mp.setAssembly(assemblyContext);
             mp.setOperationSignature(operationSignature);
@@ -79,7 +78,7 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
             return mp;
         }
     }
-    
+
     @Override
     public MeasuringPoint caseEntryLevelSystemCall(EntryLevelSystemCall entryLevelSystemCall) {
         EntryLevelSystemCallMeasuringPoint mp = (EntryLevelSystemCallMeasuringPoint) pcmMeasuringPointFactory
@@ -91,7 +90,7 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
                 entryLevelSystemCall.eResource().getURI().toString() + "#" + entryLevelSystemCall.getId());
         return mp;
     }
-    
+
     @Override
     public MeasuringPoint caseExternalCallAction(ExternalCallAction externalCallAction) {
         ExternalCallActionMeasuringPoint mp = (ExternalCallActionMeasuringPoint) pcmMeasuringPointFactory
@@ -103,8 +102,7 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
                 externalCallAction.eResource().getURI().toString() + "#" + externalCallAction.getId());
         return mp;
     }
-    
-    
+
     @Override
     public MeasuringPoint caseLinkingResource(LinkingResource linkingResource) {
         LinkingResourceMeasuringPoint mp = (LinkingResourceMeasuringPoint) pcmMeasuringPointFactory
@@ -116,7 +114,7 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
                 linkingResource.eResource().getURI().toString() + "#" + linkingResource.getId());
         return mp;
     }
-    
+
     @Override
     public MeasuringPoint caseResourceEnvironment(ResourceEnvironment resourceEnvironment) {
         ResourceEnvironmentMeasuringPoint mp = (ResourceEnvironmentMeasuringPoint) pcmMeasuringPointFactory
@@ -127,7 +125,7 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
         mp.setResourceURIRepresentation(resourceEnvironment.eResource().getURI().toString() + "#/0");
         return mp;
     }
-    
+
     @Override
     public MeasuringPoint caseSubSystem(SubSystem subSystem) {
         OperationSignature operationSignature = (OperationSignature) thirdStageModel;
@@ -141,12 +139,12 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
         mp.setResourceURIRepresentation((subSystem.eResource().getURI().toString() + "#" + subSystem.getId()));
         return mp;
     }
-    
+
     @Override
     public MeasuringPoint caseSystem(System system) {
         OperationSignature operationSignature = (OperationSignature) thirdStageModel;
         Role role = (Role) secondStageModel;
-        SystemOperationMeasuringPoint mp =  pcmMeasuringPointFactory.createSystemOperationMeasuringPoint();
+        SystemOperationMeasuringPoint mp = pcmMeasuringPointFactory.createSystemOperationMeasuringPoint();
 
         mp.setSystem(system);
         mp.setOperationSignature(operationSignature);
@@ -155,41 +153,40 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
         mp.setResourceURIRepresentation(system.eResource().getURI().toString() + "#" + system.getId());
         return mp;
     }
-    
+
     @Override
     public MeasuringPoint caseUsageScenario(UsageScenario usageScenario) {
-        UsageScenarioMeasuringPoint mp = pcmMeasuringPointFactory.createUsageScenarioMeasuringPoint();
-        
+        UsageScenarioMeasuringPoint mp = (UsageScenarioMeasuringPoint) pcmMeasuringPointFactory
+                .create(PcmmeasuringpointPackage.eINSTANCE.getUsageScenarioMeasuringPoint());
+
         mp.setUsageScenario(usageScenario);
         mp.setStringRepresentation(usageScenario.getEntityName());
-        mp.setResourceURIRepresentation(
-                usageScenario.eResource().getURI().toString() + "#" + usageScenario.getId());
-        return super.caseUsageScenario(usageScenario);
+        mp.setResourceURIRepresentation(usageScenario.eResource().getURI().toString() + "#" + usageScenario.getId());
+        return mp;
     }
-    
+
     @Override
     public MeasuringPoint caseResourceContainer(ResourceContainer resourceContainer) {
-        ResourceContainerMeasuringPoint mp = 
-                (ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
+        ResourceContainerMeasuringPoint mp = (ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getResourceContainerMeasuringPoint());
         mp.setResourceContainer(resourceContainer);
         mp.setStringRepresentation(resourceContainer.getEntityName());
-        mp.setResourceURIRepresentation(resourceContainer.eResource().getURI().toString() + "#" + resourceContainer.getId());
+        mp.setResourceURIRepresentation(
+                resourceContainer.eResource().getURI().toString() + "#" + resourceContainer.getId());
         return mp;
     }
-    
+
     @Override
-    public MeasuringPoint caseProcessingResourceSpecification(ProcessingResourceSpecification processingResourceSpecification) {
+    public MeasuringPoint caseProcessingResourceSpecification(
+            ProcessingResourceSpecification processingResourceSpecification) {
         ActiveResourceMeasuringPoint mp = (ActiveResourceMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getActiveResourceMeasuringPoint());
 
         mp.setActiveResource(processingResourceSpecification);
-        mp.setStringRepresentation(processingResourceSpecification
-                .getActiveResourceType_ActiveResourceSpecification().getEntityName());
+        mp.setStringRepresentation(
+                processingResourceSpecification.getActiveResourceType_ActiveResourceSpecification().getEntityName());
         mp.setResourceURIRepresentation(processingResourceSpecification.eResource().getURI().toString() + "#"
                 + processingResourceSpecification.getId());
         return mp;
-        }
+    }
 }
-
-
