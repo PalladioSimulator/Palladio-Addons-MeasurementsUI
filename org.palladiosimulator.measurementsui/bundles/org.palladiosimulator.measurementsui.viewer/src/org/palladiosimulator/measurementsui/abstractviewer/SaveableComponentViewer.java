@@ -19,6 +19,10 @@ import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
  */
 public abstract class SaveableComponentViewer extends ComponentViewer {
     private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
+    private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
+    private static final String UNDO_COMMAND = "org.eclipse.ui.edit.undo";
+    private static final String REDO_COMMAND = "org.eclipse.ui.edit.redo";
+    
     protected MDirtyable dirty;
     protected ECommandService commandService;
     protected DataApplication dataApplication;
@@ -61,7 +65,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
         initResourceChangedListener(editingDomain);
         // For some mysterious reason the editing domain has to be set null here else parsley's
         // context menu won't function anymore
-        editingDomain = null;
+        //editingDomain = null;
         return resource;
     }
 
@@ -77,6 +81,9 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
             if (dirty != null) {
                 dirty.setDirty(true);
                 commandService.getCommand(SAVE_COMMAND).isEnabled();
+                commandService.getCommand(SAVEALL_COMMAND).isEnabled();
+                commandService.getCommand(UNDO_COMMAND).isEnabled();
+                commandService.getCommand(REDO_COMMAND).isEnabled();
             }
         });
     }
@@ -116,6 +123,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
         if (dirty != null) {
             dirty.setDirty(false);
             commandService.getCommand(SAVE_COMMAND).isEnabled();
+            commandService.getCommand(SAVEALL_COMMAND).isEnabled();
         }
     }
 
@@ -130,6 +138,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
         if (dirty != null) {
             dirty.setDirty(false);
             commandService.getCommand(SAVE_COMMAND).isEnabled();
+            commandService.getCommand(SAVEALL_COMMAND).isEnabled();
         }
     }
 }
