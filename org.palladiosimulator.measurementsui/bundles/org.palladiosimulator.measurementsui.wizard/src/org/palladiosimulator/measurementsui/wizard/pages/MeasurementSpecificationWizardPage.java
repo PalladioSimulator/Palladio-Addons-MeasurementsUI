@@ -60,15 +60,15 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 
 	@Override
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.FILL);
-		FillLayout fillLayoutParentContainer = new FillLayout();
+		final Composite container = new Composite(parent, SWT.FILL);
+		final FillLayout fillLayoutParentContainer = new FillLayout();
 		container.setLayout(fillLayoutParentContainer);
 
 		setControl(container);
 
-		MeasurementSpecificationViewer measurementSpecificationViewer = new MeasurementSpecificationViewer(container,
+		final MeasurementSpecificationViewer measurementSpecificationViewer = new MeasurementSpecificationViewer(container,
 				this.processingTypeSelectionWizardModel);
-		TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
+		final TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
 		tableViewer.setLabelProvider(new MeasurementSpecificationLabelProvider(this.processingTypeSelectionWizardModel));
 		
 		setColumnsText(tableViewer);
@@ -81,7 +81,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
      * @param tableViewer the given TableViewer
      */
     private void setEditingSupports(TableViewer tableViewer) {
-        TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
+        final TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
 		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel));
 		tableViewerColumns[2].setEditingSupport(new ProcessingTypePropertyEditingSupport(tableViewerColumns[2].getViewer(), 
@@ -111,8 +111,8 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 	 *         object
 	 */
 	private TableViewerColumn[] getTableViewerColumns(TableViewer tableViewer) {
-		TableColumn[] columns = tableViewer.getTable().getColumns();
-		TableViewerColumn[] viewerColumns = new TableViewerColumn[columns.length];
+	    final TableColumn[] columns = tableViewer.getTable().getColumns();
+	    final TableViewerColumn[] viewerColumns = new TableViewerColumn[columns.length];
 		for (int i = 0; i < columns.length; i++) {
 			TableColumn tableColumn = columns[i];
 			viewerColumns[i] = (TableViewerColumn) tableColumn.getData(Policy.JFACE + ".columnViewer");

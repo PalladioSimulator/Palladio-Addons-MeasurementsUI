@@ -74,15 +74,15 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        Composite container = new Composite(parent, SWT.FILL);
-        GridLayout layoutParentContainer = new GridLayout();
+        final Composite container = new Composite(parent, SWT.FILL);
+        final GridLayout layoutParentContainer = new GridLayout();
         layoutParentContainer.numColumns = 3;
         layoutParentContainer.makeColumnsEqualWidth = false;
         container.setLayout(layoutParentContainer);
 
-        TableViewer tableViewerLeft = initLeftTableViewer(container);
-        Composite compositeMiddle = initMiddleSubComposite(container);
-        TableViewer tableViewerRight = initRightTableViewer(container);
+        final TableViewer tableViewerLeft = initLeftTableViewer(container);
+        final Composite compositeMiddle = initMiddleSubComposite(container);
+        final TableViewer tableViewerRight = initRightTableViewer(container);
 
         addButtons(tableViewerLeft, compositeMiddle, tableViewerRight);
 
@@ -98,64 +98,18 @@ public class SelectMeasurementsWizardPage extends WizardPage {
      * @return the TableViewer that is used for further user interactions
      */
     private TableViewer initLeftTableViewer(Composite container) {
-        Composite compositeLeft = new Composite(container, SWT.NONE);
-        FillLayout fillLayoutLeft = new FillLayout();
-        SelectMeasurementsViewer selectMeasurementsViewerLeft = new SelectMeasurementsViewer(compositeLeft,
+        final Composite compositeLeft = new Composite(container, SWT.NONE);
+        final FillLayout fillLayoutLeft = new FillLayout();
+        final SelectMeasurementsViewer selectMeasurementsViewerLeft = new SelectMeasurementsViewer(compositeLeft,
                 metricDescriptionSelectionWizardModel);
-        TableViewer tableViewerLeft = (TableViewer) selectMeasurementsViewerLeft.getViewer();
-        tableViewerLeft.setLabelProvider(new ITableLabelProvider() {
-
-            public void removeListener(ILabelProviderListener listener) {
-                // not used
-            }
-
-            public Image getColumnImage(Object element, int columnIndex) {
-                return null;
-            }
-
-            public String getColumnText(Object element, int columnIndex) {
-                String result = "";
-                MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
-                if (columnIndex == 1) {
-                    if (measurementSpecification.isTriggersSelfAdaptations()) {
-                        result = CHECKBOX_CHECKED;
-                    } else {
-                        result = CHECKBOX_UNCHECKED;
-                    }
-                    return result;
-                } else {
-                    result = measurementSpecification.getMetricDescription().getName();
-                    return result;
-                }
-            }
-
-            public void addListener(ILabelProviderListener listener) {
-                // not used
-            }
-
-            public void dispose() {
-                // not used
-            }
-
-            public boolean isLabelProperty(Object element, String property) {
-                return false;
-            }
-        });
+        final TableViewer tableViewerLeft = (TableViewer) selectMeasurementsViewerLeft.getViewer();
+        setLabelProvider(tableViewerLeft);
 
         updateMessageAccordingToSelectedMeasuringPoint(tableViewerLeft);
         compositeLeft.setLayout(fillLayoutLeft);
         compositeLeft.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-        final DragSourceAdapter dragAdapter = new DragSourceAdapter() {
-            @Override
-            public void dragSetData(final DragSourceEvent event) {
-                transfer.setSelection(new StructuredSelection(tableViewerLeft.getTable().getSelection()));
-            }
-        };
-        final DragSource dragSource = new DragSource(tableViewerLeft.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
-        dragSource.setTransfer(transfer);
-        dragSource.addDragListener(dragAdapter);
+        final LocalSelectionTransfer transfer = addDrag(tableViewerLeft);
 
         final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
             @Override
@@ -186,8 +140,8 @@ public class SelectMeasurementsWizardPage extends WizardPage {
      * @return the Composite object
      */
     private Composite initMiddleSubComposite(Composite container) {
-        Composite compositeMiddle = new Composite(container, SWT.NONE);
-        FillLayout fillLayoutMiddle = new FillLayout();
+        final Composite compositeMiddle = new Composite(container, SWT.NONE);
+        final FillLayout fillLayoutMiddle = new FillLayout();
         fillLayoutMiddle.type = SWT.CENTER;
         fillLayoutMiddle.marginWidth = 40;
         fillLayoutMiddle.spacing = 10;
@@ -203,74 +157,21 @@ public class SelectMeasurementsWizardPage extends WizardPage {
      * @return the TableViewer that is used for further user interactions
      */
     private TableViewer initRightTableViewer(Composite container) {
-        Composite compositeRight = new Composite(container, SWT.NONE);
-        FillLayout fillLayoutRight = new FillLayout();
-        EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(
+        final Composite compositeRight = new Composite(container, SWT.NONE);
+        final FillLayout fillLayoutRight = new FillLayout();
+        final EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(
                 compositeRight, metricDescriptionSelectionWizardModel);
-        TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
-        tableViewerRight.setLabelProvider(new ITableLabelProvider() {
-
-            public void removeListener(ILabelProviderListener listener) {
-                // not used
-            }
-
-            public Image getColumnImage(Object element, int columnIndex) {
-                return null;
-            }
-
-            public String getColumnText(Object element, int columnIndex) {
-                String result = "";
-                MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
-                if (columnIndex == 1) {
-                    if (measurementSpecification.isTriggersSelfAdaptations()) {
-                        result = CHECKBOX_CHECKED;
-                    } else {
-                        result = CHECKBOX_UNCHECKED;
-                    }
-                    return result;
-                } else {
-                    result = measurementSpecification.getMetricDescription().getName();
-                    return result;
-                }
-            }
-
-            public void addListener(ILabelProviderListener listener) {
-                // not used
-            }
-
-            public void dispose() {
-                // not used
-            }
-
-            public boolean isLabelProperty(Object element, String property) {
-                return false;
-            }
-        });
+        final TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
+        setLabelProvider(tableViewerRight);
 
         updateMessageAccordingToSelectedMeasuringPoint(tableViewerRight);
         compositeRight.setLayout(fillLayoutRight);
         compositeRight.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         tableViewerRight.getTable().getColumn(1).setWidth(125);
 
-        CellEditor[] cellEditor = new CellEditor[2];
-        cellEditor[0] = null;
-        cellEditor[1] = new CheckboxCellEditor(tableViewerRight.getTable());
-        tableViewerRight.setCellEditors(cellEditor);
-        String[] columnNames = { "Selected", "Self Adaptive" };
-        tableViewerRight.setColumnProperties(columnNames);
-        tableViewerRight.setCellModifier(
-                new SelectMeasurementCheckboxCellModifier(tableViewerRight, metricDescriptionSelectionWizardModel));
+        setCellEditor(tableViewerRight);
 
-        final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
-        final DragSourceAdapter dragAdapter = new DragSourceAdapter() {
-            @Override
-            public void dragSetData(final DragSourceEvent event) {
-                transfer.setSelection(new StructuredSelection(tableViewerRight.getTable().getSelection()));
-            }
-        };
-        final DragSource dragSource = new DragSource(tableViewerRight.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
-        dragSource.setTransfer(transfer);
-        dragSource.addDragListener(dragAdapter);
+        final LocalSelectionTransfer transfer = addDrag(tableViewerRight);
 
         final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
             @Override
@@ -292,6 +193,85 @@ public class SelectMeasurementsWizardPage extends WizardPage {
     }
 
     /**
+     * Sets the label provider for the given TableViewer
+     * @param tableViewer the given TableViewer
+     */
+    private void setLabelProvider(final TableViewer tableViewer) {
+        tableViewer.setLabelProvider(new ITableLabelProvider() {
+    
+            public void removeListener(ILabelProviderListener listener) {
+                // not used
+            }
+    
+            public Image getColumnImage(Object element, int columnIndex) {
+                return null;
+            }
+    
+            public String getColumnText(Object element, int columnIndex) {
+                String result = "";
+                MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
+                if (columnIndex == 1) {
+                    if (measurementSpecification.isTriggersSelfAdaptations()) {
+                        result = CHECKBOX_CHECKED;
+                    } else {
+                        result = CHECKBOX_UNCHECKED;
+                    }
+                    return result;
+                } else {
+                    result = measurementSpecification.getMetricDescription().getName();
+                    return result;
+                }
+            }
+    
+            public void addListener(ILabelProviderListener listener) {
+                // not used
+            }
+    
+            public void dispose() {
+                // not used
+            }
+    
+            public boolean isLabelProperty(Object element, String property) {
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Sets the CellEditor for the given TableViewer
+     * @param tableViewer the given TableViewer
+     */
+    private void setCellEditor(TableViewer tableViewer) {
+        final CellEditor[] cellEditor = new CellEditor[2];
+        cellEditor[0] = null;
+        cellEditor[1] = new CheckboxCellEditor(tableViewer.getTable());
+        tableViewer.setCellEditors(cellEditor);
+        final String[] columnNames = { "Selected", "Self Adaptive" };
+        tableViewer.setColumnProperties(columnNames);
+        tableViewer.setCellModifier(
+                new SelectMeasurementCheckboxCellModifier(tableViewer, metricDescriptionSelectionWizardModel));
+    }
+
+    /**
+     * Adds the drag functionality for a given table viewer
+     * @param tableViewer the given table viewer
+     * @return the LocalSelectionTransfer object
+     */
+    private LocalSelectionTransfer addDrag(TableViewer tableViewer) {
+        final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
+        final DragSourceAdapter dragAdapter = new DragSourceAdapter() {
+            @Override
+            public void dragSetData(final DragSourceEvent event) {
+                transfer.setSelection(new StructuredSelection(tableViewer.getTable().getSelection()));
+            }
+        };
+        final DragSource dragSource = new DragSource(tableViewer.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
+        dragSource.setTransfer(transfer);
+        dragSource.addDragListener(dragAdapter);
+        return transfer;
+    }
+
+    /**
      * Add the buttons for moving measurements.
      * 
      * @param tableViewerLeft
@@ -302,7 +282,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
      *            contains the selected measurements
      */
     private void addButtons(TableViewer tableViewerLeft, Composite compositeMiddle, TableViewer tableViewerRight) {
-        Button rightOne = new Button(compositeMiddle, SWT.NONE);
+        final Button rightOne = new Button(compositeMiddle, SWT.NONE);
         rightOne.setText("Add >");
         rightOne.addListener(SWT.Selection, e -> {
             IStructuredSelection selection = tableViewerLeft.getStructuredSelection();
@@ -313,7 +293,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
             getContainer().updateButtons();
         });
 
-        Button leftOne = new Button(compositeMiddle, SWT.NONE);
+        final Button leftOne = new Button(compositeMiddle, SWT.NONE);
         leftOne.setText("< Remove");
         leftOne.addListener(SWT.Selection, e -> {
             IStructuredSelection selection = tableViewerRight.getStructuredSelection();
@@ -326,14 +306,14 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 
         addLabelForSpacingButtons(compositeMiddle);
 
-        Button rightAll = new Button(compositeMiddle, SWT.PUSH);
+        final Button rightAll = new Button(compositeMiddle, SWT.PUSH);
         rightAll.setText("Add All >>");
         rightAll.addListener(SWT.Selection, e -> {
             metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
             getContainer().updateButtons();
         });
 
-        Button leftAll = new Button(compositeMiddle, SWT.NONE);
+        final Button leftAll = new Button(compositeMiddle, SWT.NONE);
         leftAll.setText("<< Remove All");
         leftAll.addListener(SWT.Selection, e -> {
             metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
@@ -342,7 +322,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
 
         addLabelForSpacingButtons(compositeMiddle);
 
-        Button addSuggestion = new Button(compositeMiddle, SWT.BOTTOM);
+        final Button addSuggestion = new Button(compositeMiddle, SWT.BOTTOM);
         addSuggestion.setText("Add Suggestions >");
         addSuggestion.addListener(SWT.Selection, e -> {
             metricDescriptionSelectionWizardModel.moveAllSuggested();
@@ -357,7 +337,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
      *            the given middle composite
      */
     private void addLabelForSpacingButtons(Composite compositeMiddle) {
-        Label emptyLabelForSpacing = new Label(compositeMiddle, SWT.NONE);
+        final Label emptyLabelForSpacing = new Label(compositeMiddle, SWT.NONE);
         emptyLabelForSpacing.setText(" ");
     }
 

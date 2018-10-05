@@ -372,8 +372,8 @@ public class MeasurementsDashboardView {
                 MeasurementsWizard wizard = new MeasurementsWizard();
                 Shell parentShell = wizard.getShell();
                 WizardDialog dialog = new WizardDialog(parentShell, wizard);
-                dialog.setPageSize(720, 400);
-                dialog.setMinimumPageSize(720, 400);
+                dialog.setPageSize(1180, 580);
+                dialog.setMinimumPageSize(1180, 580);
                 dialog.open();
 
             }
@@ -434,8 +434,8 @@ public class MeasurementsDashboardView {
 
             Shell parentShell = wizard.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.setPageSize(720, 400);
-            dialog.setMinimumPageSize(720, 400);
+            dialog.setPageSize(1180, 580);
+            dialog.setMinimumPageSize(1180, 580);
             dialog.open();
 
         });

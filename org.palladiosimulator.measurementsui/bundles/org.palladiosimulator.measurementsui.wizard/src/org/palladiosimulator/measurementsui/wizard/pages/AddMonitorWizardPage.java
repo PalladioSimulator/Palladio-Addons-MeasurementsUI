@@ -25,7 +25,7 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWiz
 public class AddMonitorWizardPage extends WizardPage {
 
     /**
-     * the newly created monitor object
+     * The model object which manages the internal model for this wizard page.
      */
 	private MonitorCreationWizardModel model;
 
@@ -42,16 +42,45 @@ public class AddMonitorWizardPage extends WizardPage {
 
     @Override
     public void createControl(Composite parent) {
-        Composite container = new Composite(parent, SWT.NONE);
+        final Composite container = new Composite(parent, SWT.NONE);
         
-        GridLayout gridLayout = new GridLayout();
+        setGridLayout(container);
+
+        addLabel(container, "Name: ");
+        addTextBox(container);
+        addLabel(container, "Activated: ");
+        addCheckbox(container);
+        
+        setControl(container);
+        setPageComplete(true);
+    }
+
+    /**
+     * Sets a GridLayout as the layout for the given composite.
+     * @param container the given composite
+     */
+    private void setGridLayout(Composite container) {
+        final GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 2;
         container.setLayout(gridLayout);
+    }
 
-        Label nameLabel = new Label(container, SWT.NONE);
-        nameLabel.setText("Name: ");
-        
-        Text nameText = new Text(container, SWT.BORDER);
+    /**
+     * Adds a label with a given string to the given composite.
+     * @param container the given composite
+     * @param labelText the given text of the label
+     */
+    private void addLabel(Composite container, String labelText) {
+        final Label nameLabel = new Label(container, SWT.NONE);
+        nameLabel.setText(labelText);
+    }
+
+    /**
+     * Adds the text box for setting the name of the monitor.
+     * @param container the given composite
+     */
+    private void addTextBox(Composite container) {
+        final Text nameText = new Text(container, SWT.BORDER);
         nameText.setText(this.model.getMonitor().getEntityName());
         nameText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         nameText.addModifyListener(e -> {
@@ -61,13 +90,15 @@ public class AddMonitorWizardPage extends WizardPage {
             } else {
                 this.setPageComplete(false);
             }
-
         });
-        
-        Label activatedLabel = new Label(container, SWT.NONE);
-        activatedLabel.setText("Activated: ");
-        
-        Button activatedCheckbox = new Button(container, SWT.CHECK);
+    }
+
+    /**
+     * Adds the check box to a given composite which is for setting the 'activated' attribute of the monitor.
+     * @param container the given composite
+     */
+    private void addCheckbox(Composite container) {
+        final Button activatedCheckbox = new Button(container, SWT.CHECK);
         activatedCheckbox.setSelection(this.model.getMonitor().isActivated());
         activatedCheckbox.addSelectionListener(new SelectionListener() {
             @Override
@@ -79,9 +110,6 @@ public class AddMonitorWizardPage extends WizardPage {
                 // not used here, but the existence of this method is required
             }
         });
-        
-        setControl(container);
-        setPageComplete(true);
     }
 
     @Override

@@ -1,6 +1,12 @@
 package org.palladiosimulator.measurementsui.wizard.main;
 
+import java.net.URL;
+
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.ui.internal.util.BundleUtility;
+import org.osgi.framework.Bundle;
 import org.palladiosimulator.measurementsui.wizard.pages.AddMonitorWizardPage;
 import org.palladiosimulator.measurementsui.wizard.pages.AdditionalModelsToMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizard.pages.ChooseMeasuringpointWizardPage;
@@ -57,6 +63,7 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     public MeasurementsWizard() {
         wizardManager = new WizardModelManager();
         this.startingPage = WizardModelType.MONITOR_CREATION;
+        setImage();
         createPages();
     }
 
@@ -67,6 +74,7 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
         setWindowTitle("Add new Measuring Point");
         wizardManager = new WizardModelManager();
         this.startingPage = startingPage;
+        setImage();
         createPages();
     }
 
@@ -77,7 +85,17 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
         setWindowTitle("Add new Measuring Point");
         wizardManager = new WizardModelManager(monitor);
         this.startingPage = startingPage;
+        setImage();
         createPages();
+    }
+
+    /**
+     * Sets the image of the wizard which is shown in the upper right corner of the wizard pages.
+     */
+    private void setImage() {
+        Bundle bundle = Platform.getBundle("org.palladiosimulator.measurementsui.wizard");
+        URL fullPathString = BundleUtility.find(bundle, "icons/wizardImage.png");
+        setDefaultPageImageDescriptor(ImageDescriptor.createFromURL(fullPathString));
     }
 
     private void createPages() {
