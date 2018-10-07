@@ -46,8 +46,6 @@ public class MonitorCreationWizardModelTest {
 	@Mock
 	private Monitor monitor;
 	private boolean isEditting;
-	private String EDIT_MONITOR_INFO_TEXT;
-	
 	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 	
 	@Before
