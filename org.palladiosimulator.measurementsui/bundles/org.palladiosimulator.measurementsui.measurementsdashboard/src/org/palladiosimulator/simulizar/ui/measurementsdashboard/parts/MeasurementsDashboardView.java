@@ -469,7 +469,12 @@ public class MeasurementsDashboardView {
      *            a composite where the combobox is placed in
      */
     private void createProjectsSelectionComboBox(Composite parent) {
-        projectsComboDropDown = new Combo(parent, SWT.DROP_DOWN);
+    	 Composite projectContainer = new Composite(parent, SWT.NONE);
+         projectContainer.setLayout(new GridLayout(2, false));
+         projectContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    	final Label filterLabel = new Label(projectContainer, SWT.NONE);
+        filterLabel.setText("Project:");
+        projectsComboDropDown = new Combo(projectContainer, SWT.DROP_DOWN);
         projectsComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
         updateProjectComboBox();
         projectsComboDropDown.addSelectionListener(new SelectionListener() {
@@ -511,9 +516,17 @@ public class MeasurementsDashboardView {
      * @param parent 
      * 				a composite where the combobox is placed in
      */
-    private void createMonitorRepositorySelectionComboBox(Composite parent) {     
-            monitorRepositoriesComboDropDown = new Combo(parent, SWT.DROP_DOWN);
+    private void createMonitorRepositorySelectionComboBox(Composite parent) {
+    	
+    	 Composite monitorRepositoryContainer = new Composite(parent, SWT.NONE);
+         monitorRepositoryContainer.setLayout(new GridLayout(2, false));
+         monitorRepositoryContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+    	final Label filterLabel = new Label(monitorRepositoryContainer, SWT.NONE);
+        filterLabel.setText("MonitorRepository:");
+            monitorRepositoriesComboDropDown = new Combo(monitorRepositoryContainer, SWT.DROP_DOWN);
             monitorRepositoriesComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+            
+            
             updateMonitorRepositoryComboBox();
             monitorRepositoriesComboDropDown.addSelectionListener(new SelectionListener() {
                  @Override
