@@ -30,7 +30,8 @@ public class MeasuringPointSelectionWizardModelTest {
 
 	@Test
 	public void testSetFinishable() {
-		fail("Not yet implemented");
+		MeasuringPointSelectionWizardModel measuringPointSelectionMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
+		Mockito.doCallRealMethod().when(measuringPointSelectionMock).setFinishable(true);
 	}
 
 	@Test
