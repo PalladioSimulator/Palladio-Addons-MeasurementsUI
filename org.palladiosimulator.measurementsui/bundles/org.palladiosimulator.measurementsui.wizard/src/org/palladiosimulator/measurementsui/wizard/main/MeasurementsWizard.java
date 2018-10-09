@@ -7,12 +7,12 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.ui.internal.util.BundleUtility;
 import org.osgi.framework.Bundle;
-import org.palladiosimulator.measurementsui.wizard.pages.AddMonitorWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.MonitorCreationWizardPage;
 import org.palladiosimulator.measurementsui.wizard.pages.AdditionalModelsToMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizard.pages.ChooseMeasuringpointWizardPage;
 import org.palladiosimulator.measurementsui.wizard.pages.FinalModelsToMeasuringpointWizardPage;
-import org.palladiosimulator.measurementsui.wizard.pages.MeasurementSpecificationWizardPage;
-import org.palladiosimulator.measurementsui.wizard.pages.SelectMeasurementsWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.ProcessingTypeSelectionWizardPage;
+import org.palladiosimulator.measurementsui.wizard.pages.MetricDescriptionSelectionWizardPage;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelManager;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
@@ -33,28 +33,31 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
 
     private WizardModelType startingPage;
     /**
+     * 1.Page
      * Represents the first wizard page, where the new monitor defined (name +
      * activated/deactivated)
      */
-    private AddMonitorWizardPage page1;
+    private MonitorCreationWizardPage page1;
 
     /**
+     * 2.Page
      * Represents the 2nd wizard page, where the user selects either an existing measuring point for
      * the new monitor or creates a new one.
      */
     private ChooseMeasuringpointWizardPage page2;
 
     /**
+     * 3.Page
      * Represents the 3rd wizard page, where the user selects measurements which are then assigned
      * to the monitor
      */
-    private SelectMeasurementsWizardPage page3;
+    private MetricDescriptionSelectionWizardPage page3;
 
     /**
      * Represents the 4th wizard page, where the user can set properties for the selected
      * measurements.
      */
-    private MeasurementSpecificationWizardPage page4;
+    private ProcessingTypeSelectionWizardPage page4;
 
     private AdditionalModelsToMeasuringpointWizardPage page2extra;
 
@@ -99,7 +102,7 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     }
 
     private void createPages() {
-        page1 = new AddMonitorWizardPage(
+        page1 = new MonitorCreationWizardPage(
                 (MonitorCreationWizardModel) wizardManager.getWizardModel(WizardModelType.MONITOR_CREATION));
         
         page2 = new ChooseMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
@@ -109,10 +112,10 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
         page2final = new FinalModelsToMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.MEASURING_POINT_SELECTION));
         
-        page3 = new SelectMeasurementsWizardPage((MetricDescriptionSelectionWizardModel) wizardManager
+        page3 = new MetricDescriptionSelectionWizardPage((MetricDescriptionSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
         
-        page4 = new MeasurementSpecificationWizardPage(
+        page4 = new ProcessingTypeSelectionWizardPage(
                 (ProcessingTypeSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.PROCESSING_TYPE));
 
     }

@@ -9,7 +9,7 @@ import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 
-public class EmptySelectMeasurementsViewer extends WizardTableViewer {
+public class SelectedMetricDescriptionSelectionViewer extends WizardTableViewer {
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class EmptySelectMeasurementsViewer extends WizardTableViewer {
 	 * @param dataApplication Connection to the data binding. This is needed in
 	 *                        order to get the repository of the current project.
 	 */
-	public EmptySelectMeasurementsViewer(Composite parent, WizardModel wizardModel) {
+	public SelectedMetricDescriptionSelectionViewer(Composite parent, WizardModel wizardModel) {
 		super(parent, wizardModel);
 	}
 

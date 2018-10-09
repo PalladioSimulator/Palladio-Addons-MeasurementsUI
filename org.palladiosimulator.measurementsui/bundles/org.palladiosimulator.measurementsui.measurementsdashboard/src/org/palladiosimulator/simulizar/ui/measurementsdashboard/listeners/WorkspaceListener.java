@@ -102,6 +102,7 @@ public class WorkspaceListener implements IResourceChangeListener {
                         // some project got added/deleted or name changed -> update comboBox with Projects
                     } else if (addedProject != null || deletedProject != null) {
                         if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+                            System.out.println("load new project");
                             dashboardView.updateMeasurementsDashboardView(addedProject);
                         }
                         dashboardView.updateProjectComboBox();
