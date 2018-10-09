@@ -362,7 +362,8 @@ public class MeasurementsDashboardView {
      */
     private void createNewMeasuringpointButton(Composite parent) {
         Button newMpButton = new Button(parent, SWT.PUSH);
-        newMpButton.setText("Add new Measuring Point");
+        newMpButton.setText("Add new Measurement");
+        newMpButton.setToolTipText("Add new Monitor & Measuring Point with Metrics");
         newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         newMpButton.addListener(SWT.Selection, e -> {
             if(!dataApplication.getModelAccessor().modelsExist()) {
