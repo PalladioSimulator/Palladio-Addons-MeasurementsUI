@@ -9,14 +9,13 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotViewMenu;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +27,7 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(SWTBotJunit4ClassRunner.class)
-public class CheckView {
+public class EditMonitor {
 
     public static SWTWorkbenchBot bot = new SWTWorkbenchBot();
 
@@ -44,9 +43,9 @@ public class CheckView {
         bot.button("Next >").click();
         bot.radio("Select root directory:").click();
         String basePath = new File("").getAbsolutePath();
-        String path = new File("/testProject/Pets.com")
-                .getAbsolutePath();
-        bot.comboBox().setText(basePath+path);        bot.button("Refresh").click();
+        String path = new File("/testProject/Pets.com").getAbsolutePath();
+        bot.comboBox().setText(basePath + path);
+        bot.button("Refresh").click();
         bot.button("Finish").click();
         bot.closeAllShells();
 
@@ -77,20 +76,8 @@ public class CheckView {
     }
 
     @Test
-    public void checkButtons() throws Exception {
-        bot = new SWTWorkbenchBot();
-        SWTBotView measuringpointView = bot.viewById("org.palladiosimulator.measurementsui.dashboardview");
-        Widget measuringpointViewWidget = measuringpointView.getWidget();
-        bot.activeView();
-        bot.button("Add new Measuring Point");
-        bot.button("Delete...");
-        bot.button("Edit...");
-        bot.button("Create Standard Set");
-    }
 
-    @Test
-
-    public void checkMonitorTree() throws Exception {
+    public void editMonitor() throws Exception {
         bot = new SWTWorkbenchBot();
         SWTBotView measuringpointView = bot.viewById("org.palladiosimulator.measurementsui.dashboardview");
         Widget measuringpointViewWidget = measuringpointView.getWidget();
@@ -100,45 +87,34 @@ public class CheckView {
         SWTBotTree tree = new SWTBotTree(monitorTree);
         tree.select("Monitor Repository PetsMonitore");
         tree.expandNode("Monitor Repository PetsMonitore");
-    }
+        tree.getTreeItem("Monitor Repository PetsMonitore").getNode("Simple Usage Scenario [UsageScenarioMeasuringPoint]").select();
 
-    @Test
-    public void checkEmptyMeasurementsTree() throws Exception {
-        bot = new SWTWorkbenchBot();
-        SWTBotView measurmentView = bot.viewById("org.palladiosimulator.measurementsui.dashboardview");
-        Widget measurmentViewWidget = measurmentView.getWidget();
-        Composite measurmentViewComposite = (Composite) measurmentView.getWidget();
-        Tree measurmentTree = (Tree) bot.widget(WidgetMatcherFactory.widgetOfType(Tree.class), measurmentViewComposite);
-        SWTBotTree mtree = new SWTBotTree(measurmentTree);
-    }
-    
-    @Test
-    public void checkCheckBox() throws Exception{
-        bot = new SWTWorkbenchBot();
-        SWTBotView measuringpointView = bot.viewById("org.palladiosimulator.measurementsui.dashboardview");
-        Widget measuringpointViewWidget = measuringpointView.getWidget();
-        bot.activeView();
-//        SWTBotCheckBox activeCheck = bot.checkBoxWithLabel("");
-//        if (activeCheck.isChecked() == false) {
-//            activeCheck.click();
-//        }
-//        
-//        SWTBotCheckBox inactiveCheck = bot.checkBoxWithLabel("");
-//        if (inactiveCheck.isChecked()) {
-//            inactiveCheck.click().click();
-//        }
-//        
-//        
-    }
-
-    @AfterClass
-    public static void afterClass() throws Exception {
-        bot.closeAllShells();
+        bot.button("Edit Monitor").click();
+        SWTBotCheckBox addCheck = bot.checkBoxWithLabel("");
+        if (addCheck.isChecked() == false) {
+            addCheck.click();
+        }
+        bot.button("Next >").click();
+        SWTBotTabItem tabItem = bot.tabItem("Create new measuring point");
+        assertEquals("Create new measuring point", tabItem.getText());
+        SWTBotTabItem tabItem2 = bot.tabItem("Select existing measuring point");
+        bot.tabItem("Select existing measuring point").activate();
+        assertEquals("Select existing measuring point", tabItem2.getText());
+        bot.tabItem("Create new measuring point").activate().setFocus();
+        bot.tree().getTreeItem("New System").select();
+        bot.tree().getTreeItem("New System").expand();
+        bot.tree().getTreeItem("New System").getNode("Assembly_Hompage").select();
+        bot.button("Next >").click();
+        bot.tree().getTreeItem("Hompage.IHompage.OperationProvidedRole1 [OperationProvidedRole]").select();
+        bot.button("Next >").click();
+        bot.tree().getTreeItem("getPictures [OperationSignature]").select();
+        bot.button("Next >").click();
+        bot.button("Finish").click();
     }
 
     public static void closeWelcomePage() {
         for (SWTBotView view : bot.views()) {
-            if(view!=null) {
+            if (view != null) {
                 if (view.getTitle().equals("Welcome")) {
                     view.close();
                 }

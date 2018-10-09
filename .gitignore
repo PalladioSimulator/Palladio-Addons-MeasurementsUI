@@ -83,3 +83,5 @@ local.properties
 
 target/
 .checkstyle
+
+*.jpeg
