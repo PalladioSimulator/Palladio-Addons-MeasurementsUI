@@ -79,7 +79,7 @@ public class CreateNewMonitor {
 
         SWTBotTree tree = bot.tree();
         for (SWTBotTreeItem item : tree.getAllItems()) {
-            if ("Sample Category".equals(item.getText())) {
+            if ("SimuLizar".equals(item.getText())) {
 
                 item.expand();
                 for (SWTBotTreeItem element : item.getItems()) {
@@ -103,7 +103,7 @@ public class CreateNewMonitor {
     public void canAddNewMonitor() throws Exception {
         bot = new SWTWorkbenchBot();
 //        SWTBotView measuringpointView = bot.viewByPartName("Measurements Overview");
-        SWTBotView addView = bot.viewById("test.partDescFragment.ASampleE4View");
+        SWTBotView addView = bot.viewById("org.palladiosimulator.measurementsui.dashboardview");
         assertNotNull(addView);
         Widget measuringpointViewWidget = addView.getWidget();
         bot.activeView();

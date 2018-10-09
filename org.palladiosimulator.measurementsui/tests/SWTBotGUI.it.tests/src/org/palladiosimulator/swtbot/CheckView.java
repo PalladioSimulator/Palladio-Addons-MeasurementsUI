@@ -60,7 +60,7 @@ public class CheckView {
 
         SWTBotTree tree = bot.tree();
         for (SWTBotTreeItem item : tree.getAllItems()) {
-            if ("Sample Category".equals(item.getText())) {
+            if ("SimuLizar".equals(item.getText())) {
 
                 item.expand();
                 for (SWTBotTreeItem element : item.getItems()) {
@@ -78,7 +78,7 @@ public class CheckView {
     @Test
     public void checkButtons() throws Exception {
         bot = new SWTWorkbenchBot();
-        SWTBotView measuringpointView = bot.viewById("test.partDescFragment.ASampleE4View");
+        SWTBotView measuringpointView = bot.viewById("org.palladiosimulator.measurementsui.dashboardview");
         Widget measuringpointViewWidget = measuringpointView.getWidget();
         bot.activeView();
         bot.button("Add new Measuring Point");
