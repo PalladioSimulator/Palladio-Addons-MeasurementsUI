@@ -20,7 +20,7 @@ public class StandardSetCreationSelectionWizardPage extends WizardPage {
 	 */
 	public StandardSetCreationSelectionWizardPage(String pageName) {
 
-		super("wizardpage");
+		super("standardSetCreationSelectionWizardPage");
 		setMessage(pageName);
 
 	}
@@ -28,17 +28,17 @@ public class StandardSetCreationSelectionWizardPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 
-		Composite container = new Composite(parent, SWT.BORDER);
-		radios[0] = new Button(container, SWT.RADIO);
+		Composite radioButtonContainer = new Composite(parent, SWT.BORDER);
+		radios[0] = new Button(radioButtonContainer, SWT.RADIO);
 		radios[0].setSelection(true);
 		radios[0].setText("Create monitors and measuring points.");
-		radios[0].setBounds(10, 5, 300, 30);
+		radios[0].setBounds(10, 5, 700, 30);
 
-		radios[1] = new Button(container, SWT.RADIO);
+		radios[1] = new Button(radioButtonContainer, SWT.RADIO);
 		radios[1].setText("Create only measuring points.");
-		radios[1].setBounds(10, 30, 300, 30);
+		radios[1].setBounds(10, 30, 700, 30);
 
-		setControl(container);
+		setControl(radioButtonContainer);
 		
 		setPageComplete(true);
 

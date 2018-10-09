@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
-import org.palladiosimulator.measurementsui.util.AlternativeMeasuringPointChildrenSwitch;
+import org.palladiosimulator.measurementsui.wizard.util.AlternativeMeasuringPointChildrenSwitch;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
@@ -53,10 +53,9 @@ public class AlternativeMeasuringPointContentProvider implements ITreeContentPro
      */
     @Override
     public Object[] getChildren(Object parentElement) {
-AlternativeMeasuringPointChildrenSwitch childrenSwitch = new AlternativeMeasuringPointChildrenSwitch();
-return childrenSwitch.doSwitch((EObject) parentElement);
+        AlternativeMeasuringPointChildrenSwitch childrenSwitch = new AlternativeMeasuringPointChildrenSwitch();
+        return childrenSwitch.doSwitch((EObject) parentElement);
 
-        
     }
 
     @Override
