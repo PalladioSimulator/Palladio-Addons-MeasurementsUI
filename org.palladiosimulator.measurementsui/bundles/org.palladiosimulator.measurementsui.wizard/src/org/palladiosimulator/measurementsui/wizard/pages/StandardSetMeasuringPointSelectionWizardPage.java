@@ -68,11 +68,11 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
     private StandardSetCreationProvider set;
 
     /**
-     * constructor for tis wizard page
+     * constructor for this wizard page
      * @param pageName name for the wizard page
      */
     public StandardSetMeasuringPointSelectionWizardPage(String pageName) {
-        super("wizardpage");
+        super("standardSetMeasuringPointSelectionWizardPage");
         setMessage(pageName);
         set = new StandardSetCreationProvider();
     }

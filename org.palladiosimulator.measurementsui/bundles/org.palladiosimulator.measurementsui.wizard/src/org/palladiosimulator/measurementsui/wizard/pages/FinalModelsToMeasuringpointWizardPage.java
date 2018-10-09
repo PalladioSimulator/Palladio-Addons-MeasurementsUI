@@ -12,8 +12,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.FinalMeasuringpointContentProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AdditionalMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -36,7 +34,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
      *            the needed wizard model
      */
     public FinalModelsToMeasuringpointWizardPage(MeasuringPointSelectionWizardModel selectionWizardModel) {
-        super("page2final");
+        super("finalModelstoMeasuringpointWizardPage");
         this.selectionWizardModel = selectionWizardModel;
         setTitle("Select an operation signature");
     }
@@ -91,9 +89,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
     }
 
     /**
-     * @see WizardDialog#nextPressed()
-     * @see WizardPage#getNextPage()
-     * @return boolean validates whether the next button is pressed or not
+     * performs the operation to add the chosen model to the wizard model
      */
     protected boolean nextPressed() {
         selectionWizardModel
