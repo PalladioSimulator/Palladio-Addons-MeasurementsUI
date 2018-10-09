@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.palladiosimulator.measurementsui.wizard.handlers.SelectMeasurementCheckboxCellModifier;
+import org.palladiosimulator.measurementsui.wizard.handlers.MetricDescriptionSelectionCheckboxCellModifier;
 import org.palladiosimulator.measurementsui.wizard.viewer.SelectedMetricDescriptionSelectionViewer;
 import org.palladiosimulator.measurementsui.wizard.viewer.AvailableMetricDescriptionSelectionViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
@@ -249,7 +249,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         final String[] columnNames = { "Selected", "Self Adaptive" };
         tableViewer.setColumnProperties(columnNames);
         tableViewer.setCellModifier(
-                new SelectMeasurementCheckboxCellModifier(tableViewer, metricDescriptionSelectionWizardModel));
+                new MetricDescriptionSelectionCheckboxCellModifier(tableViewer, metricDescriptionSelectionWizardModel));
     }
 
     /**

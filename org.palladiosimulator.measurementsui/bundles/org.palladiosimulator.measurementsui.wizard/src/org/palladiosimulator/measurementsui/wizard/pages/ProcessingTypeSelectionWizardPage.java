@@ -7,9 +7,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
-import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypeEditingSupport;
+import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypeDropDownEditingSupport;
 import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypePropertyEditingSupport;
-import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.MeasurementSpecificationLabelProvider;
+import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.ProcessingTypeSelectionLabelProvider;
 import org.palladiosimulator.measurementsui.wizard.viewer.ProcessingTypeSelectionViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 
@@ -69,7 +69,7 @@ public class ProcessingTypeSelectionWizardPage extends WizardPage {
 		final ProcessingTypeSelectionViewer measurementSpecificationViewer = new ProcessingTypeSelectionViewer(container,
 				this.processingTypeSelectionWizardModel);
 		final TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
-		tableViewer.setLabelProvider(new MeasurementSpecificationLabelProvider(this.processingTypeSelectionWizardModel));
+		tableViewer.setLabelProvider(new ProcessingTypeSelectionLabelProvider(this.processingTypeSelectionWizardModel));
 		
 		setColumnsText(tableViewer);
 		setEditingSupports(tableViewer);
@@ -82,7 +82,7 @@ public class ProcessingTypeSelectionWizardPage extends WizardPage {
      */
     private void setEditingSupports(TableViewer tableViewer) {
         final TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
-		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), 
+		tableViewerColumns[1].setEditingSupport(new ProcessingTypeDropDownEditingSupport(tableViewerColumns[1].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel));
 		tableViewerColumns[2].setEditingSupport(new ProcessingTypePropertyEditingSupport(tableViewerColumns[2].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel, 0));
