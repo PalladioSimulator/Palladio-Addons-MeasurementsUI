@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_qMU5gG8pEeiSd4fITWARWQ">
+<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" id="_qMU5gG8pEeiSd4fITWARWQ">
   <measuringPoints xsi:type="pcmmeasuringpoint:ResourceContainerMeasuringPoint" stringRepresentation="Resource Container ImgaeServer [_og_V4G8lEeiSd4fITWARWQ]" resourceURIRepresentation="platform:/resource/Pets.com/PetsResourceEnvironment.resourceenvironment#_og_V4G8lEeiSd4fITWARWQ">
     <resourceContainer href="PetsResourceEnvironment.resourceenvironment#_og_V4G8lEeiSd4fITWARWQ"/>
   </measuringPoints>
@@ -8,5 +8,10 @@
   </measuringPoints>
   <measuringPoints xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" stringRepresentation="Usage Scenario: SimpleUsageScenario" resourceURIRepresentation="platform:/resource/Pets.com/SimpleUsageModel.usagemodel#_UkwCMG8rEeiSd4fITWARWQ">
     <usageScenario href="SimpleUsageModel.usagemodel#_UkwCMG8rEeiSd4fITWARWQ"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:AssemblyOperationMeasuringPoint" stringRepresentation="Operation: Assembly_Hompage.Hompage.IHompage.OperationProvidedRole1.getPictures" resourceURIRepresentation="platform:/resource/Pets.com/PetsRepository.repository#_uefvwG8dEeiSd4fITWARWQ">
+    <role xsi:type="repository:OperationProvidedRole" href="PetsRepository.repository#_MBVikG8eEeiSd4fITWARWQ"/>
+    <operationSignature href="PetsRepository.repository#_uefvwG8dEeiSd4fITWARWQ"/>
+    <assembly href="PetsAssembly.system#_hlXPQG8fEeiSd4fITWARWQ"/>
   </measuringPoints>
 </org.palladiosimulator.edp2.models:MeasuringPointRepository>
