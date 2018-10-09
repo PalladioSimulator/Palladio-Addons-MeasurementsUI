@@ -20,6 +20,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
@@ -31,6 +32,7 @@ import org.palladiosimulator.measurementsui.wizard.viewer.SelectMeasurementsView
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -103,6 +105,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
         final SelectMeasurementsViewer selectMeasurementsViewerLeft = new SelectMeasurementsViewer(compositeLeft,
                 metricDescriptionSelectionWizardModel);
         final TableViewer tableViewerLeft = (TableViewer) selectMeasurementsViewerLeft.getViewer();
+        tableViewerLeft.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
         setLabelProvider(tableViewerLeft);
 
         updateMessageAccordingToSelectedMeasuringPoint(tableViewerLeft);
@@ -148,6 +151,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
         final EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(
                 compositeRight, metricDescriptionSelectionWizardModel);
         final TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
+        tableViewerRight.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
         setLabelProvider(tableViewerRight);
 
         updateMessageAccordingToSelectedMeasuringPoint(tableViewerRight);
