@@ -4,8 +4,10 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypeEditingSupport;
 import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypePropertyEditingSupport;
@@ -70,6 +72,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 				this.processingTypeSelectionWizardModel);
 		final TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
 		tableViewer.setLabelProvider(new MeasurementSpecificationLabelProvider(this.processingTypeSelectionWizardModel));
+		tableViewer.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
 		
 		setColumnsText(tableViewer);
 		setEditingSupports(tableViewer);
