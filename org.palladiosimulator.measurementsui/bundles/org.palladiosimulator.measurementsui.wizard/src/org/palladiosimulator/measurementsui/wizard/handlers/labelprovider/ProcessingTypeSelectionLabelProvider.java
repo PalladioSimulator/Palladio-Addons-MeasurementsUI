@@ -14,7 +14,7 @@ import org.palladiosimulator.monitorrepository.ProcessingType;
  * @author Ba
  *
  */
-public class MeasurementSpecificationLabelProvider implements ITableLabelProvider {
+public class ProcessingTypeSelectionLabelProvider implements ITableLabelProvider {
     
     /**
      * This handles the internal model.
@@ -25,7 +25,7 @@ public class MeasurementSpecificationLabelProvider implements ITableLabelProvide
      * The constructor which sets the internal model.
      * @param processingTypeSelectionWizardModel the internal model
      */
-    public MeasurementSpecificationLabelProvider(ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
+    public ProcessingTypeSelectionLabelProvider(ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
         this.processingTypeSelectionWizardModel = processingTypeSelectionWizardModel;
     }
 

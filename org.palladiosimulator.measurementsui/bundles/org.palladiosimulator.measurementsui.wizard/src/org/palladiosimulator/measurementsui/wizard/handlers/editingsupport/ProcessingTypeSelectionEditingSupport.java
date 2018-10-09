@@ -12,7 +12,7 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSele
  * 
  * @author Ba-Anh Vu
  */
-public abstract class MeasurementSpecificationEditingSupport extends EditingSupport {
+public abstract class ProcessingTypeSelectionEditingSupport extends EditingSupport {
 
     /**
      * The according TableViewer object.
@@ -36,7 +36,7 @@ public abstract class MeasurementSpecificationEditingSupport extends EditingSupp
      * @param tableViewer the given TableViewer
      * @param processingTypeSelectionWizardModel the internal model handler
      */
-    public MeasurementSpecificationEditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
+    public ProcessingTypeSelectionEditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
             ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
         super(columnViewer);
         this.tableViewer = tableViewer;
