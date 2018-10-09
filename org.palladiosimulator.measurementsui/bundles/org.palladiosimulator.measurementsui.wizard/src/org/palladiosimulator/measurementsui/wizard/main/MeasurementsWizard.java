@@ -27,6 +27,7 @@ import org.palladiosimulator.monitorrepository.Monitor;
  * This class handles the wizard and its wizard pages for creating a new measuring point/monitor.
  * 
  * @author Birasanth Pushpanathan David Schuetz, Lasse Merz Added WizardModel support
+ * @author Ba-Anh Vu, resize of wizard window and image in upper right corner according to scaling of OS
  *
  */
 public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
