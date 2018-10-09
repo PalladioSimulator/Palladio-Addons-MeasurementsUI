@@ -14,8 +14,8 @@ public class MonitorCreationWizardModel implements WizardModel {
 	
 	private static final String CREATE_MONITOR_INFO_TEXT = "A Monitor specifies which element of your "
 	        + "Models should be analyzed during a simulation run."
-	        + "\n In this page you can give your Monitor an appropiate name and set it activated/not activated."
-	        + "\n Activated Monitors will be simulated during a SimuLizar run, not activated ones will be ignored. ";
+	        + "\nIn this page you can give your Monitor an appropiate name and set it activated/not activated."
+	        + "\nActivated Monitors will be simulated during a SimuLizar run, not activated ones will be ignored. ";
 	private static final String EDIT_MONITOR_INFO_TEXT = "Edit your Monitor name and set him activated/not activated.";
 	
 	private static final String CREATE_MONITOR_TITEL = "Create Monitor";
