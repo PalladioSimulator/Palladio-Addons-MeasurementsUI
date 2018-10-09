@@ -115,8 +115,15 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
         URL fullPathString = BundleUtility.find(bundle, "icons/wizardImage.png");
         ImageDescriptor imageDescriptor = ImageDescriptor.createFromURL(fullPathString);
         ImageData imageData = imageDescriptor.getImageData();
-        ImageData scaledImageData = imageData.scaledTo(Math.round(imageData.width / (1.5f / getDPIScale())), 
-                Math.round(imageData.height / (1.5f / getDPIScale())));
+        int scaledWidth = Math.round(imageData.width / (1.5f / getDPIScale()));
+        int scaledHeight = Math.round(imageData.height / (1.5f / getDPIScale()));
+        if( scaledWidth < 100) {
+            scaledWidth = 100;
+        }
+        if( scaledHeight < 100) {
+            scaledHeight = 100;
+        }
+        ImageData scaledImageData = imageData.scaledTo(scaledWidth, scaledHeight);
         ImageDescriptor resizedImageDescriptor = ImageDescriptor.createFromImageData(scaledImageData);
         setDefaultPageImageDescriptor(resizedImageDescriptor);
     }
