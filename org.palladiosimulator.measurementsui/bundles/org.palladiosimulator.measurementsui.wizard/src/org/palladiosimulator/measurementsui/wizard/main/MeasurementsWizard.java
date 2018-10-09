@@ -66,12 +66,12 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     /**
      * The width used for the wizard window
      */
-    private int windowWidth = 780;
+    private int windowWidth = 800;
 
     /**
      * The height used for the wizard window
      */
-    private int windowHeight = 380;
+    private int windowHeight = 400;
 
     public MeasurementsWizard() {
         wizardManager = new WizardModelManager();
