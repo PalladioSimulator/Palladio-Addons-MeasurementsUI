@@ -2,11 +2,8 @@ package org.palladiosimulator.measurementsui.dataprovider;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
-
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
