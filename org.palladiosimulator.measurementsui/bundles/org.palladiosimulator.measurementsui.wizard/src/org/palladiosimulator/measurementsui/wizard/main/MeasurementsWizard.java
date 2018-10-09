@@ -5,6 +5,8 @@ import java.net.URL;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.internal.util.BundleUtility;
 import org.osgi.framework.Bundle;
 import org.palladiosimulator.measurementsui.wizard.pages.AddMonitorWizardPage;
@@ -49,7 +51,7 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
      * to the monitor
      */
     private SelectMeasurementsWizardPage page3;
-
+    
     /**
      * Represents the 4th wizard page, where the user can set properties for the selected
      * measurements.
@@ -59,6 +61,16 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     private AdditionalModelsToMeasuringpointWizardPage page2extra;
 
     private FinalModelsToMeasuringpointWizardPage page2final;
+
+    /**
+     * The width used for the wizard window
+     */
+    private int windowWidth = 780;
+
+    /**
+     * The height used for the wizard window
+     */
+    private int windowHeight = 380;
 
     public MeasurementsWizard() {
         wizardManager = new WizardModelManager();
@@ -91,11 +103,21 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
 
     /**
      * Sets the image of the wizard which is shown in the upper right corner of the wizard pages.
+     * 
+     * Also scales the image according to the scaling of the OS.
+     * The original size of the image is used for a scaling of 150%, that means when the scaling of the OS is below
+     * 150%, the image is shrunk.
      */
+    @SuppressWarnings("deprecation")
     private void setImage() {
         Bundle bundle = Platform.getBundle("org.palladiosimulator.measurementsui.wizard");
         URL fullPathString = BundleUtility.find(bundle, "icons/wizardImage.png");
-        setDefaultPageImageDescriptor(ImageDescriptor.createFromURL(fullPathString));
+        ImageDescriptor imageDescriptor = ImageDescriptor.createFromURL(fullPathString);
+        ImageData imageData = imageDescriptor.getImageData();
+        ImageData scaledImageData = imageData.scaledTo(Math.round(imageData.width / (1.5f / getDPIScale())), 
+                Math.round(imageData.height / (1.5f / getDPIScale())));
+        ImageDescriptor resizedImageDescriptor = ImageDescriptor.createFromImageData(scaledImageData);
+        setDefaultPageImageDescriptor(resizedImageDescriptor);
     }
 
     private void createPages() {
@@ -161,4 +183,31 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     public boolean canFinish() {
         return wizardManager.canFinish();
     }
+
+    /**
+     * Returns the width used for the wizard window, also considers the scaling of the OS
+     * @return the width used for the wizard window, also considers the scaling of the OS
+     */
+    public int getWindowWidth() {
+        return Math.round(windowWidth * getDPIScale());
+    }
+
+    /**
+     * Returns the height used for the wizard window, also considers the scaling of the OS
+     * @return the height used for the wizard window, also considers the scaling of the OS
+     */
+    public int getWindowHeight() {
+        return Math.round(windowHeight * getDPIScale());
+    }
+    
+    /**
+     * Returns the scaling of the OS with a value of 1.0 if set to 100%, 1.5 if set to 150% etc.
+     * @return the scaling of the OS with a value of 1.0 if set to 100%, 1.5 if set to 150% etc.
+     */
+    private float getDPIScale() {
+        int currentDPI = Display.getDefault().getDPI().x;
+        float defaultDPI = 96.0f;
+        return currentDPI / defaultDPI;
+    }
+    
 }
