@@ -62,13 +62,12 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider, I
         if (element instanceof LinkedList) {
             return null;
         } else {
-            
+
             return imageSwitch.doSwitch((EObject) element);
 
         }
 
     }
-
 
     @Override
     public String getText(Object element) {
@@ -105,8 +104,8 @@ public class AlternativeMeasuringPointLabelProvider implements ILabelProvider, I
         if (element instanceof ResourceEnvironment || element instanceof ResourceContainer
                 || element instanceof ProcessingResourceSpecification || element instanceof AssemblyContext
                 || element instanceof EntryLevelSystemCall || element instanceof ExternalCallAction
-                || element instanceof LinkingResource || element instanceof SubSystem
-                || element instanceof System || element instanceof UsageScenario) {
+                || element instanceof LinkingResource || element instanceof SubSystem || element instanceof System
+                || element instanceof UsageScenario) {
 
             return JFaceResources.getBannerFont();
         }

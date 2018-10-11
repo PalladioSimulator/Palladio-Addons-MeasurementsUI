@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.emf.parsley"
+            class="org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected.SelectedExecutableExtensionFactory:org.palladio.simulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsTableView"
+            id="org.palladio.simulator.measurementsui.selectmeasurements.emptyview"
+            name="SelectedMetricDescriptionsTableView"
+            restorable="true">
+      </view>
+      <view
+            category="org.eclipse.emf.parsley"
+            class="org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected.SelectedExecutableExtensionFactory:org.palladio.simulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsTableView"
+            id="org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected"
+            name="SelectedMetricDescriptionsTableView"
+            restorable="true">
+      </view>
+   </extension>
+</plugin>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Running Platform" sequenceNumber="20">
+<?pde version="3.8"?><target name="Running Platform" sequenceNumber="21">
     <locations>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
             <unit id="de.uka.ipd.sdq.dialogs.feature.feature.group" version="1.4.0.201611171324"/>
@@ -136,6 +136,10 @@
             <unit id="org.palladiosimulator.editors.tree.source.feature.feature.group" version="4.1.0.201709282218"/>
             <unit id="org.palladiosimulator.pcm.source.feature.feature.group" version="4.1.0.201709282114"/>
             <repository location="https://sdqweb.ipd.kit.edu/eclipse/palladiosimulator/releases/latest/"/>
+        </location>
+        <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+            <unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
+            <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160221192158/repository/"/>
         </location>
     </locations>
     <environment>

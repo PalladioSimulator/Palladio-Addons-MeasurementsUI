@@ -15,11 +15,11 @@
 		<module>org.palladiosimulator.measurementsui.extension.contributions</module>
 		<module>org.palladiosimulator.measurementsui.extensionpoint.definitions</module>
 		<module>org.palladiosimulator.measurementsui.measurementsdashboard</module>
-		<module>org.palladiosimulator.measurementsui.measurementspecification</module>
+		<module>org.palladiosimulator.measurementsui.processingtype</module>
 		<module>org.palladiosimulator.measurementsui.monitorrepositoryview</module>
 		<module>org.palladiosimulator.measurementsui.propertiespage</module>
-		<module>org.palladiosimulator.measurementsui.selectmeasurement</module>
-		<module>org.palladiosimulator.measurementsui.selectmeasurements.emptyview</module>
+		<module>org.palladiosimulator.measurementsui.selectmetricdescriptions.available</module>
+		<module>org.palladiosimulator.measurementsui.selectmetricdescriptions.selected</module>
 		<module>org.palladiosimulator.measurementsui.viewer</module>
 		<module>org.palladiosimulator.measurementsui.wizard</module>
 	</modules>

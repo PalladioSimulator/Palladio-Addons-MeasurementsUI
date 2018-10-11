@@ -39,7 +39,7 @@ public class AdditionalMeasuringpointLabelProvider implements ILabelProvider {
     @Override
     public Image getImage(Object element) {
         ImageProviderSwitch imageSwitch = new ImageProviderSwitch();
-        return  imageSwitch.doSwitch((EObject) element);
+        return imageSwitch.doSwitch((EObject) element);
     }
 
     @Override

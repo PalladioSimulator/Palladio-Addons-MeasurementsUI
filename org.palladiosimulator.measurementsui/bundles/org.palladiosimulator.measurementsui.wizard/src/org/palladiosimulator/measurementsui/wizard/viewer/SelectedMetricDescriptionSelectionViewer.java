@@ -2,8 +2,8 @@ package org.palladiosimulator.measurementsui.wizard.viewer;
 
 
 import org.eclipse.swt.widgets.Composite;
-import org.palladio.simulator.measurementsui.selectmeasurements.emptyview.EmptyviewInjectorProvider;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
+import org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected.SelectedInjectorProvider;
 import org.palladiosimulator.monitorrepository.Monitor;
 
 public class SelectedMetricDescriptionSelectionViewer extends WizardTableViewer {
@@ -20,7 +20,7 @@ public class SelectedMetricDescriptionSelectionViewer extends WizardTableViewer 
 
 	@Override
 	protected void initInjector() {
-		this.injector = EmptyviewInjectorProvider.getInjector();
+		this.injector = SelectedInjectorProvider.getInjector();
 	}
 
 }
