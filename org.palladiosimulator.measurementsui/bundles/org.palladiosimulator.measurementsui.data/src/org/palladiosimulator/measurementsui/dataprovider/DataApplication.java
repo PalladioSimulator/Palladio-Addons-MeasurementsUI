@@ -60,6 +60,8 @@ public final class DataApplication {
      * 
      * @param project
      *            to load data from
+     * @param monitorRepositorySelectionIndex
+     *             index from the monitorRepository to load
      */
     public void loadData(IProject project, int monitorRepositorySelectionIndex) {
         this.project = project;
@@ -80,13 +82,22 @@ public final class DataApplication {
 
     /**
      * Updates the models by reloading them through a new session
+     * also reloads the selected monitorRepository
      */
     public void updateData() {
+        String monitorRepositoryID = this.monitorRepository.getId();
+        
         initializeSessionResourceURI(this.dataGathering.getAirdFileOfProject(this.project));
         initializeSession(sessionResourceURI);
         if (session != null) {
             this.modelAccessor.initializeModels(session);
             this.modelAccessor.checkIfRepositoriesExist(project);
+            
+            if (modelAccessor.getMonitorRepositoryByID(monitorRepositoryID).isPresent()) {
+                this.monitorRepository = modelAccessor.getMonitorRepositoryByID(monitorRepositoryID).get();
+            } else {
+                updateMonitorRepository(0);
+            }
 
         } else {
             logger.warn("No Models are initiated. Make sure a Session is open.");
@@ -168,6 +179,10 @@ public final class DataApplication {
         return project;
     }
 
+    /**
+     * Returns the selected monitorRepository
+     * @return MonitorRepository
+     */
     public MonitorRepository getMonitorRepository() {
         return monitorRepository;
     }
