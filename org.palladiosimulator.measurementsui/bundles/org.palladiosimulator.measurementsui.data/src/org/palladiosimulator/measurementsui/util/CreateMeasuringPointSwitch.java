@@ -29,7 +29,9 @@ import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 
 /**
- * The switch for the MeasuringPointSelectionWizardModel, which takes care of the creation of the correct measuringpoint
+ * The switch for the MeasuringPointSelectionWizardModel, which takes care of the creation of the
+ * correct measuringpoint
+ * 
  * @author Domas Mikalkinas
  *
  */
@@ -39,32 +41,40 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
 
     private Object secondStageModel;
     private Object thirdStageModel;
-/**
- * getter for the second stage model
- * @return Object
- */
+
+    /**
+     * getter for the second stage model
+     * 
+     * @return Object
+     */
     public Object getSecondStageModel() {
         return secondStageModel;
     }
 
     /**
      * setter for the second stage model
-     * @param secondStageModel the model which was set in the second stage of the measuring point wizard pages 
+     * 
+     * @param secondStageModel
+     *            the model which was set in the second stage of the measuring point wizard pages
      */
     public void setSecondStageModel(Object secondStageModel) {
         this.secondStageModel = secondStageModel;
     }
-/**
- * getter for the third stage model
- * @return Object
- */
+
+    /**
+     * getter for the third stage model
+     * 
+     * @return Object
+     */
     public Object getThirdStageModel() {
         return thirdStageModel;
     }
 
     /**
      * setter for the third stage model
-     * @param thirdStageModel the model which was set in the third stage of the measuring point wizard pages
+     * 
+     * @param thirdStageModel
+     *            the model which was set in the third stage of the measuring point wizard pages
      */
     public void setThirdStageModel(Object thirdStageModel) {
         this.thirdStageModel = thirdStageModel;
@@ -75,137 +85,146 @@ public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoin
 
         if (secondStageModel instanceof PassiveResource) {
             PassiveResource passiveResource = (PassiveResource) secondStageModel;
-            AssemblyPassiveResourceMeasuringPoint mp = (AssemblyPassiveResourceMeasuringPoint) pcmMeasuringPointFactory
+            AssemblyPassiveResourceMeasuringPoint assemblyPassiveResourceMeasuringPoint = (AssemblyPassiveResourceMeasuringPoint) pcmMeasuringPointFactory
                     .create(PcmmeasuringpointPackage.eINSTANCE.getAssemblyPassiveResourceMeasuringPoint());
-            mp.setAssembly(assemblyContext);
-            mp.setPassiveResource(passiveResource);
-            mp.setStringRepresentation(assemblyContext.getEntityName() + "_" + passiveResource.getEntityName());
-            mp.setResourceURIRepresentation(
+            assemblyPassiveResourceMeasuringPoint.setAssembly(assemblyContext);
+            assemblyPassiveResourceMeasuringPoint.setPassiveResource(passiveResource);
+            assemblyPassiveResourceMeasuringPoint
+                    .setStringRepresentation(assemblyContext.getEntityName() + "_" + passiveResource.getEntityName());
+            assemblyPassiveResourceMeasuringPoint.setResourceURIRepresentation(
                     assemblyContext.eResource().getURI().toString() + "#" + assemblyContext.getId());
-            return mp;
+            return assemblyPassiveResourceMeasuringPoint;
         } else {
             OperationSignature operationSignature = (OperationSignature) thirdStageModel;
             Role role = (Role) secondStageModel;
-            AssemblyOperationMeasuringPoint mp = pcmMeasuringPointFactory.createAssemblyOperationMeasuringPoint();
+            AssemblyOperationMeasuringPoint assemblyOperationMeasuringPoint = pcmMeasuringPointFactory
+                    .createAssemblyOperationMeasuringPoint();
 
-            mp.setAssembly(assemblyContext);
-            mp.setOperationSignature(operationSignature);
-            mp.setRole(role);
-            mp.setStringRepresentation(assemblyContext.getEntityName());
-            mp.setResourceURIRepresentation(
+            assemblyOperationMeasuringPoint.setAssembly(assemblyContext);
+            assemblyOperationMeasuringPoint.setOperationSignature(operationSignature);
+            assemblyOperationMeasuringPoint.setRole(role);
+            assemblyOperationMeasuringPoint.setStringRepresentation(assemblyContext.getEntityName());
+            assemblyOperationMeasuringPoint.setResourceURIRepresentation(
                     assemblyContext.eResource().getURI().toString() + "#" + (assemblyContext).getId());
-            return mp;
+            return assemblyOperationMeasuringPoint;
         }
     }
 
     @Override
     public MeasuringPoint caseEntryLevelSystemCall(EntryLevelSystemCall entryLevelSystemCall) {
-        EntryLevelSystemCallMeasuringPoint mp = (EntryLevelSystemCallMeasuringPoint) pcmMeasuringPointFactory
+        EntryLevelSystemCallMeasuringPoint entryLevelSystemCallMeasuringPoint = (EntryLevelSystemCallMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getEntryLevelSystemCallMeasuringPoint());
 
-        mp.setEntryLevelSystemCall(entryLevelSystemCall);
-        mp.setStringRepresentation(entryLevelSystemCall.getEntityName());
-        mp.setResourceURIRepresentation(
+        entryLevelSystemCallMeasuringPoint.setEntryLevelSystemCall(entryLevelSystemCall);
+        entryLevelSystemCallMeasuringPoint.setStringRepresentation(entryLevelSystemCall.getEntityName());
+        entryLevelSystemCallMeasuringPoint.setResourceURIRepresentation(
                 entryLevelSystemCall.eResource().getURI().toString() + "#" + entryLevelSystemCall.getId());
-        return mp;
+        return entryLevelSystemCallMeasuringPoint;
     }
 
     @Override
     public MeasuringPoint caseExternalCallAction(ExternalCallAction externalCallAction) {
-        ExternalCallActionMeasuringPoint mp = (ExternalCallActionMeasuringPoint) pcmMeasuringPointFactory
+        ExternalCallActionMeasuringPoint externalCallActionMeasuringPoint = (ExternalCallActionMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getExternalCallActionMeasuringPoint());
 
-        mp.setExternalCall(externalCallAction);
-        mp.setStringRepresentation(externalCallAction.getEntityName());
-        mp.setResourceURIRepresentation(
+        externalCallActionMeasuringPoint.setExternalCall(externalCallAction);
+        externalCallActionMeasuringPoint.setStringRepresentation(externalCallAction.getEntityName());
+        externalCallActionMeasuringPoint.setResourceURIRepresentation(
                 externalCallAction.eResource().getURI().toString() + "#" + externalCallAction.getId());
-        return mp;
+        return externalCallActionMeasuringPoint;
     }
 
     @Override
     public MeasuringPoint caseLinkingResource(LinkingResource linkingResource) {
-        LinkingResourceMeasuringPoint mp = (LinkingResourceMeasuringPoint) pcmMeasuringPointFactory
+        LinkingResourceMeasuringPoint linkingResourceMeasuringPoint = (LinkingResourceMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getLinkingResourceMeasuringPoint());
 
-        mp.setLinkingResource(linkingResource);
-        mp.setStringRepresentation(linkingResource.getEntityName());
-        mp.setResourceURIRepresentation(
+        linkingResourceMeasuringPoint.setLinkingResource(linkingResource);
+        linkingResourceMeasuringPoint.setStringRepresentation(linkingResource.getEntityName());
+        linkingResourceMeasuringPoint.setResourceURIRepresentation(
                 linkingResource.eResource().getURI().toString() + "#" + linkingResource.getId());
-        return mp;
+        return linkingResourceMeasuringPoint;
     }
 
     @Override
     public MeasuringPoint caseResourceEnvironment(ResourceEnvironment resourceEnvironment) {
-        ResourceEnvironmentMeasuringPoint mp = (ResourceEnvironmentMeasuringPoint) pcmMeasuringPointFactory
+        ResourceEnvironmentMeasuringPoint resourceEnvironmentMeasuringPoint = (ResourceEnvironmentMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getResourceEnvironmentMeasuringPoint());
 
-        mp.setResourceEnvironment(resourceEnvironment);
-        mp.setStringRepresentation(resourceEnvironment.getEntityName());
-        mp.setResourceURIRepresentation(resourceEnvironment.eResource().getURI().toString() + "#/0");
-        return mp;
+        resourceEnvironmentMeasuringPoint.setResourceEnvironment(resourceEnvironment);
+        resourceEnvironmentMeasuringPoint.setStringRepresentation(resourceEnvironment.getEntityName());
+        resourceEnvironmentMeasuringPoint
+                .setResourceURIRepresentation(resourceEnvironment.eResource().getURI().toString() + "#/0");
+        return resourceEnvironmentMeasuringPoint;
     }
 
     @Override
     public MeasuringPoint caseSubSystem(SubSystem subSystem) {
         OperationSignature operationSignature = (OperationSignature) thirdStageModel;
         Role role = (Role) secondStageModel;
-        SubSystemOperationMeasuringPoint mp = pcmMeasuringPointFactory.createSubSystemOperationMeasuringPoint();
+        SubSystemOperationMeasuringPoint subSystemOperationMeasuringPoint = pcmMeasuringPointFactory
+                .createSubSystemOperationMeasuringPoint();
 
-        mp.setSubsystem(subSystem);
-        mp.setOperationSignature(operationSignature);
-        mp.setRole(role);
-        mp.setStringRepresentation(subSystem.getEntityName());
-        mp.setResourceURIRepresentation((subSystem.eResource().getURI().toString() + "#" + subSystem.getId()));
-        return mp;
+        subSystemOperationMeasuringPoint.setSubsystem(subSystem);
+        subSystemOperationMeasuringPoint.setOperationSignature(operationSignature);
+        subSystemOperationMeasuringPoint.setRole(role);
+        subSystemOperationMeasuringPoint.setStringRepresentation(subSystem.getEntityName());
+        subSystemOperationMeasuringPoint
+                .setResourceURIRepresentation((subSystem.eResource().getURI().toString() + "#" + subSystem.getId()));
+        return subSystemOperationMeasuringPoint;
     }
 
     @Override
     public MeasuringPoint caseSystem(System system) {
         OperationSignature operationSignature = (OperationSignature) thirdStageModel;
         Role role = (Role) secondStageModel;
-        SystemOperationMeasuringPoint mp = pcmMeasuringPointFactory.createSystemOperationMeasuringPoint();
+        SystemOperationMeasuringPoint systemOperationMeasuringPoint = pcmMeasuringPointFactory
+                .createSystemOperationMeasuringPoint();
 
-        mp.setSystem(system);
-        mp.setOperationSignature(operationSignature);
-        mp.setRole(role);
-        mp.setStringRepresentation(system.getEntityName());
-        mp.setResourceURIRepresentation(system.eResource().getURI().toString() + "#" + system.getId());
-        return mp;
+        systemOperationMeasuringPoint.setSystem(system);
+        systemOperationMeasuringPoint.setOperationSignature(operationSignature);
+        systemOperationMeasuringPoint.setRole(role);
+        systemOperationMeasuringPoint.setStringRepresentation(system.getEntityName());
+        systemOperationMeasuringPoint
+                .setResourceURIRepresentation(system.eResource().getURI().toString() + "#" + system.getId());
+        return systemOperationMeasuringPoint;
     }
 
     @Override
     public MeasuringPoint caseUsageScenario(UsageScenario usageScenario) {
-        UsageScenarioMeasuringPoint mp = (UsageScenarioMeasuringPoint) pcmMeasuringPointFactory
+        UsageScenarioMeasuringPoint usageScenarioMeasuringPoint = (UsageScenarioMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getUsageScenarioMeasuringPoint());
 
-        mp.setUsageScenario(usageScenario);
-        mp.setStringRepresentation(usageScenario.getEntityName());
-        mp.setResourceURIRepresentation(usageScenario.eResource().getURI().toString() + "#" + usageScenario.getId());
-        return mp;
+        usageScenarioMeasuringPoint.setUsageScenario(usageScenario);
+        usageScenarioMeasuringPoint.setStringRepresentation(usageScenario.getEntityName());
+        usageScenarioMeasuringPoint.setResourceURIRepresentation(
+                usageScenario.eResource().getURI().toString() + "#" + usageScenario.getId());
+        return usageScenarioMeasuringPoint;
     }
 
     @Override
     public MeasuringPoint caseResourceContainer(ResourceContainer resourceContainer) {
-        ResourceContainerMeasuringPoint mp = (ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
+        ResourceContainerMeasuringPoint resourceContainerMeasuringPoint = (ResourceContainerMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getResourceContainerMeasuringPoint());
-        mp.setResourceContainer(resourceContainer);
-        mp.setStringRepresentation(resourceContainer.getEntityName());
-        mp.setResourceURIRepresentation(
+        resourceContainerMeasuringPoint.setResourceContainer(resourceContainer);
+        resourceContainerMeasuringPoint.setStringRepresentation(resourceContainer.getEntityName());
+        resourceContainerMeasuringPoint.setResourceURIRepresentation(
                 resourceContainer.eResource().getURI().toString() + "#" + resourceContainer.getId());
-        return mp;
+        return resourceContainerMeasuringPoint;
     }
 
     @Override
     public MeasuringPoint caseProcessingResourceSpecification(
             ProcessingResourceSpecification processingResourceSpecification) {
-        ActiveResourceMeasuringPoint mp = (ActiveResourceMeasuringPoint) pcmMeasuringPointFactory
+        ActiveResourceMeasuringPoint activeResourceMeasuringPoint = (ActiveResourceMeasuringPoint) pcmMeasuringPointFactory
                 .create(PcmmeasuringpointPackage.eINSTANCE.getActiveResourceMeasuringPoint());
 
-        mp.setActiveResource(processingResourceSpecification);
-        mp.setStringRepresentation(
+        activeResourceMeasuringPoint.setActiveResource(processingResourceSpecification);
+        activeResourceMeasuringPoint.setStringRepresentation(
                 processingResourceSpecification.getActiveResourceType_ActiveResourceSpecification().getEntityName());
-        mp.setResourceURIRepresentation(processingResourceSpecification.eResource().getURI().toString() + "#"
-                + processingResourceSpecification.getId());
-        return mp;
+        activeResourceMeasuringPoint
+                .setResourceURIRepresentation(processingResourceSpecification.eResource().getURI().toString() + "#"
+                        + processingResourceSpecification.getId());
+        return activeResourceMeasuringPoint;
     }
 }

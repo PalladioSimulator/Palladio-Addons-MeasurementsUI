@@ -22,10 +22,9 @@ public class TextProviderSwitch extends MeasurementsSwitch<String> {
 
     @Override
     public String caseProcessingResourceSpecification(ProcessingResourceSpecification processingResourceSpecification) {
-        return (processingResourceSpecification)
-                .getActiveResourceType_ActiveResourceSpecification().getEntityName() + LOCATED_IN
-                + (processingResourceSpecification)
-                        .getResourceContainer_ProcessingResourceSpecification().getEntityName();
+        return (processingResourceSpecification).getActiveResourceType_ActiveResourceSpecification().getEntityName()
+                + LOCATED_IN + (processingResourceSpecification).getResourceContainer_ProcessingResourceSpecification()
+                        .getEntityName();
     }
 
     @Override
@@ -50,38 +49,32 @@ public class TextProviderSwitch extends MeasurementsSwitch<String> {
     public String caseExternalCallAction(ExternalCallAction externalCallAction) {
         NamedElement resourceDemandingBehaviour = (NamedElement) (externalCallAction)
                 .getResourceDemandingBehaviour_AbstractAction().eContainer();
-        ResourceDemandingSEFF resourceDemandingSEFF = (ResourceDemandingSEFF) ( externalCallAction)
-                .eContainer();
-        return (externalCallAction).getEntityName() + FROM_THE
-                + resourceDemandingSEFF.toString().replace(TRANSIENT, "") + LOCATED_IN
-                + resourceDemandingBehaviour.getEntityName();
+        ResourceDemandingSEFF resourceDemandingSEFF = (ResourceDemandingSEFF) (externalCallAction).eContainer();
+        return (externalCallAction).getEntityName() + FROM_THE + resourceDemandingSEFF.toString().replace(TRANSIENT, "")
+                + LOCATED_IN + resourceDemandingBehaviour.getEntityName();
     }
 
     @Override
     public String caseEntryLevelSystemCall(EntryLevelSystemCall entryLevelSystemCall) {
-        if ((entryLevelSystemCall).getScenarioBehaviour_AbstractUserAction()
-                .eContainer() instanceof BranchTransition) {
-            BranchTransition branchTransition = (BranchTransition) ( entryLevelSystemCall)
+        if ((entryLevelSystemCall).getScenarioBehaviour_AbstractUserAction().eContainer() instanceof BranchTransition) {
+            BranchTransition branchTransition = (BranchTransition) (entryLevelSystemCall)
                     .getScenarioBehaviour_AbstractUserAction().eContainer();
-            ScenarioBehaviour scenarioBehaviour = ( entryLevelSystemCall)
-                    .getScenarioBehaviour_AbstractUserAction();
-            return ( entryLevelSystemCall).getEntityName() + FROM_THE
-                    + scenarioBehaviour.getEntityName() + LOCATED_IN
+            ScenarioBehaviour scenarioBehaviour = (entryLevelSystemCall).getScenarioBehaviour_AbstractUserAction();
+            return (entryLevelSystemCall).getEntityName() + FROM_THE + scenarioBehaviour.getEntityName() + LOCATED_IN
                     + branchTransition.toString().replace(TRANSIENT, "");
         } else {
-            NamedElement scenarioBehaviourContainer = (NamedElement) ( entryLevelSystemCall)
+            NamedElement scenarioBehaviourContainer = (NamedElement) (entryLevelSystemCall)
                     .getScenarioBehaviour_AbstractUserAction().eContainer();
-            ScenarioBehaviour scenarioBehaviour = ( entryLevelSystemCall)
-                    .getScenarioBehaviour_AbstractUserAction();
-            return (entryLevelSystemCall).getEntityName() + FROM_THE
-                    + scenarioBehaviour.getEntityName() + LOCATED_IN + scenarioBehaviourContainer.getEntityName();
+            ScenarioBehaviour scenarioBehaviour = (entryLevelSystemCall).getScenarioBehaviour_AbstractUserAction();
+            return (entryLevelSystemCall).getEntityName() + FROM_THE + scenarioBehaviour.getEntityName() + LOCATED_IN
+                    + scenarioBehaviourContainer.getEntityName();
         }
     }
 
     @Override
     public String caseUsageScenario(UsageScenario usageScenario) {
-        return ( usageScenario).getEntityName() + LOCATED_IN
-                + ( usageScenario).getUsageModel_UsageScenario().toString().replace(TRANSIENT, "");
+        return (usageScenario).getEntityName() + LOCATED_IN
+                + (usageScenario).getUsageModel_UsageScenario().toString().replace(TRANSIENT, "");
     }
 
     @Override

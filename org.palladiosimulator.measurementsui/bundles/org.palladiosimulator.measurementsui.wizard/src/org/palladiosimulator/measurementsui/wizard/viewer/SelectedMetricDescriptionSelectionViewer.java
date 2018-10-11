@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
-import org.palladio.simulator.measurementsui.selectmeasurements.emptyview.EmptyviewInjectorProvider;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
+import org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected.SelectedInjectorProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 
@@ -23,7 +23,7 @@ public class SelectedMetricDescriptionSelectionViewer extends WizardTableViewer 
 
 	@Override
 	protected void initInjector() {
-		this.injector = EmptyviewInjectorProvider.getInjector();
+		this.injector = SelectedInjectorProvider.getInjector();
 	}
 
 	@Override

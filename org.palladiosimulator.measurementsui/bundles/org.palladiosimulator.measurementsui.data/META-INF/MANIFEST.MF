@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.sirius;bundle-version="5.1.1",
  org.eclipse.emf.transaction,
  org.palladiosimulator.pcm.edp2.measuringpoint,
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ org.slf4j.api
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: HelloWorldMenu
 Bundle-ActivationPolicy: lazy
@@ -28,5 +29,4 @@ Export-Package: org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.util,
  org.palladiosimulator.measurementsui.wizardmodel,
  org.palladiosimulator.measurementsui.wizardmodel.pages
-Import-Package: org.palladiosimulator.measurementsui.extensionpoint.evaluation,
- org.slf4j;version="1.7.2"
+Import-Package: org.palladiosimulator.measurementsui.extensionpoint.evaluation

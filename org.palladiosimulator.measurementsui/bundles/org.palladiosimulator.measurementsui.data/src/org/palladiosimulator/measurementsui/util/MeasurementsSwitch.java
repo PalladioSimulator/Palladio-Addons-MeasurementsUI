@@ -245,7 +245,7 @@ public class MeasurementsSwitch<T> {
      * 
      * @param branchTransition
      *            the given branch transition
-     * @return T 
+     * @return T
      */
     public T caseBranchTransition(BranchTransition branchTransition) {
 
@@ -448,7 +448,8 @@ public class MeasurementsSwitch<T> {
     /**
      * The default case. You should override it and add your own logic before using the switch.
      * 
-     * @param eObject the given EObject
+     * @param eObject
+     *            the given EObject
      * @return T
      */
     public T defaultCase(EObject eObject) {
