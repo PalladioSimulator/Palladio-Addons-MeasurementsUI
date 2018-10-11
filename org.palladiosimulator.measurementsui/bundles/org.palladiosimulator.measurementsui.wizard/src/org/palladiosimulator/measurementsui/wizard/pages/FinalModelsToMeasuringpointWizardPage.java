@@ -26,7 +26,6 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
     private TreeViewer finalSelectionTreeViewer;
     private MeasuringPointSelectionWizardModel selectionWizardModel;
 
-
     /**
      * the constructor with the needed wizard model
      * 

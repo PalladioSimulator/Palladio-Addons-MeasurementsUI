@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.emf.parsley"
+            class="org.palladiosimulator.measurementsui.selectmetricdescriptions.available.AvailableExecutableExtensionFactory:org.palladiosimulator.measurementsui.selectmetricdescriptions.available.SelectAvailableMetricDescriptionsTableView"
+            id="org.palladiosimulator.measurementsui.selectmetricdescriptions.available"
+            name="SelectAvailableMetricDescriptions"
+            restorable="true">
+      </view>
+   </extension>
+</plugin>

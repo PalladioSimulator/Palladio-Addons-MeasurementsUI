@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizard.util.AlternativeMeasuringPointChildrenSwitch;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
@@ -30,21 +30,17 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
  *
  */
 public class AlternativeMeasuringPointContentProvider implements ITreeContentProvider {
-    private DataApplication dataApplication = DataApplication.getInstance();
+    private MeasuringPointSelectionWizardModel measuringPointWizardModel;
+
+    public AlternativeMeasuringPointContentProvider(MeasuringPointSelectionWizardModel measuringPointWizardModel) {
+        this.measuringPointWizardModel = measuringPointWizardModel;
+
+    }
 
     @Override
     public Object[] getElements(Object inputElement) {
 
-        List<Object> elementList = new LinkedList<>();
-
-        elementList.addAll(dataApplication.getModelAccessor().getRepository().stream().filter(
-                e -> (!e.getEntityName().equals("FailureTypes")) && (!e.getEntityName().equals("PrimitiveDataTypes")))
-                .collect(Collectors.toCollection(LinkedList::new)));
-
-        elementList.addAll(dataApplication.getModelAccessor().getResourceEnvironment());
-        elementList.addAll(dataApplication.getModelAccessor().getSubSystem());
-        elementList.addAll(dataApplication.getModelAccessor().getSystem());
-        elementList.addAll(dataApplication.getModelAccessor().getUsageModel());
+        List<Object> elementList = measuringPointWizardModel.getAlternativeModels();
         return elementList.toArray();
     }
 

@@ -151,7 +151,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
             }
 
         });
-        AlternativeMeasuringPointContentProvider createContentProvider = new AlternativeMeasuringPointContentProvider();
+        AlternativeMeasuringPointContentProvider createContentProvider = new AlternativeMeasuringPointContentProvider(
+                selectionWizardModel);
         PatternFilter filter = new PatternFilter();
         FilteredTree tree = new FilteredTree(createMPcomposite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL, filter, true);
         createTreeViewer = tree.getViewer();
@@ -368,7 +369,8 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
     private void changeViewToHierarchical() {
         AlternativeMeasuringPointLabelProvider createLabelProvider = new AlternativeMeasuringPointLabelProvider();
         createTreeViewer.setLabelProvider(createLabelProvider);
-        AlternativeMeasuringPointContentProvider createContentProvider = new AlternativeMeasuringPointContentProvider();
+        AlternativeMeasuringPointContentProvider createContentProvider = new AlternativeMeasuringPointContentProvider(
+                selectionWizardModel);
         createTreeViewer.setContentProvider(createContentProvider);
 
         createTreeViewer.getTree().update();

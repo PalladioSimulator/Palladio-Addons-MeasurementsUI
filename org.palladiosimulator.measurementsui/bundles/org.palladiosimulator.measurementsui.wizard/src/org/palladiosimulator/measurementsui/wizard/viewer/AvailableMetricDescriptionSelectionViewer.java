@@ -5,9 +5,9 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
+import org.palladiosimulator.measurementsui.selectmetricdescriptions.available.AvailableInjectorProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
-import tableform.TableformInjectorProvider;
 
 /**
  * Generates a table view where all MeasurementSpecifications of a monitor are shown
@@ -30,7 +30,7 @@ public class AvailableMetricDescriptionSelectionViewer extends WizardTableViewer
 
     @Override
     protected void initInjector() {
-        this.injector = TableformInjectorProvider.getInjector();
+        this.injector = AvailableInjectorProvider.getInjector();
     }
 
     @Override

@@ -1,0 +1,38 @@
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
+import org.palladiosimulator.monitorrepository.MeasurementSpecification
+import org.palladiosimulator.measurementsui.processingtype.ProcessingtypeSaveableTableView
+
+/* org.palladiosimulator.measurementsui.measurementspecification EMF Parsley Dsl Module file */
+module org.palladiosimulator.measurementsui.processingtype {
+	
+	parts {
+		viewpart org.palladiosimulator.measurementsui.processingtype {
+			viewname "Processingtype"
+			viewclass ProcessingtypeSaveableTableView
+		}
+	}
+	
+	configurator {
+		eClass {
+			ProcessingtypeSaveableTableView -> {
+				return MonitorRepositoryPackage.eINSTANCE.measurementSpecification
+			}
+		}
+	}
+	
+	resourceManager {
+		initializeResource {
+		it.getContents += MonitorRepositoryFactory.eINSTANCE; 
+		}
+		saveResource{
+			it.save(null) 
+			return true; 
+		}
+	}
+	featuresProvider{
+		features{
+			MeasurementSpecification -> metricDescription, metricDescription, metricDescription, metricDescription
+		}
+	}
+}
