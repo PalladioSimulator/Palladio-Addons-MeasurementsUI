@@ -25,7 +25,6 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
     
     protected MDirtyable dirty;
     protected ECommandService commandService;
-    protected DataApplication dataApplication;
 
     /**
      * 
@@ -35,14 +34,13 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
      *            the dirty state which indicates whether there were changes made in the viewer
      * @param commandService
      *            a service of the eclipse application in order to make the tree view saveable
-     * @param dataApplication
+     * @param modelRepository
      *            the connection to the data binding. This is needed in order to get the repository
      *            of the current project.
      */
     protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-            DataApplication dataApplication) {
-        super(parent);
-        this.dataApplication = dataApplication;
+            EObject modelRepository) {
+        super(parent, modelRepository);
         initEditingDomain();
         initParsley(parent);
         initContextMenu();

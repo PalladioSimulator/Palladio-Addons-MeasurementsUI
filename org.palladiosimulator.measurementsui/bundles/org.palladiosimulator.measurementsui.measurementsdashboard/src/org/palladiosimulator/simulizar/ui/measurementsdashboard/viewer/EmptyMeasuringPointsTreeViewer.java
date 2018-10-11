@@ -38,16 +38,8 @@ public class EmptyMeasuringPointsTreeViewer extends MeasurementsTreeViewer {
      *            the current project.
      */
     public EmptyMeasuringPointsTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-            DataApplication application) {
-        super(parent, dirty, commandService, application);
-    }
-
-    @Override
-    protected Optional<EObject> getModelRepository() {
-        if(dataApplication.getModelAccessor().measuringPointRepositoryExists()) {
-            return Optional.of((EObject)dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
-        }
-        return Optional.empty();
+            MeasuringPointRepository repository) {
+        super(parent, dirty, commandService, repository);
     }
 
     @Override
