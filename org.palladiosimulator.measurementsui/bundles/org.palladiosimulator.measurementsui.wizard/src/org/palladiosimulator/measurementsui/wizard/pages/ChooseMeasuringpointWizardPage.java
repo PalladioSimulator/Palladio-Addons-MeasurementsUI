@@ -13,6 +13,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,6 +22,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.TreeItem;
@@ -434,6 +436,20 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
                 || item instanceof AssemblyContext || item instanceof EntryLevelSystemCall
                 || item instanceof ExternalCallAction || item instanceof LinkingResource || item instanceof SubSystem
                 || item instanceof org.palladiosimulator.pcm.system.System || item instanceof UsageScenario;
+    }
+    
+    @Override
+    public void performHelp() {
+        Shell shell = new Shell(getShell());
+        shell.setText("SimuLizar Usability Extension SDQ-Wiki");
+        shell.setLayout(new GridLayout());
+        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        Browser browser = new Browser(shell, SWT.NONE);
+        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measuring_Point_Selection_Page");
+        browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        shell.open();
     }
 
 }

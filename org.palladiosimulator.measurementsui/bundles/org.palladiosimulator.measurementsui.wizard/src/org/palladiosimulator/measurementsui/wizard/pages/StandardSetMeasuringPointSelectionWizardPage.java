@@ -10,10 +10,12 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -250,6 +252,20 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
         column.setResizable(true);
         column.setMoveable(true);
         return viewerColumn;
+    }
+    
+    @Override
+    public void performHelp() {
+        Shell shell = new Shell(getShell());
+        shell.setText("SimuLizar Usability Extension SDQ-Wiki");
+        shell.setLayout(new GridLayout());
+        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        Browser browser = new Browser(shell, SWT.NONE);
+        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Standard_Set_Functionality");
+        browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        shell.open();
     }
 
 }

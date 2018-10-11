@@ -7,8 +7,12 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.FinalMeasuringpointContentProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AdditionalMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
@@ -95,5 +99,19 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
                 .setCurrentThirdStageModel(finalSelectionTreeViewer.getStructuredSelection().getFirstElement());
         selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
         return true;
+    }
+    
+    @Override
+    public void performHelp() {
+        Shell shell = new Shell(getShell());
+        shell.setText("SimuLizar Usability Extension SDQ-Wiki");
+        shell.setLayout(new GridLayout());
+        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        Browser browser = new Browser(shell, SWT.NONE);
+        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measuring_Point_Selection_Page");
+        browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        shell.open();
     }
 }

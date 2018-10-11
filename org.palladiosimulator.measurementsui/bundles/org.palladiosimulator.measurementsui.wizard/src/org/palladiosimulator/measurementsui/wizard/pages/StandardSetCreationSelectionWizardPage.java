@@ -2,8 +2,12 @@ package org.palladiosimulator.measurementsui.wizard.pages;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Wizard page for the creation of standard sets. This is the first page on which you choose what
@@ -64,6 +68,20 @@ public class StandardSetCreationSelectionWizardPage extends WizardPage {
             return page2;
         }
 
+    }
+    
+    @Override
+    public void performHelp() {
+        Shell shell = new Shell(getShell());
+        shell.setText("SimuLizar Usability Extension SDQ-Wiki");
+        shell.setLayout(new GridLayout());
+        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        Browser browser = new Browser(shell, SWT.NONE);
+        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Standard_Set_Functionality");
+        browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+        shell.open();
     }
 
 }
