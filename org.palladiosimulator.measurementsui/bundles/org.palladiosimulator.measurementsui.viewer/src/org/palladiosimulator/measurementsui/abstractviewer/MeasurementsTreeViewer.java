@@ -27,8 +27,8 @@ public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
 	 *                        changes made in the viewer
 	 * @param commandService  a service of the eclipse application in order to make
 	 *                        the tree view saveable
-	 * @param dataApplication the connection to the data binding. This is needed in
-	 *                        order to get the repository of the current project.
+	 * @param modelRepository
+     * 			  EObject which is shown in the view
 	 */
 	public MeasurementsTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
 			EObject modelRepository) {

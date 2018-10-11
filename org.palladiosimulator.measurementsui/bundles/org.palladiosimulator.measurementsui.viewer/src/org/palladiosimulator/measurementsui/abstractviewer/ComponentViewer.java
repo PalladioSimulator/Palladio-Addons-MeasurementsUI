@@ -24,6 +24,13 @@ public abstract class ComponentViewer {
     protected EditingDomain editingDomain;
     protected EObject modelRepository;
 
+    /**
+     * @param parent
+     *            container where the tree viewer is placed in
+     * @param modelRepository
+     * 			  EObject which is shown in the view
+     *            
+     */
     public ComponentViewer(Composite parent, EObject modelRepository) {
     	this.modelRepository = modelRepository;
 		initInjector();
@@ -43,7 +50,7 @@ public abstract class ComponentViewer {
      * 
      * @return the repository of the current view. For Example the monitorrepository
      */
-    protected EObject getModelRepository(){
+    protected EObject getModelRepository() {
     	return modelRepository;
     }
 

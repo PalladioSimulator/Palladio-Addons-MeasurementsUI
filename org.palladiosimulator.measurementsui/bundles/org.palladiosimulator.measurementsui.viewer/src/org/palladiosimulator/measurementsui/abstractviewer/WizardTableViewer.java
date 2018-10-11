@@ -24,11 +24,11 @@ public abstract class WizardTableViewer extends ComponentViewer {
      * 
      * @param parent
      *            the container where the tree viewer is placed in
-     * @param wizardModel
-     *            the connection to temporary data created in the wizard.
+     * @param modelRepository
+     * 			  EObject which is shown in the view
      */
-    protected WizardTableViewer(Composite parent, EObject measurement) {
-        super(parent, measurement);
+    protected WizardTableViewer(Composite parent, EObject modelRepository) {
+        super(parent, modelRepository);
     }
 
     @Override

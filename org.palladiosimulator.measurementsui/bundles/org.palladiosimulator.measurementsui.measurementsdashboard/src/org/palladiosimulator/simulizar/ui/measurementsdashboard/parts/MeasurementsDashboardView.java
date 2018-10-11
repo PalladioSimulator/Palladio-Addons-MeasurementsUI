@@ -161,6 +161,9 @@ public class MeasurementsDashboardView {
         handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
         handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
         handlerService.activateHandler(REFRESH_COMMAND, new RefreshHandler());
+        
+        commandService.getCommand(UNDO_COMMAND).isEnabled();
+        commandService.getCommand(REDO_COMMAND).isEnabled();
     }
 
     /**
@@ -168,8 +171,8 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
-            dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0),0);
+        if (!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+            dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0), 0);
         }
     }
 
@@ -620,8 +623,8 @@ public class MeasurementsDashboardView {
      * Undos all changes previously done on the dashboard
      */
     private void undoChanges() {
-        monitorTreeViewer.undo();
-        measuringTreeViewer.undo();
+        monitorTreeViewer.undoAll();
+        measuringTreeViewer.undoAll();
     }
 
     /**
