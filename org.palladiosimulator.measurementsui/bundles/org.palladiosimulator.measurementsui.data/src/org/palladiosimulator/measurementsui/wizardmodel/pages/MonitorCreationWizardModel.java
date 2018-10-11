@@ -1,6 +1,8 @@
 package org.palladiosimulator.measurementsui.wizardmodel.pages;
 
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
+import org.palladiosimulator.measurementsui.dataprovider.MonitorCreationProvider;
+import org.palladiosimulator.measurementsui.dataprovider.UnselectedMetricSpecificationsProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 
@@ -23,6 +25,7 @@ public class MonitorCreationWizardModel implements WizardModel {
 	
 	private Monitor monitor;
 	private boolean isEditing;
+	private MonitorCreationProvider provider;
 	
 	/**
 	 * Constructor
@@ -32,6 +35,7 @@ public class MonitorCreationWizardModel implements WizardModel {
 	 public MonitorCreationWizardModel(Monitor monitor, boolean isEditing) {
 		 this.monitor = monitor;
 		 this.isEditing = isEditing;
+		 this.provider = new MonitorCreationProvider();
 	}
 	 
 	 /**
@@ -57,11 +61,6 @@ public class MonitorCreationWizardModel implements WizardModel {
 	}
 
 	@Override
-	public boolean nextStep() {
-		return true;
-	}
-
-	@Override
 	public String getTitleText() {
 		if (this.monitor.getMonitorRepository() != null) {
 			return EDIT_MONITOR_TITEL;
@@ -78,8 +77,7 @@ public class MonitorCreationWizardModel implements WizardModel {
 	    if (!this.isEditing) {
     	    this.monitor.setEntityName(name);
 	    } else {    	    
-    	    ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
-    	    editor.setResourceName(this.monitor, name);
+    	    provider.setMonitorName(this.monitor, name);
 	    }
 	}
 
@@ -91,8 +89,7 @@ public class MonitorCreationWizardModel implements WizardModel {
 	    if (!this.isEditing) {
 	        this.monitor.setActivated(activatedOrNot);
 	    } else {
-	        ResourceEditorImpl editor = ResourceEditorImpl.getInstance();
-	        editor.changeMonitorActive(this.monitor, !activatedOrNot);
+	        provider.setMonitorActivatedValue(this.monitor, !activatedOrNot);
 	    }
 	}
 }

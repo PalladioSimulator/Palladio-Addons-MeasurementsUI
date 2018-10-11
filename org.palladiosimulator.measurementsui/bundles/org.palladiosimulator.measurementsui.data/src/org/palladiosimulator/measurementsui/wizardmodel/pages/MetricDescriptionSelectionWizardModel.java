@@ -63,11 +63,6 @@ public class MetricDescriptionSelectionWizardModel implements WizardModel {
         return STANDARD_INFORMATION_MESSAGE;
     }
 
-    @Override
-    public boolean nextStep() {
-        return true;
-    }
-
     /**
      * 
      * @return a monitor with all unused metric descriptions
