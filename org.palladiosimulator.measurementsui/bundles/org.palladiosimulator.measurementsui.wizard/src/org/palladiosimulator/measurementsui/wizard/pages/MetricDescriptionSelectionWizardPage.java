@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceAdapter;
@@ -23,11 +22,11 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.palladiosimulator.measurementsui.wizard.handlers.MetricDescriptionSelectionCheckboxCellModifier;
 import org.palladiosimulator.measurementsui.wizard.viewer.SelectedMetricDescriptionSelectionViewer;
 import org.palladiosimulator.measurementsui.wizard.viewer.AvailableMetricDescriptionSelectionViewer;
@@ -391,15 +390,6 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
     
     @Override
     public void performHelp() {
-        Shell shell = new Shell(getShell());
-        shell.setText("SimuLizar Usability Extension SDQ-Wiki");
-        shell.setLayout(new GridLayout());
-        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        Browser browser = new Browser(shell, SWT.NONE);
-        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Metric_Description_Selection_Page");
-        browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        shell.open();
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Metric_Description_Selection_Page");
     }
 }

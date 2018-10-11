@@ -4,12 +4,9 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypeDropDownEditingSupport;
 import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypePropertyEditingSupport;
@@ -131,15 +128,6 @@ public class ProcessingTypeSelectionWizardPage extends WizardPage {
 
 	@Override
     public void performHelp() {
-        Shell shell = new Shell(getShell());
-        shell.setText("SimuLizar Usability Extension SDQ-Wiki");
-        shell.setLayout(new GridLayout());
-        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        Browser browser = new Browser(shell, SWT.NONE);
-        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Processing_Type_Selection_Page");
-        browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        shell.open();
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Processing_Type_Selection_Page");
     }
 }
