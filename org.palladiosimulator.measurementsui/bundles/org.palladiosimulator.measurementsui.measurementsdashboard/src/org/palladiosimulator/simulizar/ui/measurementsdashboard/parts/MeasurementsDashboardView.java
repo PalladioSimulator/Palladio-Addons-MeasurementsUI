@@ -55,6 +55,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RedoHandler;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RefreshHandler;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.UndoHandler;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners.WorkspaceListener;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
@@ -97,6 +98,7 @@ public class MeasurementsDashboardView {
     private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
     private static final String UNDO_COMMAND = "org.eclipse.ui.edit.undo";
     private static final String REDO_COMMAND = "org.eclipse.ui.edit.redo";
+    private static final String REFRESH_COMMAND = "org.eclipse.ui.file.refresh";
     
     private final Logger logger = LoggerFactory.getLogger(MeasurementsDashboardView.class);
     
@@ -157,6 +159,7 @@ public class MeasurementsDashboardView {
         handlerService.activateHandler(SAVEALL_COMMAND, new SaveAllHandler());
         handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
         handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
+        handlerService.activateHandler(REFRESH_COMMAND, new RefreshHandler());
     }
 
     /**
@@ -600,6 +603,16 @@ public class MeasurementsDashboardView {
     public void updateMeasurementsDashboardView(IProject project) {
     	dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
     	updateTreeViewer();
+    }
+    
+    /**
+     * Updates the dashboard by reloading the data
+     * and refreshing the views
+     * @param project to update
+     */
+    public void updateMeasurementsDashboardView() {
+        dataApplication.updateData();
+        updateTreeViewer();
     }
   
     /**

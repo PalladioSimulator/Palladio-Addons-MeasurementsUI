@@ -36,6 +36,10 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
         this.provider = new ProcessingTypeProvider();
     }
 
+    /**
+     * Returns the monitor that is sued for the metrics
+     * @return monitor
+     */
     public Monitor getUsedMetricsMonitor() {
         return usedMetricsMonitor;
     }
@@ -48,12 +52,6 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
     @Override
     public String getInfoText() {
         return INFORMATION_MESSAGE;
-    }
-
-    @Override
-    public boolean nextStep() {
-        return false;
-
     }
 
     @Override
