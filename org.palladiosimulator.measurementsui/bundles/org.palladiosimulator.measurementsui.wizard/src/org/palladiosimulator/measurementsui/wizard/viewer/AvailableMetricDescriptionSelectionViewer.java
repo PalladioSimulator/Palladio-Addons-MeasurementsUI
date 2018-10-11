@@ -8,6 +8,8 @@ import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.selectmetricdescriptions.available.AvailableInjectorProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
+import org.palladiosimulator.monitorrepository.Monitor;
+
 
 /**
  * Generates a table view where all MeasurementSpecifications of a monitor are shown
@@ -24,19 +26,13 @@ public class AvailableMetricDescriptionSelectionViewer extends WizardTableViewer
      *            the connection to the data binding. This is needed in order to get the repository
      *            of the current project.
      */
-    public AvailableMetricDescriptionSelectionViewer(Composite parent, WizardModel wizardModel) {
-        super(parent, wizardModel);
+    public AvailableMetricDescriptionSelectionViewer(Composite parent, Monitor unusedMetricsMonitor) {
+        super(parent, unusedMetricsMonitor);
     }
 
     @Override
     protected void initInjector() {
         this.injector = AvailableInjectorProvider.getInjector();
-    }
-
-    @Override
-    protected Optional<EObject> getModelRepository() {
-        MetricDescriptionSelectionWizardModel model = (MetricDescriptionSelectionWizardModel) wizardModel;
-        return Optional.of(model.getUnusedMetricsMonitor());
     }
 
 }

@@ -8,6 +8,7 @@ import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.processingtype.ProcessingtypeInjectorProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
+import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
  * Generates a table view where all selected metrics from the 3rd wizard page are shown 
@@ -24,8 +25,8 @@ public class ProcessingTypeSelectionViewer extends WizardTableViewer {
 	 * @param dataApplication Connection to the data binding. This is needed in
 	 *                        order to get the repository of the current project.
 	 */
-	public ProcessingTypeSelectionViewer(Composite parent, WizardModel wizardModel) {
-		super(parent, wizardModel);
+	public ProcessingTypeSelectionViewer(Composite parent, Monitor usedMetricsMonitor) {
+		super(parent, usedMetricsMonitor);
 		
 	}
 
@@ -34,11 +35,4 @@ public class ProcessingTypeSelectionViewer extends WizardTableViewer {
 		this.injector = ProcessingtypeInjectorProvider.getInjector();
 		
 	}
-
-	@Override
-	protected Optional<EObject> getModelRepository() {
-	    ProcessingTypeSelectionWizardModel model = (ProcessingTypeSelectionWizardModel) wizardModel;
-        return Optional.of(model.getUsedMetricsMonitor());
-	}
-	
 }

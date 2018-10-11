@@ -103,7 +103,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         final Composite compositeLeft = new Composite(container, SWT.NONE);
         final FillLayout fillLayoutLeft = new FillLayout();
         final AvailableMetricDescriptionSelectionViewer selectMeasurementsViewerLeft = new AvailableMetricDescriptionSelectionViewer(compositeLeft,
-                metricDescriptionSelectionWizardModel);
+                metricDescriptionSelectionWizardModel.getUnusedMetricsMonitor());
         final TableViewer tableViewerLeft = (TableViewer) selectMeasurementsViewerLeft.getViewer();
         tableViewerLeft.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
         setLabelProvider(tableViewerLeft);
@@ -149,7 +149,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         final Composite compositeRight = new Composite(container, SWT.NONE);
         final FillLayout fillLayoutRight = new FillLayout();
         final SelectedMetricDescriptionSelectionViewer emptySelectMeasurementsViewerRight = new SelectedMetricDescriptionSelectionViewer(
-                compositeRight, metricDescriptionSelectionWizardModel);
+                compositeRight, metricDescriptionSelectionWizardModel.getUsedMetricsMonitor());
         final TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
         tableViewerRight.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
         setLabelProvider(tableViewerRight);
