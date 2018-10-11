@@ -7,7 +7,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.WizardTableViewer;
 import org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationInjectorProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
-import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 
 /**
