@@ -55,6 +55,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RedoHandler;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RefreshHandler;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.UndoHandler;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners.WorkspaceListener;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
@@ -71,15 +72,38 @@ import org.slf4j.LoggerFactory;
  */
 public class MeasurementsDashboardView {
 
-	private MeasurementsTreeViewer monitorTreeViewer;
-	private MeasurementsTreeViewer measuringTreeViewer;
-	private Combo projectsComboDropDown;
-	private Combo monitorRepositoriesComboDropDown;
-	private DataApplication dataApplication;
-	private Button deleteButton;
-	private Button editButton;
-	private MeasurementsFilter filter;
-	private Text searchText;
+    private MeasurementsTreeViewer monitorTreeViewer;
+    private MeasurementsTreeViewer measuringTreeViewer;
+    private Combo projectsComboDropDown;
+    private Combo monitorRepositoriesComboDropDown;
+    private DataApplication dataApplication;
+    private Button deleteButton;
+    private Button editButton;
+    private MeasurementsFilter filter;
+    private Text searchText;
+    
+    private static final String EDITTEXT_GRAYEDOUT = "Edit...";
+    private static final String DELETETEXT_GRAYEDOUT = "Delete...";
+    private static final String EDITTEXT_MONITOR = "Edit Monitor";
+    private static final String DELETETEXT_MONITOR = "Delete Monitor";
+    private static final String EDITTEXT_MEASUREMENT = "Edit Measurement";
+    private static final String DELETETEXT_MEASUREMENT = "Delete Measurement";
+    private static final String EDITTEXT_PROCESSINGTYPE = "Edit ProcessingType";
+    private static final String INFOTEXT_NO_PCM_MODELS = "You need to create your"
+            + " palladio core models before you can create measuring points."
+            + " They are used to model your systems architecture and characteristics."
+            + " Use the buttons on the toolbar on top to start creating.";
+    
+    private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
+    private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
+    private static final String UNDO_COMMAND = "org.eclipse.ui.edit.undo";
+    private static final String REDO_COMMAND = "org.eclipse.ui.edit.redo";
+    private static final String REFRESH_COMMAND = "org.eclipse.ui.file.refresh";
+    
+    private final Logger logger = LoggerFactory.getLogger(MeasurementsDashboardView.class);
+    
+    @Inject
+    private MDirtyable dirty;
 
 	private static final String EDITTEXT_GRAYEDOUT = "Edit...";
 	private static final String DELETETEXT_GRAYEDOUT = "Delete...";
@@ -137,7 +161,12 @@ public class MeasurementsDashboardView {
 		Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
 		buttonContainer.setLayout(new GridLayout(1, true));
 
-		outerContainer.setWeights(new int[] { 3, 1 });
+        handlerService.activateHandler(SAVE_COMMAND, new SaveHandler());
+        handlerService.activateHandler(SAVEALL_COMMAND, new SaveAllHandler());
+        handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
+        handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
+        handlerService.activateHandler(REFRESH_COMMAND, new RefreshHandler());
+    }
 
 		SashForm treeContainer = new SashForm(leftContainer, SWT.VERTICAL);
 		treeContainer.setLayout(new GridLayout(1, false));
@@ -489,10 +518,35 @@ public class MeasurementsDashboardView {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				projectsComboDropDown.select(0);
 
-			}
-		});
-		projectsComboDropDown.select(0);
-	}
+    }
+    
+    /**
+     * Updates the dashboard by reloading the data
+     * and refreshing the views
+     * @param project to update
+     */
+    public void updateMeasurementsDashboardView(IProject project) {
+    	dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
+    	updateTreeViewer();
+    }
+    
+    /**
+     * Updates the dashboard by reloading the data
+     * and refreshing the views
+     * @param project to update
+     */
+    public void updateMeasurementsDashboardView() {
+        dataApplication.updateData();
+        updateTreeViewer();
+    }
+  
+    /**
+     * Undos all changes previously done on the dashboard
+     */
+    private void undoChanges() {
+        monitorTreeViewer.undo();
+        measuringTreeViewer.undo();
+    }
 
 	/**
 	 * Creates the ComboBoxes for project and monitorRepository at the top of the

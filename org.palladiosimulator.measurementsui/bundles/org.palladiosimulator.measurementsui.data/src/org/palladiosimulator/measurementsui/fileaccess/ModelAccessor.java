@@ -3,6 +3,7 @@ package org.palladiosimulator.measurementsui.fileaccess;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -195,7 +196,7 @@ public class ModelAccessor {
      * @return boolean whether models exist or not
      */
     public boolean modelsExist() {
-        if(this.allocationList.isEmpty() && this.systemList.isEmpty() && this.subsystemList.isEmpty() &&
+        if (this.allocationList.isEmpty() && this.systemList.isEmpty() && this.subsystemList.isEmpty() &&
                 this.repositoryList.isEmpty() && this.resourceEnvironmentList.isEmpty() &&
                 this.usageModelList.isEmpty()){
             return false;
@@ -218,9 +219,22 @@ public class ModelAccessor {
      * 
      * @return boolean whether a monitorRepository exists
      */
-    public boolean measuringPointRepositoryExists() {
-      
+    public boolean measuringPointRepositoryExists() { 
         return (this.measuringPointRepositoryList != null && !this.measuringPointRepositoryList.isEmpty());
+    }
+    
+    /**
+     * Returns the monitorRepository given the ID
+     * @param id from the monitorRepository
+     * @return Optional<MonitorRepository>
+     */
+    public Optional<MonitorRepository> getMonitorRepositoryByID(String id) {
+        for (MonitorRepository monitorRepository : monitorRepositoryList) {
+            if (monitorRepository.getId().equals(id)) {
+                return Optional.of(monitorRepository);
+            }
+        }
+        return Optional.empty();
     }
 
     /**

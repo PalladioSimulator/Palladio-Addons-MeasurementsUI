@@ -17,11 +17,6 @@ public interface WizardModel {
 	 */
 	public String getInfoText();
 
-	/**
-	 * 
-	 * @return true if all necessary attributes in these model are set and the user can click next
-	 */
-	public boolean nextStep();
 	
 	/**
 	 * @return the title of the wizard page
