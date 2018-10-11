@@ -103,11 +103,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         return CREATE_MEASURINGPOINT_INFO_TEXT;
     }
 
-    @Override
-    public boolean nextStep() {
-        return false;
-    }
-
     /**
      * returns the title text of the wizard page
      */

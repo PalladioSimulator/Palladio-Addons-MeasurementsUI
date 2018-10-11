@@ -40,31 +40,45 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
      * Represents the first wizard page, where the new monitor defined (name +
      * activated/deactivated)
      */
-    private MonitorCreationWizardPage page1;
+    private MonitorCreationWizardPage monitorCreationWizardPage1;
 
     /**
      * 2.Page
      * Represents the 2nd wizard page, where the user selects either an existing measuring point for
      * the new monitor or creates a new one.
      */
-    private ChooseMeasuringpointWizardPage page2;
+    private ChooseMeasuringpointWizardPage chooseMeasuringpointWizardPage2;
+    
+    /**
+     * 2_2. Page
+     * Represents the first extra page to page 2. There are some exceptions, where the user
+     * has to select further models after creating a measuring point. In these cases
+     * this page will be shown.
+     */
+    private AdditionalModelsToMeasuringpointWizardPage additionalModelsToMeasuringpointWizardPage2_2;
+    
+    /**
+     * 2_3. Page
+     * Represents the second extra page to page 2. There are rare exceptions, where the user
+     * has to select further models after selecting something in the 2_2 extra page. In these cases
+     * this page will be shown.
+     */
+    private FinalModelsToMeasuringpointWizardPage finalModelsToMeasuringpointWizardPage2_3;
 
     /**
      * 3.Page
-     * Represents the 3rd wizard page, where the user selects measurements which are then assigned
+     * Represents the 3rd wizard page, where the user selects metrics which are then assigned
      * to the monitor
      */
-    private MetricDescriptionSelectionWizardPage page3;
+    private MetricDescriptionSelectionWizardPage metricDescriptionSelectionWizardPage3;
 
     /**
      * Represents the 4th wizard page, where the user can set properties for the selected
-     * measurements.
+     * metrics.
      */
-    private ProcessingTypeSelectionWizardPage page4;
+    private ProcessingTypeSelectionWizardPage processingTypeSelectionWizardPage4;
 
-    private AdditionalModelsToMeasuringpointWizardPage page2extra;
-
-    private FinalModelsToMeasuringpointWizardPage page2final;
+    
 
     /**
      * The width used for the wizard window
@@ -132,20 +146,20 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     }
 
     private void createPages() {
-        page1 = new MonitorCreationWizardPage(
+        monitorCreationWizardPage1 = new MonitorCreationWizardPage(
                 (MonitorCreationWizardModel) wizardManager.getWizardModel(WizardModelType.MONITOR_CREATION));
         
-        page2 = new ChooseMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
+        chooseMeasuringpointWizardPage2 = new ChooseMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.MEASURING_POINT_SELECTION));
-        page2extra = new AdditionalModelsToMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
+        additionalModelsToMeasuringpointWizardPage2_2 = new AdditionalModelsToMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.MEASURING_POINT_SELECTION));
-        page2final = new FinalModelsToMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
+        finalModelsToMeasuringpointWizardPage2_3 = new FinalModelsToMeasuringpointWizardPage((MeasuringPointSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.MEASURING_POINT_SELECTION));
         
-        page3 = new MetricDescriptionSelectionWizardPage((MetricDescriptionSelectionWizardModel) wizardManager
+        metricDescriptionSelectionWizardPage3 = new MetricDescriptionSelectionWizardPage((MetricDescriptionSelectionWizardModel) wizardManager
                 .getWizardModel(WizardModelType.METRIC_DESCRIPTION_SELECTION));
         
-        page4 = new ProcessingTypeSelectionWizardPage(
+        processingTypeSelectionWizardPage4 = new ProcessingTypeSelectionWizardPage(
                 (ProcessingTypeSelectionWizardModel) wizardManager.getWizardModel(WizardModelType.PROCESSING_TYPE));
 
     }
@@ -154,27 +168,27 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     public IWizardPage getStartingPage() {
         switch (startingPage) {
         case MONITOR_CREATION:
-            return page1;
+            return monitorCreationWizardPage1;
         case MEASURING_POINT_SELECTION:
-            return page2;
+            return chooseMeasuringpointWizardPage2;
         case METRIC_DESCRIPTION_SELECTION:
-            return page3;
+            return metricDescriptionSelectionWizardPage3;
         case PROCESSING_TYPE:
-            return page4;
+            return processingTypeSelectionWizardPage4;
         default:
-            return page1;
+            return monitorCreationWizardPage1;
         }
 
     }
 
     @Override
     public void addPages() {
-        addPage(page1);
-        addPage(page2);
-        addPage(page3);
-        addPage(page4);
-        addPage(page2extra);
-        addPage(page2final);
+        addPage(monitorCreationWizardPage1);
+        addPage(chooseMeasuringpointWizardPage2);
+        addPage(metricDescriptionSelectionWizardPage3);
+        addPage(processingTypeSelectionWizardPage4);
+        addPage(additionalModelsToMeasuringpointWizardPage2_2);
+        addPage(finalModelsToMeasuringpointWizardPage2_3);
     }
 
     @Override
@@ -185,7 +199,7 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
     
     @Override
     public boolean performFinish() {
-        page2.performAddingOperations();
+        chooseMeasuringpointWizardPage2.performAddingOperations();
         wizardManager.finish();
         return true;
     }
