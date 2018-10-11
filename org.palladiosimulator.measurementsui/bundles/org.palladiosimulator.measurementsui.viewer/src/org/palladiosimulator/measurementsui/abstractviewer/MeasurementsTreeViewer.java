@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasurementTreeDoubleClickListener;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
  * Creates a eclipse.swt TreeView based on a parsley TreeView project.

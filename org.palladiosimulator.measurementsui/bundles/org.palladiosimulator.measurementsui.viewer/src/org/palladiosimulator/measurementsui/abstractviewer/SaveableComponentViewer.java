@@ -41,10 +41,6 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
     protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
             EObject modelRepository) {
         super(parent, modelRepository);
-        initEditingDomain();
-        initParsley(parent);
-        initContextMenu();
-        initDragAndDrop();
         this.dirty = dirty;
         this.commandService = commandService;
     }

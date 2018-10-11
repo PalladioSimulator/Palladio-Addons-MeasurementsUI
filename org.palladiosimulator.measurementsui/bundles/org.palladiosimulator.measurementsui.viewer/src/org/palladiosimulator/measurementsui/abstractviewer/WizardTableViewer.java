@@ -29,8 +29,6 @@ public abstract class WizardTableViewer extends ComponentViewer {
      */
     protected WizardTableViewer(Composite parent, EObject measurement) {
         super(parent, measurement);
-        initEditingDomain();
-        initParsley(parent);
     }
 
     @Override

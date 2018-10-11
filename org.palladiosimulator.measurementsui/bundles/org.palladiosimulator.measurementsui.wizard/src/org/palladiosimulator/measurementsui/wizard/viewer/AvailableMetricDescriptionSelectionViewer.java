@@ -26,8 +26,8 @@ public class AvailableMetricDescriptionSelectionViewer extends WizardTableViewer
      *            the connection to the data binding. This is needed in order to get the repository
      *            of the current project.
      */
-    public AvailableMetricDescriptionSelectionViewer(Composite parent, Monitor usedMetricsMonitor) {
-        super(parent, usedMetricsMonitor);
+    public AvailableMetricDescriptionSelectionViewer(Composite parent, Monitor unusedMetricsMonitor) {
+        super(parent, unusedMetricsMonitor);
     }
 
     @Override

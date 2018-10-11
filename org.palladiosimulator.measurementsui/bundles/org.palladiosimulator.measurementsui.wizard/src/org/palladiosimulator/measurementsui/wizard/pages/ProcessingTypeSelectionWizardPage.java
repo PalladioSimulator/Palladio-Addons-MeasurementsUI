@@ -67,7 +67,7 @@ public class ProcessingTypeSelectionWizardPage extends WizardPage {
 		setControl(container);
 
 		final ProcessingTypeSelectionViewer measurementSpecificationViewer = new ProcessingTypeSelectionViewer(container,
-				this.processingTypeSelectionWizardModel);
+				processingTypeSelectionWizardModel.getUsedMetricsMonitor());
 		final TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
 		tableViewer.setLabelProvider(new ProcessingTypeSelectionLabelProvider(this.processingTypeSelectionWizardModel));
 		

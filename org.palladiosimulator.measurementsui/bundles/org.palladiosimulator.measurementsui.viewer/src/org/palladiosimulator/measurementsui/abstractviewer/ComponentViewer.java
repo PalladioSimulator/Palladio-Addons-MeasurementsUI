@@ -1,7 +1,5 @@
 package org.palladiosimulator.measurementsui.abstractviewer;
 
-import java.util.Optional;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
@@ -27,7 +25,12 @@ public abstract class ComponentViewer {
     protected EObject modelRepository;
 
     public ComponentViewer(Composite parent, EObject modelRepository) {
-		// TODO Auto-generated constructor stub
+    	this.modelRepository = modelRepository;
+		initInjector();
+		initEditingDomain();
+        initParsley(parent);
+        initContextMenu();
+        initDragAndDrop();
 	}
 
 	/**

@@ -204,7 +204,7 @@ public class MeasurementsDashboardView {
 	 */
 	private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
 		EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
-				dirty, commandService, dataApplication);
+				dirty, commandService, dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
 		emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
 		addSelectionListener(emptyMeasuringPointsTreeViewer);
 		return emptyMeasuringPointsTreeViewer;
