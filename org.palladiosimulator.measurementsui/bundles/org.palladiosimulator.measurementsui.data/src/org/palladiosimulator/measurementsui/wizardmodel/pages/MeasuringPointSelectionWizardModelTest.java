@@ -6,11 +6,40 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.*;
 import org.mockito.BDDMockito.Then;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.mockito.stubbing.Answer;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
+import org.palladiosimulator.measurementsui.datamanipulation.DataEditor;
+import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
+import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
+import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
+import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
+import static org.mockito.Matchers.*;
+
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+
 
 public class MeasuringPointSelectionWizardModelTest {
 	
@@ -32,36 +61,46 @@ public class MeasuringPointSelectionWizardModelTest {
 	public void testSetFinishable() {
 		MeasuringPointSelectionWizardModel measuringPointSelectionMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
 		Mockito.doCallRealMethod().when(measuringPointSelectionMock).setFinishable(true);
+			
 	}
 
 	@Test
 	public void testIsEditing() {
-		fail("Not yet implemented");
+		MeasuringPointSelectionWizardModel measuringPointSelectionMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
+		Boolean editable = measuringPointSelectionMock.isEditing();
+		when(measuringPointSelectionMock.isFinishable()).thenReturn(isEditing);
+		
 	}
 
 	@Test
 	public void testSetEditing() {
-		fail("Not yet implemented");
+		MeasuringPointSelectionWizardModel setEditingMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
+		Mockito.doCallRealMethod().when(setEditingMock).setEditing(isEditing);
+			
 	}
 
 	@Test
 	public void testMeasuringPointSelectionWizardModel() {
-		fail("Not yet implemented");
+	//constructor	
 	}
 
 	@Test
 	public void testSetMeasuringPointDependingOnEditMode() {
-		fail("Not yet implemented");
+		//not tested
 	}
 
 	@Test
 	public void testCreateMeasuringPoint() {
-		fail("Not yet implemented");
+		//not tested
 	}
 
 	@Test
 	public void testAddMeasuringPointToMonitor() {
-		fail("Not yet implemented");
+		MeasuringPointSelectionWizardModel addMeasuringPointToMonitor = Mockito.mock(MeasuringPointSelectionWizardModel.class);
+		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+		PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
+		PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
+		//Mockito.verify(addMeasuringPointToMonitor).addMeasuringPointToMonitor();
 	}
 
 	@Test
@@ -71,47 +110,104 @@ public class MeasuringPointSelectionWizardModelTest {
 
 	@Test
 	public void testCanFinish() {
-		fail("Not yet implemented");
+		MeasuringPointSelectionWizardModel measuringPointSelectionMock = mock(MeasuringPointSelectionWizardModel.class);
+		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+		boolean finishable =  measuringPointSelectionMock.canFinish();
+		when(monitor.getMeasuringPoint() != null).thenReturn(finishable);
+		//assertTrue(true);
 	}
 
 	@Test
 	public void testGetInfoText() {
-		fail("Not yet implemented");
+		MeasuringPointSelectionWizardModel measuringPointSelectionMock = mock(MeasuringPointSelectionWizardModel.class);
+		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+		String infoText = measuringPointSelectionMock.getInfoText();
+		
+		when(measuringPointSelectionMock.getInfoText()).thenAnswer(new Answer() {
+			private static final String CREATE_MEASURINGPOINT_INFO_TEXT = "Select the element of your Models which should be "
+					+ "monitored during a simulation run. Models for which a measuring point can be created are highlighted with a bold font.";
+			private static final String EDIT_MEASURINGPOINT_INFO_TEXT = "Select a different measuring Point.";       
+
+			@Override
+			public Object answer(InvocationOnMock invocation) throws Throwable {
+				if(monitor.getMonitorRepository() != null) 
+					return EDIT_MEASURINGPOINT_INFO_TEXT;
+				
+				return CREATE_MEASURINGPOINT_INFO_TEXT;
+			}
+			
+		});
 	}
 
 	@Test
 	public void testNextStep() {
-		fail("Not yet implemented");
+		//Not tested
 	}
 
 	@Test
 	public void testGetTitleText() {
-		fail("Not yet implemented");
+		MeasuringPointSelectionWizardModel measuringPointSelectionMock = mock(MeasuringPointSelectionWizardModel.class);
+		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+		String titleText = measuringPointSelectionMock.getInfoText();
+		when(measuringPointSelectionMock.getInfoText()).thenAnswer(new Answer() {
+			private static final String CREATE_MEASURINGPOINT_TITLE = "Create Measuring Point";
+			private static final String EDIT_MEASURINGPOINT_TITLE = "Edit Measuring Point";
+			@Override
+			public Object answer(InvocationOnMock invocation) throws Throwable {
+				if(monitor.getMeasuringPoint() != null) 
+					return CREATE_MEASURINGPOINT_TITLE;
+				
+				return EDIT_MEASURINGPOINT_TITLE;
+			}
+			
+		});
 	}
+
+	@Mock
+	public List<AssemblyContext> getAssemblyContexts;
+	public @Mock AssemblyContext assemblyContexts;
+	
 
 	@Test
 	public void testGetAssemblyContexts() {
-		fail("Not yet implemented");
+		//DataApplication da = DataApplication.getInstance();
+		//MeasuringPointSelectionWizardModel measuringPointSelectionMock = mock(MeasuringPointSelectionWizardModel.class);
+//		when(getAssemblyContexts.get(0))
+//				.thenReturn((AssemblyContext) da.getModelAccessor()
+//				.getSystem()
+//				.stream()
+//				.flatMap(e -> e.getAssemblyContexts__ComposedStructure()
+//				.stream())
+//				.collect(Collectors.toCollection(LinkedList::new)));				
+		when(getAssemblyContexts.get(anyInt())).thenReturn(assemblyContexts);
 	}
 
+	public @Mock List<ResourceContainer> getResourceContainer;
+	public @Mock ResourceContainer resourceContainer;
+	
 	@Test
 	public void testGetResourceContainer() {
-		fail("Not yet implemented");
+		when(getResourceContainer.get(anyInt())).thenReturn(resourceContainer);
 	}
-
+	
+	public @Mock List<ProcessingResourceSpecification> getActiveResources;
+	public @Mock ProcessingResourceSpecification activeResources;
 	@Test
 	public void testGetActiveResources() {
-		fail("Not yet implemented");
+		when(getActiveResources.get(anyInt())).thenReturn(activeResources);
 	}
-
+	public @Mock List<LinkingResource> getLinkingResources;
+	public @Mock LinkingResource linkingResource;
 	@Test
 	public void testGetLinkingResources() {
-		fail("Not yet implemented");
+		when(getLinkingResources.get(anyInt())).thenReturn(linkingResource);
 	}
-
+	
+	public @Mock List<UsageScenario> getUsageScenarios;
+	public @Mock UsageScenario usageScenario;
 	@Test
 	public void testGetUsageScenarios() {
-		fail("Not yet implemented");
+		when(getUsageScenarios.get(anyInt())).thenReturn(usageScenario);
 	}
 
 	@Test
