@@ -3,13 +3,13 @@ package org.palladiosimulator.measurementsui.abstractviewer;
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.e4.ui.workbench.modeling.ESelectionService;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasurementTreeDoubleClickListener;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
  * Creates a eclipse.swt TreeView based on a parsley TreeView project.
@@ -28,13 +28,12 @@ public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
      *            the dirty state which indicates whether there were changes made in the viewer
      * @param commandService
      *            a service of the eclipse application in order to make the tree view saveable
-     * @param dataApplication
-     *            the connection to the data binding. This is needed in order to get the repository
-     *            of the current project.
+     * @param modelRepository
+     *            EObject which is shown in the view
      */
     public MeasurementsTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-            DataApplication dataApplication) {
-        super(parent, dirty, commandService, dataApplication);
+            EObject modelRepository) {
+        super(parent, dirty, commandService, modelRepository);
         treeViewer.expandToLevel(2);
     }
 
@@ -81,9 +80,7 @@ public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
     public void update() {
         Object[] expandedElements = treeViewer.getExpandedElements();
         initEditingDomain();
-        if(getModelRepository().isPresent()) {
-            resource = updateResource(getModelRepository().get());
-        }
+        resource = updateResource(getModelRepository());
         treeFactory.initialize(treeViewer, resource);
         treeViewer.setAutoExpandLevel(1);
         treeViewer.setExpandedElements(expandedElements);

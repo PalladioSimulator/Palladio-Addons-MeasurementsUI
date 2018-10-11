@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.abstractviewer;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.parsley.viewers.ViewerFactory;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TableViewer;
@@ -23,14 +24,11 @@ public abstract class WizardTableViewer extends ComponentViewer {
      * 
      * @param parent
      *            the container where the tree viewer is placed in
-     * @param wizardModel
-     *            the connection to temporary data created in the wizard.
+     * @param modelRepository
+     * 			  EObject which is shown in the view
      */
-    protected WizardTableViewer(Composite parent, WizardModel wizardModel) {
-        super(parent);
-        this.wizardModel = wizardModel;
-        initEditingDomain();
-        initParsley(parent);
+    protected WizardTableViewer(Composite parent, EObject modelRepository) {
+        super(parent, modelRepository);
     }
 
     @Override
@@ -38,12 +36,12 @@ public abstract class WizardTableViewer extends ComponentViewer {
         tableFactory = injector.getInstance(ViewerFactory.class);
         tableViewer = tableFactory.createTableViewer(parent, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI,
                 MonitorRepositoryPackage.eINSTANCE.getMeasurementSpecification());
-        tableViewer.setInput(getModelRepository().get());
+        tableViewer.setInput(getModelRepository());
     }
 
     @Override
     public void update() {
-        
+        tableViewer.refresh();
     }
 
     @Override
