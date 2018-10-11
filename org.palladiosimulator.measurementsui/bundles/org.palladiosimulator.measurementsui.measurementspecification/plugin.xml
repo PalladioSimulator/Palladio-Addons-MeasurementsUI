@@ -5,7 +5,7 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.emf.parsley"
-            class="org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationExecutableExtensionFactory:org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationSaveableTableView"
+            class="org.palladiosimulator.measurementsui.measurementspecification.MeasurementspecificationExecutableExtensionFactory:org.palladiosimulator.measurementsui.processingtype.MeasurementspecificationSaveableTableView"
             id="org.palladiosimulator.measurementsui.measurementspecification"
             name="Measurementspecification"
             restorable="true">
