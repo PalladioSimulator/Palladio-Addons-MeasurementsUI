@@ -15,7 +15,7 @@ import tableform.TableformInjectorProvider;
  * @author David Schuetz
  *
  */
-public class SelectMeasurementsViewer extends WizardTableViewer {
+public class AvailableMetricDescriptionSelectionViewer extends WizardTableViewer {
     /**
      * 
      * @param parent
@@ -24,7 +24,7 @@ public class SelectMeasurementsViewer extends WizardTableViewer {
      *            the connection to the data binding. This is needed in order to get the repository
      *            of the current project.
      */
-    public SelectMeasurementsViewer(Composite parent, WizardModel wizardModel) {
+    public AvailableMetricDescriptionSelectionViewer(Composite parent, WizardModel wizardModel) {
         super(parent, wizardModel);
     }
 

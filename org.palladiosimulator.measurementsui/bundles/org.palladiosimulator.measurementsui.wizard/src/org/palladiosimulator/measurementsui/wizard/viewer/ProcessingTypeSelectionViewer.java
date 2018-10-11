@@ -17,7 +17,7 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSele
  * @author Mehmet, Ba
  *
  */
-public class MeasurementSpecificationViewer extends WizardTableViewer {
+public class ProcessingTypeSelectionViewer extends WizardTableViewer {
 	
 	/**
 	 * 
@@ -25,7 +25,7 @@ public class MeasurementSpecificationViewer extends WizardTableViewer {
 	 * @param dataApplication Connection to the data binding. This is needed in
 	 *                        order to get the repository of the current project.
 	 */
-	public MeasurementSpecificationViewer(Composite parent, WizardModel wizardModel) {
+	public ProcessingTypeSelectionViewer(Composite parent, WizardModel wizardModel) {
 		super(parent, wizardModel);
 		
 	}

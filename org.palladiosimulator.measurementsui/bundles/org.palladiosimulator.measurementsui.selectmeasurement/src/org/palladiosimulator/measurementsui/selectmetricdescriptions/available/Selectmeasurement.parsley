@@ -1,7 +1,7 @@
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage
 import org.palladiosimulator.monitorrepository.MeasurementSpecification
-import org.palladiosimulator.measurementsui.selectmeasurement.SelectmeasurementSaveableTableView
+import org.palladiosimulator.measurementsui.selectmetricdescriptions.available.SelectmeasurementSaveableTableView
 
 module tableform {
 	parts {

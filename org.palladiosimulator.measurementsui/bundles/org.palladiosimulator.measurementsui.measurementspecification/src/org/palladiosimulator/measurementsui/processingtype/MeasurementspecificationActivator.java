@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.measurementspecification;
+package org.palladiosimulator.measurementsui.processingtype;
 
 import org.osgi.framework.BundleContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

@@ -12,7 +12,7 @@
       </view>
       <view
             category="org.eclipse.emf.parsley"
-            class="tableform.TableformExecutableExtensionFactory:org.palladiosimulator.measurementsui.selectmeasurement.SelectmeasurementSaveableTableView"
+            class="tableform.TableformExecutableExtensionFactory:org.palladiosimulator.measurementsui.selectmetricdescriptions.available.SelectmeasurementSaveableTableView"
             id="tableform"
             name="Tableform"
             restorable="true">

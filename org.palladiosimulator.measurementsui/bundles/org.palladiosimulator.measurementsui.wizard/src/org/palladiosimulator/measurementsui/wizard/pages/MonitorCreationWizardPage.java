@@ -22,7 +22,7 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWiz
  * @author Ba-Anh Vu reworked first page, now working without Parsley, due to complication with GUI Design
  *
  */
-public class AddMonitorWizardPage extends WizardPage {
+public class MonitorCreationWizardPage extends WizardPage {
 
     /**
      * The model object which manages the internal model for this wizard page.
@@ -33,7 +33,7 @@ public class AddMonitorWizardPage extends WizardPage {
      * Constructor, sets basic attributes for the wizard page like title, description etc.
      * @param model the model object which manages the internal model for this wizard page
      */
-    public AddMonitorWizardPage(MonitorCreationWizardModel model) {
+    public MonitorCreationWizardPage(MonitorCreationWizardModel model) {
         super("First Page");
         this.model = model;
         setTitle(model.getTitleText());

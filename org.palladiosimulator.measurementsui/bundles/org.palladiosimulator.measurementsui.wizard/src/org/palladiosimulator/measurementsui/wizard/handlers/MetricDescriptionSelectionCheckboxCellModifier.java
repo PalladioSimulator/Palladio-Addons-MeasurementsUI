@@ -11,7 +11,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
  * @author Mehmet Ali Tepeli
  *
  */
-public class SelectMeasurementCheckboxCellModifier implements ICellModifier {
+public class MetricDescriptionSelectionCheckboxCellModifier implements ICellModifier {
 
 	/**
 	 * The table viewer of the according table
@@ -23,7 +23,7 @@ public class SelectMeasurementCheckboxCellModifier implements ICellModifier {
 	 * The constructor where basic attributes are set, e. g. the tableViewer
 	 * @param tableViewer the given tableViewer of the according table
 	 */
-	public SelectMeasurementCheckboxCellModifier(TableViewer tableViewer, MetricDescriptionSelectionWizardModel model) {
+	public MetricDescriptionSelectionCheckboxCellModifier(TableViewer tableViewer, MetricDescriptionSelectionWizardModel model) {
 		super();
 		this.model = model;
 		this.tableViewer = tableViewer;

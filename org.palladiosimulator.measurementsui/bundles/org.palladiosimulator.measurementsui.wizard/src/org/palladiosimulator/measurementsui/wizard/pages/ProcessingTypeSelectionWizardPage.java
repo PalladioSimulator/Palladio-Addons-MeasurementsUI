@@ -4,15 +4,13 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TableColumn;
-import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypeEditingSupport;
+import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypeDropDownEditingSupport;
 import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypePropertyEditingSupport;
-import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.MeasurementSpecificationLabelProvider;
-import org.palladiosimulator.measurementsui.wizard.viewer.MeasurementSpecificationViewer;
+import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.ProcessingTypeSelectionLabelProvider;
+import org.palladiosimulator.measurementsui.wizard.viewer.ProcessingTypeSelectionViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 
 import org.eclipse.jface.util.Policy;
@@ -23,7 +21,7 @@ import org.eclipse.jface.util.Policy;
  * @author Mehmet Ali Tepeli, Ba-Anh Vu
  *
  */
-public class MeasurementSpecificationWizardPage extends WizardPage {
+public class ProcessingTypeSelectionWizardPage extends WizardPage {
 
     /**
      * The text for the column of the metric description
@@ -52,7 +50,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 	 * 
 	 * @param processingTypeSelectionWizardModel This handles the internal model
 	 */
-	public MeasurementSpecificationWizardPage(ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
+	public ProcessingTypeSelectionWizardPage(ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
 		super("wizardPage");
 		setTitle("Measurement Specification");
 		setDescription("Specify the properties of the selected measurements.");
@@ -68,11 +66,10 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
 
 		setControl(container);
 
-		final MeasurementSpecificationViewer measurementSpecificationViewer = new MeasurementSpecificationViewer(container,
+		final ProcessingTypeSelectionViewer measurementSpecificationViewer = new ProcessingTypeSelectionViewer(container,
 				this.processingTypeSelectionWizardModel);
 		final TableViewer tableViewer = (TableViewer) measurementSpecificationViewer.getViewer();
-		tableViewer.setLabelProvider(new MeasurementSpecificationLabelProvider(this.processingTypeSelectionWizardModel));
-		tableViewer.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
+		tableViewer.setLabelProvider(new ProcessingTypeSelectionLabelProvider(this.processingTypeSelectionWizardModel));
 		
 		setColumnsText(tableViewer);
 		setEditingSupports(tableViewer);
@@ -85,7 +82,7 @@ public class MeasurementSpecificationWizardPage extends WizardPage {
      */
     private void setEditingSupports(TableViewer tableViewer) {
         final TableViewerColumn[] tableViewerColumns = getTableViewerColumns(tableViewer);
-		tableViewerColumns[1].setEditingSupport(new ProcessingTypeEditingSupport(tableViewerColumns[1].getViewer(), 
+		tableViewerColumns[1].setEditingSupport(new ProcessingTypeDropDownEditingSupport(tableViewerColumns[1].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel));
 		tableViewerColumns[2].setEditingSupport(new ProcessingTypePropertyEditingSupport(tableViewerColumns[2].getViewer(), 
 		        tableViewer, this.processingTypeSelectionWizardModel, 0));

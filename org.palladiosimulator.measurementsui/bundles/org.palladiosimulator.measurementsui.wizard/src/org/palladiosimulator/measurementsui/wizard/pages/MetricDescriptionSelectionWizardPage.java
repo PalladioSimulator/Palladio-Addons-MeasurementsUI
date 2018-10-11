@@ -26,9 +26,9 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.palladiosimulator.measurementsui.wizard.handlers.SelectMeasurementCheckboxCellModifier;
-import org.palladiosimulator.measurementsui.wizard.viewer.EmptySelectMeasurementsViewer;
-import org.palladiosimulator.measurementsui.wizard.viewer.SelectMeasurementsViewer;
+import org.palladiosimulator.measurementsui.wizard.handlers.MetricDescriptionSelectionCheckboxCellModifier;
+import org.palladiosimulator.measurementsui.wizard.viewer.SelectedMetricDescriptionSelectionViewer;
+import org.palladiosimulator.measurementsui.wizard.viewer.AvailableMetricDescriptionSelectionViewer;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.eclipse.swt.widgets.Button;
@@ -43,7 +43,7 @@ import org.eclipse.swt.graphics.Image;
  *         showMessage & updateMessageAccordingToSelectedMeasuringPoint)
  *
  */
-public class SelectMeasurementsWizardPage extends WizardPage {
+public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
     /**
      * Used for the self adapting column for unchecked value.
@@ -66,7 +66,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
      * @param metricDescriptionSelectionWizardModel
      *            This handles the internal model
      */
-    public SelectMeasurementsWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
+    public MetricDescriptionSelectionWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
         super("wizardPage");
         setTitle("Select Measurements");
         setDescription("Select desired Measurements to be used with the Monitor.");
@@ -102,7 +102,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
     private TableViewer initLeftTableViewer(Composite container) {
         final Composite compositeLeft = new Composite(container, SWT.NONE);
         final FillLayout fillLayoutLeft = new FillLayout();
-        final SelectMeasurementsViewer selectMeasurementsViewerLeft = new SelectMeasurementsViewer(compositeLeft,
+        final AvailableMetricDescriptionSelectionViewer selectMeasurementsViewerLeft = new AvailableMetricDescriptionSelectionViewer(compositeLeft,
                 metricDescriptionSelectionWizardModel);
         final TableViewer tableViewerLeft = (TableViewer) selectMeasurementsViewerLeft.getViewer();
         tableViewerLeft.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
@@ -148,7 +148,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
     private TableViewer initRightTableViewer(Composite container) {
         final Composite compositeRight = new Composite(container, SWT.NONE);
         final FillLayout fillLayoutRight = new FillLayout();
-        final EmptySelectMeasurementsViewer emptySelectMeasurementsViewerRight = new EmptySelectMeasurementsViewer(
+        final SelectedMetricDescriptionSelectionViewer emptySelectMeasurementsViewerRight = new SelectedMetricDescriptionSelectionViewer(
                 compositeRight, metricDescriptionSelectionWizardModel);
         final TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
         tableViewerRight.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
@@ -226,7 +226,7 @@ public class SelectMeasurementsWizardPage extends WizardPage {
         final String[] columnNames = { "Selected", "Self Adaptive" };
         tableViewer.setColumnProperties(columnNames);
         tableViewer.setCellModifier(
-                new SelectMeasurementCheckboxCellModifier(tableViewer, metricDescriptionSelectionWizardModel));
+                new MetricDescriptionSelectionCheckboxCellModifier(tableViewer, metricDescriptionSelectionWizardModel));
     }
 
     /**

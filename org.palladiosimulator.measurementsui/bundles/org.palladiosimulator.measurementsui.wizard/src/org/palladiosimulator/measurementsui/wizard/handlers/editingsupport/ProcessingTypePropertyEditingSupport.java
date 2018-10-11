@@ -19,7 +19,7 @@ import com.google.common.primitives.Doubles;
  * @author Mehmet Ali Tepeli, Ba-Anh Vu
  *
  */
-public final class ProcessingTypePropertyEditingSupport extends MeasurementSpecificationEditingSupport {
+public final class ProcessingTypePropertyEditingSupport extends ProcessingTypeSelectionEditingSupport {
 
     /**
      * This indicates the index of the property column of the ProcessingType, e. g. if the

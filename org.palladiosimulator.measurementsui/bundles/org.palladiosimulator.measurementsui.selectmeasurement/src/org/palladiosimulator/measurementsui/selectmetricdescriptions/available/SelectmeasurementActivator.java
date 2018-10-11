@@ -1,4 +1,4 @@
-package org.palladiosimulator.measurementsui.selectmeasurement;
+package org.palladiosimulator.measurementsui.selectmetricdescriptions.available;
 
 import org.osgi.framework.BundleContext;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

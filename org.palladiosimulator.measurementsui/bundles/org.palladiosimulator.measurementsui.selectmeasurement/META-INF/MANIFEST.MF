@@ -3,8 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: org.palladiosimulator.measurementsui.selectmeasurement
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: org.palladiosimulator.measurementsui.selectmeasurement; singleton:=true
-Bundle-Activator: org.palladiosimulator.measurementsui.selectmeasurement.SelectmeasurementActivator
+Bundle-SymbolicName: org.palladiosimulator.measurementsui.selectmetricdescriptions.available;singleton:=true
+Bundle-Activator: org.palladiosimulator.measurementsui.selectmetricdescriptions.available.SelectmeasurementActivator
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,

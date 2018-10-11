@@ -19,7 +19,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
  * @author Mehmet Ali Tepeli, Ba-Anh Vu
  *
  */
-public final class ProcessingTypeEditingSupport extends MeasurementSpecificationEditingSupport {
+public final class ProcessingTypeDropDownEditingSupport extends ProcessingTypeSelectionEditingSupport {
 
     /**
      * Constructor, where basic attributes are set for further use, e. g. the according
@@ -29,7 +29,7 @@ public final class ProcessingTypeEditingSupport extends MeasurementSpecification
      * @param tableViewer the given TableViewer
      * @param processingTypeSelectionWizardModel the internal model handler
      */
-    public ProcessingTypeEditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
+    public ProcessingTypeDropDownEditingSupport(ColumnViewer columnViewer, TableViewer tableViewer,
             ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {     
         super(columnViewer, tableViewer, processingTypeSelectionWizardModel);
         
