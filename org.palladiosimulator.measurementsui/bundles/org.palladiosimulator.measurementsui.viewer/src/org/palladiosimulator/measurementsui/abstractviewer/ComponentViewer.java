@@ -28,8 +28,8 @@ public abstract class ComponentViewer {
      * @param parent
      *            container where the tree viewer is placed in
      * @param modelRepository
-     * 			  EObject which is shown in the view
-     *            
+     *            EObject which is shown in the view
+     * 
      */
     public ComponentViewer(Composite parent, EObject modelRepository) {
     	this.modelRepository = modelRepository;

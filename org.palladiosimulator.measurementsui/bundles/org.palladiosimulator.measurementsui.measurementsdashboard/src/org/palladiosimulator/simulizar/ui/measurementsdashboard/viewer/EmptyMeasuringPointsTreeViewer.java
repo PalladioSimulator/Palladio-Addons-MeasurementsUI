@@ -30,7 +30,8 @@ public class EmptyMeasuringPointsTreeViewer extends MeasurementsTreeViewer {
      * @param commandService
      *            a service of the eclipse application in order to make the tree view saveable
      * @param repository
-     *            a measuring point repository which is displayed with all his measuring points in the tree view
+     *            a measuring point repository which is displayed with all its measuring points in
+     *            the tree view
      */
     public EmptyMeasuringPointsTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
             MeasuringPointRepository repository) {

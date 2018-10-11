@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class SaveableComponentViewer extends ComponentViewer {
     private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
     private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
-    
+
     protected MDirtyable dirty;
     protected ECommandService commandService;
 
@@ -32,8 +32,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
      * @param commandService
      *            a service of the eclipse application in order to make the tree view saveable
      * @param modelRepository
-     *            the connection to the data binding. This is needed in order to get the repository
-     *            of the current project.
+     *            EObject which is shown in the view
      */
     protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
             EObject modelRepository) {
@@ -76,36 +75,36 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
             }
         });
     }
-    
+
     /**
      * Undos one command on the command stack
      */
     public void undo() {
         initEditingDomain();
         CommandStack commandStack = editingDomain.getCommandStack();
-        if(commandStack.canUndo()) {
+        if (commandStack.canUndo()) {
             commandStack.undo();
         }
     }
-    
+
     /**
      * Undos every command on the command stack
      */
     public void undoAll() {
         initEditingDomain();
         CommandStack commandStack = editingDomain.getCommandStack();
-        while(commandStack.canUndo()) {
+        while (commandStack.canUndo()) {
             commandStack.undo();
         }
     }
-    
+
     /**
      * Redos one command on the command stack
      */
     public void redo() {
         initEditingDomain();
         CommandStack commandStack = editingDomain.getCommandStack();
-        if(commandStack.canRedo()) {
+        if (commandStack.canRedo()) {
             commandStack.redo();
         }
     }
