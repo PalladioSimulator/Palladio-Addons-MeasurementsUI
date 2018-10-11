@@ -3,6 +3,7 @@ package org.palladiosimulator.measurementsui.wizard.pages;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -32,6 +33,7 @@ import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.Meas
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AlternativeMeasuringPointLabelProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.ExistingMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.MeasuringPointsLabelProvider;
+import org.palladiosimulator.measurementsui.wizard.util.ChooseMeasuringPointMessageSwitch;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
@@ -66,7 +68,6 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
     private Button[] radios = new Button[2];
 
     private String filterString;
-
 
     /**
      * Constructor for the second wizard page, sets structural features like the title, the name of
@@ -241,9 +242,9 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
         all.setLayout(new GridLayout(1, false));
         all.setLayoutData(parentData);
         Composite buttonComposite = new Composite(all, SWT.NONE);
-        Label label = new Label(buttonComposite, SWT.CENTER);
-        label.setText("             ");
-        label.setBounds(10, 5, 75, 30);
+        Label fillerLabel = new Label(buttonComposite, SWT.CENTER);
+        fillerLabel.setText("             ");
+        fillerLabel.setBounds(10, 5, 75, 30);
         buttonComposite.setLayout(new GridLayout(1, false));
         Composite existingMPcomposite = new Composite(all, SWT.SINGLE);
         existingMPcomposite.setLayout(new GridLayout(1, true));
@@ -303,7 +304,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
         if (selected) {
 
             AdditionalModelsToMeasuringpointWizardPage page = (AdditionalModelsToMeasuringpointWizardPage) super.getWizard()
-                    .getPage("page2extra");
+                    .getPage("additionalModelsToMeasuringpointWizardPage");
             page.loadData();
             return page;
 
@@ -321,36 +322,11 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
      *            the selected item
      */
     public void showMessage(TreeItem item) {
+        ChooseMeasuringPointMessageSwitch messageSwitch = new ChooseMeasuringPointMessageSwitch();
+        messageSwitch.setSelectionWizardModel(selectionWizardModel);
+
         this.setErrorMessage(null);
-        if (item.getData() instanceof MeasuringPoint) {
-            this.setMessage("This is an existing measuring point.");
-        } else if (item.getData() instanceof ResourceEnvironment) {
-            this.setMessage("This will create a resource environment measuring point.");
-        } else if (item.getData() instanceof ResourceContainer) {
-            this.setMessage("This will create a resource container measuring point.");
-        } else if (item.getData() instanceof ProcessingResourceSpecification) {
-            this.setMessage("This will create an active resource measuring point.");
-        } else if (item.getData() instanceof AssemblyContext) {
-            this.setMessage(
-                    "This will create either an assembly operation or an assembly passive resource measuring point. "
-                            + "In the next step you will need to specify further components.");
-        } else if (item.getData() instanceof EntryLevelSystemCall) {
-            this.setMessage("This will create an entry level system call measuring point.");
-        } else if (item.getData() instanceof ExternalCallAction) {
-            this.setMessage("This will create an external call action measuring point.");
-        } else if (item.getData() instanceof LinkingResource) {
-            this.setMessage("This will create a linking resource measuring point.");
-        } else if (item.getData() instanceof SubSystem) {
-            this.setMessage("This will create a subsystem measuring point. In the next step you will "
-                    + "need to specify further components.");
-        } else if (item.getData() instanceof org.palladiosimulator.pcm.system.System) {
-            this.setMessage(
-                    "This will create a system measuring point. In the next step you will need to specify further components.");
-        } else if (item.getData() instanceof UsageScenario) {
-            this.setMessage("This will create a usage scenario measuring point.");
-        } else {
-            this.setMessage(selectionWizardModel.getInfoText());
-        }
+        this.setMessage(messageSwitch.doSwitch((EObject) item.getData()));
 
     }
 
@@ -434,7 +410,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
                 if (isMeasuringPointCreatable(iter.next())) {
                     ISelection selection = new StructuredSelection(temp.get(0));
                     createTreeViewer.setSelection(selection);
-                    
+
                     break;
                 }
             }

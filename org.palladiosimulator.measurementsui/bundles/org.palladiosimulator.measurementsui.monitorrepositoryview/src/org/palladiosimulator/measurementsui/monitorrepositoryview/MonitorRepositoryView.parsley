@@ -50,7 +50,7 @@ module monitorrepositoryview {
 			Monitor mon -> if (mon.activated) {
 				"ActiveIcon.png"
 			} else {
-				"Inactive.png"
+				"InactiveIcon.png"
 			}
 			MeasurementSpecification ms -> if (ms.isTriggersSelfAdaptations)
 				"self_adaption.png"

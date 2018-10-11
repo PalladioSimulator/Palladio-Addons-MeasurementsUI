@@ -28,25 +28,44 @@ import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 
+/**
+ * The switch for the MeasuringPointSelectionWizardModel, which takes care of the creation of the correct measuringpoint
+ * @author Domas Mikalkinas
+ *
+ */
 public class CreateMeasuringPointSwitch extends MeasurementsSwitch<MeasuringPoint> {
     private PcmmeasuringpointPackage pcmMeasuringPointPackage = PcmmeasuringpointPackage.eINSTANCE;
     private PcmmeasuringpointFactory pcmMeasuringPointFactory = pcmMeasuringPointPackage.getPcmmeasuringpointFactory();
 
     private Object secondStageModel;
     private Object thirdStageModel;
-
+/**
+ * getter for the second stage model
+ * @return Object
+ */
     public Object getSecondStageModel() {
         return secondStageModel;
     }
 
+    /**
+     * setter for the second stage model
+     * @param secondStageModel the model which was set in the second stage of the measuring point wizard pages 
+     */
     public void setSecondStageModel(Object secondStageModel) {
         this.secondStageModel = secondStageModel;
     }
-
+/**
+ * getter for the third stage model
+ * @return Object
+ */
     public Object getThirdStageModel() {
         return thirdStageModel;
     }
 
+    /**
+     * setter for the third stage model
+     * @param thirdStageModel the model which was set in the third stage of the measuring point wizard pages
+     */
     public void setThirdStageModel(Object thirdStageModel) {
         this.thirdStageModel = thirdStageModel;
     }

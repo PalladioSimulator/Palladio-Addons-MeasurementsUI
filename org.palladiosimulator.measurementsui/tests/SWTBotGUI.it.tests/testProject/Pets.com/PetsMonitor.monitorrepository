@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_hVUckG8pEeiSd4fITWARWQ" entityName="PetsMonitore">
-  <monitors id="_jxarkG8pEeiSd4fITWARWQ" entityName="ImageServerCPU" activated="false">
+  <monitors id="_jxarkG8pEeiSd4fITWARWQ" entityName="ImageServerCPU">
     <measurementSpecifications id="_6OU9gG8pEeiSd4fITWARWQ">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/models/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
       <processingType xsi:type="monitorrepository:FeedThrough" id="_A1b0YG8qEeiSd4fITWARWQ"/>
     </measurementSpecifications>
-    <measuringPoint xsi:type="pcmmeasuringpoint:ResourceContainerMeasuringPoint" href="PetsMeasuringPoint.measuringpoint#//@measuringPoints.0"/>
   </monitors>
   <monitors id="_3vS50G8qEeiSd4fITWARWQ" entityName="Simple Usage Scenario">
     <measurementSpecifications id="_6xHFAG8qEeiSd4fITWARWQ">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/models/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
       <processingType xsi:type="monitorrepository:TimeDriven" id="_SmIugW8tEeiSd4fITWARWQ"/>
     </measurementSpecifications>
-    <measuringPoint xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" href="PetsMeasuringPoint.measuringpoint#//@measuringPoints.2"/>
+  </monitors>
+  <monitors id="_szeGQMvAEeiIveAneK-l7w" entityName="test">
+    <measurementSpecifications id="_s9SwoMvAEeiIveAneK-l7w">
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+      <processingType xsi:type="monitorrepository:FeedThrough" id="_s9SwocvAEeiIveAneK-l7w"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:AssemblyOperationMeasuringPoint" href="PetsMeasuringPoint.measuringpoint#//@measuringPoints.3"/>
   </monitors>
 </monitorrepository:MonitorRepository>

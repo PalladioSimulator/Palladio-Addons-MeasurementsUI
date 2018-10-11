@@ -20,6 +20,7 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
@@ -31,6 +32,7 @@ import org.palladiosimulator.measurementsui.wizard.viewer.AvailableMetricDescrip
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MetricDescriptionSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -103,6 +105,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         final AvailableMetricDescriptionSelectionViewer selectMeasurementsViewerLeft = new AvailableMetricDescriptionSelectionViewer(compositeLeft,
                 metricDescriptionSelectionWizardModel);
         final TableViewer tableViewerLeft = (TableViewer) selectMeasurementsViewerLeft.getViewer();
+        tableViewerLeft.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
         setLabelProvider(tableViewerLeft);
 
         updateMessageAccordingToSelectedMeasuringPoint(tableViewerLeft);
@@ -111,22 +114,8 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
         final LocalSelectionTransfer transfer = addDrag(tableViewerLeft);
 
-        final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
-            @Override
-            public void drop(final DropTargetEvent event) {
-                final StructuredSelection droppedSelection = (StructuredSelection) transfer.getSelection();
-                for (Object currentElement : droppedSelection.toList()) {
-                    TableItem tableItem = (TableItem) currentElement;
-                    MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
-                    metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
-                }
-
-                getContainer().updateButtons();
-            }
-        };
-        final DropTarget dropTarget = new DropTarget(tableViewerLeft.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
-        dropTarget.setTransfer(transfer);
-        dropTarget.addDropListener(dropAdapter);
+        boolean dragAndDropfromLeftToRight = false;
+        addDrop(tableViewerLeft, transfer, dragAndDropfromLeftToRight);
 
         return tableViewerLeft;
     }
@@ -162,6 +151,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         final SelectedMetricDescriptionSelectionViewer emptySelectMeasurementsViewerRight = new SelectedMetricDescriptionSelectionViewer(
                 compositeRight, metricDescriptionSelectionWizardModel);
         final TableViewer tableViewerRight = (TableViewer) emptySelectMeasurementsViewerRight.getViewer();
+        tableViewerRight.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
         setLabelProvider(tableViewerRight);
 
         updateMessageAccordingToSelectedMeasuringPoint(tableViewerRight);
@@ -173,21 +163,8 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
         final LocalSelectionTransfer transfer = addDrag(tableViewerRight);
 
-        final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
-            @Override
-            public void drop(final DropTargetEvent event) {
-                final StructuredSelection droppedSelection = (StructuredSelection) transfer.getSelection();
-                for (Object currentElement : droppedSelection.toList()) {
-                    TableItem tableItem = (TableItem) currentElement;
-                    MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
-                    metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
-                }
-                getContainer().updateButtons();
-            }
-        };
-        final DropTarget dropTarget = new DropTarget(tableViewerRight.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
-        dropTarget.setTransfer(transfer);
-        dropTarget.addDropListener(dropAdapter);
+        boolean dragAndDropfromLeftToRight = true;
+        addDrop(tableViewerRight, transfer, dragAndDropfromLeftToRight);
 
         return tableViewerRight;
     }
@@ -269,6 +246,35 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         dragSource.setTransfer(transfer);
         dragSource.addDragListener(dragAdapter);
         return transfer;
+    }
+
+    /**
+     * Adds drop functionality to the given TableViewer
+     * @param tableViewer the given TableViewer
+     * @param transfer the given LocalSelectionTransfer object
+     * @param dragAndDropfromLeftToRight indicates drag and drop direction, determines method to execute on drop
+     */
+    private void addDrop(final TableViewer tableViewer, final LocalSelectionTransfer transfer, 
+            boolean dragAndDropfromLeftToRight) {
+        final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
+            @Override
+            public void drop(final DropTargetEvent event) {
+                final StructuredSelection droppedSelection = (StructuredSelection) transfer.getSelection();
+                for (Object currentElement : droppedSelection.toList()) {
+                    TableItem tableItem = (TableItem) currentElement;
+                    MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
+                    if (dragAndDropfromLeftToRight) {
+                        metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
+                    } else {
+                        metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
+                    }
+                }
+                getContainer().updateButtons();
+            }
+        };
+        final DropTarget dropTarget = new DropTarget(tableViewer.getTable(), DND.DROP_MOVE | DND.DROP_COPY);
+        dropTarget.setTransfer(transfer);
+        dropTarget.addDropListener(dropAdapter);
     }
 
     /**

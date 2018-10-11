@@ -362,7 +362,8 @@ public class MeasurementsDashboardView {
      */
     private void createNewMeasuringpointButton(Composite parent) {
         Button newMpButton = new Button(parent, SWT.PUSH);
-        newMpButton.setText("Add new Measuring Point");
+        newMpButton.setText("Add new Measurement");
+        newMpButton.setToolTipText("Add new Monitor & Measuring Point with Metrics");
         newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         newMpButton.addListener(SWT.Selection, e -> {
             if(!dataApplication.getModelAccessor().modelsExist()) {
@@ -372,8 +373,8 @@ public class MeasurementsDashboardView {
                 MeasurementsWizard wizard = new MeasurementsWizard();
                 Shell parentShell = wizard.getShell();
                 WizardDialog dialog = new WizardDialog(parentShell, wizard);
-                dialog.setPageSize(1180, 580);
-                dialog.setMinimumPageSize(1180, 580);
+                dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
+                dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
                 dialog.open();
 
             }
@@ -434,8 +435,8 @@ public class MeasurementsDashboardView {
 
             Shell parentShell = wizard.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.setPageSize(1180, 580);
-            dialog.setMinimumPageSize(1180, 580);
+            dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
+            dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
             dialog.open();
 
         });

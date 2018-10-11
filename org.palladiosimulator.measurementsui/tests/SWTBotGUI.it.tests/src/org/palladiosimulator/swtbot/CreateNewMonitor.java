@@ -79,7 +79,7 @@ public class CreateNewMonitor {
 
         SWTBotTree tree = bot.tree();
         for (SWTBotTreeItem item : tree.getAllItems()) {
-            if ("Sample Category".equals(item.getText())) {
+            if ("SimuLizar".equals(item.getText())) {
 
                 item.expand();
                 for (SWTBotTreeItem element : item.getItems()) {
@@ -103,7 +103,7 @@ public class CreateNewMonitor {
     public void canAddNewMonitor() throws Exception {
         bot = new SWTWorkbenchBot();
 //        SWTBotView measuringpointView = bot.viewByPartName("Measurements Overview");
-        SWTBotView addView = bot.viewById("test.partDescFragment.ASampleE4View");
+        SWTBotView addView = bot.viewById("org.palladiosimulator.measurementsui.dashboardview");
         assertNotNull(addView);
         Widget measuringpointViewWidget = addView.getWidget();
         bot.activeView();
@@ -121,9 +121,7 @@ public class CreateNewMonitor {
             @Override
             public void run() {
                 // TODO Auto-generated method stub
-
             }
-
         });
         SWTBotTabItem tabItem = bot.tabItem("Create new measuring point");
         assertEquals("Create new measuring point", tabItem.getText());
@@ -131,11 +129,19 @@ public class CreateNewMonitor {
         bot.tabItem("Select existing measuring point").activate();
         assertEquals("Select existing measuring point", tabItem2.getText());
         bot.tabItem("Create new measuring point").activate().setFocus();
-
-        SWTBotShell shell = bot.activeShell();
-        shell.activate();
-
-//        SWTBotTree tree = bot.tree().select("System");
+        bot.tree().getTreeItem("New System").select();
+        bot.tree().getTreeItem("New System").expand();
+        bot.tree().getTreeItem("New System").getNode("Assembly_Hompage").select();
+        bot.button("Next >").click();
+        bot.tree().getTreeItem("Hompage.IHompage.OperationProvidedRole1 [OperationProvidedRole]").select();
+        bot.button("Next >").click();
+        bot.tree().getTreeItem("getPictures [OperationSignature]").select();
+        bot.button("Next >").click();
+        bot.table().select("Response Time");
+        bot.button("Add >").click();
+        bot.button("Next >").click();
+        bot.table().select("Response Time");
+        bot.button("Finish").click();
     }
 
     public static void closeWelcomePage() {
