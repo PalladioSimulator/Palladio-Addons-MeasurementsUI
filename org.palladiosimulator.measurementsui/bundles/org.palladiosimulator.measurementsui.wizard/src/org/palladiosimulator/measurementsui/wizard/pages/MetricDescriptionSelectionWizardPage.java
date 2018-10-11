@@ -397,7 +397,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         Browser browser = new Browser(shell, SWT.NONE);
-        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measurement_Specification");
+        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Metric_Description_Selection_Page");
         browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         shell.open();

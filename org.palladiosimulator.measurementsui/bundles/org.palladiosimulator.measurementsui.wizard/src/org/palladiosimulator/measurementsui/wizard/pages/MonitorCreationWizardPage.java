@@ -115,12 +115,12 @@ public class MonitorCreationWizardPage extends WizardPage {
     @Override
     public void performHelp() {
         Shell shell = new Shell(getShell());
-        shell.setText("My Custom Help !!");
+        shell.setText("SimuLizar Usability Extension SDQ-Wiki");
         shell.setLayout(new GridLayout());
         shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         Browser browser = new Browser(shell, SWT.NONE);
-        browser.setUrl("http://stackoverflow.com/questions/7322489/cant-put-content-behind-swt-wizard-help-button");
+        browser.setUrl("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Monitor_Creation_Page");
         browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
         shell.open();
