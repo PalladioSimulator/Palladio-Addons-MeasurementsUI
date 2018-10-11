@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDropListener;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
 
 import monitorrepositoryview.MonitorrepositoryviewInjectorProvider;
 
@@ -36,21 +37,13 @@ public class MonitorTreeViewer extends MeasurementsTreeViewer {
      *            the current project.
      */
     public MonitorTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-            DataApplication application) {
-        super(parent, dirty, commandService, application);
+            MonitorRepository monitorRepository) {
+        super(parent, dirty, commandService, monitorRepository);
     }
 
     @Override
     protected void initInjector() {
         this.injector = MonitorrepositoryviewInjectorProvider.getInjector();
-    }
-
-    @Override
-    protected Optional<EObject> getModelRepository() {
-        if(dataApplication.getMonitorRepository() != null) {
-            return Optional.of(dataApplication.getMonitorRepository());
-        }
-    	return Optional.empty();
     }
 
     @Override

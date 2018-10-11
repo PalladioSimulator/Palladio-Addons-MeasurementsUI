@@ -24,16 +24,13 @@ public abstract class ComponentViewer {
     protected Injector injector;
     protected Resource resource;
     protected EditingDomain editingDomain;
+    protected EObject modelRepository;
 
-    /**
-     * @param parent
-     *            container where the tree viewer is placed in
-     */
-    protected ComponentViewer(Composite parent) {
-        initInjector();
-    }
+    public ComponentViewer(Composite parent, EObject modelRepository) {
+		// TODO Auto-generated constructor stub
+	}
 
-    /**
+	/**
      * Initalizes the google guice injector attribute with the injector of the respective parsley
      * view
      */
@@ -43,7 +40,9 @@ public abstract class ComponentViewer {
      * 
      * @return the repository of the current view. For Example the monitorrepository
      */
-    protected abstract Optional<EObject> getModelRepository();
+    protected EObject getModelRepository(){
+    	return modelRepository;
+    }
 
     /**
      * Initialize the connection between the e4 plugin and the Parsley TreeView
@@ -63,9 +62,7 @@ public abstract class ComponentViewer {
      * Returns the parsley EditingDomain
      */
     protected void initEditingDomain() {
-        if(getModelRepository().isPresent()) {
-            this.editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository().get());
-        }
+            this.editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(getModelRepository());
     }
 
     /**

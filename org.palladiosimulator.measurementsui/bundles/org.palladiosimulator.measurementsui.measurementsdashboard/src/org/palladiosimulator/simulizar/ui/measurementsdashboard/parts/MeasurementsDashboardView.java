@@ -63,589 +63,585 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Eclipse e4 view which gives the user an overview of all existing Monitors and MeasuringPoints in
- * a selected MonitorRepository.
+ * Eclipse e4 view which gives the user an overview of all existing Monitors and
+ * MeasuringPoints in a selected MonitorRepository.
  * 
  * @author David Schuetz
  * 
  */
 public class MeasurementsDashboardView {
 
-    private MeasurementsTreeViewer monitorTreeViewer;
-    private MeasurementsTreeViewer measuringTreeViewer;
-    private Combo projectsComboDropDown;
-    private Combo monitorRepositoriesComboDropDown;
-    private DataApplication dataApplication;
-    private Button deleteButton;
-    private Button editButton;
-    private MeasurementsFilter filter;
-    private Text searchText;
-    
-    private static final String EDITTEXT_GRAYEDOUT = "Edit...";
-    private static final String DELETETEXT_GRAYEDOUT = "Delete...";
-    private static final String EDITTEXT_MONITOR = "Edit Monitor";
-    private static final String DELETETEXT_MONITOR = "Delete Monitor";
-    private static final String EDITTEXT_MEASUREMENT = "Edit Measurement";
-    private static final String DELETETEXT_MEASUREMENT = "Delete Measurement";
-    private static final String EDITTEXT_PROCESSINGTYPE = "Edit ProcessingType";
-    private static final String INFOTEXT_NO_PCM_MODELS = "You need to create your"
-            + " palladio core models before you can create measuring points."
-            + " They are used to model your systems architecture and characteristics."
-            + " Use the buttons on the toolbar on top to start creating.";
-    
-    private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
-    private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
-    private static final String UNDO_COMMAND = "org.eclipse.ui.edit.undo";
-    private static final String REDO_COMMAND = "org.eclipse.ui.edit.redo";
-    
-    private final Logger logger = LoggerFactory.getLogger(MeasurementsDashboardView.class);
-    
-    @Inject
-    private MDirtyable dirty;
+	private MeasurementsTreeViewer monitorTreeViewer;
+	private MeasurementsTreeViewer measuringTreeViewer;
+	private Combo projectsComboDropDown;
+	private Combo monitorRepositoriesComboDropDown;
+	private DataApplication dataApplication;
+	private Button deleteButton;
+	private Button editButton;
+	private MeasurementsFilter filter;
+	private Text searchText;
 
-    @Inject
-    private ECommandService commandService;
+	private static final String EDITTEXT_GRAYEDOUT = "Edit...";
+	private static final String DELETETEXT_GRAYEDOUT = "Delete...";
+	private static final String EDITTEXT_MONITOR = "Edit Monitor";
+	private static final String DELETETEXT_MONITOR = "Delete Monitor";
+	private static final String EDITTEXT_MEASUREMENT = "Edit Measurement";
+	private static final String DELETETEXT_MEASUREMENT = "Delete Measurement";
+	private static final String EDITTEXT_PROCESSINGTYPE = "Edit ProcessingType";
+	private static final String INFOTEXT_NO_PCM_MODELS = "You need to create your"
+			+ " palladio core models before you can create measuring points."
+			+ " They are used to model your systems architecture and characteristics."
+			+ " Use the buttons on the toolbar on top to start creating.";
 
-    @Inject
-    private EHandlerService handlerService;
+	private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
+	private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
+	private static final String UNDO_COMMAND = "org.eclipse.ui.edit.undo";
+	private static final String REDO_COMMAND = "org.eclipse.ui.edit.redo";
 
-    @Inject
-    private ESelectionService selectionService;
+	private final Logger logger = LoggerFactory.getLogger(MeasurementsDashboardView.class);
 
-    /**
-     * Creates the menu items and controls for the simulizar measuring point view
-     * 
-     * @param parent
-     *            the composite of the empty view
-     */
-    @PostConstruct
-    public void createPartControl(Composite parent) {
-        parent.setLayout(new GridLayout(1, true));
-        initializeApplication();
-        createWorkspaceListener();
-        createSelectionComboBoxes(parent);
+	@Inject
+	private MDirtyable dirty;
 
-        SashForm outerContainer = new SashForm(parent, SWT.FILL);
-        outerContainer.setLayout(new GridLayout(1, true));
-        outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+	@Inject
+	private ECommandService commandService;
 
-        Composite leftContainer = new Composite(outerContainer, SWT.VERTICAL);
-        leftContainer.setLayout(new GridLayout(1, false));
-        leftContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+	@Inject
+	private EHandlerService handlerService;
 
-        createFilterGadgets(leftContainer);
+	@Inject
+	private ESelectionService selectionService;
 
-        Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
-        buttonContainer.setLayout(new GridLayout(1, true));
+	/**
+	 * Creates the menu items and controls for the simulizar measuring point view
+	 * 
+	 * @param parent the composite of the empty view
+	 */
+	@PostConstruct
+	public void createPartControl(Composite parent) {
+		parent.setLayout(new GridLayout(1, true));
+		initializeApplication();
+		createWorkspaceListener();
+		createSelectionComboBoxes(parent);
 
-        outerContainer.setWeights(new int[] { 3, 1 });
+		SashForm outerContainer = new SashForm(parent, SWT.FILL);
+		outerContainer.setLayout(new GridLayout(1, true));
+		outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        SashForm treeContainer = new SashForm(leftContainer, SWT.VERTICAL);
-        treeContainer.setLayout(new GridLayout(1, false));
-        treeContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        treeContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+		Composite leftContainer = new Composite(outerContainer, SWT.VERTICAL);
+		leftContainer.setLayout(new GridLayout(1, false));
+		leftContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 
-        Composite monitorContainer = createTreeComposite(treeContainer);
-        Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
-        treeContainer.setWeights(new int[] { 10, 5 });
-        createViewButtons(buttonContainer);
+		createFilterGadgets(leftContainer);
 
-        monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
-        measuringTreeViewer = createEmptyMeasuringPointsTreeViewer(undefinedMeasuringContainer);
+		Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
+		buttonContainer.setLayout(new GridLayout(1, true));
 
-        handlerService.activateHandler(SAVE_COMMAND, new SaveHandler());
-        handlerService.activateHandler(SAVEALL_COMMAND, new SaveAllHandler());
-        handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
-        handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
-    }
+		outerContainer.setWeights(new int[] { 3, 1 });
 
-    /**
-     * Initializes the connecton to the data management and manipulation package
-     */
-    private void initializeApplication() {
-        this.dataApplication = DataApplication.getInstance();
-        if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
-            dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0),0);
-        }
-    }
+		SashForm treeContainer = new SashForm(leftContainer, SWT.VERTICAL);
+		treeContainer.setLayout(new GridLayout(1, false));
+		treeContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		treeContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 
-    /**
-     * Adds a changeListener to the eclipse workspace to listen to changes in it and update our GUI
-     * accordingly
-     */
-    private void createWorkspaceListener() {
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		Composite monitorContainer = createTreeComposite(treeContainer);
+		Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
+		treeContainer.setWeights(new int[] { 10, 5 });
+		createViewButtons(buttonContainer);
 
-        workspace.addResourceChangeListener(new WorkspaceListener(this), 1);
-    }
+		monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
+		measuringTreeViewer = createEmptyMeasuringPointsTreeViewer(undefinedMeasuringContainer);
 
-    /**
-     * Creates a tree view which shows all existing monitors and their childs in the selected
-     * projected
-     * 
-     * @param parent
-     *            a composite where the tree view will be placed
-     * @return TreeViewer which includes all existing monitors
-     */
-    private MeasurementsTreeViewer createMonitorTreeViewer(Composite parent) {
-        MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService,
-                dataApplication);
-        measurementsTreeViewer.addMouseListener();
-        measurementsTreeViewer.getViewer().addFilter(filter);
-        addSelectionListener(measurementsTreeViewer);
+		handlerService.activateHandler(SAVE_COMMAND, new SaveHandler());
+		handlerService.activateHandler(SAVEALL_COMMAND, new SaveAllHandler());
+		handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
+		handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
+	}
 
-        return measurementsTreeViewer;
-    }
+	/**
+	 * Initializes the connecton to the data management and manipulation package
+	 */
+	private void initializeApplication() {
+		this.dataApplication = DataApplication.getInstance();
+		if (!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+			dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0), 0);
+		}
+	}
 
-    /**
-     * Creates a tree view which shows all empty measuring points of all projects in the workspace
-     * 
-     * @param parent
-     *            a composite where the tree view will be placed
-     * @return TreeViewer which includes all measuring points without a monitor
-     */
-    private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
-        EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
-                dirty, commandService, dataApplication);
-        emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
-        addSelectionListener(emptyMeasuringPointsTreeViewer);
-        return emptyMeasuringPointsTreeViewer;
-    }
+	/**
+	 * Adds a changeListener to the eclipse workspace to listen to changes in it and
+	 * update our GUI accordingly
+	 */
+	private void createWorkspaceListener() {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
-    /**
-     * Adds a SelectionListener which enables/disables Buttons based on which TreeItem is selected
-     * 
-     * @param treeViewer
-     *            a viewer where the SelectionListener will be added to.
-     */
-    private void addSelectionListener(MeasurementsTreeViewer treeViewer) {
-        treeViewer.getViewer().addSelectionChangedListener(event -> {
-            IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-            selectionService.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
+		workspace.addResourceChangeListener(new WorkspaceListener(this), 1);
+	}
 
-            Object selectionObject = selection.getFirstElement();
+	/**
+	 * Creates a tree view which shows all existing monitors and their childs in the
+	 * selected projected
+	 * 
+	 * @param parent a composite where the tree view will be placed
+	 * @return TreeViewer which includes all existing monitors
+	 */
+	private MeasurementsTreeViewer createMonitorTreeViewer(Composite parent) {
+		MeasurementsTreeViewer measurementsTreeViewer;
+		measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService,
+				dataApplication.getMonitorRepository());
+		measurementsTreeViewer.addMouseListener();
+		measurementsTreeViewer.getViewer().addFilter(filter);
+		addSelectionListener(measurementsTreeViewer);
+		return measurementsTreeViewer;
+	}
 
-            editButton.setText(EDITTEXT_GRAYEDOUT);
-            deleteButton.setText(DELETETEXT_GRAYEDOUT);
-            
-            if (selectionObject == null || selectionObject instanceof MonitorRepository
-                    || selectionObject instanceof MeasuringPointRepository) {
-                editButton.setEnabled(false);
-                deleteButton.setEnabled(false);
-            } else {
-                editButton.setEnabled(true);
-                if (selectionObject instanceof ProcessingType) {
-                    deleteButton.setEnabled(false);
-                    editButton.setText(EDITTEXT_PROCESSINGTYPE);
-                } else {
-                    deleteButton.setEnabled(true);
-                    if (selectionObject instanceof Monitor) {
-                        editButton.setText(EDITTEXT_MONITOR);
-                        deleteButton.setText(DELETETEXT_MONITOR);
-                    } else if (selectionObject instanceof MeasurementSpecification) {
-                        editButton.setText(EDITTEXT_MEASUREMENT);
-                        deleteButton.setText(DELETETEXT_MEASUREMENT);
-                    }
-                }
-            }
-        });
-    }
+	/**
+	 * Creates a tree view which shows all empty measuring points of all projects in
+	 * the workspace
+	 * 
+	 * @param parent a composite where the tree view will be placed
+	 * @return TreeViewer which includes all measuring points without a monitor
+	 */
+	private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
+		EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
+				dirty, commandService, dataApplication);
+		emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
+		addSelectionListener(emptyMeasuringPointsTreeViewer);
+		return emptyMeasuringPointsTreeViewer;
+	}
 
-    /**
-     * Creates the composite in which the tree view is later embedded
-     * 
-     * @param parent
-     *            a composite where the tree composite will be placed
-     * @return Composite where the TreeViewers can be placed
-     */
-    private Composite createTreeComposite(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
-        composite.setLayout(new FillLayout());
-        composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-        return composite;
-    }
+	/**
+	 * Adds a SelectionListener which enables/disables Buttons based on which
+	 * TreeItem is selected
+	 * 
+	 * @param treeViewer a viewer where the SelectionListener will be added to.
+	 */
+	private void addSelectionListener(MeasurementsTreeViewer treeViewer) {
+		treeViewer.getViewer().addSelectionChangedListener(event -> {
+			IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+			selectionService.setSelection(selection.size() == 1 ? selection.getFirstElement() : selection.toArray());
 
-    /**
-     * Creates all gadgets which are used to filter the tree viewers.
-     * 
-     * @param parent
-     */
-    private void createFilterGadgets(Composite parent) {
-        Composite filterContainer = new Composite(parent, SWT.NONE);
-        filterContainer.setLayout(new GridLayout(6, false));
-        filterContainer.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
-        filterContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
+			Object selectionObject = selection.getFirstElement();
 
-        filter = new MeasurementsFilter();
-        final Label filterLabel = new Label(filterContainer, SWT.NONE);
-        filterLabel.setText("Filter:");
+			editButton.setText(EDITTEXT_GRAYEDOUT);
+			deleteButton.setText(DELETETEXT_GRAYEDOUT);
 
-        searchText = new Text(filterContainer, SWT.BORDER | SWT.SEARCH);
-        searchText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        searchText.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                filterTreeViewer();
-            }
-        });
+			if (selectionObject == null || selectionObject instanceof MonitorRepository
+					|| selectionObject instanceof MeasuringPointRepository) {
+				editButton.setEnabled(false);
+				deleteButton.setEnabled(false);
+			} else {
+				editButton.setEnabled(true);
+				if (selectionObject instanceof ProcessingType) {
+					deleteButton.setEnabled(false);
+					editButton.setText(EDITTEXT_PROCESSINGTYPE);
+				} else {
+					deleteButton.setEnabled(true);
+					if (selectionObject instanceof Monitor) {
+						editButton.setText(EDITTEXT_MONITOR);
+						deleteButton.setText(DELETETEXT_MONITOR);
+					} else if (selectionObject instanceof MeasurementSpecification) {
+						editButton.setText(EDITTEXT_MEASUREMENT);
+						deleteButton.setText(DELETETEXT_MEASUREMENT);
+					}
+				}
+			}
+		});
+	}
 
-        final Label filterActiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
-        filterActiveCheckboxLabel.setText("Active\nMonitors");
-        final Button filterActiveCheckbox = new Button(filterContainer, SWT.CHECK);
-        filterActiveCheckbox.setSelection(true);
-        filterActiveCheckbox.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                filter.setFilterActiveMonitors(!filterActiveCheckbox.getSelection());
-                filterTreeViewer();
-            }
-        });
+	/**
+	 * Creates the composite in which the tree view is later embedded
+	 * 
+	 * @param parent a composite where the tree composite will be placed
+	 * @return Composite where the TreeViewers can be placed
+	 */
+	private Composite createTreeComposite(Composite parent) {
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new FillLayout());
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		return composite;
+	}
 
-        final Label filterInactiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
-        filterInactiveCheckboxLabel.setText("Inactive\nMonitors");
-        final Button filterInactiveCheckbox = new Button(filterContainer, SWT.CHECK);
-        filterInactiveCheckbox.setSelection(true);
-        filterInactiveCheckbox.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                filter.setFilterInactiveMonitors(!filterInactiveCheckbox.getSelection());
-                filterTreeViewer();
-            }
-        });
-    }
+	/**
+	 * Creates all gadgets which are used to filter the tree viewers.
+	 * 
+	 * @param parent
+	 */
+	private void createFilterGadgets(Composite parent) {
+		Composite filterContainer = new Composite(parent, SWT.NONE);
+		filterContainer.setLayout(new GridLayout(6, false));
+		filterContainer.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false));
+		filterContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
 
-    /**
-     * filter the monitorTreeViewer and measuringTreeViewer according to the search text entered in the textbox.
-     * If there is going to be no item shown in a tree all items will be made visible again.
-     */
-    private void filterTreeViewer() {
-        TreeViewer treeViewer = (TreeViewer) monitorTreeViewer.getViewer();
-        treeViewer.collapseAll();
-        treeViewer.expandToLevel(2);
-        filter.setSearchText(searchText.getText());
-        monitorTreeViewer.getViewer().refresh();
-        measuringTreeViewer.getViewer().refresh();
-        filter.setSearchText("");
-    }
+		filter = new MeasurementsFilter();
+		final Label filterLabel = new Label(filterContainer, SWT.NONE);
+		filterLabel.setText("Filter:");
 
-    /**
-     * Create all buttons of the view which provide different functionalities like editing,
-     * deleting, assigning measuringpoints to monitor or creating a standard measuring point set
-     * 
-     * @param buttonContainer
-     *            a composite where the buttons will be placed
-     */
-    private void createViewButtons(Composite buttonContainer) {
-        createNewMeasuringpointButton(buttonContainer);
-        createDeleteButton(buttonContainer);
-        createEditButton(buttonContainer);
+		searchText = new Text(filterContainer, SWT.BORDER | SWT.SEARCH);
+		searchText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		searchText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				filterTreeViewer();
+			}
+		});
 
-        Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
-        createStandardButton.setText("Create Standard Set");
-        createStandardButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        createStandardButton.addListener(SWT.Selection, e -> {
-            StandardSetWizard wizard = new StandardSetWizard();
-            Shell parentShell = wizard.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.setPageSize(720, 400);
-            dialog.setMinimumPageSize(720, 400);
-            dialog.open();
-        });
+		final Label filterActiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
+		filterActiveCheckboxLabel.setText("Active\nMonitors");
+		final Button filterActiveCheckbox = new Button(filterContainer, SWT.CHECK);
+		filterActiveCheckbox.setSelection(true);
+		filterActiveCheckbox.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				filter.setFilterActiveMonitors(!filterActiveCheckbox.getSelection());
+				filterTreeViewer();
+			}
+		});
 
-    }
+		final Label filterInactiveCheckboxLabel = new Label(filterContainer, SWT.NONE);
+		filterInactiveCheckboxLabel.setText("Inactive\nMonitors");
+		final Button filterInactiveCheckbox = new Button(filterContainer, SWT.CHECK);
+		filterInactiveCheckbox.setSelection(true);
+		filterInactiveCheckbox.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				filter.setFilterInactiveMonitors(!filterInactiveCheckbox.getSelection());
+				filterTreeViewer();
+			}
+		});
+	}
 
-    /**
-     * Creates a Button which opens the Wizard in order to create a measuring point
-     * 
-     * @param parent
-     *            a composite where the button will be placed
-     */
-    private void createNewMeasuringpointButton(Composite parent) {
-        Button newMpButton = new Button(parent, SWT.PUSH);
-        newMpButton.setText("Add new Measurement");
-        newMpButton.setToolTipText("Add new Monitor & Measuring Point with Metrics");
-        newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        newMpButton.addListener(SWT.Selection, e -> {
-            if(!dataApplication.getModelAccessor().modelsExist()) {
-                MessageDialog.openInformation(null, "No PCM Models found Info", INFOTEXT_NO_PCM_MODELS);
-            } else {
-                checkDirtyState();
-                MeasurementsWizard wizard = new MeasurementsWizard();
-                Shell parentShell = wizard.getShell();
-                WizardDialog dialog = new WizardDialog(parentShell, wizard);
-                dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-                dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-                dialog.open();
+	/**
+	 * filter the monitorTreeViewer and measuringTreeViewer according to the search
+	 * text entered in the textbox. If there is going to be no item shown in a tree
+	 * all items will be made visible again.
+	 */
+	private void filterTreeViewer() {
+		TreeViewer treeViewer = (TreeViewer) monitorTreeViewer.getViewer();
+		treeViewer.collapseAll();
+		treeViewer.expandToLevel(2);
+		filter.setSearchText(searchText.getText());
+		monitorTreeViewer.getViewer().refresh();
+		measuringTreeViewer.getViewer().refresh();
+		filter.setSearchText("");
+	}
 
-            }
-        });
-    }
+	/**
+	 * Create all buttons of the view which provide different functionalities like
+	 * editing, deleting, assigning measuringpoints to monitor or creating a
+	 * standard measuring point set
+	 * 
+	 * @param buttonContainer a composite where the buttons will be placed
+	 */
+	private void createViewButtons(Composite buttonContainer) {
+		createNewMeasuringpointButton(buttonContainer);
+		createDeleteButton(buttonContainer);
+		createEditButton(buttonContainer);
 
-    /**
-     * Creates a Button which deletes selected EObjects
-     * 
-     * @param parent
-     *            a composite where the button will be placed
-     */
-    private void createDeleteButton(Composite parent) {
-        deleteButton = new Button(parent, SWT.PUSH);
-        deleteButton.setText(DELETETEXT_GRAYEDOUT);
-        deleteButton.setEnabled(false);
-        deleteButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
+		createStandardButton.setText("Create Standard Set");
+		createStandardButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		createStandardButton.addListener(SWT.Selection, e -> {
+			StandardSetWizard wizard = new StandardSetWizard();
+			Shell parentShell = wizard.getShell();
+			WizardDialog dialog = new WizardDialog(parentShell, wizard);
+			dialog.setPageSize(720, 400);
+			dialog.setMinimumPageSize(720, 400);
+			dialog.open();
+		});
 
-        deleteButton.addListener(SWT.Selection, e -> {
-            ResourceEditor resourceEditor = ResourceEditorImpl.getInstance();
-            Object selection = selectionService.getSelection();
-            if (selection instanceof EObject) {
-                resourceEditor.deleteResource((EObject) selection);
-            }
-        });
-    }
+	}
 
-    /**
-     * Creates a Button which edits selected EObjects
-     * 
-     * @param parent
-     *            a composite where the button will be placed
-     */
-    private void createEditButton(Composite parent) {
-        editButton = new Button(parent, SWT.PUSH);
-        editButton.setText(EDITTEXT_GRAYEDOUT);
-        editButton.setEnabled(false);
-        editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        editButton.addListener(SWT.Selection, e -> {
-            checkDirtyState();
-            MeasurementsWizard wizard;
-            Object selection = selectionService.getSelection();
-            ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
-            if (selection instanceof Monitor) {
-                wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
-            } else if (selection instanceof MeasuringPoint) {
-                wizard = new MeasurementsWizard(WizardModelType.MEASURING_POINT_SELECTION,
-                        (Monitor) provider.getParent(selection));
-            } else if (selection instanceof MeasurementSpecification) {
-                wizard = new MeasurementsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
-                        (Monitor) provider.getParent(selection));
-            } else if (selection instanceof ProcessingType) {
-                wizard = new MeasurementsWizard(WizardModelType.PROCESSING_TYPE,
-                        (Monitor) provider.getParent(((ProcessingType) selection).getMeasurementSpecification()));
-            } else {
-                wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION);
-            }
+	/**
+	 * Creates a Button which opens the Wizard in order to create a measuring point
+	 * 
+	 * @param parent a composite where the button will be placed
+	 */
+	private void createNewMeasuringpointButton(Composite parent) {
+		Button newMpButton = new Button(parent, SWT.PUSH);
+		newMpButton.setText("Add new Measurement");
+		newMpButton.setToolTipText("Add new Monitor & Measuring Point with Metrics");
+		newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		newMpButton.addListener(SWT.Selection, e -> {
+			if (!dataApplication.getModelAccessor().modelsExist()) {
+				MessageDialog.openInformation(null, "No PCM Models found Info", INFOTEXT_NO_PCM_MODELS);
+			} else {
+				checkDirtyState();
+				MeasurementsWizard wizard = new MeasurementsWizard();
+				Shell parentShell = wizard.getShell();
+				WizardDialog dialog = new WizardDialog(parentShell, wizard);
+				dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
+				dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
+				dialog.open();
 
-            Shell parentShell = wizard.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-            dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-            dialog.open();
+			}
+		});
+	}
 
-        });
-    }
+	/**
+	 * Creates a Button which deletes selected EObjects
+	 * 
+	 * @param parent a composite where the button will be placed
+	 */
+	private void createDeleteButton(Composite parent) {
+		deleteButton = new Button(parent, SWT.PUSH);
+		deleteButton.setText(DELETETEXT_GRAYEDOUT);
+		deleteButton.setEnabled(false);
+		deleteButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
-    /**
-     * Checks whether the state of the view is dirty and
-     * asks the user to save before continuing
-     * @return boolean
-     */
-    private void checkDirtyState() {
-        
-        if(dirty.isDirty()) {
-            boolean result = MessageDialog.openQuestion(null, "", "Do you want to save your changes?");
-            if (result){
-                try {
-                    save(dirty);
-                } catch (IOException e) {
-                    logger.warn("IOException when attempting to save the dirty state. Stacktrace: {}", e.getMessage());
-                }
-               } else {
-                   undoChanges();
-               }
-        }   
-    }
+		deleteButton.addListener(SWT.Selection, e -> {
+			ResourceEditor resourceEditor = ResourceEditorImpl.getInstance();
+			Object selection = selectionService.getSelection();
+			if (selection instanceof EObject) {
+				resourceEditor.deleteResource((EObject) selection);
+			}
+		});
+	}
 
-    /**
-     * Creates a combobox at the top of the view where the user can select the project
-     * 
-     * @param parent
-     *            a composite where the combobox is placed in
-     */
-    private void createProjectsSelectionComboBox(Composite parent) {
-    	 Composite projectContainer = new Composite(parent, SWT.NONE);
-         projectContainer.setLayout(new GridLayout(2, false));
-         projectContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    	final Label filterLabel = new Label(projectContainer, SWT.NONE);
-        filterLabel.setText("Project:");
-        projectsComboDropDown = new Combo(projectContainer, SWT.DROP_DOWN);
-        projectsComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-        updateProjectComboBox();
-        projectsComboDropDown.addSelectionListener(new SelectionListener() {
+	/**
+	 * Creates a Button which edits selected EObjects
+	 * 
+	 * @param parent a composite where the button will be placed
+	 */
+	private void createEditButton(Composite parent) {
+		editButton = new Button(parent, SWT.PUSH);
+		editButton.setText(EDITTEXT_GRAYEDOUT);
+		editButton.setEnabled(false);
+		editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		editButton.addListener(SWT.Selection, e -> {
+			checkDirtyState();
+			MeasurementsWizard wizard;
+			Object selection = selectionService.getSelection();
+			ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
+			if (selection instanceof Monitor) {
+				wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
+			} else if (selection instanceof MeasuringPoint) {
+				wizard = new MeasurementsWizard(WizardModelType.MEASURING_POINT_SELECTION,
+						(Monitor) provider.getParent(selection));
+			} else if (selection instanceof MeasurementSpecification) {
+				wizard = new MeasurementsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
+						(Monitor) provider.getParent(selection));
+			} else if (selection instanceof ProcessingType) {
+				wizard = new MeasurementsWizard(WizardModelType.PROCESSING_TYPE,
+						(Monitor) provider.getParent(((ProcessingType) selection).getMeasurementSpecification()));
+			} else {
+				wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION);
+			}
 
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                int selectionIndex = projectsComboDropDown.getSelectionIndex();
-                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex),0);
-                updateTreeViewer();
-                updateMonitorRepositoryComboBox();
-            }
+			Shell parentShell = wizard.getShell();
+			WizardDialog dialog = new WizardDialog(parentShell, wizard);
+			dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
+			dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
+			dialog.open();
 
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-                projectsComboDropDown.select(0);
+		});
+	}
 
-            }
-        });
-        projectsComboDropDown.select(0);
-    }
-    
-    /**
-     * Creates the ComboBoxes for project and monitorRepository
-     * at the top of the view
-     * @param parent
-     * 				a composite where the comboboxes are palced in
-     */
-    private void createSelectionComboBoxes(Composite parent) {
-        Composite container = new Composite(parent, SWT.NONE);
-        container.setLayout(new GridLayout(2, false));
-        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        createProjectsSelectionComboBox(container);
-        createMonitorRepositorySelectionComboBox(container);
-    }
-    
-    /**
-     * Creates a ComboBox at the top of the view where
-     * user can select a monitorRepository
-     * @param parent 
-     * 				a composite where the combobox is placed in
-     */
-    private void createMonitorRepositorySelectionComboBox(Composite parent) {
-    	
-    	 Composite monitorRepositoryContainer = new Composite(parent, SWT.NONE);
-         monitorRepositoryContainer.setLayout(new GridLayout(2, false));
-         monitorRepositoryContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    	final Label filterLabel = new Label(monitorRepositoryContainer, SWT.NONE);
-        filterLabel.setText("MonitorRepository:");
-            monitorRepositoriesComboDropDown = new Combo(monitorRepositoryContainer, SWT.DROP_DOWN);
-            monitorRepositoriesComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-            
-            
-            updateMonitorRepositoryComboBox();
-            monitorRepositoriesComboDropDown.addSelectionListener(new SelectionListener() {
-                 @Override
-                public void widgetSelected(SelectionEvent e) {
-                    int selectionIndex = monitorRepositoriesComboDropDown.getSelectionIndex();
-                    dataApplication.updateMonitorRepository(selectionIndex);
-                    updateTreeViewer();
-                }
-                 @Override
-                public void widgetDefaultSelected(SelectionEvent e) {
-                    monitorRepositoriesComboDropDown.select(0);
-                 }
-            });
-            monitorRepositoriesComboDropDown.select(0);         
-        
-    }
-    
-    /**
-     * If more then 1 monitorRepository exists in the current project
-     * this updates the MonitorRepositoryComboBox
-     */
-    public void updateMonitorRepositoryComboBox() {
-       
-            monitorRepositoriesComboDropDown.setEnabled(true);
-            int selectionIndex = 0;
-            monitorRepositoriesComboDropDown.removeAll();
-            List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
-            for (int i = 0; i < allMonitorRepositories.size(); i++) {
-                MonitorRepository monitorRepository = allMonitorRepositories.get(i);
-                 if (monitorRepository.equals(dataApplication.getMonitorRepository())) {
-                    selectionIndex = i;
-                }
-                 monitorRepositoriesComboDropDown.add(i+1 + ". " +monitorRepository.getEntityName());
-            }
-            monitorRepositoriesComboDropDown.select(selectionIndex);
-         
-            if (dataApplication.getModelAccessor().getMonitorRepository().size()<=1) {
-                monitorRepositoriesComboDropDown.setEnabled(false);
-            }
-            
-        
-    }
+	/**
+	 * Checks whether the state of the view is dirty and asks the user to save
+	 * before continuing
+	 * 
+	 * @return boolean
+	 */
+	private void checkDirtyState() {
 
-    /**
-     * Adds every project in the workspace that has an .aird file to the projectsComboBox
-     */
-    public void updateProjectComboBox() {
+		if (dirty.isDirty()) {
+			boolean result = MessageDialog.openQuestion(null, "", "Do you want to save your changes?");
+			if (result) {
+				try {
+					save(dirty);
+				} catch (IOException e) {
+					logger.warn("IOException when attempting to save the dirty state. Stacktrace: {}", e.getMessage());
+				}
+			} else {
+				undoChanges();
+			}
+		}
+	}
 
-        int selectionIndex = 0;
-        projectsComboDropDown.removeAll();
-        List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
-        for (int i = 0; i < allProjects.size(); i++) {
-            IProject project = allProjects.get(i);
+	/**
+	 * Creates a combobox at the top of the view where the user can select the
+	 * project
+	 * 
+	 * @param parent a composite where the combobox is placed in
+	 */
+	private void createProjectsSelectionComboBox(Composite parent) {
+		Composite projectContainer = new Composite(parent, SWT.NONE);
+		projectContainer.setLayout(new GridLayout(2, false));
+		projectContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		final Label filterLabel = new Label(projectContainer, SWT.NONE);
+		filterLabel.setText("Project:");
+		projectsComboDropDown = new Combo(projectContainer, SWT.DROP_DOWN);
+		projectsComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+		updateProjectComboBox();
+		projectsComboDropDown.addSelectionListener(new SelectionListener() {
 
-            if (project.equals(dataApplication.getProject())) {
-                selectionIndex = i;
-            }
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selectionIndex = projectsComboDropDown.getSelectionIndex();
+				dataApplication
+						.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex), 0);
+				updateTreeViewer();
+				updateMonitorRepositoryComboBox();
+			}
 
-            projectsComboDropDown.add(project.toString());
-        }
-        projectsComboDropDown.select(selectionIndex);
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				projectsComboDropDown.select(0);
 
-    }
-    
-    /**
-     * Updates the dashboard by reloading the data
-     * and refreshing the views
-     * @param project to update
-     */
-    public void updateMeasurementsDashboardView(IProject project) {
-    	dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
-    	updateTreeViewer();
-    }
-  
-    /**
-     * Undos all changes previously done on the dashboard
-     */
-    private void undoChanges() {
-        monitorTreeViewer.undo();
-        measuringTreeViewer.undo();
-    }
+			}
+		});
+		projectsComboDropDown.select(0);
+	}
 
-    /**
-     * Updates the Monitor and Measuringpoint Tree Viewer
-     */
-    private void updateTreeViewer() {
-        monitorTreeViewer.update();
-        measuringTreeViewer.update();
-    }
-    
-    /**
-     * Returns the instance of dataApplication
-     * @return dataApplication instance
-     */
-    public DataApplication getDataApplication() {
-        return dataApplication;
-    }
+	/**
+	 * Creates the ComboBoxes for project and monitorRepository at the top of the
+	 * view
+	 * 
+	 * @param parent a composite where the comboboxes are palced in
+	 */
+	private void createSelectionComboBoxes(Composite parent) {
+		Composite container = new Composite(parent, SWT.NONE);
+		container.setLayout(new GridLayout(2, false));
+		container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		createProjectsSelectionComboBox(container);
+		createMonitorRepositorySelectionComboBox(container);
+	}
 
-    /**
-     * Saves the current data in the tree view
-     * 
-     * @param dirty
-     *            the dirty state which indicates whether there were changes made
-     * @throws IOException
-     *             if the save command fails
-     */
-    @Persist
-    public void save(MDirtyable dirty) throws IOException {
-        monitorTreeViewer.save(dirty);
-        measuringTreeViewer.save(dirty);
-    }
+	/**
+	 * Creates a ComboBox at the top of the view where user can select a
+	 * monitorRepository
+	 * 
+	 * @param parent a composite where the combobox is placed in
+	 */
+	private void createMonitorRepositorySelectionComboBox(Composite parent) {
 
-    public void undo() {
-        monitorTreeViewer.undo();
-    }
-    
-    public void redo() {
-        monitorTreeViewer.redo();
-    }
- 
+		Composite monitorRepositoryContainer = new Composite(parent, SWT.NONE);
+		monitorRepositoryContainer.setLayout(new GridLayout(2, false));
+		monitorRepositoryContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		final Label filterLabel = new Label(monitorRepositoryContainer, SWT.NONE);
+		filterLabel.setText("MonitorRepository:");
+		monitorRepositoriesComboDropDown = new Combo(monitorRepositoryContainer, SWT.DROP_DOWN);
+		monitorRepositoriesComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+
+		updateMonitorRepositoryComboBox();
+		monitorRepositoriesComboDropDown.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selectionIndex = monitorRepositoriesComboDropDown.getSelectionIndex();
+				dataApplication.updateMonitorRepository(selectionIndex);
+				updateTreeViewer();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				monitorRepositoriesComboDropDown.select(0);
+			}
+		});
+		monitorRepositoriesComboDropDown.select(0);
+
+	}
+
+	/**
+	 * If more then 1 monitorRepository exists in the current project this updates
+	 * the MonitorRepositoryComboBox
+	 */
+	public void updateMonitorRepositoryComboBox() {
+
+		monitorRepositoriesComboDropDown.setEnabled(true);
+		int selectionIndex = 0;
+		monitorRepositoriesComboDropDown.removeAll();
+		List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
+		for (int i = 0; i < allMonitorRepositories.size(); i++) {
+			MonitorRepository monitorRepository = allMonitorRepositories.get(i);
+			if (monitorRepository.equals(dataApplication.getMonitorRepository())) {
+				selectionIndex = i;
+			}
+			monitorRepositoriesComboDropDown.add(i + 1 + ". " + monitorRepository.getEntityName());
+		}
+		monitorRepositoriesComboDropDown.select(selectionIndex);
+
+		if (dataApplication.getModelAccessor().getMonitorRepository().size() <= 1) {
+			monitorRepositoriesComboDropDown.setEnabled(false);
+		}
+
+	}
+
+	/**
+	 * Adds every project in the workspace that has an .aird file to the
+	 * projectsComboBox
+	 */
+	public void updateProjectComboBox() {
+
+		int selectionIndex = 0;
+		projectsComboDropDown.removeAll();
+		List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
+		for (int i = 0; i < allProjects.size(); i++) {
+			IProject project = allProjects.get(i);
+
+			if (project.equals(dataApplication.getProject())) {
+				selectionIndex = i;
+			}
+
+			projectsComboDropDown.add(project.toString());
+		}
+		projectsComboDropDown.select(selectionIndex);
+
+	}
+
+	/**
+	 * Updates the dashboard by reloading the data and refreshing the views
+	 * 
+	 * @param project to update
+	 */
+	public void updateMeasurementsDashboardView(IProject project) {
+		dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
+		updateTreeViewer();
+	}
+
+	/**
+	 * Undos all changes previously done on the dashboard
+	 */
+	private void undoChanges() {
+		monitorTreeViewer.undo();
+		measuringTreeViewer.undo();
+	}
+
+	/**
+	 * Updates the Monitor and Measuringpoint Tree Viewer
+	 */
+	private void updateTreeViewer() {
+		monitorTreeViewer.update();
+		measuringTreeViewer.update();
+	}
+
+	/**
+	 * Returns the instance of dataApplication
+	 * 
+	 * @return dataApplication instance
+	 */
+	public DataApplication getDataApplication() {
+		return dataApplication;
+	}
+
+	/**
+	 * Saves the current data in the tree view
+	 * 
+	 * @param dirty the dirty state which indicates whether there were changes made
+	 * @throws IOException if the save command fails
+	 */
+	@Persist
+	public void save(MDirtyable dirty) throws IOException {
+		monitorTreeViewer.save(dirty);
+		measuringTreeViewer.save(dirty);
+	}
+
+	public void undo() {
+		monitorTreeViewer.undo();
+	}
+
+	public void redo() {
+		monitorTreeViewer.redo();
+	}
+
 }
