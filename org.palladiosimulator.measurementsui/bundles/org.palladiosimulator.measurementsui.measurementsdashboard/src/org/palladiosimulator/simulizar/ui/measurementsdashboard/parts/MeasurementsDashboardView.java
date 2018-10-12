@@ -234,7 +234,8 @@ public class MeasurementsDashboardView {
             deleteButton.setText(DELETETEXT_GRAYEDOUT);
 
             if (selectionObject == null || selectionObject instanceof MonitorRepository
-                    || selectionObject instanceof MeasuringPointRepository) {
+                    || selectionObject instanceof MeasuringPointRepository
+                    || selectionObject instanceof MeasuringPoint) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
             } else {
