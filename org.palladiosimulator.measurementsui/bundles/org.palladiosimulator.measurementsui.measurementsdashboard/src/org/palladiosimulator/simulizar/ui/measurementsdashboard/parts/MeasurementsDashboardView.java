@@ -132,10 +132,9 @@ public class MeasurementsDashboardView {
         outerContainer.setLayout(new GridLayout(1, true));
         outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        Composite leftContainer = new Composite(outerContainer, SWT.VERTICAL);
+        Composite leftContainer = new Composite(outerContainer, SWT.NONE);
         leftContainer.setLayout(new GridLayout(1, false));
         leftContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-
         createFilterGadgets(leftContainer);
 
         Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
@@ -152,7 +151,6 @@ public class MeasurementsDashboardView {
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
         treeContainer.setWeights(new int[] { 10, 5 });
         createViewButtons(buttonContainer);
-
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         measuringTreeViewer = createEmptyMeasuringPointsTreeViewer(undefinedMeasuringContainer);
 
@@ -634,6 +632,7 @@ public class MeasurementsDashboardView {
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
     private void updateTreeViewer() {
+        monitorTreeViewer.setModelRepository(dataApplication.getMonitorRepository());
         monitorTreeViewer.update();
         measuringTreeViewer.update();
     }
