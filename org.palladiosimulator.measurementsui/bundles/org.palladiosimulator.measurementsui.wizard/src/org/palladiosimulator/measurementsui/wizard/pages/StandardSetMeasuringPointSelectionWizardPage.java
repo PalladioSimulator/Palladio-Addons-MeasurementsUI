@@ -12,6 +12,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -30,27 +31,31 @@ import org.palladiosimulator.monitorrepository.Monitor;
 public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
     private CheckboxTableViewer viewer;
     private boolean loadMonitorAndMeasuringpoint = true;
-/**
- * getter for the flag, which indicates what should be loaded
- * @return boolean 
- */
+
+    /**
+     * getter for the flag, which indicates what should be loaded
+     * 
+     * @return boolean
+     */
     public boolean isLoadMonitorAndMeasuringpoint() {
         return loadMonitorAndMeasuringpoint;
     }
 
     /**
      * setter for the flag, which indicates what should be loaded
-     * @param add flag for the monitors 
+     * 
+     * @param add
+     *            flag for the monitors
      */
     public void setLoadMonitorAndMeasuringpoint(boolean add) {
         this.loadMonitorAndMeasuringpoint = add;
     }
 
     private Composite composite;
-    
 
     /**
      * getter for the table viewer
+     * 
      * @return checkboxtableviewer
      */
     public CheckboxTableViewer getViewer() {
@@ -59,7 +64,9 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
 
     /**
      * sets the viewer for this view
-     * @param viewer the checkboxtableviewer
+     * 
+     * @param viewer
+     *            the checkboxtableviewer
      */
     public void setViewer(CheckboxTableViewer viewer) {
         this.viewer = viewer;
@@ -68,11 +75,13 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
     private StandardSetCreationProvider set;
 
     /**
-     * constructor for tis wizard page
-     * @param pageName name for the wizard page
+     * constructor for this wizard page
+     * 
+     * @param pageName
+     *            name for the wizard page
      */
     public StandardSetMeasuringPointSelectionWizardPage(String pageName) {
-        super("wizardpage");
+        super("standardSetMeasuringPointSelectionWizardPage");
         setMessage(pageName);
         set = new StandardSetCreationProvider();
     }
@@ -88,9 +97,10 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
         setPageComplete(true);
 
     }
-/**
- * creates the whole structure for the wizard page
- */
+
+    /**
+     * creates the whole structure for the wizard page
+     */
     private void createStructure() {
         Composite tableviewerComposite = new Composite(composite, SWT.SINGLE);
         tableviewerComposite.setLayout(new GridLayout(1, false));
@@ -122,23 +132,26 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
             viewer.setAllChecked(false);
         });
     }
-/**
- * loads monitors and measuringpoints, if the option is selected on the previous wizard page
- */
+
+    /**
+     * loads monitors and measuringpoints, if the option is selected on the previous wizard page
+     */
     public void loadMonitorAndMeasuringpointInput() {
 
         createColumns(viewer);
-
+        setMessage("Select all monitors which should be created.");
         loadMonitorAndMeasuringpoint = true;
         viewer.setInput(set.createMonitorForEveryResource().toArray());
         viewer.refresh();
 
     }
-/**
- * loads only the measuringpoints, if the option is selected on the previous wizard page 
- */
+
+    /**
+     * loads only the measuringpoints, if the option is selected on the previous wizard page
+     */
     public void loadOnlyMeasuringpointInput() {
         createMeasuringpointColumns(viewer);
+        setMessage("Select all measuringpoints which should be created.");
         loadMonitorAndMeasuringpoint = false;
         List<MeasuringPoint> measuringpoints = new LinkedList<>();
         List<Monitor> monitors = set.createMonitorForEveryResource();
@@ -238,6 +251,11 @@ public class StandardSetMeasuringPointSelectionWizardPage extends WizardPage {
         column.setResizable(true);
         column.setMoveable(true);
         return viewerColumn;
+    }
+    
+    @Override
+    public void performHelp() {
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Standard_Set_Functionality");
     }
 
 }

@@ -1,17 +1,14 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer;
 
-import java.util.Optional;
-
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDropListener;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
 
 import monitorrepositoryview.MonitorrepositoryviewInjectorProvider;
 
@@ -31,26 +28,18 @@ public class MonitorTreeViewer extends MeasurementsTreeViewer {
      *            the dirty state which indicates whether there were changes made
      * @param commandService
      *            the eclipse commandservice in order to save the view
-     * @param application
-     *            the connection to the data binding. This is needed in order to get the repository of
-     *            the current project.
+     * @param monitorRepository
+     *            a monitor repository which is displayed with all its monitors,
+     *            measurementspecifications and processing types in the tree view
      */
     public MonitorTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-            DataApplication application) {
-        super(parent, dirty, commandService, application);
+            MonitorRepository monitorRepository) {
+        super(parent, dirty, commandService, monitorRepository);
     }
 
     @Override
     protected void initInjector() {
         this.injector = MonitorrepositoryviewInjectorProvider.getInjector();
-    }
-
-    @Override
-    protected Optional<EObject> getModelRepository() {
-        if(dataApplication.getMonitorRepository() != null) {
-            return Optional.of(dataApplication.getMonitorRepository());
-        }
-    	return Optional.empty();
     }
 
     @Override

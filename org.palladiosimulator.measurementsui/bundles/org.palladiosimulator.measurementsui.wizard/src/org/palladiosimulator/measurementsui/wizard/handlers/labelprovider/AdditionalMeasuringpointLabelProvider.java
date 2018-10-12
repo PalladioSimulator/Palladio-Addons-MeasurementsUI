@@ -1,13 +1,10 @@
 package org.palladiosimulator.measurementsui.wizard.handlers.labelprovider;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.emf.edit.ui.provider.ExtendedImageRegistry;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.swt.graphics.Image;
+import org.palladiosimulator.measurementsui.wizard.util.ImageProviderSwitch;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 /**
@@ -41,17 +38,8 @@ public class AdditionalMeasuringpointLabelProvider implements ILabelProvider {
 
     @Override
     public Image getImage(Object element) {
-        EObject object = (EObject) element;
-        EcoreItemProviderAdapterFactory factory = new EcoreItemProviderAdapterFactory();
-        if (factory.isFactoryForType(IItemLabelProvider.class)) {
-            IItemLabelProvider labelProvider = (IItemLabelProvider) factory.adapt(object, IItemLabelProvider.class);
-            if (labelProvider != null) {
-                URI test = (URI) labelProvider.getImage(object);
-
-                return ExtendedImageRegistry.getInstance().getImage(test);
-            }
-        }
-        return null;
+        ImageProviderSwitch imageSwitch = new ImageProviderSwitch();
+        return imageSwitch.doSwitch((EObject) element);
     }
 
     @Override

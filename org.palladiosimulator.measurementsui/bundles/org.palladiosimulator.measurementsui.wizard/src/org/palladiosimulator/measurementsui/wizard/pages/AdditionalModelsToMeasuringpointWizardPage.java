@@ -5,10 +5,10 @@ import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.AdditionalMeasuringpointContentProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AdditionalMeasuringpointLabelProvider;
@@ -36,7 +36,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
      *            the needed wizard model
      */
     public AdditionalModelsToMeasuringpointWizardPage(MeasuringPointSelectionWizardModel selectionWizardModel) {
-        super("page2extra");
+        super("additionalModelsToMeasuringpointWizardPage");
         this.selectionWizardModel = selectionWizardModel;
         setTitle("Select an operation role or passive resource");
         setDescription("");
@@ -95,7 +95,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
         }
         if (selected) {
             FinalModelsToMeasuringpointWizardPage page = (FinalModelsToMeasuringpointWizardPage) super.getWizard()
-                    .getPage("page2final");
+                    .getPage("finalModelstoMeasuringpointWizardPage");
             page.loadData();
             return page;
 
@@ -106,9 +106,7 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
     }
 
     /**
-     * @see WizardDialog#nextPressed()
-     * @see WizardPage#getNextPage()
-     * @return boolean validates whether the next button is pressed or not
+     * performs the operations to set the chosen model to the wizard model
      */
     protected void nextPressed() {
 
@@ -124,5 +122,10 @@ public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
             selected = false;
         }
 
+    }
+    
+    @Override
+    public void performHelp() {
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measuring_Point_Selection_Page");
     }
 }

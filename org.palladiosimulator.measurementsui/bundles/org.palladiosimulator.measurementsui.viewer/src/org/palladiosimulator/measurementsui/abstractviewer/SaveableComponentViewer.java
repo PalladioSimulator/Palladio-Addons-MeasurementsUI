@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.widgets.Composite;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 /**
  * A common saveable view based on a parsley view.
@@ -20,12 +19,9 @@ import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 public abstract class SaveableComponentViewer extends ComponentViewer {
     private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
     private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
-    private static final String UNDO_COMMAND = "org.eclipse.ui.edit.undo";
-    private static final String REDO_COMMAND = "org.eclipse.ui.edit.redo";
-    
+
     protected MDirtyable dirty;
     protected ECommandService commandService;
-    protected DataApplication dataApplication;
 
     /**
      * 
@@ -35,18 +31,12 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
      *            the dirty state which indicates whether there were changes made in the viewer
      * @param commandService
      *            a service of the eclipse application in order to make the tree view saveable
-     * @param dataApplication
-     *            the connection to the data binding. This is needed in order to get the repository
-     *            of the current project.
+     * @param modelRepository
+     *            EObject which is shown in the view
      */
     protected SaveableComponentViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-            DataApplication dataApplication) {
-        super(parent);
-        this.dataApplication = dataApplication;
-        initEditingDomain();
-        initParsley(parent);
-        initContextMenu();
-        initDragAndDrop();
+            EObject modelRepository) {
+        super(parent, modelRepository);
         this.dirty = dirty;
         this.commandService = commandService;
     }
@@ -82,30 +72,39 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
                 dirty.setDirty(true);
                 commandService.getCommand(SAVE_COMMAND).isEnabled();
                 commandService.getCommand(SAVEALL_COMMAND).isEnabled();
-                commandService.getCommand(UNDO_COMMAND).isEnabled();
-                commandService.getCommand(REDO_COMMAND).isEnabled();
             }
         });
     }
-    
+
     /**
-     * Undos every command on the command stack
+     * Undos one command on the command stack
      */
     public void undo() {
         initEditingDomain();
         CommandStack commandStack = editingDomain.getCommandStack();
-        while(commandStack.canUndo()) {
+        if (commandStack.canUndo()) {
             commandStack.undo();
         }
     }
-    
+
     /**
-     * Redos every command on the command stack
+     * Undos every command on the command stack
+     */
+    public void undoAll() {
+        initEditingDomain();
+        CommandStack commandStack = editingDomain.getCommandStack();
+        while (commandStack.canUndo()) {
+            commandStack.undo();
+        }
+    }
+
+    /**
+     * Redos one command on the command stack
      */
     public void redo() {
         initEditingDomain();
         CommandStack commandStack = editingDomain.getCommandStack();
-        while(commandStack.canRedo()) {
+        if (commandStack.canRedo()) {
             commandStack.redo();
         }
     }

@@ -1,10 +1,7 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer;
 
-import java.util.Optional;
-
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
@@ -13,7 +10,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringPointDragListener;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
 import emptymeasuringpoints.EmptymeasuringpointsInjectorProvider;
 
@@ -33,21 +29,13 @@ public class EmptyMeasuringPointsTreeViewer extends MeasurementsTreeViewer {
      *            the dirty state which indicates whether there were changes made
      * @param commandService
      *            a service of the eclipse application in order to make the tree view saveable
-     * @param application
-     *            the connection to the data binding. This is needed in order to get the repository of
-     *            the current project.
+     * @param repository
+     *            a measuring point repository which is displayed with all its measuring points in
+     *            the tree view
      */
     public EmptyMeasuringPointsTreeViewer(Composite parent, MDirtyable dirty, ECommandService commandService,
-            DataApplication application) {
-        super(parent, dirty, commandService, application);
-    }
-
-    @Override
-    protected Optional<EObject> getModelRepository() {
-        if(dataApplication.getModelAccessor().measuringPointRepositoryExists()) {
-            return Optional.of((EObject)dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
-        }
-        return Optional.empty();
+            MeasuringPointRepository repository) {
+        super(parent, dirty, commandService, repository);
     }
 
     @Override

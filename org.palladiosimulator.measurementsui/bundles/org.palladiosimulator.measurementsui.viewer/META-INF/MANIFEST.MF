@@ -24,7 +24,7 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.ui.workbench,
  org.eclipse.emf.ecore,
  org.eclipse.emf.edit.ui,
- org.palladiosimulator.measurementsui.selectmeasurements.emptyview,
+ org.palladiosimulator.measurementsui.selectmetricdescriptions.selected,
  org.palladiosimulator.edp2
 Export-Package: org.palladiosimulator.measurementsui.abstractviewer,
  org.palladiosimulator.measurementsui.abstractviewer.listener

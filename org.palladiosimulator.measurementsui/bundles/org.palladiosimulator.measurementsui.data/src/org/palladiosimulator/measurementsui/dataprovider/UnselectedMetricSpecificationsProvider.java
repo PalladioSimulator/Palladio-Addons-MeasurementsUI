@@ -2,8 +2,6 @@ package org.palladiosimulator.measurementsui.dataprovider;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
-
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -28,6 +26,7 @@ import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 
 /**
  * This class creates and manages the Monitors used for the 3rd Wizard Page
@@ -97,52 +96,100 @@ public class UnselectedMetricSpecificationsProvider {
             EvaluateExtensions evaluateExtensions = new EvaluateExtensions();
             evaluateExtensions.loadExtensions();
 
-            if (passedMP instanceof UsageScenarioMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getUsageScenarioMeasuringPointMetrics();
+            PcmmeasuringpointSwitch<Map<MetricDescription, Boolean>> measuringPointSwitch = getPcmMeasuringPointSwitch(
+                    evaluateExtensions);
+            return measuringPointSwitch.doSwitch(passedMP);
+        }
+        return null;
+    }
 
-            } else if (passedMP instanceof AssemblyOperationMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getAssemblyOperationMeasuringPointMetrics();
+    /**
+     * switch over the different kinds of Measuring Points.
+     * 
+     * @param evaluateExtensions
+     * @return
+     */
+    private PcmmeasuringpointSwitch<Map<MetricDescription, Boolean>> getPcmMeasuringPointSwitch(
+            EvaluateExtensions evaluateExtensions) {
+        return new PcmmeasuringpointSwitch<Map<MetricDescription, Boolean>>() {
 
-            } else if (passedMP instanceof AssemblyPassiveResourceMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getAssemblyPassiveResourceMeasuringPointMetrics();
-
-            } else if (passedMP instanceof ResourceContainerMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getResourceContainerMeasuringPointMetrics();
-
-            } else if (passedMP instanceof ResourceEnvironmentMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getResourceEnvironmentMeasuringPointMetrics();
-
-            } else if (passedMP instanceof SubSystemOperationMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getSubSystemOperationMeasuringPointMetrics();
-
-            } else if (passedMP instanceof SystemOperationMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getSystemOperationMeasuringPointMetrics();
-
-            } else if (passedMP instanceof EntryLevelSystemCallMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getEntryLevelSystemCallMeasuringPointMetrics();
-
-            } else if (passedMP instanceof LinkingResourceMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getLinkingResourceMeasuringPointMetrics();
-
-            } else if (passedMP instanceof ExternalCallActionMeasuringPoint) {
-                return evaluateExtensions.getMeasuringPointmetricsCombinations()
-                        .getExternalCallActionMeasuringPointMetrics();
-
-            } else if (passedMP instanceof ActiveResourceMeasuringPoint) {
+            @Override
+            public Map<MetricDescription, Boolean> caseActiveResourceMeasuringPoint(
+                    ActiveResourceMeasuringPoint object) {
                 return evaluateExtensions.getMeasuringPointmetricsCombinations()
                         .getActiveResourceMeasuringPointMetrics();
             }
-        }
-        return null;
+
+            @Override
+            public Map<MetricDescription, Boolean> caseAssemblyOperationMeasuringPoint(
+                    AssemblyOperationMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getAssemblyOperationMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseAssemblyPassiveResourceMeasuringPoint(
+                    AssemblyPassiveResourceMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getAssemblyPassiveResourceMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseEntryLevelSystemCallMeasuringPoint(
+                    EntryLevelSystemCallMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getEntryLevelSystemCallMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseExternalCallActionMeasuringPoint(
+                    ExternalCallActionMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getExternalCallActionMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseLinkingResourceMeasuringPoint(
+                    LinkingResourceMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getLinkingResourceMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseResourceContainerMeasuringPoint(
+                    ResourceContainerMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getResourceContainerMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseResourceEnvironmentMeasuringPoint(
+                    ResourceEnvironmentMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getResourceEnvironmentMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseSubSystemOperationMeasuringPoint(
+                    SubSystemOperationMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getSubSystemOperationMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseSystemOperationMeasuringPoint(
+                    SystemOperationMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getSystemOperationMeasuringPointMetrics();
+            }
+
+            @Override
+            public Map<MetricDescription, Boolean> caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
+                return evaluateExtensions.getMeasuringPointmetricsCombinations()
+                        .getUsageScenarioMeasuringPointMetrics();
+            }
+        };
+
     }
 
     /**

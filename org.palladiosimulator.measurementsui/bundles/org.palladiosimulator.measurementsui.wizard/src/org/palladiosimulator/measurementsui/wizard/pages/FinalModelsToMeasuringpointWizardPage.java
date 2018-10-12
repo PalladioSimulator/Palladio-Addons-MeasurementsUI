@@ -8,12 +8,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.FinalMeasuringpointContentProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AdditionalMeasuringpointLabelProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -28,7 +27,6 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
     private TreeViewer finalSelectionTreeViewer;
     private MeasuringPointSelectionWizardModel selectionWizardModel;
 
-
     /**
      * the constructor with the needed wizard model
      * 
@@ -36,7 +34,7 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
      *            the needed wizard model
      */
     public FinalModelsToMeasuringpointWizardPage(MeasuringPointSelectionWizardModel selectionWizardModel) {
-        super("page2final");
+        super("finalModelstoMeasuringpointWizardPage");
         this.selectionWizardModel = selectionWizardModel;
         setTitle("Select an operation signature");
     }
@@ -91,14 +89,17 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
     }
 
     /**
-     * @see WizardDialog#nextPressed()
-     * @see WizardPage#getNextPage()
-     * @return boolean validates whether the next button is pressed or not
+     * performs the operation to add the chosen model to the wizard model
      */
     protected boolean nextPressed() {
         selectionWizardModel
                 .setCurrentThirdStageModel(finalSelectionTreeViewer.getStructuredSelection().getFirstElement());
         selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
         return true;
+    }
+    
+    @Override
+    public void performHelp() {
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measuring_Point_Selection_Page");
     }
 }

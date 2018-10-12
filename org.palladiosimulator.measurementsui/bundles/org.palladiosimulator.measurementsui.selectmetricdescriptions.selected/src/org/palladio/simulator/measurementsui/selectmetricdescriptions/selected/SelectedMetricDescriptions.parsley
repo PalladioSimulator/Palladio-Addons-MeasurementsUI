@@ -1,0 +1,36 @@
+import org.palladiosimulator.monitorrepository.MeasurementSpecification
+import org.palladio.simulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsTableView
+
+/* org.palladio.simulator.measurementsui.selectmeasurements.emptyview EMF Parsley Dsl Module file */
+module org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected {
+	
+	parts {
+		viewpart org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected {
+			viewname "SelectedMetricDescriptionsTableView"
+			viewclass SelectedMetricDescriptionsTableView
+		}
+	}
+	
+	
+	configurator {
+		eClass {
+			SelectedMetricDescriptionsTableView -> {
+				
+				
+			}
+		}
+	}
+	featuresProvider{
+		features{
+			MeasurementSpecification -> metricDescription,triggersSelfAdaptations
+		}
+	}
+	featureCaptionProvider{
+		text{
+			MeasurementSpecification : metricDescription -> "Selected"
+			MeasurementSpecification : triggersSelfAdaptations -> "Self Adaptive"
+		}
+		
+	}
+	
+}

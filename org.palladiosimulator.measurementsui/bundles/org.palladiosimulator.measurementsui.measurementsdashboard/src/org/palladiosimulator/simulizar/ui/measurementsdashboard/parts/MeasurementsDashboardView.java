@@ -1,3 +1,4 @@
+
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.parts;
 
 import java.io.IOException;
@@ -55,6 +56,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RedoHandler;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RefreshHandler;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.UndoHandler;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners.WorkspaceListener;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
@@ -80,7 +82,7 @@ public class MeasurementsDashboardView {
     private Button editButton;
     private MeasurementsFilter filter;
     private Text searchText;
-    
+
     private static final String EDITTEXT_GRAYEDOUT = "Edit...";
     private static final String DELETETEXT_GRAYEDOUT = "Delete...";
     private static final String EDITTEXT_MONITOR = "Edit Monitor";
@@ -92,14 +94,15 @@ public class MeasurementsDashboardView {
             + " palladio core models before you can create measuring points."
             + " They are used to model your systems architecture and characteristics."
             + " Use the buttons on the toolbar on top to start creating.";
-    
+
     private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
     private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
     private static final String UNDO_COMMAND = "org.eclipse.ui.edit.undo";
     private static final String REDO_COMMAND = "org.eclipse.ui.edit.redo";
-    
+    private static final String REFRESH_COMMAND = "org.eclipse.ui.file.refresh";
+
     private final Logger logger = LoggerFactory.getLogger(MeasurementsDashboardView.class);
-    
+
     @Inject
     private MDirtyable dirty;
 
@@ -157,6 +160,10 @@ public class MeasurementsDashboardView {
         handlerService.activateHandler(SAVEALL_COMMAND, new SaveAllHandler());
         handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
         handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
+        handlerService.activateHandler(REFRESH_COMMAND, new RefreshHandler());
+
+        commandService.getCommand(UNDO_COMMAND).isEnabled();
+        commandService.getCommand(REDO_COMMAND).isEnabled();
     }
 
     /**
@@ -164,8 +171,8 @@ public class MeasurementsDashboardView {
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
-            dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0),0);
+        if (!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+            dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0), 0);
         }
     }
 
@@ -189,7 +196,7 @@ public class MeasurementsDashboardView {
      */
     private MeasurementsTreeViewer createMonitorTreeViewer(Composite parent) {
         MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService,
-                dataApplication);
+                dataApplication.getMonitorRepository());
         measurementsTreeViewer.addMouseListener();
         measurementsTreeViewer.getViewer().addFilter(filter);
         addSelectionListener(measurementsTreeViewer);
@@ -206,7 +213,7 @@ public class MeasurementsDashboardView {
      */
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
         EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
-                dirty, commandService, dataApplication);
+                dirty, commandService, dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
         emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
         addSelectionListener(emptyMeasuringPointsTreeViewer);
         return emptyMeasuringPointsTreeViewer;
@@ -227,7 +234,7 @@ public class MeasurementsDashboardView {
 
             editButton.setText(EDITTEXT_GRAYEDOUT);
             deleteButton.setText(DELETETEXT_GRAYEDOUT);
-            
+
             if (selectionObject == null || selectionObject instanceof MonitorRepository
                     || selectionObject instanceof MeasuringPointRepository) {
                 editButton.setEnabled(false);
@@ -315,8 +322,9 @@ public class MeasurementsDashboardView {
     }
 
     /**
-     * filter the monitorTreeViewer and measuringTreeViewer according to the search text entered in the textbox.
-     * If there is going to be no item shown in a tree all items will be made visible again.
+     * filter the monitorTreeViewer and measuringTreeViewer according to the search text entered in
+     * the textbox. If there is going to be no item shown in a tree all items will be made visible
+     * again.
      */
     private void filterTreeViewer() {
         TreeViewer treeViewer = (TreeViewer) monitorTreeViewer.getViewer();
@@ -362,10 +370,11 @@ public class MeasurementsDashboardView {
      */
     private void createNewMeasuringpointButton(Composite parent) {
         Button newMpButton = new Button(parent, SWT.PUSH);
-        newMpButton.setText("Add new Measuring Point");
+        newMpButton.setText("Add new Measurement");
+        newMpButton.setToolTipText("Add new Monitor & Measuring Point with Metrics");
         newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         newMpButton.addListener(SWT.Selection, e -> {
-            if(!dataApplication.getModelAccessor().modelsExist()) {
+            if (!dataApplication.getModelAccessor().modelsExist()) {
                 MessageDialog.openInformation(null, "No PCM Models found Info", INFOTEXT_NO_PCM_MODELS);
             } else {
                 checkDirtyState();
@@ -442,24 +451,24 @@ public class MeasurementsDashboardView {
     }
 
     /**
-     * Checks whether the state of the view is dirty and
-     * asks the user to save before continuing
+     * Checks whether the state of the view is dirty and asks the user to save before continuing
+     * 
      * @return boolean
      */
     private void checkDirtyState() {
-        
-        if(dirty.isDirty()) {
+
+        if (dirty.isDirty()) {
             boolean result = MessageDialog.openQuestion(null, "", "Do you want to save your changes?");
-            if (result){
+            if (result) {
                 try {
                     save(dirty);
                 } catch (IOException e) {
                     logger.warn("IOException when attempting to save the dirty state. Stacktrace: {}", e.getMessage());
                 }
-               } else {
-                   undoChanges();
-               }
-        }   
+            } else {
+                undoChanges();
+            }
+        }
     }
 
     /**
@@ -469,10 +478,10 @@ public class MeasurementsDashboardView {
      *            a composite where the combobox is placed in
      */
     private void createProjectsSelectionComboBox(Composite parent) {
-    	 Composite projectContainer = new Composite(parent, SWT.NONE);
-         projectContainer.setLayout(new GridLayout(2, false));
-         projectContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    	final Label filterLabel = new Label(projectContainer, SWT.NONE);
+        Composite projectContainer = new Composite(parent, SWT.NONE);
+        projectContainer.setLayout(new GridLayout(2, false));
+        projectContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final Label filterLabel = new Label(projectContainer, SWT.NONE);
         filterLabel.setText("Project:");
         projectsComboDropDown = new Combo(projectContainer, SWT.DROP_DOWN);
         projectsComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
@@ -482,7 +491,8 @@ public class MeasurementsDashboardView {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
-                dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex),0);
+                dataApplication
+                        .loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex), 0);
                 updateTreeViewer();
                 updateMonitorRepositoryComboBox();
             }
@@ -495,12 +505,12 @@ public class MeasurementsDashboardView {
         });
         projectsComboDropDown.select(0);
     }
-    
+
     /**
-     * Creates the ComboBoxes for project and monitorRepository
-     * at the top of the view
+     * Creates the ComboBoxes for project and monitorRepository at the top of the view
+     * 
      * @param parent
-     * 				a composite where the comboboxes are palced in
+     *            a composite where the comboboxes are palced in
      */
     private void createSelectionComboBoxes(Composite parent) {
         Composite container = new Composite(parent, SWT.NONE);
@@ -509,65 +519,64 @@ public class MeasurementsDashboardView {
         createProjectsSelectionComboBox(container);
         createMonitorRepositorySelectionComboBox(container);
     }
-    
+
     /**
-     * Creates a ComboBox at the top of the view where
-     * user can select a monitorRepository
-     * @param parent 
-     * 				a composite where the combobox is placed in
+     * Creates a ComboBox at the top of the view where user can select a monitorRepository
+     * 
+     * @param parent
+     *            a composite where the combobox is placed in
      */
     private void createMonitorRepositorySelectionComboBox(Composite parent) {
-    	
-    	 Composite monitorRepositoryContainer = new Composite(parent, SWT.NONE);
-         monitorRepositoryContainer.setLayout(new GridLayout(2, false));
-         monitorRepositoryContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-    	final Label filterLabel = new Label(monitorRepositoryContainer, SWT.NONE);
+
+        Composite monitorRepositoryContainer = new Composite(parent, SWT.NONE);
+        monitorRepositoryContainer.setLayout(new GridLayout(2, false));
+        monitorRepositoryContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final Label filterLabel = new Label(monitorRepositoryContainer, SWT.NONE);
         filterLabel.setText("MonitorRepository:");
-            monitorRepositoriesComboDropDown = new Combo(monitorRepositoryContainer, SWT.DROP_DOWN);
-            monitorRepositoriesComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-            
-            
-            updateMonitorRepositoryComboBox();
-            monitorRepositoriesComboDropDown.addSelectionListener(new SelectionListener() {
-                 @Override
-                public void widgetSelected(SelectionEvent e) {
-                    int selectionIndex = monitorRepositoriesComboDropDown.getSelectionIndex();
-                    dataApplication.updateMonitorRepository(selectionIndex);
-                    updateTreeViewer();
-                }
-                 @Override
-                public void widgetDefaultSelected(SelectionEvent e) {
-                    monitorRepositoriesComboDropDown.select(0);
-                 }
-            });
-            monitorRepositoriesComboDropDown.select(0);         
-        
+        monitorRepositoriesComboDropDown = new Combo(monitorRepositoryContainer, SWT.DROP_DOWN);
+        monitorRepositoriesComboDropDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+
+        updateMonitorRepositoryComboBox();
+        monitorRepositoriesComboDropDown.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                int selectionIndex = monitorRepositoriesComboDropDown.getSelectionIndex();
+                dataApplication.updateMonitorRepository(selectionIndex);
+                updateTreeViewer();
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+                monitorRepositoriesComboDropDown.select(0);
+            }
+        });
+        monitorRepositoriesComboDropDown.select(0);
+
     }
-    
+
     /**
-     * If more then 1 monitorRepository exists in the current project
-     * this updates the MonitorRepositoryComboBox
+     * If more then 1 monitorRepository exists in the current project this updates the
+     * MonitorRepositoryComboBox
      */
     public void updateMonitorRepositoryComboBox() {
-       
-            monitorRepositoriesComboDropDown.setEnabled(true);
-            int selectionIndex = 0;
-            monitorRepositoriesComboDropDown.removeAll();
-            List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
-            for (int i = 0; i < allMonitorRepositories.size(); i++) {
-                MonitorRepository monitorRepository = allMonitorRepositories.get(i);
-                 if (monitorRepository.equals(dataApplication.getMonitorRepository())) {
-                    selectionIndex = i;
-                }
-                 monitorRepositoriesComboDropDown.add(i+1 + ". " +monitorRepository.getEntityName());
+
+        monitorRepositoriesComboDropDown.setEnabled(true);
+        int selectionIndex = 0;
+        monitorRepositoriesComboDropDown.removeAll();
+        List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
+        for (int i = 0; i < allMonitorRepositories.size(); i++) {
+            MonitorRepository monitorRepository = allMonitorRepositories.get(i);
+            if (monitorRepository.equals(dataApplication.getMonitorRepository())) {
+                selectionIndex = i;
             }
-            monitorRepositoriesComboDropDown.select(selectionIndex);
-         
-            if (dataApplication.getModelAccessor().getMonitorRepository().size()<=1) {
-                monitorRepositoriesComboDropDown.setEnabled(false);
-            }
-            
-        
+            monitorRepositoriesComboDropDown.add(i + 1 + ". " + monitorRepository.getEntityName());
+        }
+        monitorRepositoriesComboDropDown.select(selectionIndex);
+
+        if (dataApplication.getModelAccessor().getMonitorRepository().size() <= 1) {
+            monitorRepositoriesComboDropDown.setEnabled(false);
+        }
+
     }
 
     /**
@@ -590,23 +599,35 @@ public class MeasurementsDashboardView {
         projectsComboDropDown.select(selectionIndex);
 
     }
-    
+
     /**
-     * Updates the dashboard by reloading the data
-     * and refreshing the views
-     * @param project to update
+     * Updates the dashboard by reloading the data and refreshing the views
+     * 
+     * @param project
+     *            to update
      */
     public void updateMeasurementsDashboardView(IProject project) {
-    	dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
-    	updateTreeViewer();
+        dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
+        updateTreeViewer();
     }
-  
+
+    /**
+     * Updates the dashboard by reloading the data and refreshing the views
+     * 
+     * @param project
+     *            to update
+     */
+    public void updateMeasurementsDashboardView() {
+        dataApplication.updateData();
+        updateTreeViewer();
+    }
+
     /**
      * Undos all changes previously done on the dashboard
      */
     private void undoChanges() {
-        monitorTreeViewer.undo();
-        measuringTreeViewer.undo();
+        monitorTreeViewer.undoAll();
+        measuringTreeViewer.undoAll();
     }
 
     /**
@@ -616,9 +637,10 @@ public class MeasurementsDashboardView {
         monitorTreeViewer.update();
         measuringTreeViewer.update();
     }
-    
+
     /**
      * Returns the instance of dataApplication
+     * 
      * @return dataApplication instance
      */
     public DataApplication getDataApplication() {
@@ -642,9 +664,9 @@ public class MeasurementsDashboardView {
     public void undo() {
         monitorTreeViewer.undo();
     }
-    
+
     public void redo() {
         monitorTreeViewer.redo();
     }
- 
+
 }
