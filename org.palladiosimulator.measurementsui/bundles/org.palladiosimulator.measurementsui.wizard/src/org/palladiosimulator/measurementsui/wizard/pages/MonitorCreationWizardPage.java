@@ -2,15 +2,14 @@ package org.palladiosimulator.measurementsui.wizard.pages;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 
@@ -114,16 +113,7 @@ public class MonitorCreationWizardPage extends WizardPage {
 
     @Override
     public void performHelp() {
-        Shell shell = new Shell(getShell());
-        shell.setText("My Custom Help !!");
-        shell.setLayout(new GridLayout());
-        shell.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        Browser browser = new Browser(shell, SWT.NONE);
-        browser.setUrl("http://stackoverflow.com/questions/7322489/cant-put-content-behind-swt-wizard-help-button");
-        browser.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-        shell.open();
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Monitor_Creation_Page");
     }
 
 }

@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.wizard.handlers.contentprovider.FinalMeasuringpointContentProvider;
 import org.palladiosimulator.measurementsui.wizard.handlers.labelprovider.AdditionalMeasuringpointLabelProvider;
@@ -95,5 +96,10 @@ public class FinalModelsToMeasuringpointWizardPage extends WizardPage {
                 .setCurrentThirdStageModel(finalSelectionTreeViewer.getStructuredSelection().getFirstElement());
         selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
         return true;
+    }
+    
+    @Override
+    public void performHelp() {
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measuring_Point_Selection_Page");
     }
 }

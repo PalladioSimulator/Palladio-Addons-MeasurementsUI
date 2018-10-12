@@ -2,6 +2,7 @@ package org.palladiosimulator.measurementsui.wizard.pages;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -64,6 +65,11 @@ public class StandardSetCreationSelectionWizardPage extends WizardPage {
             return page2;
         }
 
+    }
+    
+    @Override
+    public void performHelp() {
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Standard_Set_Functionality");
     }
 
 }

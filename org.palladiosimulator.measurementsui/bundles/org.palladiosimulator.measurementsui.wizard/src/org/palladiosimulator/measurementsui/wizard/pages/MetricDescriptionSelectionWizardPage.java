@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.palladiosimulator.measurementsui.wizard.handlers.MetricDescriptionSelectionCheckboxCellModifier;
 import org.palladiosimulator.measurementsui.wizard.viewer.SelectedMetricDescriptionSelectionViewer;
 import org.palladiosimulator.measurementsui.wizard.viewer.AvailableMetricDescriptionSelectionViewer;
@@ -385,5 +386,10 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
             }
         });
+    }
+    
+    @Override
+    public void performHelp() {
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Metric_Description_Selection_Page");
     }
 }

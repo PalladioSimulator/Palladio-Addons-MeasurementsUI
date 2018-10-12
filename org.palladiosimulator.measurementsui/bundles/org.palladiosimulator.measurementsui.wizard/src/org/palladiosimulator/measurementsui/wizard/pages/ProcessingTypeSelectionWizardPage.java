@@ -5,6 +5,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
 import org.palladiosimulator.measurementsui.wizard.handlers.editingsupport.ProcessingTypeDropDownEditingSupport;
@@ -125,4 +126,8 @@ public class ProcessingTypeSelectionWizardPage extends WizardPage {
 		return false;
 	}
 
+	@Override
+    public void performHelp() {
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Processing_Type_Selection_Page");
+    }
 }

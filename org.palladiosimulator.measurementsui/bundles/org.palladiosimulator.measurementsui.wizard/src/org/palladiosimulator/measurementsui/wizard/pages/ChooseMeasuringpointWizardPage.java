@@ -18,6 +18,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -434,6 +435,11 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
                 || item instanceof AssemblyContext || item instanceof EntryLevelSystemCall
                 || item instanceof ExternalCallAction || item instanceof LinkingResource || item instanceof SubSystem
                 || item instanceof org.palladiosimulator.pcm.system.System || item instanceof UsageScenario;
+    }
+    
+    @Override
+    public void performHelp() {
+        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measuring_Point_Selection_Page");
     }
 
 }
