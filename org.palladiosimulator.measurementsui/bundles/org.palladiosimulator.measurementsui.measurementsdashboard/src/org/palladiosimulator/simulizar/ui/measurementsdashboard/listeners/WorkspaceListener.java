@@ -1,10 +1,13 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.parts.MeasurementsDashboardView;
@@ -22,6 +25,7 @@ public class WorkspaceListener implements IResourceChangeListener {
     
    private IProject addedProject;
    private IProject deletedProject;
+   private IProject changedProject;
    
    private MeasurementsDashboardView dashboardView;
    private DataApplication dataApplication;
@@ -47,6 +51,7 @@ public class WorkspaceListener implements IResourceChangeListener {
     public void resourceChanged(IResourceChangeEvent event) {
         deletedProject = null;
         addedProject = null;
+        changedProject = null;
         IResourceDelta delta = event.getDelta();
         for (IResourceDelta deltaElement : delta.getAffectedChildren()) {
             IResource res = deltaElement.getResource();
@@ -62,48 +67,92 @@ public class WorkspaceListener implements IResourceChangeListener {
                     deletedProject = (IProject) res;
                 }
                 break;
+            case IResourceDelta.CHANGED:
+                //only listen to changes in currently viewed project of the dashboard view
+                if(res instanceof IProject && res.equals(dataApplication.getProject())) {  
+                    checkChangedEvent(deltaElement);
+                }
+                break;
             default:
                 break;
             }
+
         }  
         updateDashboardView();
 
     }
+    /**
+     * Checks the ChangeEvent specially
+     * we only need to update our view if content was changed
+     * in the "monitorrepository" or "measuringpoint" file
+     * @param delta
+     */
+    private void checkChangedEvent(IResourceDelta delta) {
+        try {
+            delta.accept(new IResourceDeltaVisitor() {                                   
+                @Override
+                public boolean visit(IResourceDelta delta) throws CoreException {
+                    IResource res = delta.getResource();
+                    int flags = delta.getFlags();
+                    if(delta.getKind() == IResourceDelta.CHANGED) {
+                        if (res instanceof IFile && (res.getFileExtension().equals("monitorrepository")||
+                                (res.getFileExtension().equals("measuringpoint")))) {
+                            if ((flags & IResourceDelta.CONTENT) != 0) {
+                                changedProject = res.getProject();
+                            }
+
+                        }
+                    }
+
+                    return true;
+                }
+            });
+        } catch (CoreException e) {
+            e.printStackTrace();
+        }                       
+
+    } 
     
     /**
      * Updates the parts of our Dashboard view accordinglyt the changes
      * in the workspace
      */
     private void updateDashboardView() {
-        if (deletedProject != null || addedProject != null) {
+		if (deletedProject != null || addedProject != null || changedProject != null) {
 
-            Display.getDefault().asyncExec(() -> {
+			Display.getDefault().asyncExec(() -> {
 
-                    if (deletedProject != null && deletedProject.equals(dataApplication.getProject())) {
+				if (deletedProject != null && deletedProject.equals(dataApplication.getProject())) {
 
-						// currently selected project was deleted -> load different project
-                        if (addedProject == null) {
-                            if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
-                                dashboardView.updateMeasurementsDashboardView(
-                                        dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
-                            }
-                            dashboardView.updateProjectComboBox();
+					// currently selected project was deleted -> load different project
+					if (addedProject == null) {
+						if (!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+							dashboardView.updateMeasurementsDashboardView(
+									dataApplication.getDataGathering().getAllProjectAirdfiles().get(0));
+						}
+						dashboardView.updateProjectComboBox();
 
-                        } else {
-                            // the name of the currently selected project was changed                    
-                            dashboardView.updateMeasurementsDashboardView(addedProject);
-                            dashboardView.updateProjectComboBox();
+					} else {
+						// the name of the currently selected project was changed
+						dashboardView.updateMeasurementsDashboardView(addedProject);
+						dashboardView.updateProjectComboBox();
 
-                        }
-                        
-                        // some project got added/deleted or name changed -> update comboBox with Projects
-                    } else if (addedProject != null || deletedProject != null) {
-                        if(!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
-                            dashboardView.updateMeasurementsDashboardView(addedProject);
-                        }
-                        dashboardView.updateProjectComboBox();
-                    }
-            });
-        }
-    }
+					}
+
+					// some project got added/deleted or name changed -> update comboBox with
+					// Projects
+				} else if (addedProject != null || deletedProject != null) {
+					if (!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
+						dashboardView.updateMeasurementsDashboardView(addedProject);
+					}
+					dashboardView.updateProjectComboBox();
+					// a monitor or measuringPoint was added/deleted in the selected project ->
+					// update data and view
+				} else if (changedProject != null) {
+					dashboardView.updateMeasurementsDashboardView();
+					dashboardView.updateMonitorRepositoryComboBox();
+				}
+			});
+		}
+	}
 }
