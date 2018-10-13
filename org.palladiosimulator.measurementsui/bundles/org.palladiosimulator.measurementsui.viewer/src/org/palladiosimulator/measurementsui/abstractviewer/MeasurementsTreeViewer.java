@@ -80,7 +80,9 @@ public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
     public void update() {
         Object[] expandedElements = treeViewer.getExpandedElements();
         initEditingDomain();
-        resource = updateResource(getModelRepository());
+        getModelRepository().ifPresent(modelRepository -> {
+            resource = updateResource(modelRepository);
+        });
         treeFactory.initialize(treeViewer, resource);
         treeViewer.setAutoExpandLevel(1);
         treeViewer.setExpandedElements(expandedElements);

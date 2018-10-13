@@ -16,10 +16,6 @@ import org.palladiosimulator.simulizar.ui.measurementsdashboard.parts.Measuremen
  *
  */
 public class RedoHandler {
-    @CanExecute
-    boolean canExecute(@Named(IServiceConstants.ACTIVE_PART) MDirtyable dirtyable) {
-        return dirtyable == null ? false : dirtyable.isDirty();
-    }
 
     @Execute
     void execute(EPartService partService, @Named(IServiceConstants.ACTIVE_PART) MPart part) {

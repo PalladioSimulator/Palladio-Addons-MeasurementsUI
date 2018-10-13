@@ -132,10 +132,9 @@ public class MeasurementsDashboardView {
         outerContainer.setLayout(new GridLayout(1, true));
         outerContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
-        Composite leftContainer = new Composite(outerContainer, SWT.VERTICAL);
+        Composite leftContainer = new Composite(outerContainer, SWT.NONE);
         leftContainer.setLayout(new GridLayout(1, false));
         leftContainer.setBackground(new Color(Display.getCurrent(), 255, 255, 255));
-
         createFilterGadgets(leftContainer);
 
         Composite buttonContainer = new Composite(outerContainer, SWT.BORDER);
@@ -152,7 +151,6 @@ public class MeasurementsDashboardView {
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
         treeContainer.setWeights(new int[] { 10, 5 });
         createViewButtons(buttonContainer);
-
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         measuringTreeViewer = createEmptyMeasuringPointsTreeViewer(undefinedMeasuringContainer);
 
@@ -212,8 +210,15 @@ public class MeasurementsDashboardView {
      * @return TreeViewer which includes all measuring points without a monitor
      */
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
-        EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
-                dirty, commandService, dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+        EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer;
+        if (!dataApplication.getModelAccessor().getMeasuringPointRepository().isEmpty()) {
+            emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
+                    dirty, commandService, dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+        } else {
+            emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
+                    dirty, commandService, null);
+        }
+        
         emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
         addSelectionListener(emptyMeasuringPointsTreeViewer);
         return emptyMeasuringPointsTreeViewer;
@@ -236,7 +241,8 @@ public class MeasurementsDashboardView {
             deleteButton.setText(DELETETEXT_GRAYEDOUT);
 
             if (selectionObject == null || selectionObject instanceof MonitorRepository
-                    || selectionObject instanceof MeasuringPointRepository) {
+                    || selectionObject instanceof MeasuringPointRepository
+                    || selectionObject instanceof MeasuringPoint) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
             } else {
@@ -634,6 +640,7 @@ public class MeasurementsDashboardView {
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
     private void updateTreeViewer() {
+        monitorTreeViewer.setModelRepository(dataApplication.getMonitorRepository());
         monitorTreeViewer.update();
         measuringTreeViewer.update();
     }

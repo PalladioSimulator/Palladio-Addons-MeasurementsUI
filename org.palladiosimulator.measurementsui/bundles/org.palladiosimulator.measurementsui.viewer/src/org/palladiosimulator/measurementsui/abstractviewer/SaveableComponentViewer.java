@@ -49,6 +49,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
      */
     public abstract void addSelectionListener(ESelectionService selectionService);
 
+    
     @Override
     protected Resource updateResource(EObject model) {
         resource = super.updateResource(model);

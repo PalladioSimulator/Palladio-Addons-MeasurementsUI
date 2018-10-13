@@ -23,7 +23,7 @@ public class MeasuringpointDropListener extends ViewerDropAdapter {
     private MeasurementsTreeViewer measurementTreeViewer;
 
     private final Logger logger = LoggerFactory.getLogger(MeasuringpointDropListener.class);
-    
+
     /**
      * 
      * @param measurementTreeViewer
@@ -37,12 +37,15 @@ public class MeasuringpointDropListener extends ViewerDropAdapter {
     @Override
     public boolean performDrop(Object data) {
         IStructuredSelection selection = (IStructuredSelection) data;
-        ResourceEditor editor = ResourceEditorImpl.getInstance();
-        editor.setMeasuringPointToMonitor((Monitor) getCurrentTarget(), (MeasuringPoint) selection.getFirstElement());
-        try {
-            measurementTreeViewer.save();
-        } catch (IOException e) {
-            logger.warn("IOException when attempting to perform Drop. Stacktrace: {}", e.getMessage());
+        if (selection.getFirstElement() instanceof MeasuringPoint) {
+            ResourceEditor editor = ResourceEditorImpl.getInstance();
+            editor.setMeasuringPointToMonitor((Monitor) getCurrentTarget(),
+                    (MeasuringPoint) selection.getFirstElement());
+            try {
+                measurementTreeViewer.save();
+            } catch (IOException e) {
+                logger.warn("IOException when attempting to perform Drop. Stacktrace: {}", e.getMessage());
+            }
         }
         return false;
     }
