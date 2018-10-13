@@ -55,7 +55,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
         resource = super.updateResource(model);
         initResourceChangedListener(editingDomain);
         // For some mysterious reason the editing domain has to be set null here else parsley's
-        // context menu won't function anymore
+        // context menu won't function anymore if you want to delete a measuring point
         editingDomain = null;
         return resource;
     }

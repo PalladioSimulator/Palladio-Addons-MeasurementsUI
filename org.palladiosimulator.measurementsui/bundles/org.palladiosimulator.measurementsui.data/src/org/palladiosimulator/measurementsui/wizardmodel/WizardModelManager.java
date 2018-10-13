@@ -34,7 +34,7 @@ public class WizardModelManager {
 
     private EnumMap<WizardModelType, WizardModel> wizardModels = new EnumMap<WizardModelType, WizardModel>(
             WizardModelType.class);
-    
+
     final Logger logger = LoggerFactory.getLogger(WizardModelManager.class);
 
     /**
@@ -55,6 +55,9 @@ public class WizardModelManager {
         this.dataApp = DataApplication.getInstance();
         this.editor = ResourceEditorImpl.getInstance();
         isEditing = true;
+        EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(monitor);
+        CommandStack commandStack = editingDomain.getCommandStack();
+        commandStack.flush();
     }
 
     /**
@@ -62,11 +65,11 @@ public class WizardModelManager {
      */
     public void cancel() {
         if (isEditing) {
-        EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(monitor);
-        CommandStack commandStack = editingDomain.getCommandStack();
-        
-        while (commandStack.canUndo()) {
-            editingDomain.getCommandStack().undo();
+            EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(monitor);
+            CommandStack commandStack = editingDomain.getCommandStack();
+
+            while (commandStack.canUndo()) {
+                editingDomain.getCommandStack().undo();
             }
         } else {
             monitor = null;
@@ -79,14 +82,16 @@ public class WizardModelManager {
     public void finish() {
         MeasuringPoint measuringPoint = monitor.getMeasuringPoint();
 
-        if (!isEditing) {
+        if (monitor.getMonitorRepository() == null) {
             editor.addMonitorToRepository(dataApp.getMonitorRepository(), monitor);
-          editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
-          measuringPoint);
-          editor.setMeasuringPointToMonitor(monitor, measuringPoint);
         }
 
-        
+        if (measuringPoint.getMeasuringPointRepository() == null) {
+            editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
+                    measuringPoint);
+            editor.setMeasuringPointToMonitor(monitor, measuringPoint);
+        }
+
         try {
             dataApp.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
             dataApp.getMonitorRepository().eResource().save(null);
