@@ -176,7 +176,10 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         if (isEditing()) {
             List<MeasuringPoint> points = DataApplication.getInstance().getModelAccessor()
                     .getUnassignedMeasuringPoints();
-            points.add(getMonitor().getMeasuringPoint());
+            if(getMonitor().getMeasuringPoint()!=null) {
+                points.add(getMonitor().getMeasuringPoint());
+
+            }
             return points.toArray();
         } else {
             return DataApplication.getInstance().getModelAccessor().getUnassignedMeasuringPoints().toArray();
