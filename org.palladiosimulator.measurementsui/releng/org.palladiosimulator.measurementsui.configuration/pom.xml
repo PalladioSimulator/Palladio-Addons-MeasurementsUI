@@ -92,31 +92,16 @@
 						<version>${parsley.version}</version>
 					</dependency>
 					<dependency>
-						    <groupId>org.eclipse.platform</groupId>
-						    <artifactId>org.eclipse.equinox.common</artifactId>
-						    <version>3.10.0</version>
-						</dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>org.eclipse.equinox.common</artifactId>
+						<version>3.10.0</version>
+					</dependency>
 				</dependencies>
 			</plugin>
-	<!--
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>emfparsley-gen/</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			 -->
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>build-helper-maven-plugin</artifactId> 
+				<version>1.8</version> <executions> <execution> <goals> <goal>add-source</goal> 
+				</goals> <configuration> <sources> <source>emfparsley-gen/</source> </sources> 
+				</configuration> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
@@ -160,20 +145,6 @@
 					</environments>
 				</configuration>
 			</plugin>
-
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.3.0.603</version>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>sonar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -215,7 +186,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="Running Platform" sequenceNumber="21">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><?pde version="3.8"?><target name="Running Platform" sequenceNumber="21">
     <locations>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
             <unit id="de.uka.ipd.sdq.dialogs.feature.feature.group" version="1.4.0.201611171324"/>
@@ -138,8 +137,10 @@
             <repository location="https://sdqweb.ipd.kit.edu/eclipse/palladiosimulator/releases/latest/"/>
         </location>
         <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-            <unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
             <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160221192158/repository/"/>
+	        <unit id="ch.qos.logback.classic" version="1.0.7.v20121108-1250"/>
+	        <unit id="ch.qos.logback.core" version="1.0.7.v20121108-1250"/>
+	        <unit id="ch.qos.logback.slf4j" version="1.0.7.v201505121915"/>
         </location>
     </locations>
     <environment>
