@@ -109,9 +109,9 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     @Override
     public String getTitleText() {
         if (this.monitor.getMeasuringPoint() != null) {
-            return CREATE_MEASURINGPOINT_TITLE;
+            return EDIT_MEASURINGPOINT_TITLE;
         }
-        return EDIT_MEASURINGPOINT_TITLE;
+        return CREATE_MEASURINGPOINT_TITLE;
 
     }
 

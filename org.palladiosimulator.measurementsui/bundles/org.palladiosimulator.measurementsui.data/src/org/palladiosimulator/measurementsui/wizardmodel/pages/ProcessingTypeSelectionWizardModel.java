@@ -16,7 +16,10 @@ import org.palladiosimulator.monitorrepository.ProcessingType;
  */
 public class ProcessingTypeSelectionWizardModel implements WizardModel {
 
-    private static final String INFORMATION_MESSAGE = "Please select a Processing Type for each Metric Description";
+    private static final String INFORMATION_MESSAGE = "Please select a Processing Type for each Metric Description."
+    		+ "\nA Processing Type defines how the measurements are computed during a simulation. "
+    		+ "Choose a different type than FeedThrough, if the measurements should "
+    		+ "be aggregated for the simulation results.";
     private static final String PROCESSING_TYPE_TITLE = "Select Processing Types";
 
     private Monitor usedMetricsMonitor;

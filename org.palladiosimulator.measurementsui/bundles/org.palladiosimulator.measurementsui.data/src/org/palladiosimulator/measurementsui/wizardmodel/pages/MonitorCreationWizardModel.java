@@ -1,8 +1,6 @@
 package org.palladiosimulator.measurementsui.wizardmodel.pages;
 
-import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.MonitorCreationProvider;
-import org.palladiosimulator.measurementsui.dataprovider.UnselectedMetricSpecificationsProvider;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 
@@ -14,9 +12,8 @@ import org.palladiosimulator.monitorrepository.Monitor;
  */
 public class MonitorCreationWizardModel implements WizardModel {
 	
-	private static final String CREATE_MONITOR_INFO_TEXT = "A Monitor specifies which element of your "
-	        + "Models should be analyzed during a simulation run."
-	        + "\nIn this page you can give your Monitor an appropiate name and set it activated/not activated."
+	private static final String CREATE_MONITOR_INFO_TEXT = "A Monitor is used for specifying which metrics"
+			+ " should be measured. It corresponds to a Measuring Point."
 	        + "\nActivated Monitors will be simulated during a SimuLizar run, not activated ones will be ignored. ";
 	private static final String EDIT_MONITOR_INFO_TEXT = "Edit your Monitor name and set him activated/not activated.";
 	

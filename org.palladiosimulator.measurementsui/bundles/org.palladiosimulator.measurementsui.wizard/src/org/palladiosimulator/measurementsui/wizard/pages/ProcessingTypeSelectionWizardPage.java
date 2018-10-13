@@ -53,10 +53,11 @@ public class ProcessingTypeSelectionWizardPage extends WizardPage {
 	 */
 	public ProcessingTypeSelectionWizardPage(ProcessingTypeSelectionWizardModel processingTypeSelectionWizardModel) {
 		super("wizardPage");
-		setTitle("Measurement Specification");
-		setDescription("Specify the properties of the selected measurements.");
-		
 		this.processingTypeSelectionWizardModel = processingTypeSelectionWizardModel;
+		setTitle(processingTypeSelectionWizardModel.getTitleText());
+		setDescription(processingTypeSelectionWizardModel.getInfoText());
+		
+		
 	}
 
 	@Override
