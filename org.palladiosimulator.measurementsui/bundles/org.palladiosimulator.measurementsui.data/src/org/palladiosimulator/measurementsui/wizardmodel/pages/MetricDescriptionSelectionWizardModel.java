@@ -16,7 +16,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 public class MetricDescriptionSelectionWizardModel implements WizardModel {
     private static final String STANDARD_INFORMATION_MESSAGE = "Please select all Metrics which should be measured.";
     private static final String NO_METRIC_SELECTED_MEASSAGE = "There is currently no Metric selected. "
-            + "In order to get Simulation results you have select at least one Metric.";
+            + "In order to get Simulation results you have to select at least one Metric.";
 
     private static final String METRIC_SELECTION_TITEL = "Select Metrics";
 

@@ -69,9 +69,10 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
      */
     public MetricDescriptionSelectionWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
         super("wizardPage");
-        setTitle("Select Measurements");
-        setDescription("Select desired Measurements to be used with the Monitor.");
         this.metricDescriptionSelectionWizardModel = metricDescriptionSelectionWizardModel;
+        setTitle(metricDescriptionSelectionWizardModel.getTitleText());
+        setDescription(metricDescriptionSelectionWizardModel.getInfoText());
+        
 
     }
 
@@ -265,11 +266,13 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
                     TableItem tableItem = (TableItem) currentElement;
                     MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
                     if (dragAndDropfromLeftToRight) {
-                        metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
+                        metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);                      
                     } else {
-                        metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
+                        metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);          
                     }
+                  
                 }
+                
                 getContainer().updateButtons();
             }
         };
@@ -296,6 +299,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
             for (Object currentElement : selection.toList()) {
                 MeasurementSpecification measurement = (MeasurementSpecification) currentElement;
                 metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
+                updatePageDescription();
             }
             getContainer().updateButtons();
         });
@@ -307,6 +311,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
             for (Object currentElement : selection.toList()) {
                 MeasurementSpecification measurement = (MeasurementSpecification) currentElement;
                 metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
+                updatePageDescription();
             }
             getContainer().updateButtons();
         });
@@ -317,6 +322,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         rightAll.setText("Add All >>");
         rightAll.addListener(SWT.Selection, e -> {
             metricDescriptionSelectionWizardModel.addAllMetricDescriptions();
+            updatePageDescription();
             getContainer().updateButtons();
         });
 
@@ -324,6 +330,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
         leftAll.setText("<< Remove All");
         leftAll.addListener(SWT.Selection, e -> {
             metricDescriptionSelectionWizardModel.removeAllMetricDescriptions();
+            updatePageDescription();
             getContainer().updateButtons();
         });
 
@@ -331,8 +338,10 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
         final Button addSuggestion = new Button(compositeMiddle, SWT.BOTTOM);
         addSuggestion.setText("Add Suggestions >");
+        addSuggestion.setToolTipText("Adds a list of suggested Metrics");
         addSuggestion.addListener(SWT.Selection, e -> {
             metricDescriptionSelectionWizardModel.moveAllSuggested();
+            updatePageDescription();
             getContainer().updateButtons();
         });
     }
@@ -364,6 +373,14 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
      */
     private void showMessage(MeasurementSpecification aMSpec) {
         this.setMessage(metricDescriptionSelectionWizardModel.getTextualDescriptionForMetricDescription(aMSpec));
+    }
+    
+    /**
+     * Updates the page description depending on whether the user
+     * can click the finish button or not
+     */
+    private void updatePageDescription() {
+    	this.setMessage(metricDescriptionSelectionWizardModel.getInfoText());
     }
 
     /**
