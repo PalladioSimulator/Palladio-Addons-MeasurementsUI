@@ -134,11 +134,8 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
      *             if the save operation fails
      */
     public void save() throws IOException {
-        resource.save(null);
-        if (dirty != null) {
-            dirty.setDirty(false);
-            commandService.getCommand(SAVE_COMMAND).isEnabled();
-            commandService.getCommand(SAVEALL_COMMAND).isEnabled();
-        }
+        save(dirty);
     }
+    
+    public abstract void update(EObject modelRepository);
 }

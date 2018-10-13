@@ -624,7 +624,7 @@ public class MeasurementsDashboardView {
      *            to update
      */
     public void updateMeasurementsDashboardView() {
-        dataApplication.updateData();
+        //dataApplication.updateData();
         updateTreeViewer();
     }
 
@@ -640,9 +640,8 @@ public class MeasurementsDashboardView {
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
     private void updateTreeViewer() {
-        monitorTreeViewer.setModelRepository(dataApplication.getMonitorRepository());
-        monitorTreeViewer.update();
-        measuringTreeViewer.update();
+        monitorTreeViewer.update(dataApplication.getMonitorRepository());
+        measuringTreeViewer.update(dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
     }
 
     /**
