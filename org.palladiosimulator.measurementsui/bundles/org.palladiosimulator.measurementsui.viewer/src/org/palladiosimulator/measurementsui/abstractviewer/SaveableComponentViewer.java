@@ -56,7 +56,7 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
         initResourceChangedListener(editingDomain);
         // For some mysterious reason the editing domain has to be set null here else parsley's
         // context menu won't function anymore
-        //editingDomain = null;
+        editingDomain = null;
         return resource;
     }
 
