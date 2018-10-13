@@ -83,6 +83,7 @@ public class MeasurementsDashboardView {
     private MeasurementsFilter filter;
     private Text searchText;
 
+    private static final String DELETETEXT_MEASURINGPOINT = "Delete MeasuringPoint";
     private static final String EDITTEXT_GRAYEDOUT = "Edit...";
     private static final String DELETETEXT_GRAYEDOUT = "Delete...";
     private static final String EDITTEXT_MONITOR = "Edit Monitor";
@@ -212,13 +213,12 @@ public class MeasurementsDashboardView {
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
         EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer;
         if (!dataApplication.getModelAccessor().getMeasuringPointRepository().isEmpty()) {
-            emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
-                    dirty, commandService, dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+            emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent, dirty, commandService,
+                    dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
         } else {
-            emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
-                    dirty, commandService, null);
+            emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent, dirty, commandService, null);
         }
-        
+
         emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
         addSelectionListener(emptyMeasuringPointsTreeViewer);
         return emptyMeasuringPointsTreeViewer;
@@ -241,27 +241,36 @@ public class MeasurementsDashboardView {
             deleteButton.setText(DELETETEXT_GRAYEDOUT);
 
             if (selectionObject == null || selectionObject instanceof MonitorRepository
-                    || selectionObject instanceof MeasuringPointRepository
-                    || selectionObject instanceof MeasuringPoint) {
+                    || selectionObject instanceof MeasuringPointRepository) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
-            } else {
+            }
+            if (selectionObject instanceof MeasuringPoint) {
+                editButton.setEnabled(false);
+                deleteButton.setEnabled(true);
+                deleteButton.setText(DELETETEXT_MEASURINGPOINT);
+            }
+
+            if (selectionObject instanceof ProcessingType) {
+                deleteButton.setEnabled(false);
                 editButton.setEnabled(true);
-                if (selectionObject instanceof ProcessingType) {
-                    deleteButton.setEnabled(false);
-                    editButton.setText(EDITTEXT_PROCESSINGTYPE);
-                } else {
-                    deleteButton.setEnabled(true);
-                    if (selectionObject instanceof Monitor) {
-                        editButton.setText(EDITTEXT_MONITOR);
-                        deleteButton.setText(DELETETEXT_MONITOR);
-                    } else if (selectionObject instanceof MeasurementSpecification) {
-                        editButton.setText(EDITTEXT_MEASUREMENT);
-                        deleteButton.setText(DELETETEXT_MEASUREMENT);
-                    }
-                }
+                editButton.setText(EDITTEXT_PROCESSINGTYPE);
+            }
+
+            if (selectionObject instanceof Monitor) {
+                deleteButton.setEnabled(true);
+                editButton.setEnabled(true);
+                editButton.setText(EDITTEXT_MONITOR);
+                deleteButton.setText(DELETETEXT_MONITOR);
+            }
+            if (selectionObject instanceof MeasurementSpecification) {
+                deleteButton.setEnabled(true);
+                editButton.setEnabled(true);
+                editButton.setText(EDITTEXT_MEASUREMENT);
+                deleteButton.setText(DELETETEXT_MEASUREMENT);
             }
         });
+
     }
 
     /**
@@ -624,7 +633,7 @@ public class MeasurementsDashboardView {
      *            to update
      */
     public void updateMeasurementsDashboardView() {
-        dataApplication.updateData();
+        // dataApplication.updateData();
         updateTreeViewer();
     }
 
@@ -640,9 +649,8 @@ public class MeasurementsDashboardView {
      * Updates the Monitor and Measuringpoint Tree Viewer
      */
     private void updateTreeViewer() {
-        monitorTreeViewer.setModelRepository(dataApplication.getMonitorRepository());
-        monitorTreeViewer.update();
-        measuringTreeViewer.update();
+        monitorTreeViewer.update(dataApplication.getMonitorRepository());
+        measuringTreeViewer.update(dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
     }
 
     /**

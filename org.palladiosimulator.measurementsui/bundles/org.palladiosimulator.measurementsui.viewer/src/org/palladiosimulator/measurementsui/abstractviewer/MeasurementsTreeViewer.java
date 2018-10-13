@@ -73,15 +73,16 @@ public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
     protected void initParsley(Composite parent) {
         treeViewer = new TreeViewer(parent);
         treeFactory = injector.getInstance(ViewerFactory.class);
-        update();
+        update(modelRepository);
     }
 
     @Override
-    public void update() {
+    public void update(EObject modelRepository) {
+        setModelRepository(modelRepository);
         Object[] expandedElements = treeViewer.getExpandedElements();
         initEditingDomain();
-        getModelRepository().ifPresent(modelRepository -> {
-            resource = updateResource(modelRepository);
+        getModelRepository().ifPresent(modelRepositoryOfOptional -> {
+            resource = updateResource(modelRepositoryOfOptional);
         });
         treeFactory.initialize(treeViewer, resource);
         treeViewer.setAutoExpandLevel(1);
@@ -91,4 +92,11 @@ public abstract class MeasurementsTreeViewer extends SaveableComponentViewer {
         }
         treeViewer.refresh();
     }
+    
+    @Override
+    public void update() {
+        treeViewer.refresh();
+    }
+    
+    
 }
