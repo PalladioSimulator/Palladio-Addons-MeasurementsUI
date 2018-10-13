@@ -210,8 +210,15 @@ public class MeasurementsDashboardView {
      * @return TreeViewer which includes all measuring points without a monitor
      */
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
-        EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
-                dirty, commandService, dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+        EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer;
+        if (!dataApplication.getModelAccessor().getMeasuringPointRepository().isEmpty()) {
+            emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
+                    dirty, commandService, dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+        } else {
+            emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent,
+                    dirty, commandService, null);
+        }
+        
         emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
         addSelectionListener(emptyMeasuringPointsTreeViewer);
         return emptyMeasuringPointsTreeViewer;
