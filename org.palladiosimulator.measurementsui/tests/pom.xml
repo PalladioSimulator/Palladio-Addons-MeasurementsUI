@@ -11,6 +11,6 @@
 	<artifactId>org.palladiosimulator.tests</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-	<module>SWTBotGUI.it.tests</module>
+		
 	</modules>
 </project>
