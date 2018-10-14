@@ -23,28 +23,23 @@ public class MonitorCreationWizardModelTest {
 	private Monitor monitor;
 	private boolean isEditting;
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
-   
- 
+    MonitorCreationWizardModel test = mock(MonitorCreationWizardModel.class);
+    Monitor createMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+  
     @Test
 	public void testGetMonitor() {
-		MonitorCreationWizardModel test = mock(MonitorCreationWizardModel.class);
-		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		when(test.getMonitor()).thenReturn(monitor);
 		assertEquals(test.getMonitor(), monitor);
 }
     
 	@Test
 	public void testCanFinish() {
-		MonitorCreationWizardModel test = mock(MonitorCreationWizardModel.class);
-		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		boolean canFinish =  test.canFinish();
-		when(monitor.getEntityName().isEmpty()).thenReturn(canFinish);
+		when(createMonitor.getEntityName().isEmpty()).thenReturn(canFinish);
 		assertTrue(true);
 }
 	@Test
 	public void testGetInfoText() {
-		MonitorCreationWizardModel test = mock(MonitorCreationWizardModel.class);
-		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		String infoText = test.getInfoText();
 		when(test.getInfoText()).thenAnswer(new Answer(){
 			 	@Mock
@@ -57,7 +52,7 @@ public class MonitorCreationWizardModelTest {
 
 			@Override
 			public Object answer(InvocationOnMock invocation) throws Throwable {
-				if(monitor.getMonitorRepository() != null) 
+				if(createMonitor.getMonitorRepository() != null) 
 					return EDIT_MONITOR_INFO_TEXT;
 				
 				return CREATE_MONITOR_INFO_TEXT;
@@ -67,15 +62,12 @@ public class MonitorCreationWizardModelTest {
 			}
 	@Test
 	public void testGetTitleText() {
-		MonitorCreationWizardModel test = mock(MonitorCreationWizardModel.class);
-		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		String titleText = test.getTitleText();
-		
 		doAnswer(new Answer(){
 			private static final String CREATE_MONITOR_TITEL = "Create Monitor";
 			private static final String EDIT_MONITOR_TITEL = "Edit Monitor";
 			public Object answer(InvocationOnMock invocation) {
-				if(monitor.getMonitorRepository() != null) 
+				if(createMonitor.getMonitorRepository() != null) 
 					return EDIT_MONITOR_TITEL;
 				
 				return CREATE_MONITOR_TITEL;

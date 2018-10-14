@@ -30,23 +30,21 @@ public class MeasuringPointSelectionWizardModelTest {
 	private boolean isEditing;
 	private boolean finishable = true;
 	@Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+	MeasuringPointSelectionWizardModel measuringPointSelectionMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
+	Monitor createMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 	
 	@Test
 	public void testIsFinishable() {
-		MeasuringPointSelectionWizardModel measuringPointSelectionMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
 		Boolean finishable = measuringPointSelectionMock.isFinishable();
 		when(measuringPointSelectionMock.isFinishable()).thenReturn(finishable);
 		assertTrue(true);
 }
 	@Test
 	public void testSetFinishable() {
-		MeasuringPointSelectionWizardModel measuringPointSelectionMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
 		Mockito.doCallRealMethod().when(measuringPointSelectionMock).setFinishable(true);
-			
 }
 	@Test
 	public void testIsEditing() {
-		MeasuringPointSelectionWizardModel measuringPointSelectionMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
 		Boolean editable = measuringPointSelectionMock.isEditing();
 		when(measuringPointSelectionMock.isFinishable()).thenReturn(isEditing);
 		
@@ -59,18 +57,13 @@ public class MeasuringPointSelectionWizardModelTest {
 }
 	@Test
 	public void testCanFinish() {
-		MeasuringPointSelectionWizardModel measuringPointSelectionMock = mock(MeasuringPointSelectionWizardModel.class);
-		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		boolean finishable =  measuringPointSelectionMock.canFinish();
-		when(monitor.getMeasuringPoint() != null).thenReturn(finishable);
+		when(createMonitor.getMeasuringPoint() != null).thenReturn(finishable);
 		assertTrue(true);
 }
 	@Test
 	public void testGetInfoText() {
-		MeasuringPointSelectionWizardModel measuringPointSelectionMock = mock(MeasuringPointSelectionWizardModel.class);
-		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		String infoText = measuringPointSelectionMock.getInfoText();
-		
 		when(measuringPointSelectionMock.getInfoText()).thenAnswer(new Answer() {
 			private static final String CREATE_MEASURINGPOINT_INFO_TEXT = "Select the element of your Models which should be "
 					+ "monitored during a simulation run. Models for which a measuring point can be created are highlighted with a bold font.";
@@ -78,7 +71,7 @@ public class MeasuringPointSelectionWizardModelTest {
 
 			@Override
 			public Object answer(InvocationOnMock invocation) throws Throwable {
-				if(monitor.getMonitorRepository() != null) 
+				if(createMonitor.getMonitorRepository() != null) 
 					return EDIT_MEASURINGPOINT_INFO_TEXT;
 				
 				return CREATE_MEASURINGPOINT_INFO_TEXT;
@@ -88,15 +81,13 @@ public class MeasuringPointSelectionWizardModelTest {
 }
 	@Test
 	public void testGetTitleText() {
-		MeasuringPointSelectionWizardModel measuringPointSelectionMock = mock(MeasuringPointSelectionWizardModel.class);
-		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		String titleText = measuringPointSelectionMock.getInfoText();
 		when(measuringPointSelectionMock.getInfoText()).thenAnswer(new Answer() {
 			private static final String CREATE_MEASURINGPOINT_TITLE = "Create Measuring Point";
 			private static final String EDIT_MEASURINGPOINT_TITLE = "Edit Measuring Point";
 			@Override
 			public Object answer(InvocationOnMock invocation) throws Throwable {
-				if(monitor.getMeasuringPoint() != null) 
+				if(createMonitor.getMeasuringPoint() != null) 
 					return CREATE_MEASURINGPOINT_TITLE;
 				
 				return EDIT_MEASURINGPOINT_TITLE;
