@@ -16,116 +16,121 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSele
 import org.palladiosimulator.pcm.repository.PassiveResource;
 
 /**
- * This is the wizard page for the second step of the creation of a measuring point. It only needs
- * to be shown if certain elements are selected in the first step. It creates all necessary ui
- * elements and provides functions to dynamically choose the next wizard page.
+ * This is the wizard page for the second step of the creation of a measuring
+ * point. It only needs to be shown if certain elements are selected in the
+ * first step. It creates all necessary ui elements and provides functions to
+ * dynamically choose the next wizard page.
  * 
  * @author Domas Mikalkinas
  *
  */
 public class AdditionalModelsToMeasuringpointWizardPage extends WizardPage {
-    private TreeViewer secondModelTreeViewer;
-    private AdditionalMeasuringpointContentProvider additionalMeasuringpointContentProvider;
-    private boolean selected = false;
-    private MeasuringPointSelectionWizardModel selectionWizardModel;
+	private TreeViewer secondModelTreeViewer;
+	private AdditionalMeasuringpointContentProvider additionalMeasuringpointContentProvider;
+	private boolean passiveResourceSelected = false;
+	private MeasuringPointSelectionWizardModel selectionWizardModel;
 
-    /**
-     * the constructor with the needed wizard model
-     * 
-     * @param selectionWizardModel
-     *            the needed wizard model
-     */
-    public AdditionalModelsToMeasuringpointWizardPage(MeasuringPointSelectionWizardModel selectionWizardModel) {
-        super("additionalModelsToMeasuringpointWizardPage");
-        this.selectionWizardModel = selectionWizardModel;
-        setTitle("Select an operation role or passive resource");
-        setDescription("");
-    }
+	/**
+	 * the constructor with the needed wizard model
+	 * 
+	 * @param selectionWizardModel
+	 *            the needed wizard model
+	 */
+	public AdditionalModelsToMeasuringpointWizardPage(MeasuringPointSelectionWizardModel selectionWizardModel) {
+		super("additionalModelsToMeasuringpointWizardPage");
+		this.selectionWizardModel = selectionWizardModel;
+		setTitle("Select an operation role or passive resource");
+		setDescription("");
+	}
 
-    /**
-     * creates the wizard page which shows additional models, which are needed depending on the
-     * chosen element from the ChooseMeasuringpointWizardpage for the creation of a new
-     * measuringpoint
-     */
-    @Override
-    public void createControl(Composite parent) {
-        Composite container = new Composite(parent, SWT.NONE);
-        FillLayout layout = new FillLayout();
+	/**
+	 * creates the wizard page which shows additional models, which are needed
+	 * depending on the chosen element from the ChooseMeasuringpointWizardpage for
+	 * the creation of a new measuringpoint
+	 */
+	@Override
+	public void createControl(Composite parent) {
+		Composite container = new Composite(parent, SWT.NONE);
+		FillLayout layout = new FillLayout();
 
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        container.setLayout(layout);
-        setControl(container);
-        additionalMeasuringpointContentProvider = new AdditionalMeasuringpointContentProvider(selectionWizardModel);
-        secondModelTreeViewer = new TreeViewer(container);
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		container.setLayout(layout);
+		setControl(container);
+		additionalMeasuringpointContentProvider = new AdditionalMeasuringpointContentProvider(selectionWizardModel);
+		secondModelTreeViewer = new TreeViewer(container);
 
-    }
+	}
 
-    /**
-     * delays the loading of the data, because it needs to be loaded dynamically depending on the
-     * chosen element from the ChooseMeasuringpointWizardpage
-     */
-    public void loadData() {
-        secondModelTreeViewer.setContentProvider(additionalMeasuringpointContentProvider);
-        secondModelTreeViewer.setInput(selectionWizardModel.getAllAdditionalModels());
-        IStructuredSelection initialSelection = new StructuredSelection(
-                selectionWizardModel.getAllAdditionalModels()[0]);
-        secondModelTreeViewer.setSelection(initialSelection);
-        secondModelTreeViewer.setLabelProvider(new AdditionalMeasuringpointLabelProvider());
-        secondModelTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
+	/**
+	 * delays the loading of the data, because it needs to be loaded dynamically
+	 * depending on the chosen element from the ChooseMeasuringpointWizardpage
+	 */
+	public void loadData() {
+		secondModelTreeViewer.setContentProvider(additionalMeasuringpointContentProvider);
+		secondModelTreeViewer.setInput(selectionWizardModel.getAllAdditionalModels());
+		if (selectionWizardModel.getAllAdditionalModels().length > 0) {
+			IStructuredSelection initialSelection = new StructuredSelection(
+					selectionWizardModel.getAllAdditionalModels()[0]);
+			secondModelTreeViewer.setSelection(initialSelection);
+		}
 
-            @Override
-            public void doubleClick(DoubleClickEvent event) {
-                nextPressed();
-                getContainer().showPage(getNextPage());
+		secondModelTreeViewer.setLabelProvider(new AdditionalMeasuringpointLabelProvider());
+		secondModelTreeViewer.addDoubleClickListener(new IDoubleClickListener() {
 
-            }
-        });
-    }
+			@Override
+			public void doubleClick(DoubleClickEvent event) {
+				nextPressed();
+				getContainer().showPage(getNextPage());
 
-    /**
-     * overrides the getNextPage() method of the wizard page to allow a dynamic flow of wizard pages
-     */
-    @Override
-    public org.eclipse.jface.wizard.IWizardPage getNextPage() {
-        boolean isNextPressed = "nextPressed"
-                .equalsIgnoreCase(Thread.currentThread().getStackTrace()[2].getMethodName());
-        if (isNextPressed) {
-            nextPressed();
-        }
-        if (selected) {
-            FinalModelsToMeasuringpointWizardPage page = (FinalModelsToMeasuringpointWizardPage) super.getWizard()
-                    .getPage("finalModelstoMeasuringpointWizardPage");
-            page.loadData();
-            return page;
+			}
+		});
+	}
 
-        } else {
-            return super.getWizard().getPage("wizardPage");
-        }
-        //
-    }
+	/**
+	 * overrides the getNextPage() method of the wizard page to allow a dynamic flow
+	 * of wizard pages
+	 */
+	@Override
+	public org.eclipse.jface.wizard.IWizardPage getNextPage() {
+		boolean isNextPressed = "nextPressed"
+				.equalsIgnoreCase(Thread.currentThread().getStackTrace()[2].getMethodName());
+		if (isNextPressed) {
+			nextPressed();
+		}
+		if (passiveResourceSelected) {
+			FinalModelsToMeasuringpointWizardPage page = (FinalModelsToMeasuringpointWizardPage) super.getWizard()
+					.getPage("finalModelstoMeasuringpointWizardPage");
+			page.loadData();
+			return page;
 
-    /**
-     * performs the operations to set the chosen model to the wizard model
-     */
-    protected void nextPressed() {
+		} else {
+			return super.getWizard().getPage("wizardPage");
+		}
+		//
+	}
 
-        if (!(secondModelTreeViewer.getStructuredSelection().getFirstElement() instanceof PassiveResource)) {
+	/**
+	 * performs the operations to set the chosen model to the wizard model
+	 */
+	protected void nextPressed() {
 
-            selectionWizardModel
-                    .setCurrentSecondStageModel(secondModelTreeViewer.getStructuredSelection().getFirstElement());
-            selected = true;
-        } else {
-            selectionWizardModel
-                    .setCurrentSecondStageModel(secondModelTreeViewer.getStructuredSelection().getFirstElement());
-            selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
-            selected = false;
-        }
+		if (!(secondModelTreeViewer.getStructuredSelection().getFirstElement() instanceof PassiveResource)) {
 
-    }
-    
-    @Override
-    public void performHelp() {
-        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measuring_Point_Selection_Page");
-    }
+			selectionWizardModel
+					.setCurrentSecondStageModel(secondModelTreeViewer.getStructuredSelection().getFirstElement());
+			passiveResourceSelected = true;
+		} else {
+			selectionWizardModel
+					.setCurrentSecondStageModel(secondModelTreeViewer.getStructuredSelection().getFirstElement());
+			selectionWizardModel.createMeasuringPoint(selectionWizardModel.getCurrentSelection());
+			passiveResourceSelected = false;
+		}
+
+	}
+
+	@Override
+	public void performHelp() {
+		Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Measuring_Point_Selection_Page");
+	}
 }
