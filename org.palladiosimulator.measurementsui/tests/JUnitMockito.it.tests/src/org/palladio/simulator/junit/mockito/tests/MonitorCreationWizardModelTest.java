@@ -1,3 +1,4 @@
+package org.palladio.simulator.junit.mockito.tests;
 import static org.junit.Assert.*;
 
 import org.junit.Rule;
