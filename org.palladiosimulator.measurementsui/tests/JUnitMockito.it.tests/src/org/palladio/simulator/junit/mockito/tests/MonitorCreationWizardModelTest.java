@@ -1,0 +1,78 @@
+package org.palladio.simulator.junit.mockito.tests;
+import static org.junit.Assert.*;
+
+/**
+ * @author Mehmet Ali Tepeli
+ */
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
+import org.palladiosimulator.monitorrepository.Monitor;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
+import static org.mockito.Mockito.*;
+
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.stubbing.Answer;
+public class MonitorCreationWizardModelTest {
+
+	@Mock
+	private Monitor monitor;
+	private boolean isEditting;
+    @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
+    MonitorCreationWizardModel test = mock(MonitorCreationWizardModel.class);
+    Monitor createMonitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+  
+    @Test
+	public void testGetMonitor() {
+		when(test.getMonitor()).thenReturn(monitor);
+		assertEquals(test.getMonitor(), monitor);
+}
+    
+	@Test
+	public void testCanFinish() {
+		boolean canFinish =  test.canFinish();
+		when(createMonitor.getEntityName().isEmpty()).thenReturn(canFinish);
+		assertTrue(true);
+}
+	@Test
+	public void testGetInfoText() {
+		String infoText = test.getInfoText();
+		when(test.getInfoText()).thenAnswer(new Answer(){
+			 	@Mock
+			    private static final String EDIT_MONITOR_INFO_TEXT = "Edit your Monitor name and set him activated/not activated.";
+				@Mock
+			    private static final String CREATE_MONITOR_INFO_TEXT = "A Monitor specifies which element of your "
+				        + "Models should be analyzed during a simulation run."
+				        + "\n In this page you can give your Monitor an appropiate name and set it activated/not activated."
+			+ "\n Activated Monitors will be simulated during a SimuLizar run, not activated ones will be ignored. ";
+
+			@Override
+			public Object answer(InvocationOnMock invocation) throws Throwable {
+				if(createMonitor.getMonitorRepository() != null) 
+					return EDIT_MONITOR_INFO_TEXT;
+				
+				return CREATE_MONITOR_INFO_TEXT;
+			}
+			
+});
+			}
+	@Test
+	public void testGetTitleText() {
+		String titleText = test.getTitleText();
+		doAnswer(new Answer(){
+			private static final String CREATE_MONITOR_TITEL = "Create Monitor";
+			private static final String EDIT_MONITOR_TITEL = "Edit Monitor";
+			public Object answer(InvocationOnMock invocation) {
+				if(createMonitor.getMonitorRepository() != null) 
+					return EDIT_MONITOR_TITEL;
+				
+				return CREATE_MONITOR_TITEL;
+				}
+		}).when(test).getTitleText();
+}	
+	}
+
