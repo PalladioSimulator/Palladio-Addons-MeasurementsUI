@@ -12,5 +12,7 @@ Require-Bundle: org.palladiosimulator.measurementsui.monitorrepositoryview;bundl
  org.eclipse.emf;bundle-version="2.6.0",
  org.palladiosimulator.pcm.edp2.measuringpoint;bundle-version="1.0.0",
  org.palladiosimulator.monitorrepository;bundle-version="3.0.1",
- org.palladiosimulator.edp2.dao;bundle-version="1.0.0"
+ org.palladiosimulator.edp2.dao;bundle-version="1.0.0",
+ org.palladiosimulator.pcm.edp2.measuringpoint.edit;bundle-version="2.1.1",
+ org.palladiosimulator.measurementsui.data
 Import-Package: org.palladiosimulator.measurementsui.wizardmodel.pages
