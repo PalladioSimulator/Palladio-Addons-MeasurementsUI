@@ -30,8 +30,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: org.palladiosimulator.measurementsui.wizard.handlers,
  org.palladiosimulator.measurementsui.wizard.main
-Import-Package: emptymeasuringpoints,
- org.palladio.simulator.measurementsui.selectmetricdescriptions.selected,
+Import-Package: org.palladio.simulator.measurementsui.selectmetricdescriptions.selected,
  org.palladiosimulator.measurementsui.processingtype,
  org.palladiosimulator.measurementsui.selectmetricdescriptions.available,
  org.slf4j;version="1.7.2"

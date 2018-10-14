@@ -151,18 +151,13 @@ public class MeasurementsDashboardView {
         Composite monitorContainer = createTreeComposite(treeContainer);
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
         treeContainer.setWeights(new int[] { 10, 5 });
+        
         createViewButtons(buttonContainer);
+        
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         measuringTreeViewer = createEmptyMeasuringPointsTreeViewer(undefinedMeasuringContainer);
-
-        handlerService.activateHandler(SAVE_COMMAND, new SaveHandler());
-        handlerService.activateHandler(SAVEALL_COMMAND, new SaveAllHandler());
-        handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
-        handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
-        handlerService.activateHandler(REFRESH_COMMAND, new RefreshHandler());
-
-        commandService.getCommand(UNDO_COMMAND).isEnabled();
-        commandService.getCommand(REDO_COMMAND).isEnabled();
+        
+        initHandlers();
     }
 
     /**
@@ -222,6 +217,17 @@ public class MeasurementsDashboardView {
         emptyMeasuringPointsTreeViewer.getViewer().addFilter(filter);
         addSelectionListener(emptyMeasuringPointsTreeViewer);
         return emptyMeasuringPointsTreeViewer;
+    }
+
+    /**
+     * Initializes all e4 HandlerServices of the view
+     */
+    private void initHandlers() {
+        handlerService.activateHandler(SAVE_COMMAND, new SaveHandler());
+        handlerService.activateHandler(SAVEALL_COMMAND, new SaveAllHandler());
+        handlerService.activateHandler(UNDO_COMMAND, new UndoHandler());
+        handlerService.activateHandler(REDO_COMMAND, new RedoHandler());
+        handlerService.activateHandler(REFRESH_COMMAND, new RefreshHandler());
     }
 
     /**
@@ -633,7 +639,6 @@ public class MeasurementsDashboardView {
      *            to update
      */
     public void updateMeasurementsDashboardView() {
-        // dataApplication.updateData();
         updateTreeViewer();
     }
 

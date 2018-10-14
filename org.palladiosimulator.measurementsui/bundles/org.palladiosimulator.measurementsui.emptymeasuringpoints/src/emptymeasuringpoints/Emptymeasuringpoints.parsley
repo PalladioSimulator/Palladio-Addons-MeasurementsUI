@@ -28,11 +28,15 @@ module emptymeasuringpoints {
 				actionChange(
 					"Create Standard Set",
 					mpr,
-					[]
+					[
+						EmptymeasuringpointsSaveableTreeView.openStandardSetWizard();
+					]
 				),
 				separator,
 				actionUndo,
-				actionRedo
+				actionRedo,
+				separator,
+				actionPaste
 			]
 		}
 		
@@ -43,7 +47,9 @@ module emptymeasuringpoints {
 				actionChange(
 					"Create Standard Set",
 					mp,
-					[]
+					[
+						EmptymeasuringpointsSaveableTreeView.openStandardSetWizard();
+					]
 				)/* ,
 				actionChange(
 					"Assign to Monitor",
