@@ -17,6 +17,12 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * 
+ * @author Mehmet Ali Tepeli
+ *
+ */
+
 
 public class MeasuringPointSelectionWizardModelTest {
 	@Mock

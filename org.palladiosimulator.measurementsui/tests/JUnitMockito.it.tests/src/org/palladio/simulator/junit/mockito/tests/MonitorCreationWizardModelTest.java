@@ -1,6 +1,10 @@
 package org.palladio.simulator.junit.mockito.tests;
 import static org.junit.Assert.*;
 
+/**
+ * @author Mehmet Ali Tepeli
+ */
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
