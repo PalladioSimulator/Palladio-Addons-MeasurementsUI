@@ -1,34 +1,22 @@
 package org.palladio.simulator.junit.mockito.tests;
 
-import static org.junit.Assert.*;
+
 
 import org.junit.Test;
 import org.junit.Rule;
-import org.junit.Test;
 import org.mockito.*;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.stubbing.Answer;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
-import org.palladiosimulator.measurementsui.datamanipulation.DataEditor;
-import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
-import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MeasuringPointSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
-import org.palladiosimulator.pcm.core.composition.AssemblyContext;
-import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
-import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
-import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
+
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Matchers.*;
+
 
 public class MeasuringPointSelectionWizardModelTest {
 	@Mock
@@ -42,7 +30,7 @@ public class MeasuringPointSelectionWizardModelTest {
 		MeasuringPointSelectionWizardModel measuringPointSelectionMock = Mockito.mock(MeasuringPointSelectionWizardModel.class);
 		Boolean finishable = measuringPointSelectionMock.isFinishable();
 		when(measuringPointSelectionMock.isFinishable()).thenReturn(finishable);
-		//assertTrue(true);
+		assertTrue(true);
 }
 	@Test
 	public void testSetFinishable() {
@@ -69,7 +57,7 @@ public class MeasuringPointSelectionWizardModelTest {
 		Monitor monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
 		boolean finishable =  measuringPointSelectionMock.canFinish();
 		when(monitor.getMeasuringPoint() != null).thenReturn(finishable);
-		//assertTrue(true);
+		assertTrue(true);
 }
 	@Test
 	public void testGetInfoText() {
@@ -110,9 +98,4 @@ public class MeasuringPointSelectionWizardModelTest {
 			
 		});
 }
-	
-	
-
-
-
 }

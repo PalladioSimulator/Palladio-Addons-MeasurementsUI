@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
-import org.palladiosimulator.monitorrepository.impl.MonitorRepositoryFactoryImpl;
 import static org.mockito.Mockito.*;
 
 import org.mockito.Mock;
@@ -78,9 +77,6 @@ public class MonitorCreationWizardModelTest {
 				return CREATE_MONITOR_TITEL;
 				}
 		}).when(test).getTitleText();
-}
-			
-	
-		
+}	
 	}
 
