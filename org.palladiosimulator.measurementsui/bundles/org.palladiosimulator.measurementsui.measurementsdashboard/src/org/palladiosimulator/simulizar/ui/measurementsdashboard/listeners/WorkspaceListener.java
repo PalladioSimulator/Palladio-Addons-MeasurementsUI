@@ -66,13 +66,7 @@ public class WorkspaceListener implements IResourceChangeListener {
                 if(res instanceof IProject) {
                     deletedProject = (IProject) res;
                 }
-                break;
-            case IResourceDelta.CHANGED:
-                //only listen to changes in currently viewed project of the dashboard view
-                if(res instanceof IProject && res.equals(dataApplication.getProject())) {  
-                    checkChangedEvent(deltaElement);
-                }
-                break;
+                break; 
             default:
                 break;
             }
@@ -81,44 +75,14 @@ public class WorkspaceListener implements IResourceChangeListener {
         updateDashboardView();
 
     }
-    /**
-     * Checks the ChangeEvent specially
-     * we only need to update our view if content was changed
-     * in the "monitorrepository" or "measuringpoint" file
-     * @param delta
-     */
-    private void checkChangedEvent(IResourceDelta delta) {
-        try {
-            delta.accept(new IResourceDeltaVisitor() {                                   
-                @Override
-                public boolean visit(IResourceDelta delta) throws CoreException {
-                    IResource res = delta.getResource();
-                    int flags = delta.getFlags();
-                    if(delta.getKind() == IResourceDelta.CHANGED) {
-                        if (res instanceof IFile && (res.getFileExtension().equals("monitorrepository")||
-                                (res.getFileExtension().equals("measuringpoint")))) {
-                            if ((flags & IResourceDelta.CONTENT) != 0) {
-                                changedProject = res.getProject();
-                            }
-
-                        }
-                    }
-
-                    return true;
-                }
-            });
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }                       
-
-    } 
+   
     
     /**
      * Updates the parts of our Dashboard view accordinglyt the changes
      * in the workspace
      */
     private void updateDashboardView() {
-		if (deletedProject != null || addedProject != null || changedProject != null) {
+		if (deletedProject != null || addedProject != null) {
 
 			Display.getDefault().asyncExec(() -> {
 
@@ -146,11 +110,6 @@ public class WorkspaceListener implements IResourceChangeListener {
 						dashboardView.updateMeasurementsDashboardView(addedProject);
 					}
 					dashboardView.updateProjectComboBox();
-					// a monitor or measuringPoint was added/deleted in the selected project ->
-					// update data and view
-				} else if (changedProject != null) {
-					dashboardView.updateMeasurementsDashboardView();
-					dashboardView.updateMonitorRepositoryComboBox();
 				}
 			});
 		}

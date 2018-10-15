@@ -25,14 +25,6 @@ module emptymeasuringpoints {
 	menuBuilder {
 		menus{
 			MeasuringPointRepository mpr-> #[
-				actionChange(
-					"Create Standard Set",
-					mpr,
-					[
-						EmptymeasuringpointsSaveableTreeView.openStandardSetWizard();
-					]
-				),
-				separator,
 				actionUndo,
 				actionRedo,
 				separator,
@@ -43,20 +35,7 @@ module emptymeasuringpoints {
 		emfMenus {
 			MeasuringPointRepository mpr -> #[]
 			
-			MeasuringPoint mp-> #[
-				actionChange(
-					"Create Standard Set",
-					mp,
-					[
-						EmptymeasuringpointsSaveableTreeView.openStandardSetWizard();
-					]
-				)/* ,
-				actionChange(
-					"Assign to Monitor",
-					mp,
-					[]
-				)	*/	
-			]
+			MeasuringPoint mp-> #[]
 		}
 	}
 }

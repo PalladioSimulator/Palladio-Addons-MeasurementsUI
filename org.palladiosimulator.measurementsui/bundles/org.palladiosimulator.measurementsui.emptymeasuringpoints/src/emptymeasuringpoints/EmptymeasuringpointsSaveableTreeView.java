@@ -13,13 +13,5 @@ import org.palladiosimulator.measurementsui.wizard.main.StandardSetWizard;
  *
  */
 public class EmptymeasuringpointsSaveableTreeView extends org.eclipse.emf.parsley.views.SaveableTreeView {
-    
-    public static void openStandardSetWizard() {
-        StandardSetWizard wizard = new StandardSetWizard();
-        Shell parentShell = wizard.getShell();
-        WizardDialog dialog = new WizardDialog(parentShell, wizard);
-        dialog.setPageSize(720, 400);
-        dialog.setMinimumPageSize(720, 400);
-        dialog.open();
-    }
+
 }

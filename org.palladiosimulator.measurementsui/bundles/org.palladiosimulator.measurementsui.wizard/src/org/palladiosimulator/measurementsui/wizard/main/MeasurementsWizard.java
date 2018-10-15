@@ -1,5 +1,6 @@
 package org.palladiosimulator.measurementsui.wizard.main;
 
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 
 import org.eclipse.core.runtime.Platform;
@@ -117,6 +118,13 @@ public class MeasurementsWizard extends org.eclipse.jface.wizard.Wizard {
         this.startingPage = startingPage;
         setImage();
         createPages();
+    }
+   /**
+    * Adds a PropertyChangeListener to the wizardManager
+    * @param listener the PropertyChangeListener
+    */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        wizardManager.addPropertyChangeListener(listener);
     }
 
     /**

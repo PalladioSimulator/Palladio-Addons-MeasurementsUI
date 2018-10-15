@@ -1,8 +1,11 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer;
 
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.jface.util.LocalSelectionTransfer;
+import org.eclipse.jface.viewers.ViewerDropAdapter;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
@@ -44,10 +47,14 @@ public class MonitorTreeViewer extends MeasurementsTreeViewer {
 
     @Override
     protected void initDragAndDrop() {
+        //Override Parsley Drag and Drop
+    }
+    
+    public void setDropAdapter(ViewerDropAdapter adapter) {
         int operations = DND.DROP_COPY | DND.DROP_MOVE;
         final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
         Transfer[] transferTypes = new Transfer[] { transfer };
-        treeViewer.addDropSupport(operations, transferTypes, new MeasuringpointDropListener(this));
+        treeViewer.addDropSupport(operations, transferTypes, adapter);
     }
 
 }
