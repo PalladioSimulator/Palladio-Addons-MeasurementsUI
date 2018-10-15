@@ -50,7 +50,8 @@ public class ExistingMeasuringpointLabelProvider implements ILabelProvider {
 
     @Override
     public String getText(Object element) {
-        return ((MeasuringPoint) element).getStringRepresentation();
+        return ((MeasuringPoint) element).toString().replace("[TRANSIENT]", "")
+                .replaceAll("([A-Z])", " $1")+ " "+((MeasuringPoint) element).getStringRepresentation();
     }
 
 }
