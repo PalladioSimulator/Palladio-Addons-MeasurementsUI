@@ -1,6 +1,8 @@
 
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.parts;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,6 +46,7 @@ import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
+import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDropListener;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
@@ -71,7 +74,7 @@ import org.slf4j.LoggerFactory;
  * @author David Schuetz
  * 
  */
-public class MeasurementsDashboardView {
+public class MeasurementsDashboardView implements PropertyChangeListener{
 
     private MeasurementsTreeViewer monitorTreeViewer;
     private MeasurementsTreeViewer measuringTreeViewer;
@@ -82,6 +85,7 @@ public class MeasurementsDashboardView {
     private Button editButton;
     private MeasurementsFilter filter;
     private Text searchText;
+    
 
     private static final String DELETETEXT_MEASURINGPOINT = "Delete MeasuringPoint";
     private static final String EDITTEXT_GRAYEDOUT = "Edit...";
@@ -189,10 +193,12 @@ public class MeasurementsDashboardView {
      * @return TreeViewer which includes all existing monitors
      */
     private MeasurementsTreeViewer createMonitorTreeViewer(Composite parent) {
-        MeasurementsTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService,
+        MonitorTreeViewer measurementsTreeViewer = new MonitorTreeViewer(parent, dirty, commandService,
                 dataApplication.getMonitorRepository());
+        
         measurementsTreeViewer.addMouseListener();
         measurementsTreeViewer.getViewer().addFilter(filter);
+        measurementsTreeViewer.setDropAdapter(new MeasuringpointDropListener(measurementsTreeViewer, this));
         addSelectionListener(measurementsTreeViewer);
 
         return measurementsTreeViewer;
@@ -374,6 +380,7 @@ public class MeasurementsDashboardView {
         createStandardButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
         createStandardButton.addListener(SWT.Selection, e -> {
             StandardSetWizard wizard = new StandardSetWizard();
+            wizard.addPropertyChangeListener(this);
             Shell parentShell = wizard.getShell();
             WizardDialog dialog = new WizardDialog(parentShell, wizard);
             dialog.setPageSize(720, 400);
@@ -400,11 +407,12 @@ public class MeasurementsDashboardView {
             } else {
                 checkDirtyState();
                 MeasurementsWizard wizard = new MeasurementsWizard();
+                wizard.addPropertyChangeListener(this);
                 Shell parentShell = wizard.getShell();
                 WizardDialog dialog = new WizardDialog(parentShell, wizard);
                 dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
                 dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-                dialog.open();
+                dialog.open();             
 
             }
         });
@@ -442,33 +450,37 @@ public class MeasurementsDashboardView {
         editButton.setText(EDITTEXT_GRAYEDOUT);
         editButton.setEnabled(false);
         editButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        editButton.addListener(SWT.Selection, e -> {
-            checkDirtyState();
-            MeasurementsWizard wizard;
-            Object selection = selectionService.getSelection();
-            ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
-            if (selection instanceof Monitor) {
-                wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
-            } else if (selection instanceof MeasuringPoint) {
-                wizard = new MeasurementsWizard(WizardModelType.MEASURING_POINT_SELECTION,
-                        (Monitor) provider.getParent(selection));
-            } else if (selection instanceof MeasurementSpecification) {
-                wizard = new MeasurementsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
-                        (Monitor) provider.getParent(selection));
-            } else if (selection instanceof ProcessingType) {
-                wizard = new MeasurementsWizard(WizardModelType.PROCESSING_TYPE,
-                        (Monitor) provider.getParent(((ProcessingType) selection).getMeasurementSpecification()));
+        editButton.addListener(SWT.Selection, e -> {      
+            if (!dataApplication.getModelAccessor().modelsExist()) {
+                MessageDialog.openInformation(null, "No PCM Models found Info", INFOTEXT_NO_PCM_MODELS);
             } else {
-                wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION);
+                checkDirtyState();
+                MeasurementsWizard wizard;
+                Object selection = selectionService.getSelection();
+                ITreeContentProvider provider = (ITreeContentProvider) monitorTreeViewer.getViewer().getContentProvider();
+                if (selection instanceof Monitor) {
+                    wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION, (Monitor) selection);
+                } else if (selection instanceof MeasuringPoint) {
+                    wizard = new MeasurementsWizard(WizardModelType.MEASURING_POINT_SELECTION,
+                            (Monitor) provider.getParent(selection));
+                } else if (selection instanceof MeasurementSpecification) {
+                    wizard = new MeasurementsWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
+                            (Monitor) provider.getParent(selection));
+                } else if (selection instanceof ProcessingType) {
+                    wizard = new MeasurementsWizard(WizardModelType.PROCESSING_TYPE,
+                            (Monitor) provider.getParent(((ProcessingType) selection).getMeasurementSpecification()));
+                } else {
+                    wizard = new MeasurementsWizard(WizardModelType.MONITOR_CREATION);
+                }
+                wizard.addPropertyChangeListener(this);
+                Shell parentShell = wizard.getShell();
+                WizardDialog dialog = new WizardDialog(parentShell, wizard);
+                dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
+                dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
+                dialog.open();
             }
-
-            Shell parentShell = wizard.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-            dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-            dialog.open();
-
         });
+
     }
 
     /**
@@ -482,7 +494,7 @@ public class MeasurementsDashboardView {
             boolean result = MessageDialog.openQuestion(null, "", "Do you want to save your changes?");
             if (result) {
                 try {
-                    save(dirty);
+                    save();
                 } catch (IOException e) {
                     logger.warn("IOException when attempting to save the dirty state. Stacktrace: {}", e.getMessage());
                 }
@@ -639,7 +651,9 @@ public class MeasurementsDashboardView {
      *            to update
      */
     public void updateMeasurementsDashboardView() {
+        dataApplication.updateData();
         updateTreeViewer();
+        updateMonitorRepositoryComboBox();
     }
 
     /**
@@ -676,7 +690,7 @@ public class MeasurementsDashboardView {
      *             if the save command fails
      */
     @Persist
-    public void save(MDirtyable dirty) throws IOException {
+    public void save() throws IOException {
         monitorTreeViewer.save(dirty);
         measuringTreeViewer.save(dirty);
     }
@@ -687,6 +701,17 @@ public class MeasurementsDashboardView {
 
     public void redo() {
         monitorTreeViewer.redo();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+      try {
+        save();
+        updateMeasurementsDashboardView();
+    } catch (IOException e) {
+        logger.warn("IOException when attempting to save the dirty state. Stacktrace: {}", e.getMessage());
+    }
+        
     }
 
 }

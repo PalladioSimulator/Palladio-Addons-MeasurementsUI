@@ -64,15 +64,7 @@ module monitorrepositoryview {
 
 	menuBuilder {
 		menus {
-			MonitorRepository mr -> #[
-				actionChange(
-					"Add Measuringpoint with Monitor",
-					mr,
-					[
-						MonitorRepositorySaveableTreeFormView.openWizard();
-					]
-				),
-				separator,
+			MonitorRepository mr -> #[				
 				actionUndo,
 				actionRedo,
 				separator,
@@ -83,76 +75,13 @@ module monitorrepositoryview {
 		emfMenus{
 			MonitorRepository mr -> #[]
 
-			Monitor monitor -> #[actionChange(
-				"Add Measuringpoint with Monitor",
-				monitor,
-				[
-					MonitorRepositorySaveableTreeFormView.openWizard();
-				]
-			), submenu("Edit", #[
-				actionChange(
-					"Monitor",
-					monitor,
-					[
-						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.MONITOR_CREATION, monitor);
-					]
-				),
-				actionChange(
-					"Measuringpoint",
-					monitor,
-					[
-						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.MEASURING_POINT_SELECTION,
-							monitor);
-					]
-				),
-				actionChange(
-					"Measurement Specifications",
-					monitor,
-					[
-						MonitorRepositorySaveableTreeFormView.openWizard(WizardModelType.METRIC_DESCRIPTION_SELECTION,
-							monitor);
-					]
-				)
-			]), separator]
+			Monitor monitor -> #[]
 
-			MeasuringPoint measuringPoint -> #[
-				actionChange(
-					"Edit Measuringpoint",
-					measuringPoint,
-					[]
-				),
-				separator
-			]
+			MeasuringPoint measuringPoint -> #[]
 
-			MeasurementSpecification measurement -> #[
-				submenu("Edit", #[
-					actionChange(
-						"MeasurementSpecifications",
-						measurement,
-						[
-							val monitor = measurement.eContainer as Monitor
-							MonitorRepositorySaveableTreeFormView.openWizard(
-								WizardModelType.METRIC_DESCRIPTION_SELECTION, monitor);
+			MeasurementSpecification measurement -> #[]
 
-						]
-					),
-					actionChange(
-						"ProcessingTypes",
-						measurement,
-						[]
-					)
-				]),
-				separator
-			]
-
-			ProcessingType processing -> #[
-				actionChange(
-					"Edit Processing Types",
-					processing,
-					[]
-				),
-				separator
-			]
+			ProcessingType processing -> #[]
 		}
 	}
 }

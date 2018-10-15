@@ -1,6 +1,7 @@
 package org.palladiosimulator.measurementsui.abstractviewer.listener;
 
-import java.io.IOException;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
@@ -10,8 +11,6 @@ import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewe
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.monitorrepository.Monitor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * DropListener which specifies what happens if a MeasuringPoint is dropped into a container.
@@ -20,18 +19,16 @@ import org.slf4j.LoggerFactory;
  *
  */
 public class MeasuringpointDropListener extends ViewerDropAdapter {
-    private MeasurementsTreeViewer measurementTreeViewer;
-
-    private final Logger logger = LoggerFactory.getLogger(MeasuringpointDropListener.class);
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     /**
      * 
      * @param measurementTreeViewer
      *            MeasurementTreeViewer where the MeasuringPoint is dropped in.
      */
-    public MeasuringpointDropListener(MeasurementsTreeViewer measurementTreeViewer) {
+    public MeasuringpointDropListener(MeasurementsTreeViewer measurementTreeViewer, PropertyChangeListener listener) {
         super(measurementTreeViewer.getViewer());
-        this.measurementTreeViewer = measurementTreeViewer;
+        this.changes.addPropertyChangeListener(listener);
     }
 
     @Override
@@ -41,11 +38,8 @@ public class MeasuringpointDropListener extends ViewerDropAdapter {
             ResourceEditor editor = ResourceEditorImpl.getInstance();
             editor.setMeasuringPointToMonitor((Monitor) getCurrentTarget(),
                     (MeasuringPoint) selection.getFirstElement());
-            try {
-                measurementTreeViewer.save();
-            } catch (IOException e) {
-                logger.warn("IOException when attempting to perform Drop. Stacktrace: {}", e.getMessage());
-            }
+            changes.firePropertyChange("save", 1,2);
+           
         }
         return false;
     }

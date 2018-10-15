@@ -1,8 +1,9 @@
 package org.palladiosimulator.measurementsui.wizardmodel;
 
-import java.io.IOException;
-import java.util.EnumMap;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.EnumMap;
 import org.eclipse.emf.common.command.CommandStack;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -15,8 +16,8 @@ import org.palladiosimulator.measurementsui.wizardmodel.pages.MonitorCreationWiz
 import org.palladiosimulator.measurementsui.wizardmodel.pages.ProcessingTypeSelectionWizardModel;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+
 
 /**
  * This class manages all WizardModels used in the wizard
@@ -27,6 +28,8 @@ import org.slf4j.LoggerFactory;
 public class WizardModelManager {
 
     private Monitor monitor;
+    
+    private PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     private ResourceEditorImpl editor;
     private DataApplication dataApp;
@@ -34,8 +37,6 @@ public class WizardModelManager {
 
     private EnumMap<WizardModelType, WizardModel> wizardModels = new EnumMap<WizardModelType, WizardModel>(
             WizardModelType.class);
-
-    final Logger logger = LoggerFactory.getLogger(WizardModelManager.class);
 
     /**
      * Creates a new empty monitor which will be edited in the wizard pages
@@ -59,6 +60,15 @@ public class WizardModelManager {
         CommandStack commandStack = editingDomain.getCommandStack();
         commandStack.flush();
     }
+
+    /**
+     * Adds the propertyChangeListener to the PropertyChangeSupport
+     * @param listener the PropertyChangeListener
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changes.addPropertyChangeListener(listener);
+    }
+
 
     /**
      * Discards all changes made
@@ -90,14 +100,8 @@ public class WizardModelManager {
             editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
                     measuringPoint);
             editor.setMeasuringPointToMonitor(monitor, measuringPoint);
-        }
-
-        try {
-            dataApp.getModelAccessor().getMeasuringPointRepository().get(0).eResource().save(null);
-            dataApp.getMonitorRepository().eResource().save(null);
-        } catch (IOException e) {
-            logger.warn("IOException when attempting to save changes made in Wizard. Stacktrace : {}", e.getMessage());
-        }
+        }    
+        changes.firePropertyChange("save", 1, 2);
 
     }
 

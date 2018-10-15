@@ -15,22 +15,4 @@ import org.palladiosimulator.monitorrepository.Monitor;
  *
  */
 public class MonitorRepositorySaveableTreeFormView extends SaveableTreeView {
-	
-	public static void openWizard() {
-		MeasurementsWizard wizard = new MeasurementsWizard();
-		Shell parentShell = wizard.getShell();
-		WizardDialog dialog = new WizardDialog(parentShell, wizard);
-		dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-        dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-		dialog.open();
-	}
-	
-	public static void openWizard(WizardModelType type, Monitor monitor) {
-		MeasurementsWizard wizard = new MeasurementsWizard(type, monitor);
-		Shell parentShell = wizard.getShell();
-		WizardDialog dialog = new WizardDialog(parentShell, wizard);
-		dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-        dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
-		dialog.open();
-	}
 }
