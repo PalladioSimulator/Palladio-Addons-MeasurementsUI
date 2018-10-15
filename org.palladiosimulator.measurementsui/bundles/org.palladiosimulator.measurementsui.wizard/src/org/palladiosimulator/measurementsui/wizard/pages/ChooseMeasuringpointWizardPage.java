@@ -107,8 +107,7 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 					setMessage(
 							"This is a list of all existing measuring points. You can select one to add it to the monitor.");
 				}
-				setPageComplete(false);
-				getContainer().updateButtons();
+
 
 			}
 		});
@@ -118,7 +117,6 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 		createExistingMeasuringPointTab();
 
 		setSelectedItem(selectionWizardModel.isEditing());
-		this.setPageComplete(true);
 	}
 
 	/**
@@ -415,17 +413,24 @@ public class ChooseMeasuringpointWizardPage extends WizardPage {
 			ISelection selection = new StructuredSelection(selectionWizardModel.getMonitor().getMeasuringPoint());
 
 			emptyMeasuringpointViewer.setSelection(selection);
-			emptyMeasuringpointViewer.refresh();
+			selectionWizardModel.setFinishable(true);
+			setPageComplete(true);
+            getContainer().updateButtons();
+
 
 		} else if (selectionWizardModel.getAllSecondPageObjects().length != 0) {
 
 			LinkedList<?> temp = (LinkedList<?>) selectionWizardModel.getAllSecondPageObjects()[0];
 			Iterator<?> iter = temp.iterator();
 			while (iter.hasNext()) {
-				if (isMeasuringPointCreatable(iter.next())) {
-					ISelection selection = new StructuredSelection(temp.get(0));
+			    Object chooseSelectedObject= iter.next();
+				if (isMeasuringPointCreatable(chooseSelectedObject)) {
+					ISelection selection = new StructuredSelection(chooseSelectedObject);
 					createTreeViewer.setSelection(selection);
-
+					selectionWizardModel.setFinishable(true);
+					setPageComplete(true);
+					
+					getContainer().updateButtons();
 					break;
 				}
 			}
