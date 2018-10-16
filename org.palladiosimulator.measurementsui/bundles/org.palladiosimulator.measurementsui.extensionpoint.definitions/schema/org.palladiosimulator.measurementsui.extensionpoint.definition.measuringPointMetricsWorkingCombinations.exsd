@@ -62,7 +62,7 @@ SuggestedMetricDescription: true/false
          <attribute name="ID" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Extension ID.
                </documentation>
             </annotation>
          </attribute>

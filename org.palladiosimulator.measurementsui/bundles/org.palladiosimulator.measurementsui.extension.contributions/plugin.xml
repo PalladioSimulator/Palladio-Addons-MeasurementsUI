@@ -4,13 +4,6 @@
    <extension
          point="org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations">
       <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client1"
-            MeasuringPoint="UsageScenarioMeasuringPoint"
-            MetricDescription="_NCRBos7pEeOX_4BzImuHbA"
-            Name="UsageScenarioWithPointInTime"
-            SuggestedMetricDescription="true">
-      </client>
-      <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client2"
             MeasuringPoint="UsageScenarioMeasuringPoint"
             MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
@@ -50,6 +43,41 @@
             MeasuringPoint="ResourceContainerMeasuringPoint"
             MetricDescription="_paDhIs7qEeOX_4BzImuHbA"
             Name="ResourceContainerWithStateOfActiveResource"
+            SuggestedMetricDescription="true">
+      </client>
+      <client
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client1"
+            MeasuringPoint="ActiveResourceMeasuringPoint"
+            MetricDescription="_eg_F0s7qEeOX_4BzImuHbA"
+            Name="ActiveResourceWithResourceDemand"
+            SuggestedMetricDescription="true">
+      </client>
+      <client
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client2"
+            MeasuringPoint="ActiveResourceMeasuringPoint"
+            MetricDescription="_QIb6cikUEeSuf8LV7cHLgA"
+            Name="ActiveResourceWithUtilizationOfActiveResource"
+            SuggestedMetricDescription="true">
+      </client>
+      <client
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client3"
+            MeasuringPoint="ActiveResourceMeasuringPoint"
+            MetricDescription="_mhws4SkUEeSuf8LV7cHLgA"
+            Name="ActiveResourceWithUtilizationOfActiveResourceTuple"
+            SuggestedMetricDescription="false">
+      </client>
+      <client
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client4"
+            MeasuringPoint="SystemOperationMeasuringPoint"
+            MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
+            Name="SystemOperationWithResponseTime"
+            SuggestedMetricDescription="true">
+      </client>
+      <client
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client5"
+            MeasuringPoint="ResourceEnvironmentMeasuringPoint"
+            MetricDescription="_e7x3gq-eEeSgL6DrxYuwZg"
+            Name="ResourceEnvironmentWithNumberOfResourceContainer"
             SuggestedMetricDescription="true">
       </client>
    </extension>
