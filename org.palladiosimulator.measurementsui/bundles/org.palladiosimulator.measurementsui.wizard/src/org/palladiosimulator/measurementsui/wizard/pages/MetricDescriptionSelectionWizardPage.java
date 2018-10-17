@@ -49,12 +49,14 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
     /**
      * Used for the self adapting column for unchecked value.
      */
-    public static final String CHECKBOX_UNCHECKED = "\u2610";
+    private static final String CHECKBOX_UNCHECKED = "\u2610";
 
     /**
      * Used for the self adapting column for checked value.
      */
-    public static final String CHECKBOX_CHECKED = "\u2611";
+    private static final String CHECKBOX_CHECKED = "\u2611";
+    
+    private Button expertMode;
 
     /**
      * This handles the internal model.
@@ -67,12 +69,12 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
      * @param metricDescriptionSelectionWizardModel
      *            This handles the internal model
      */
-    public MetricDescriptionSelectionWizardPage(MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
+    public MetricDescriptionSelectionWizardPage(
+            MetricDescriptionSelectionWizardModel metricDescriptionSelectionWizardModel) {
         super("wizardPage");
         this.metricDescriptionSelectionWizardModel = metricDescriptionSelectionWizardModel;
         setTitle(metricDescriptionSelectionWizardModel.getTitleText());
         setDescription(metricDescriptionSelectionWizardModel.getInfoText());
-        
 
     }
 
@@ -104,8 +106,8 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
     private TableViewer initLeftTableViewer(Composite container) {
         final Composite compositeLeft = new Composite(container, SWT.NONE);
         final FillLayout fillLayoutLeft = new FillLayout();
-        final AvailableMetricDescriptionSelectionViewer selectMeasurementsViewerLeft = new AvailableMetricDescriptionSelectionViewer(compositeLeft,
-                metricDescriptionSelectionWizardModel.getUnusedMetricsMonitor());
+        final AvailableMetricDescriptionSelectionViewer selectMeasurementsViewerLeft = new AvailableMetricDescriptionSelectionViewer(
+                compositeLeft, metricDescriptionSelectionWizardModel.getUnusedMetricsMonitor());
         final TableViewer tableViewerLeft = (TableViewer) selectMeasurementsViewerLeft.getViewer();
         tableViewerLeft.getTable().setHeaderBackground(new Color(Display.getCurrent(), 210, 210, 210));
         setLabelProvider(tableViewerLeft);
@@ -173,19 +175,21 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
     /**
      * Sets the label provider for the given TableViewer
-     * @param tableViewer the given TableViewer
+     * 
+     * @param tableViewer
+     *            the given TableViewer
      */
     private void setLabelProvider(final TableViewer tableViewer) {
         tableViewer.setLabelProvider(new ITableLabelProvider() {
-    
+
             public void removeListener(ILabelProviderListener listener) {
                 // not used
             }
-    
+
             public Image getColumnImage(Object element, int columnIndex) {
                 return null;
             }
-    
+
             public String getColumnText(Object element, int columnIndex) {
                 String result = "";
                 MeasurementSpecification measurementSpecification = (MeasurementSpecification) element;
@@ -201,15 +205,15 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
                     return result;
                 }
             }
-    
+
             public void addListener(ILabelProviderListener listener) {
                 // not used
             }
-    
+
             public void dispose() {
                 // not used
             }
-    
+
             public boolean isLabelProperty(Object element, String property) {
                 return false;
             }
@@ -218,7 +222,9 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
     /**
      * Sets the CellEditor for the given TableViewer
-     * @param tableViewer the given TableViewer
+     * 
+     * @param tableViewer
+     *            the given TableViewer
      */
     private void setCellEditor(TableViewer tableViewer) {
         final CellEditor[] cellEditor = new CellEditor[2];
@@ -233,7 +239,9 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
     /**
      * Adds the drag functionality for a given table viewer
-     * @param tableViewer the given table viewer
+     * 
+     * @param tableViewer
+     *            the given table viewer
      * @return the LocalSelectionTransfer object
      */
     private LocalSelectionTransfer addDrag(TableViewer tableViewer) {
@@ -252,11 +260,15 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
 
     /**
      * Adds drop functionality to the given TableViewer
-     * @param tableViewer the given TableViewer
-     * @param transfer the given LocalSelectionTransfer object
-     * @param dragAndDropfromLeftToRight indicates drag and drop direction, determines method to execute on drop
+     * 
+     * @param tableViewer
+     *            the given TableViewer
+     * @param transfer
+     *            the given LocalSelectionTransfer object
+     * @param dragAndDropfromLeftToRight
+     *            indicates drag and drop direction, determines method to execute on drop
      */
-    private void addDrop(final TableViewer tableViewer, final LocalSelectionTransfer transfer, 
+    private void addDrop(final TableViewer tableViewer, final LocalSelectionTransfer transfer,
             boolean dragAndDropfromLeftToRight) {
         final DropTargetAdapter dropAdapter = new DropTargetAdapter() {
             @Override
@@ -266,13 +278,13 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
                     TableItem tableItem = (TableItem) currentElement;
                     MeasurementSpecification measurement = (MeasurementSpecification) tableItem.getData();
                     if (dragAndDropfromLeftToRight) {
-                        metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);                      
+                        metricDescriptionSelectionWizardModel.addMeasurementSpecification(measurement);
                     } else {
-                        metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);          
+                        metricDescriptionSelectionWizardModel.removeMeasurementSpecification(measurement);
                     }
-                  
+
                 }
-                
+
                 getContainer().updateButtons();
             }
         };
@@ -316,8 +328,6 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
             getContainer().updateButtons();
         });
 
-        addLabelForSpacingButtons(compositeMiddle);
-
         final Button rightAll = new Button(compositeMiddle, SWT.PUSH);
         rightAll.setText("Add All >>");
         rightAll.addListener(SWT.Selection, e -> {
@@ -344,6 +354,17 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
             updatePageDescription();
             getContainer().updateButtons();
         });
+        
+        expertMode = new Button(compositeMiddle, SWT.CHECK);
+        expertMode.setText("Show all Metric Descriptions");
+        expertMode.setToolTipText("Expert Mode: Can lead to invalid simulations!");
+        expertMode.addListener(SWT.Selection, e -> {
+            
+            metricDescriptionSelectionWizardModel
+            .initUnusedMetrics(metricDescriptionSelectionWizardModel.getUsedMetricsMonitor(), expertMode.getSelection());
+            updatePageDescription();
+            getContainer().updateButtons();
+        });
     }
 
     /**
@@ -361,7 +382,7 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
     public void setVisible(boolean visible) {
         if (visible) {
             metricDescriptionSelectionWizardModel
-                    .initUnusedMetrics(metricDescriptionSelectionWizardModel.getUsedMetricsMonitor());
+                    .initUnusedMetrics(metricDescriptionSelectionWizardModel.getUsedMetricsMonitor(), expertMode.getSelection());
         }
         super.setVisible(visible);
     }
@@ -374,13 +395,12 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
     private void showMessage(MeasurementSpecification aMSpec) {
         this.setMessage(metricDescriptionSelectionWizardModel.getTextualDescriptionForMetricDescription(aMSpec));
     }
-    
+
     /**
-     * Updates the page description depending on whether the user
-     * can click the finish button or not
+     * Updates the page description depending on whether the user can click the finish button or not
      */
     private void updatePageDescription() {
-    	this.setMessage(metricDescriptionSelectionWizardModel.getInfoText());
+        this.setMessage(metricDescriptionSelectionWizardModel.getInfoText());
     }
 
     /**
@@ -404,9 +424,10 @@ public class MetricDescriptionSelectionWizardPage extends WizardPage {
             }
         });
     }
-    
+
     @Override
     public void performHelp() {
-        Program.launch("https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Metric_Description_Selection_Page");
+        Program.launch(
+                "https://sdqweb.ipd.kit.edu/wiki/SimuLizar_Usability_Extension#Metric_Description_Selection_Page");
     }
 }
