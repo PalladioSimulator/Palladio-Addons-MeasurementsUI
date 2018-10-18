@@ -169,8 +169,8 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
-        if (!dataApplication.getDataGathering().getAllProjectAirdfiles().isEmpty()) {
-            dataApplication.loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(0), 0);
+        if (!dataApplication.getValidProjectAccessor().getAllProjectAirdfiles().isEmpty()) {
+            dataApplication.loadData(dataApplication.getValidProjectAccessor().getAllProjectAirdfiles().get(0), 0);
         }
     }
 
@@ -213,9 +213,9 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      */
     private MeasurementsTreeViewer createEmptyMeasuringPointsTreeViewer(Composite parent) {
         EmptyMeasuringPointsTreeViewer emptyMeasuringPointsTreeViewer;
-        if (!dataApplication.getModelAccessor().getMeasuringPointRepository().isEmpty()) {
+        if (!dataApplication.getModelAccessor().getMeasuringPointRepositoryList().isEmpty()) {
             emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent, dirty, commandService,
-                    dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+                    dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0));
         } else {
             emptyMeasuringPointsTreeViewer = new EmptyMeasuringPointsTreeViewer(parent, dirty, commandService, null);
         }
@@ -525,7 +525,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
                 dataApplication
-                        .loadData(dataApplication.getDataGathering().getAllProjectAirdfiles().get(selectionIndex), 0);
+                        .loadData(dataApplication.getValidProjectAccessor().getAllProjectAirdfiles().get(selectionIndex), 0);
                 updateTreeViewer();
                 updateMonitorRepositoryComboBox();
             }
@@ -596,7 +596,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         monitorRepositoriesComboDropDown.setEnabled(true);
         int selectionIndex = 0;
         monitorRepositoriesComboDropDown.removeAll();
-        List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepository();
+        List<MonitorRepository> allMonitorRepositories = dataApplication.getModelAccessor().getMonitorRepositoryList();
         for (int i = 0; i < allMonitorRepositories.size(); i++) {
             MonitorRepository monitorRepository = allMonitorRepositories.get(i);
             if (monitorRepository.equals(dataApplication.getMonitorRepository())) {
@@ -606,7 +606,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         }
         monitorRepositoriesComboDropDown.select(selectionIndex);
 
-        if (dataApplication.getModelAccessor().getMonitorRepository().size() <= 1) {
+        if (dataApplication.getModelAccessor().getMonitorRepositoryList().size() <= 1) {
             monitorRepositoriesComboDropDown.setEnabled(false);
         }
 
@@ -619,7 +619,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
 
         int selectionIndex = 0;
         projectsComboDropDown.removeAll();
-        List<IProject> allProjects = dataApplication.getDataGathering().getAllProjectAirdfiles();
+        List<IProject> allProjects = dataApplication.getValidProjectAccessor().getAllProjectAirdfiles();
         for (int i = 0; i < allProjects.size(); i++) {
             IProject project = allProjects.get(i);
 
@@ -634,7 +634,8 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
     }
 
     /**
-     * Updates the dashboard by reloading the data and refreshing the views
+     * Updates the dashboard by loading the data corresponding to the 
+     * given project and refreshing the views
      * 
      * @param project
      *            to update
@@ -651,7 +652,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      *            to update
      */
     public void updateMeasurementsDashboardView() {
-        dataApplication.updateData();
+        dataApplication.updateData(monitorRepositoriesComboDropDown.getSelectionIndex());
         updateTreeViewer();
         updateMonitorRepositoryComboBox();
     }
@@ -669,7 +670,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      */
     private void updateTreeViewer() {
         monitorTreeViewer.update(dataApplication.getMonitorRepository());
-        measuringTreeViewer.update(dataApplication.getModelAccessor().getMeasuringPointRepository().get(0));
+        measuringTreeViewer.update(dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0));
     }
 
     /**
@@ -704,7 +705,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void propertyChange(PropertyChangeEvent event) {
       try {
         save();
         updateMeasurementsDashboardView();

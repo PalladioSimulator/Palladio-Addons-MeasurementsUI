@@ -97,7 +97,7 @@ public class WizardModelManager {
         }
 
         if (measuringPoint.getMeasuringPointRepository() == null) {
-            editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepository().get(0),
+            editor.addMeasuringPointToRepository(dataApp.getModelAccessor().getMeasuringPointRepositoryList().get(0),
                     measuringPoint);
             editor.setMeasuringPointToMonitor(monitor, measuringPoint);
         }    

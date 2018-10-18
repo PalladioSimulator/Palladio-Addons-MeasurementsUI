@@ -106,10 +106,10 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
             
             for (Monitor monitor : monitors) {
 
-                editor.addMonitorToRepository(dataApplication.getModelAccessor().getMonitorRepository().get(0),
+                editor.addMonitorToRepository(dataApplication.getModelAccessor().getMonitorRepositoryList().get(0),
                         monitor);
                 editor.addMeasuringPointToRepository(
-                        dataApplication.getModelAccessor().getMeasuringPointRepository().get(0),
+                        dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0),
                         monitor.getMeasuringPoint());
                 editor.setMeasuringPointToMonitor(monitor, monitor.getMeasuringPoint());
             }
@@ -118,7 +118,7 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
             for (Object tempmeasuringpoint : measuringPointSelectionWizardPage.getViewer().getCheckedElements()) {
                 MeasuringPoint measuringpoint = (MeasuringPoint) tempmeasuringpoint;
                 editor.addMeasuringPointToRepository(
-                        dataApplication.getModelAccessor().getMeasuringPointRepository().get(0), measuringpoint);   
+                        dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0), measuringpoint);   
             }
         }
         changes.firePropertyChange("save", 1, 2);

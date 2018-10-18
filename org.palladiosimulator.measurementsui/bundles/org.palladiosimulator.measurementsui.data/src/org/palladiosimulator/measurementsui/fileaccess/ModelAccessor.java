@@ -82,7 +82,6 @@ public class ModelAccessor {
         return t.negate();
     }
 
-
     /**
      * This method returns a list of all MeasuringPoints which are not assigned to any Monitor.
      * 
@@ -103,11 +102,7 @@ public class ModelAccessor {
                 .collect(Collectors.toList());
         
         return new BasicEList<MeasuringPoint>(intersectionOfMeasuringPoints);
-        
-
     }
-    
-
 
     /**
      * Given a sirius session this Method initializes all five palladio component
@@ -156,7 +151,6 @@ public class ModelAccessor {
         Collection<SubSystem> subSystems = EcoreUtil.getObjectsByType(allModelObjectsInSession,
                 SubsystemPackage.eINSTANCE.getSubSystem());
         this.subsystemList.addAll(subSystems);
-
     }
     
     /**
@@ -173,8 +167,7 @@ public class ModelAccessor {
     	
     	if (!measuringPointRepositoryExists()) {
     		addMeasuringPointRepository(RepositoryCreator.getInstance().createMeasuringPointRepository(project));
-    	}
-    		
+    	}		
     }
 
     /**
@@ -192,16 +185,13 @@ public class ModelAccessor {
     }
     
     /**
-     * Checks whether any palladio core models exist
+     * Checks whether any Palladio core models exist
      * @return boolean whether models exist or not
      */
     public boolean modelsExist() {
-        if (this.allocationList.isEmpty() && this.systemList.isEmpty() && this.subsystemList.isEmpty() &&
-                this.repositoryList.isEmpty() && this.resourceEnvironmentList.isEmpty() &&
-                this.usageModelList.isEmpty()){
-            return false;
-        }
-        return true;
+        return !(this.allocationList.isEmpty() && this.systemList.isEmpty() && this.subsystemList.isEmpty()
+                && this.repositoryList.isEmpty() && this.resourceEnvironmentList.isEmpty() 
+                && this.usageModelList.isEmpty());
     }
     
     /**
@@ -210,8 +200,7 @@ public class ModelAccessor {
      * @return boolean whether a monitorRepository exists
      */
     public boolean monitorRepositoryExists() {
-       return (this.monitorRepositoryList != null && !this.monitorRepositoryList.isEmpty());
-         
+       return (this.monitorRepositoryList != null && !this.monitorRepositoryList.isEmpty());         
     }
     
     /**
@@ -222,69 +211,7 @@ public class ModelAccessor {
     public boolean measuringPointRepositoryExists() { 
         return (this.measuringPointRepositoryList != null && !this.measuringPointRepositoryList.isEmpty());
     }
-    
-    /**
-     * Returns the monitorRepository given the ID
-     * @param id from the monitorRepository
-     * @return Optional<MonitorRepository>
-     */
-    public Optional<MonitorRepository> getMonitorRepositoryByID(String id) {
-        for (MonitorRepository monitorRepository : monitorRepositoryList) {
-            if (monitorRepository.getId().equals(id)) {
-                return Optional.of(monitorRepository);
-            }
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Adds a ResourceEnvironment to the ResourceEnvironment list
-     * @param resourceEnvironment to add
-     */
-    protected void addResourceEnvironment(ResourceEnvironment resourceEnvironment) {
-        this.resourceEnvironmentList.add(resourceEnvironment);
-    }
-
-    /**
-     * Adds a System to the System list
-     * @param system to add
-     */
-    protected void addSystem(org.palladiosimulator.pcm.system.System system) {
-        this.systemList.add(system);
-    }
-
-    /**
-     * Adds an Allocation to the Allocation list
-     * @param allocation to add
-     */
-    protected void addAllocation(Allocation allocation) {
-        this.allocationList.add(allocation);
-    }
-
-    /**
-     * Adds a Repository to the Repository list
-     * @param repository to add
-     */
-    protected void addRepository(Repository repository) {
-        this.repositoryList.add(repository);
-    }
-
-    /**
-     * Adds a UsageModel to the UsageModel list
-     * @param usageModel to add
-     */
-    protected void addUsageModel(UsageModel usageModel) {
-        this.usageModelList.add(usageModel);
-    }
-
-    /**
-     * Adds a SubSystem to the SubSystem list
-     * @param subsystem to add
-     */
-    protected void addSubSystem(SubSystem subsystem) {
-        this.subsystemList.add(subsystem);
-    }
-    
+  
     /**
      * Adds a MonitorRepository to the MonitorRepository list
      * @param monitorRepository to add
@@ -305,7 +232,7 @@ public class ModelAccessor {
      * Returns the list of ResourceEnvironments
      * @return list of ResourceEnvironments
      */
-    public List<ResourceEnvironment> getResourceEnvironment() {
+    public List<ResourceEnvironment> getResourceEnvironmenList() {
         return resourceEnvironmentList;
     }
 
@@ -313,7 +240,7 @@ public class ModelAccessor {
      * Returns the list of Systems
      * @return list of Systems
      */
-    public List<org.palladiosimulator.pcm.system.System> getSystem() {
+    public List<org.palladiosimulator.pcm.system.System> getSystemList() {
         return systemList;
     }
 
@@ -321,7 +248,7 @@ public class ModelAccessor {
      * Returns the list of Allocations
      * @return list of Allocations
      */
-    public List<Allocation> getAllocation() {
+    public List<Allocation> getAllocationList() {
         return allocationList;
     }
 
@@ -329,7 +256,7 @@ public class ModelAccessor {
      * Returns the list Repositories
      * @return list of Repositories
      */
-    public List<Repository> getRepository() {
+    public List<Repository> getRepositoryList() {
         return repositoryList;
     }
 
@@ -337,7 +264,7 @@ public class ModelAccessor {
      * Returns the list of UsageModels
      * @return list of UsageModels
      */
-    public List<UsageModel> getUsageModel() {
+    public List<UsageModel> getUsageModelList() {
         return usageModelList;
     }
     
@@ -345,7 +272,7 @@ public class ModelAccessor {
      * Returns the list of SubSystems
      * @return list of SubSystems
      */
-    public List<SubSystem> getSubSystem() {
+    public List<SubSystem> getSubSystemList() {
         return subsystemList;
     }
 
@@ -353,7 +280,7 @@ public class ModelAccessor {
      * Returns the list of MeasuringPointRepositorys
      * @return list of MeasuringPointRepositorys
      */
-    public List<MeasuringPointRepository> getMeasuringPointRepository() {
+    public List<MeasuringPointRepository> getMeasuringPointRepositoryList() {
         return measuringPointRepositoryList;
     }
 
@@ -361,7 +288,7 @@ public class ModelAccessor {
      * Returns the list of MonitorRepositorys
      * @return list of MonitorRepositorys
      */
-    public List<MonitorRepository> getMonitorRepository() {
+    public List<MonitorRepository> getMonitorRepositoryList() {
         return monitorRepositoryList;
     }
 

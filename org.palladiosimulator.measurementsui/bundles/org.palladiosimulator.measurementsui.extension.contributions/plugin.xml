@@ -7,77 +7,84 @@
             ID="org.palladiosimulator.measurementsui.extension.contributions.client2"
             MeasuringPoint="UsageScenarioMeasuringPoint"
             MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
-            Name="UsageScenarioWithResponseTime"
+            Name="UsageScenario with ResponseTime"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client3"
             MeasuringPoint="ActiveResourceMeasuringPoint"
             MetricDescription="_paDhIs7qEeOX_4BzImuHbA"
-            Name="ActiveResourceWithStateOfActiveResource"
+            Name="ActiveResource with StateOfActiveResource"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client4"
             MeasuringPoint="AssemblyOperationMeasuringPoint"
             MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
-            Name="AssemblyOperationWithResponseTime"
+            Name="AssemblyOperation with ResponseTime"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client5"
             MeasuringPoint="ExternalCallActionMeasuringPoint"
             MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
-            Name="ExternallCallWithResponseTime"
+            Name="ExternallCall with ResponseTime"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client6"
             MeasuringPoint="AssemblyPassiveResourceMeasuringPoint"
             MetricDescription="_x0-pks7rEeOX_4BzImuHbA"
-            Name="AssemblyPassiveResourceWithStateOfPassiveResource"
+            Name="AssemblyPassiveResource with StateOfPassiveResource"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client7"
             MeasuringPoint="ResourceContainerMeasuringPoint"
             MetricDescription="_paDhIs7qEeOX_4BzImuHbA"
-            Name="ResourceContainerWithStateOfActiveResource"
+            Name="ResourceContainer with StateOfActiveResource"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client1"
             MeasuringPoint="ActiveResourceMeasuringPoint"
             MetricDescription="_eg_F0s7qEeOX_4BzImuHbA"
-            Name="ActiveResourceWithResourceDemand"
+            Name="ActiveResource with ResourceDemand"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client2"
             MeasuringPoint="ActiveResourceMeasuringPoint"
             MetricDescription="_QIb6cikUEeSuf8LV7cHLgA"
-            Name="ActiveResourceWithUtilizationOfActiveResource"
+            Name="ActiveResource with UtilizationOfActiveResource"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client3"
             MeasuringPoint="ActiveResourceMeasuringPoint"
             MetricDescription="_mhws4SkUEeSuf8LV7cHLgA"
-            Name="ActiveResourceWithUtilizationOfActiveResourceTuple"
+            Name="ActiveResource with UtilizationOfActiveResourceTuple"
             SuggestedMetricDescription="false">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client4"
             MeasuringPoint="SystemOperationMeasuringPoint"
             MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
-            Name="SystemOperationWithResponseTime"
+            Name="SystemOperation with ResponseTime"
             SuggestedMetricDescription="true">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client5"
             MeasuringPoint="ResourceEnvironmentMeasuringPoint"
             MetricDescription="_e7x3gq-eEeSgL6DrxYuwZg"
-            Name="ResourceEnvironmentWithNumberOfResourceContainer"
+            Name="ResourceEnvironment with NumberOfResourceContainer"
+            SuggestedMetricDescription="true">
+      </client>
+      <client
+            ID="org.palladiosimulator.measurementsui.extension.contributions.client1"
+            MeasuringPoint="EntryLevelSystemCallMeasuringPoint"
+            MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
+            Name="EntryLevelSystemCall with ResponseTime"
             SuggestedMetricDescription="true">
       </client>
    </extension>
