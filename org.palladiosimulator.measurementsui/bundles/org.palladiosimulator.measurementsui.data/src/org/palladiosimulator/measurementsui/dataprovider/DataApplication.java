@@ -52,8 +52,8 @@ public final class DataApplication {
     }
 
     /**
-     * Loads all palladio component models Models given a project is selected and it has a .aird
-     * file(modeling Project nature). Initializes a session correspondig to the project, which is
+     * Loads all Palladio component models Models given a project is selected and it has a .aird
+     * file(modeling Project nature). Initializes a session corresponding to the project, which is
      * used to load the models. Checks for Monitor-/MeasuringPoint-Repositories and creates them if
      * none exist.
      * 
@@ -88,18 +88,7 @@ public final class DataApplication {
      *             index from the monitorRepository to load
      */
     public void updateData(int monitorRepositorySelectionIndex) {
-    
-        this.validProjectAccessor.getAirdFileOfProject(this.project).ifPresent(airdFile -> 
-        initializeSessionResourceURI(airdFile));
-        initializeSession(sessionResourceURI);
-        if (session != null) {
-            this.modelAccessor.initializeModels(session);
-            this.modelAccessor.checkIfRepositoriesExist(project);
-            updateMonitorRepository(monitorRepositorySelectionIndex);
-            
-        } else {
-            logger.warn("No Models are initiated. Make sure a Session is open.");
-        }
+        loadData(this.project, monitorRepositorySelectionIndex);
     }
 
     /**
