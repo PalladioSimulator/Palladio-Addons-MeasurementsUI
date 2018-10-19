@@ -61,29 +61,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     }
 
     /**
-     * helper method to add the measuringpoint to the monitor
-     * 
-     * @param measuringPoint
-     *            the measuringpoint to be added to the monitor
-     */
-    public void addMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
-        monitor.setMeasuringPoint(measuringPoint);
-
-    }
-
-    /**
-     * adds a measuringpoint to the given repository
-     * 
-     * @param measuringPoint
-     *            the measuringpoint to be added to the measuringpoint repository
-     */
-    public void addMeasuringPointToRepository(MeasuringPoint measuringPoint) {
-        MeasuringPointRepository measuringPointRepository = DataApplication.getInstance().getModelAccessor()
-                .getMeasuringPointRepositoryList().get(0);
-        ResourceEditorImpl.getInstance().addMeasuringPointToRepository(measuringPointRepository, measuringPoint);
-    }
-
-    /**
      * checks whether the monitor repository and measuringpoint of a monitor is set. If this is the
      * case the wizard can be finished
      */
@@ -176,13 +153,13 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         if (isEditing()) {
             List<MeasuringPoint> points = DataApplication.getInstance().getModelAccessor()
                     .getUnassignedMeasuringPoints();
-            if(getMonitor().getMeasuringPoint()!=null) {
+            if (getMonitor().getMeasuringPoint() != null) {
                 points.add(getMonitor().getMeasuringPoint());
 
             }
             return points.toArray();
         } else {
-            return DataApplication.getInstance().getModelAccessor().getUnassignedMeasuringPoints().toArray();
+            return dataApplication.getModelAccessor().getUnassignedMeasuringPoints().toArray();
         }
     }
 

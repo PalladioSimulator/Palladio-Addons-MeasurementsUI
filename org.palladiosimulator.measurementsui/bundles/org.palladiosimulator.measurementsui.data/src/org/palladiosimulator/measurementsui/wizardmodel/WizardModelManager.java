@@ -35,7 +35,7 @@ public class WizardModelManager {
     private DataApplication dataApp;
     private boolean isEditing;
 
-    private EnumMap<WizardModelType, WizardModel> wizardModels = new EnumMap<WizardModelType, WizardModel>(
+    private EnumMap<WizardModelType, WizardModel> wizardModels = new EnumMap<>(
             WizardModelType.class);
 
     /**

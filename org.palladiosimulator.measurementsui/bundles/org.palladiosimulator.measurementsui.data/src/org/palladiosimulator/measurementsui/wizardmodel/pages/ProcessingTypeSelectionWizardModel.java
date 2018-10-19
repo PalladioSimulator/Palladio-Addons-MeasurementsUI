@@ -119,6 +119,11 @@ public class ProcessingTypeSelectionWizardModel implements WizardModel {
         return provider.getAProcessingType(aMeasurementSpecification, aProcessingTypeAttribute);
     }
 
+    /**
+     * Returns the name of the ProcessingType as String
+     * @param processingType to get the name of
+     * @return String name of ProcessingType
+     */
     public String getStringOfProcessingType(ProcessingType processingType) {
         return provider.getProcessingTypeString(processingType);
     }
