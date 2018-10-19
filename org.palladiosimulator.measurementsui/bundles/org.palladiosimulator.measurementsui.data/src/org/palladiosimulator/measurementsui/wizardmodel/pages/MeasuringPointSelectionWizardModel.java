@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.dataprovider.MeasuringPointModelElementProvider;
@@ -151,7 +150,7 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public Object[] getExistingMeasuringPoints() {
         if (isEditing()) {
-            List<MeasuringPoint> points = DataApplication.getInstance().getModelAccessor()
+            List<MeasuringPoint> points = dataApplication.getModelAccessor()
                     .getUnassignedMeasuringPoints();
             if (getMonitor().getMeasuringPoint() != null) {
                 points.add(getMonitor().getMeasuringPoint());

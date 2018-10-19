@@ -1,18 +1,13 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IResourceDeltaVisitor;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.parts.MeasurementsDashboardView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class implements the IResourceChangeListener to listen to changes
@@ -25,12 +20,9 @@ public class WorkspaceListener implements IResourceChangeListener {
     
    private IProject addedProject;
    private IProject deletedProject;
-   private IProject changedProject;
    
    private MeasurementsDashboardView dashboardView;
    private DataApplication dataApplication;
-   
-   private final Logger logger = LoggerFactory.getLogger(WorkspaceListener.class);
     
     
     /**
@@ -40,7 +32,7 @@ public class WorkspaceListener implements IResourceChangeListener {
      */
     public WorkspaceListener(MeasurementsDashboardView dashboardView) {
         this.dashboardView = dashboardView;
-        this.dataApplication = this.dashboardView.getDataApplication();
+        this.dataApplication = DataApplication.getInstance();
     }
 
     /**
@@ -51,7 +43,6 @@ public class WorkspaceListener implements IResourceChangeListener {
     public void resourceChanged(IResourceChangeEvent event) {
         deletedProject = null;
         addedProject = null;
-        changedProject = null;
         IResourceDelta delta = event.getDelta();
         for (IResourceDelta deltaElement : delta.getAffectedChildren()) {
             IResource res = deltaElement.getResource();

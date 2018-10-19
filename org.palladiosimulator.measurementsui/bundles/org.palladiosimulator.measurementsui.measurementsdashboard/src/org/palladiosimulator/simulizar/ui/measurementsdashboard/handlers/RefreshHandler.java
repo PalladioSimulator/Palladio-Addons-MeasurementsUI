@@ -8,6 +8,12 @@ import org.eclipse.e4.ui.services.IServiceConstants;
 import org.eclipse.e4.ui.workbench.modeling.EPartService;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.parts.MeasurementsDashboardView;
 
+/**
+ * Handler to support refresh functionality
+ * @author Lasse Merz
+ *
+ */
+
 public class RefreshHandler {
    
     @Execute

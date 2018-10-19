@@ -180,7 +180,6 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      */
     private void createWorkspaceListener() {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
-
         workspace.addResourceChangeListener(new WorkspaceListener(this), 1);
     }
 
@@ -371,23 +370,10 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      *            a composite where the buttons will be placed
      */
     private void createViewButtons(Composite buttonContainer) {
-        createNewMeasuringpointButton(buttonContainer);
+        createAddMeasurementButton(buttonContainer);
         createDeleteButton(buttonContainer);
         createEditButton(buttonContainer);
-
-        Button createStandardButton = new Button(buttonContainer, SWT.PUSH);
-        createStandardButton.setText("Create Standard Set");
-        createStandardButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        createStandardButton.addListener(SWT.Selection, e -> {
-            StandardSetWizard wizard = new StandardSetWizard();
-            wizard.addPropertyChangeListener(this);
-            Shell parentShell = wizard.getShell();
-            WizardDialog dialog = new WizardDialog(parentShell, wizard);
-            dialog.setPageSize(720, 400);
-            dialog.setMinimumPageSize(720, 400);
-            dialog.open();
-        });
-
+        createStandardSetButton(buttonContainer);
     }
 
     /**
@@ -396,12 +382,12 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      * @param parent
      *            a composite where the button will be placed
      */
-    private void createNewMeasuringpointButton(Composite parent) {
-        Button newMpButton = new Button(parent, SWT.PUSH);
-        newMpButton.setText("Add new Measurement");
-        newMpButton.setToolTipText("Add new Monitor and Measuring Point with Metrics");
-        newMpButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-        newMpButton.addListener(SWT.Selection, e -> {
+    private void createAddMeasurementButton(Composite parent) {
+        Button addMeasurementButton = new Button(parent, SWT.PUSH);
+        addMeasurementButton.setText("Add new Measurement");
+        addMeasurementButton.setToolTipText("Add new Monitor and Measuring Point with Metrics");
+        addMeasurementButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        addMeasurementButton.addListener(SWT.Selection, e -> {
             if (!dataApplication.getModelAccessor().modelsExist()) {
                 MessageDialog.openInformation(null, "No PCM Models found Info", INFOTEXT_NO_PCM_MODELS);
             } else {
@@ -413,7 +399,6 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
                 dialog.setPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
                 dialog.setMinimumPageSize(wizard.getWindowWidth(), wizard.getWindowHeight());
                 dialog.open();             
-
             }
         });
     }
@@ -482,6 +467,29 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         });
 
     }
+    
+    /**
+     * Creates a button which opens a wizard to create standard sets of
+     * measuring points and monitors
+     * 
+     * @param parent
+     *            a composite where the button will be placed
+     */
+    private void createStandardSetButton(Composite parent) {
+        Button createStandardButton = new Button(parent, SWT.PUSH);
+        createStandardButton.setText("Create Standard Set");
+        createStandardButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+        createStandardButton.addListener(SWT.Selection, e -> {
+            checkDirtyState();
+            StandardSetWizard wizard = new StandardSetWizard();
+            wizard.addPropertyChangeListener(this);
+            Shell parentShell = wizard.getShell();
+            WizardDialog dialog = new WizardDialog(parentShell, wizard);
+            dialog.setPageSize(720, 400);
+            dialog.setMinimumPageSize(720, 400);
+            dialog.open();
+        });
+    }
 
     /**
      * Checks whether the state of the view is dirty and asks the user to save before continuing
@@ -502,6 +510,20 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
                 undoChanges();
             }
         }
+    }
+    
+    /**
+     * Creates the ComboBoxes for project and monitorRepository at the top of the view
+     * 
+     * @param parent
+     *            a composite where the comboboxes are placed in
+     */
+    private void createSelectionComboBoxes(Composite parent) {
+        Composite container = new Composite(parent, SWT.NONE);
+        container.setLayout(new GridLayout(2, false));
+        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        createProjectsSelectionComboBox(container);
+        createMonitorRepositorySelectionComboBox(container);
     }
 
     /**
@@ -537,20 +559,6 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
             }
         });
         projectsComboDropDown.select(0);
-    }
-
-    /**
-     * Creates the ComboBoxes for project and monitorRepository at the top of the view
-     * 
-     * @param parent
-     *            a composite where the comboboxes are palced in
-     */
-    private void createSelectionComboBoxes(Composite parent) {
-        Composite container = new Composite(parent, SWT.NONE);
-        container.setLayout(new GridLayout(2, false));
-        container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        createProjectsSelectionComboBox(container);
-        createMonitorRepositorySelectionComboBox(container);
     }
 
     /**
@@ -672,15 +680,21 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         monitorTreeViewer.update(dataApplication.getMonitorRepository());
         measuringTreeViewer.update(dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0));
     }
+    
+    /**
+     * Undos changes on the monitor tree viewer
+     */
+    public void undo() {
+        monitorTreeViewer.undo();
+    }
 
     /**
-     * Returns the instance of dataApplication
-     * 
-     * @return dataApplication instance
+     * Redos change of the monitor tree viewer
      */
-    public DataApplication getDataApplication() {
-        return dataApplication;
+    public void redo() {
+        monitorTreeViewer.redo();
     }
+
 
     /**
      * Saves the current data in the tree view
@@ -695,24 +709,14 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         monitorTreeViewer.save(dirty);
         measuringTreeViewer.save(dirty);
     }
-
-    public void undo() {
-        monitorTreeViewer.undo();
-    }
-
-    public void redo() {
-        monitorTreeViewer.redo();
-    }
-
+   
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-      try {
-        save();
-        updateMeasurementsDashboardView();
-    } catch (IOException e) {
-        logger.warn("IOException when attempting to save the dirty state. Stacktrace: {}", e.getMessage());
+        try {
+            save();
+            updateMeasurementsDashboardView();
+        } catch (IOException e) {
+            logger.warn("IOException when attempting to save the dirty state. Stacktrace: {}", e.getMessage());
+        }
     }
-        
-    }
-
 }

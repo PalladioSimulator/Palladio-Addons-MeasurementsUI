@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
-import org.eclipse.core.internal.registry.ExtensionRegistry;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -45,15 +44,13 @@ import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
  */
 public class EvaluateExtensions {
 
-
+    private static final String EXTENSION_POINT_ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
 
     private Resource metricDescriptionConstants;
-	private static final String EXTENSION_POINT_ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
-	public static final String PATHMAP_METRIC_SPEC_MODELS_COMMON_METRICS_METRICSPEC = "pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec";
+	private static final String PATHMAP_METRIC_SPEC_MODELS_COMMON_METRICS_METRICSPEC = "pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec";
     private static final Map<?, ?> OPTIONS = Collections.emptyMap();
-    private static final String ID = "org.palladiosimulator.measurementsui.extensionpoint.definition.measuringPointMetricsWorkingCombinations";
     private final MeasuringPointMetricsCombinations measuringPointMetricsCombinations;
-    private final Logger logger = LoggerFactory.getLogger(EvaluateExtensions.class);
+    private static final Logger logger = LoggerFactory.getLogger(EvaluateExtensions.class);
 
 	/**
 	 * Constructor which creates an object of MeasuringPointMetricsCombinations
@@ -141,7 +138,7 @@ public class EvaluateExtensions {
 		        MeasuringPoint measuringPointObject = getMeasuringPoint(measuringPointClassname).get();
 		       
 		        MetricDescription metricDescriptionObject = getMetricDescription(metricDescriptionId).get();
-		        boolean suggestedMetricBoolean = Boolean.valueOf(suggestedMetric);
+		        boolean suggestedMetricBoolean = Boolean.parseBoolean(suggestedMetric);
 
 		        PcmmeasuringpointSwitch<MeasuringPoint> measuringPointSwitch = getPcmMeasuringPointSwitch(metricDescriptionObject, suggestedMetricBoolean);
 		        measuringPointSwitch.doSwitch(measuringPointObject);		             
