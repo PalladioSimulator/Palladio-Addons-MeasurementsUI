@@ -106,7 +106,7 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
             
             for (Monitor monitor : monitors) {
 
-                editor.addMonitorToRepository(dataApplication.getModelAccessor().getMonitorRepositoryList().get(0),
+                editor.addMonitorToRepository(dataApplication.getMonitorRepository(),
                         monitor);
                 editor.addMeasuringPointToRepository(
                         dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0),
