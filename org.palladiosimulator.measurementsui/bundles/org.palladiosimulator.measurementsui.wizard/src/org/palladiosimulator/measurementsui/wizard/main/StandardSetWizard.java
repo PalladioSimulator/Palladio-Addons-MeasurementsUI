@@ -24,6 +24,10 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
     private ResourceEditorImpl editor;
     private DataApplication dataApplication;
     private PropertyChangeSupport changes = new PropertyChangeSupport(this);
+    
+    private static final String WINDOW_TITLE = "Create a standard set";
+    private static final String STANDARD_SET_CHOICE_MESSAGE = "Select which standard set should be created.";
+    private static final String SELECTION_PAGE_MESSAGE = "Select all monitors which should be created.";
 
 
     /**
@@ -70,11 +74,11 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
     public StandardSetWizard() {
         editor = ResourceEditorImpl.getInstance();
         dataApplication = DataApplication.getInstance();
-        setWindowTitle("Create a standard set");
+        setWindowTitle(WINDOW_TITLE);
         standardSetChoiceWizardPage = new StandardSetCreationSelectionWizardPage(
-                "Select which standard set should be created.");
+                STANDARD_SET_CHOICE_MESSAGE);
         measuringPointSelectionWizardPage = new StandardSetMeasuringPointSelectionWizardPage(
-                "Select all monitors which should be created.");
+                SELECTION_PAGE_MESSAGE);
     }
     /**
      * Adds PropertyChangeListener to the propertyChangeSupport
@@ -106,10 +110,10 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
             
             for (Monitor monitor : monitors) {
 
-                editor.addMonitorToRepository(dataApplication.getModelAccessor().getMonitorRepository().get(0),
+                editor.addMonitorToRepository(dataApplication.getMonitorRepository(),
                         monitor);
                 editor.addMeasuringPointToRepository(
-                        dataApplication.getModelAccessor().getMeasuringPointRepository().get(0),
+                        dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0),
                         monitor.getMeasuringPoint());
                 editor.setMeasuringPointToMonitor(monitor, monitor.getMeasuringPoint());
             }
@@ -118,7 +122,7 @@ public class StandardSetWizard extends org.eclipse.jface.wizard.Wizard {
             for (Object tempmeasuringpoint : measuringPointSelectionWizardPage.getViewer().getCheckedElements()) {
                 MeasuringPoint measuringpoint = (MeasuringPoint) tempmeasuringpoint;
                 editor.addMeasuringPointToRepository(
-                        dataApplication.getModelAccessor().getMeasuringPointRepository().get(0), measuringpoint);   
+                        dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0), measuringpoint);   
             }
         }
         changes.firePropertyChange("save", 1, 2);
