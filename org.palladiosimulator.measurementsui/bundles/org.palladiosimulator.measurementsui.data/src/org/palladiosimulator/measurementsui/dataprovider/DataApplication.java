@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
 
 /**
- * This class manages the current project of the workspace which is selected and provides access to
- * all necessary data from this project.
+ * This class manages the current project and monitorRepository of the workspace which are selected 
+ * and provides access to all necessary data from this project.
  * 
  * @author Lasse Merz
  *
  */
 public final class DataApplication {
 
-    private ValidProjectAccessor dataGathering;
+    private ValidProjectAccessor validProjectAccessor;
     private ModelAccessor modelAccessor;
     private Session session;
     private URI sessionResourceURI;
@@ -35,9 +35,8 @@ public final class DataApplication {
      * Private constructor for singelton pattern initializes DataGathering and ModelAccesor
      */
     private DataApplication() {
-        this.dataGathering = new ValidProjectAccessor();
+        this.validProjectAccessor = new ValidProjectAccessor();
         this.modelAccessor = new ModelAccessor();
-
     }
 
     /**
@@ -53,8 +52,8 @@ public final class DataApplication {
     }
 
     /**
-     * Loads all palladio component models Models given a project is selected and it has a .aird
-     * file(modeling Project nature). Initializes a session correspondig to the project, which is
+     * Loads all Palladio component models Models given a project is selected and it has a .aird
+     * file(modeling Project nature). Initializes a session corresponding to the project, which is
      * used to load the models. Checks for Monitor-/MeasuringPoint-Repositories and creates them if
      * none exist.
      * 
@@ -66,7 +65,8 @@ public final class DataApplication {
     public void loadData(IProject project, int monitorRepositorySelectionIndex) {
         this.project = project;
 
-        initializeSessionResourceURI(this.dataGathering.getAirdFileOfProject(this.project));
+        this.validProjectAccessor.getAirdFileOfProject(this.project).ifPresent(airdFile -> 
+        initializeSessionResourceURI(airdFile));
         initializeSession(sessionResourceURI);
 
         if (session != null) {
@@ -83,25 +83,12 @@ public final class DataApplication {
     /**
      * Updates the models by reloading them through a new session
      * also reloads the selected monitorRepository
+     *  
+     * @param monitorRepositorySelectionIndex
+     *             index from the monitorRepository to load
      */
-    public void updateData() {
-        String monitorRepositoryID = this.monitorRepository.getId();
-        
-        initializeSessionResourceURI(this.dataGathering.getAirdFileOfProject(this.project));
-        initializeSession(sessionResourceURI);
-        if (session != null) {
-            this.modelAccessor.initializeModels(session);
-            this.modelAccessor.checkIfRepositoriesExist(project);
-            
-            if (modelAccessor.getMonitorRepositoryByID(monitorRepositoryID).isPresent()) {
-                this.monitorRepository = modelAccessor.getMonitorRepositoryByID(monitorRepositoryID).get();
-            } else {
-                updateMonitorRepository(0);
-            }
-
-        } else {
-            logger.warn("No Models are initiated. Make sure a Session is open.");
-        }
+    public void updateData(int monitorRepositorySelectionIndex) {
+        loadData(this.project, monitorRepositorySelectionIndex);
     }
 
     /**
@@ -111,7 +98,6 @@ public final class DataApplication {
      *            path to the .aird file
      */
     private void initializeSessionResourceURI(String airdPath) {
-
         try {
             this.sessionResourceURI = URI.createPlatformResourceURI(airdPath, true);
         } catch (NullPointerException e) {
@@ -143,10 +129,10 @@ public final class DataApplication {
      */
     public void updateMonitorRepository(int selectionIndex) {
         if (this.modelAccessor.monitorRepositoryExists()
-                && this.modelAccessor.getMonitorRepository().size() > selectionIndex && selectionIndex >= 0) {
-            this.monitorRepository = this.modelAccessor.getMonitorRepository().get(selectionIndex);
+                && this.modelAccessor.getMonitorRepositoryList().size() > selectionIndex && selectionIndex >= 0) {
+            this.monitorRepository = this.modelAccessor.getMonitorRepositoryList().get(selectionIndex);
         } else {
-            this.monitorRepository = this.modelAccessor.getMonitorRepository().get(0);
+            this.monitorRepository = this.modelAccessor.getMonitorRepositoryList().get(0);
         }
     }
 
@@ -166,8 +152,8 @@ public final class DataApplication {
      * 
      * @return DataGathering instance
      */
-    public ValidProjectAccessor getDataGathering() {
-        return dataGathering;
+    public ValidProjectAccessor getValidProjectAccessor() {
+        return validProjectAccessor;
     }
 
     /**

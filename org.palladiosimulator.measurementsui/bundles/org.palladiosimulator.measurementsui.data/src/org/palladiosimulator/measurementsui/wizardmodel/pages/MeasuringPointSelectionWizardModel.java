@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.dataprovider.MeasuringPointModelElementProvider;
@@ -58,29 +57,6 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
         this.monitor = monitor;
         this.isEditing = isEditing;
 
-    }
-
-    /**
-     * helper method to add the measuringpoint to the monitor
-     * 
-     * @param measuringPoint
-     *            the measuringpoint to be added to the monitor
-     */
-    public void addMeasuringPointToMonitor(MeasuringPoint measuringPoint) {
-        monitor.setMeasuringPoint(measuringPoint);
-
-    }
-
-    /**
-     * adds a measuringpoint to the given repository
-     * 
-     * @param measuringPoint
-     *            the measuringpoint to be added to the measuringpoint repository
-     */
-    public void addMeasuringPointToRepository(MeasuringPoint measuringPoint) {
-        MeasuringPointRepository measuringPointRepository = DataApplication.getInstance().getModelAccessor()
-                .getMeasuringPointRepository().get(0);
-        ResourceEditorImpl.getInstance().addMeasuringPointToRepository(measuringPointRepository, measuringPoint);
     }
 
     /**
@@ -152,9 +128,9 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     public Object[] getAllSecondPageObjects() {
 
         List<Object> allmodels = new LinkedList<>();
-        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getResourceEnvironment());
-        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getSystem());
-        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getSubSystem());
+        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getResourceEnvironmenList());
+        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getSystemList());
+        addOnlyFilledLists(allmodels, dataApplication.getModelAccessor().getSubSystemList());
         addOnlyFilledLists(allmodels, measuringpointModelElementProvider.getAssemblyContexts());
         addOnlyFilledLists(allmodels, measuringpointModelElementProvider.getResourceContainer());
         addOnlyFilledLists(allmodels, measuringpointModelElementProvider.getActiveResources());
@@ -174,15 +150,15 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
      */
     public Object[] getExistingMeasuringPoints() {
         if (isEditing()) {
-            List<MeasuringPoint> points = DataApplication.getInstance().getModelAccessor()
+            List<MeasuringPoint> points = dataApplication.getModelAccessor()
                     .getUnassignedMeasuringPoints();
-            if(getMonitor().getMeasuringPoint()!=null) {
+            if (getMonitor().getMeasuringPoint() != null) {
                 points.add(getMonitor().getMeasuringPoint());
 
             }
             return points.toArray();
         } else {
-            return DataApplication.getInstance().getModelAccessor().getUnassignedMeasuringPoints().toArray();
+            return dataApplication.getModelAccessor().getUnassignedMeasuringPoints().toArray();
         }
     }
 
@@ -253,14 +229,14 @@ public class MeasuringPointSelectionWizardModel implements WizardModel {
     public List<Object> getAlternativeModels() {
         List<Object> elementList = new LinkedList<>();
 
-        elementList.addAll(dataApplication.getModelAccessor().getRepository().stream().filter(
+        elementList.addAll(dataApplication.getModelAccessor().getRepositoryList().stream().filter(
                 e -> (!e.getEntityName().equals("FailureTypes")) && (!e.getEntityName().equals("PrimitiveDataTypes")))
                 .collect(Collectors.toCollection(LinkedList::new)));
 
-        elementList.addAll(dataApplication.getModelAccessor().getResourceEnvironment());
-        elementList.addAll(dataApplication.getModelAccessor().getSubSystem());
-        elementList.addAll(dataApplication.getModelAccessor().getSystem());
-        elementList.addAll(dataApplication.getModelAccessor().getUsageModel());
+        elementList.addAll(dataApplication.getModelAccessor().getResourceEnvironmenList());
+        elementList.addAll(dataApplication.getModelAccessor().getSubSystemList());
+        elementList.addAll(dataApplication.getModelAccessor().getSystemList());
+        elementList.addAll(dataApplication.getModelAccessor().getUsageModelList());
         return elementList;
     }
 

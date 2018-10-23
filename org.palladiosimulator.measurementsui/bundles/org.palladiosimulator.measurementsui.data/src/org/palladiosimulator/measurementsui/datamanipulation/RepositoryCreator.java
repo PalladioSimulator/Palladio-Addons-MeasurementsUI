@@ -45,7 +45,7 @@ public final class RepositoryCreator {
 
     private static RepositoryCreator instance;
 
-    final Logger logger = LoggerFactory.getLogger(RepositoryCreator.class);
+    private final Logger logger = LoggerFactory.getLogger(RepositoryCreator.class);
 
     /**
      * private Constructor for singelton pattern
@@ -98,7 +98,7 @@ public final class RepositoryCreator {
             resource.getContents().add(measuringPointRepositoryRootObject);
         }
 
-        final Map<Object, Object> options = new HashMap<Object, Object>();
+        final Map<Object, Object> options = new HashMap<>();
         options.put(XMLResource.OPTION_ENCODING, "UTF-8");
         try {
             resource.save(options);
@@ -134,7 +134,7 @@ public final class RepositoryCreator {
             resource.getContents().add(monitorRepositoryRootObject);
         }
 
-        final Map<Object, Object> options = new HashMap<Object, Object>();
+        final Map<Object, Object> options = new HashMap<>();
         options.put(XMLResource.OPTION_ENCODING, "UTF-8");
         try {
             resource.save(options);

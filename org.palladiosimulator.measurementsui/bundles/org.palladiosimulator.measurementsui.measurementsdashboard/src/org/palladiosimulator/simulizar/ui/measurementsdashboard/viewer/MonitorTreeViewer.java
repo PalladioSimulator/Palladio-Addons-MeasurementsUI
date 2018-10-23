@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer;
 
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.e4.core.commands.ECommandService;
 import org.eclipse.e4.ui.model.application.ui.MDirtyable;
 import org.eclipse.jface.util.LocalSelectionTransfer;
@@ -10,7 +8,6 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewer;
-import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDropListener;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 
 import monitorrepositoryview.MonitorrepositoryviewInjectorProvider;

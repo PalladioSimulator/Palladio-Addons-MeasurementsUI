@@ -35,7 +35,7 @@ public class MeasuringPointModelElementProvider {
      */
     public List<AssemblyContext> getAssemblyContexts() {
 
-        return dataApplication.getModelAccessor().getSystem().stream()
+        return dataApplication.getModelAccessor().getSystemList().stream()
                 .flatMap(e -> e.getAssemblyContexts__ComposedStructure().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -47,7 +47,7 @@ public class MeasuringPointModelElementProvider {
      */
     public List<ResourceContainer> getResourceContainer() {
 
-        return dataApplication.getModelAccessor().getResourceEnvironment().stream()
+        return dataApplication.getModelAccessor().getResourceEnvironmenList().stream()
                 .flatMap(e -> e.getResourceContainer_ResourceEnvironment().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -71,7 +71,7 @@ public class MeasuringPointModelElementProvider {
      */
     public List<LinkingResource> getLinkingResources() {
 
-        return dataApplication.getModelAccessor().getResourceEnvironment().stream()
+        return dataApplication.getModelAccessor().getResourceEnvironmenList().stream()
                 .flatMap(e -> e.getLinkingResources__ResourceEnvironment().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -83,7 +83,7 @@ public class MeasuringPointModelElementProvider {
      */
     public List<UsageScenario> getUsageScenarios() {
 
-        return dataApplication.getModelAccessor().getUsageModel().stream()
+        return dataApplication.getModelAccessor().getUsageModelList().stream()
                 .flatMap(e -> e.getUsageScenario_UsageModel().stream())
                 .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -160,7 +160,7 @@ public class MeasuringPointModelElementProvider {
      */
     public List<EObject> getComponents() {
 
-        return dataApplication.getModelAccessor().getRepository().stream().flatMap(e -> e.eContents().stream())
+        return dataApplication.getModelAccessor().getRepositoryList().stream().flatMap(e -> e.eContents().stream())
                 .filter(e -> e instanceof BasicComponent).collect(Collectors.toCollection(LinkedList::new));
     }
 
