@@ -2,22 +2,79 @@
 <feature
       id="org.palladiosimulator.measurementsui.feature"
       label="Feature"
-      version="1.0.0.qualifier">
+      version="1.0.0.qualifier"
+      plugin="org.palladiosimulator.branding"
+      license-feature="org.palladiosimulator.license"
+      license-feature-version="1.0.0">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
-   </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
-
-   <plugin
+	<plugin
          id="org.palladiosimulator.measurementsui.data"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.emptymeasuringpoints"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.extension.contributions"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.extensionpoint.definitions"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.measurementsdashboard"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.monitorrepositoryview"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.processingtype"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.propertiespage"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.selectmetricdescriptions.available"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.selectmetricdescriptions.selected"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.viewer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+	<plugin
+         id="org.palladiosimulator.measurementsui.wizard"
          download-size="0"
          install-size="0"
          version="0.0.0"
