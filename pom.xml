@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+   <groupId>org.palladiosimulator</groupId>
+   <artifactId>eclipse-parent-updatesite</artifactId>
+   <version>0.1.2</version>
+  </parent>
+  <groupId>org.palladiosimulator.measurementsui</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <packaging>pom</packaging>
+
+        <properties>
+                <org.palladiosimulator.maven.tychotprefresh.tplocation.1>${project.basedir}/releng/org.palladiosimulator.measurementsui.targetplatform/tp.target</org.palladiosimulator.maven.tychotprefresh.tplocation.1>
+		<xtext-version>2.14.0</xtext-version>
+		<parsley.version>1.3.0</parsley.version>
+        </properties>
+ <modules>
+         <module>bundles</module>
+         <module>features</module>
+         <module>releng</module>
+         <module>tests</module>
+ </modules>
+<build>
+<plugins>
+<plugin>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>xtext-maven-plugin</artifactId>
+				<version>${xtext-version}</version>
+
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<languages>
+						<language>
+							<setup>org.eclipse.emf.parsley.dsl.EmfParsleyDslStandaloneSetup</setup>
+							<outputConfigurations>
+								<outputConfiguration>
+									<outputDirectory>${basedir}/emfparsley-gen</outputDirectory>
+								</outputConfiguration>
+							</outputConfigurations>
+						</language>
+					</languages>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.emf.parsley</groupId>
+						<artifactId>org.eclipse.emf.parsley.dsl.standalone</artifactId>
+						<version>${parsley.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>org.eclipse.equinox.common</artifactId>
+						<version>3.10.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>org.eclipse.equinox.common</artifactId>
+						<version>[3.8.0,4.0.0)</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.core</artifactId>
+						<version>3.15.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.compiler.apt</artifactId>
+						<version>1.3.300</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.compiler.tool</artifactId>
+						<version>1.2.300</version>
+					</dependency>
+				</dependencies>
+</plugin>
+</plugins>
+</build>
+</project>
