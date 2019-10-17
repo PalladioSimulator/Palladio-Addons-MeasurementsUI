@@ -14,6 +14,7 @@ import org.palladiosimulator.simulizar.ui.measurementsdashboard.parts.Measuremen
  * workspace and update our GUI accordingly
  * 
  * @author Lasse Merz
+ * @author Jan Hofmann
  *
  */
 public class WorkspaceListener implements IResourceChangeListener {
@@ -78,7 +79,7 @@ public class WorkspaceListener implements IResourceChangeListener {
 	 * workspace
 	 */
 	private void updateDashboardView() {
-		if (deletedProject != null || addedProject != null) {
+		if (deletedProject != null || addedProject != null || changedProject != null) {
 
 			Display.getDefault().asyncExec(() -> {
 
@@ -107,15 +108,16 @@ public class WorkspaceListener implements IResourceChangeListener {
 					}
 					dashboardView.updateProjectComboBox();
 				}
+				
+				else if (changedProject != null && changedProject.equals(dataApplication.getProject())) {
+					// File in the project got created or deleted without the measurement dashboard
+					try {
+						dashboardView.updateMeasurementsDashboardView();
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+				}
 			});
-			
-		} else if (changedProject != null) {
-			// File in the project got created or deleted without the measurement dashboard
-			try {
-				dashboardView.updateMeasurementsDashboardView();
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
+		} 
 	}
 }
