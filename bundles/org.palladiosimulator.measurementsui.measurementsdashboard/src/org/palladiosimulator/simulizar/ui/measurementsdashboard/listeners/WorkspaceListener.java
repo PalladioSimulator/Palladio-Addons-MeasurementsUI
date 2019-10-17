@@ -107,15 +107,10 @@ public class WorkspaceListener implements IResourceChangeListener {
 						dashboardView.updateMeasurementsDashboardView(addedProject);
 					}
 					dashboardView.updateProjectComboBox();
-				}
-				
-				else if (changedProject != null && changedProject.equals(dataApplication.getProject())) {
-					// File in the project got created or deleted without the measurement dashboard
-					try {
-						dashboardView.updateMeasurementsDashboardView();
-					} catch (Exception e) {
-						// TODO: handle exception
-					}
+					
+					// file in the currently selected project got created or deleted without the measurement dashboard
+				} else if (changedProject != null && changedProject.equals(dataApplication.getProject())) {				
+					dashboardView.updateMeasurementsDashboardView();
 				}
 			});
 		} 

@@ -19,9 +19,9 @@ public class SloEditor {
 	
 	protected ServicelevelObjectivePackage serviceLevelObjectivePackage = ServicelevelObjectivePackage.eINSTANCE;
     protected ServicelevelObjectiveFactory servicelevelObjectiveFactory = serviceLevelObjectivePackage.getServicelevelObjectiveFactory();
-	private ResourceEditor resourceEditor = new ResourceEditorImpl();
+	private ResourceEditor resourceEditor = ResourceEditorImpl.getInstance();
    
-    /**
+	/**
      * Creates a new ServiceLevelObjective Object
      * 
      * @param name 			 	the name of the ServiceLevelObjective

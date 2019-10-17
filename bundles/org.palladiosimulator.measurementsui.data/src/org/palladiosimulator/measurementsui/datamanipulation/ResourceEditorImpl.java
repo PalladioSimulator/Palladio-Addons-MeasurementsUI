@@ -13,7 +13,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
  * @author Jan Hofmann
  *
  */
-public final  class ResourceEditorImpl implements ResourceEditor {
+public final class ResourceEditorImpl implements ResourceEditor {
 
     private final DataEditor editor = new DataEditor();
 
@@ -22,7 +22,7 @@ public final  class ResourceEditorImpl implements ResourceEditor {
     /**
      * Private constructor for singelton pattern
      */
-    ResourceEditorImpl() {
+    private ResourceEditorImpl() {
     }
 
     /**

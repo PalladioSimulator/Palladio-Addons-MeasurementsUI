@@ -44,7 +44,6 @@ public class DataEditor {
      * @param element
      * @param attribute
      * @param newValue
-     * @param domain2 
      */
     public void addResource(EObject element, String attribute, Object newValue) {
         EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
