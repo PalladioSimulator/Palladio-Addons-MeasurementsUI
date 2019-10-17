@@ -84,20 +84,22 @@ public class ServiceLevelObjectiveCreationPage extends WizardPage {
                 }
         	}
         });
+        
         GridData gd_text_name = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
         gd_text_name.widthHint = 495;
         text_name.setLayoutData(gd_text_name);
         text_name.setBounds(0, 0, 76, 21);
-        
-        try {
+              
+        if (pageModel.getSlo().getName() != null) {
         	// Get the description if editing an slo
         	String name = pageModel.getSlo().getName();
         	text_name.setText(name);
             // Set the current name to the page model
         	pageModel.setName(name);
+        	setPageComplete(true);
 
-		} catch (Exception e) {
-        	text_name.setText("");
+		} else {
+			text_name.setText("");
 		}
         
         Label lblDescription = new Label(contentContainer, SWT.NONE);
@@ -134,7 +136,9 @@ public class ServiceLevelObjectiveCreationPage extends WizardPage {
         nameTextDecorator.setMarginWidth(1);
         nameTextDecorator.hide();
         
-        setPageComplete(false);
+        if (text_name.getText().isEmpty()) {
+        	setPageComplete(false);
+        }
     }
    
     /**
