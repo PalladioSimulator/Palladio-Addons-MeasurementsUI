@@ -10,6 +10,7 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 
+
 /**
  * The DataEditor class provides the basic functions for working with Resources that already have an
  * editing domain, meaning they can only be modified through EMF Commands. These methods are further
@@ -31,10 +32,24 @@ public class DataEditor {
      * @param newValue
      */
     public void editResource(EObject element, String attribute, Object newValue) {
-
         EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
         domain.getCommandStack()
                 .execute(new SetCommand(domain, element, element.eClass().getEStructuralFeature(attribute), newValue));
+    }
+    
+    /**
+     * Command for appending a resource to an element, like a list(measurementspecifications) using
+     * the AddCommand
+     * 
+     * @param element
+     * @param attribute
+     * @param newValue
+     * @param domain2 
+     */
+    public void addResource(EObject element, String attribute, Object newValue) {
+        EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
+        domain.getCommandStack().execute(
+                AddCommand.create(domain, element, element.eClass().getEStructuralFeature(attribute), newValue));
     }
 
     /**
@@ -44,9 +59,9 @@ public class DataEditor {
      * @param element
      * @param attribute
      * @param newValue
+     * @param domain2 
      */
-    public void addResource(EObject element, String attribute, Object newValue) {
-        EditingDomain domain = AdapterFactoryEditingDomain.getEditingDomainFor(element);
+    public void addResource(EObject element, String attribute, Object newValue, EditingDomain domain) {
         domain.getCommandStack().execute(
                 AddCommand.create(domain, element, element.eClass().getEStructuralFeature(attribute), newValue));
     }
