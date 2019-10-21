@@ -80,6 +80,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author David Schuetz
  * @author Jan Hofmann
+ * @author Mario Maser
  * 
  */
 public class MeasurementsDashboardView implements PropertyChangeListener{

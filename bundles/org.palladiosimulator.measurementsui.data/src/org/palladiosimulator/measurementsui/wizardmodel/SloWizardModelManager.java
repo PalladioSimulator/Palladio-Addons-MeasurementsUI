@@ -21,7 +21,7 @@ import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
  * the SloWizard. Handles finishing the Wizard and saving the created or edited Slo's 
  * 
  * @author Jan Hofmann
- * @author Manu
+ * @author Manuel Marroquin
  *
  */
 public class SloWizardModelManager {

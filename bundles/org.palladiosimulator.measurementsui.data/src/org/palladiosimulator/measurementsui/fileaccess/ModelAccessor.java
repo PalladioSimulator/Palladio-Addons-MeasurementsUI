@@ -4,10 +4,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
@@ -16,7 +13,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.validation.internal.util.Log;
 import org.eclipse.sirius.business.api.session.Session;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPointRepository;
@@ -43,8 +39,9 @@ import org.palladiosimulator.servicelevelobjective.*;
  * Offers access to each model.
  * 
  * @author Lasse Merz
- * @author Jan Hofmann
- * @author Mario
+ * 
+ * @author Jan Hofmann: Added SLO-Support
+ * @author Mario Maser: Added SLO-Support
  *
  */
 public class ModelAccessor {
