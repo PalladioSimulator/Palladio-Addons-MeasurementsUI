@@ -20,6 +20,6 @@ Import-Package: org.apache.commons.logging,
  org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.wizard.main,
  org.palladiosimulator.measurementsui.wizardmodel
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: monitorrepositoryview,
  org.palladiosimulator.measurementsui.monitorrepositoryview
