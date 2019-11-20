@@ -3,7 +3,7 @@ Automatic-Module-Name: monitorrepositoryview
 Bundle-ManifestVersion: 2
 Bundle-Name: monitorrepositoryview
 Bundle-Vendor: My Company
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 4.2.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.monitorrepositoryview;singleton:=true
 Bundle-Activator: org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositoryActivator
 Bundle-ActivationPolicy: lazy
@@ -20,6 +20,6 @@ Import-Package: org.apache.commons.logging,
  org.palladiosimulator.measurementsui.datamanipulation,
  org.palladiosimulator.measurementsui.wizard.main,
  org.palladiosimulator.measurementsui.wizardmodel
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: monitorrepositoryview,
  org.palladiosimulator.measurementsui.monitorrepositoryview

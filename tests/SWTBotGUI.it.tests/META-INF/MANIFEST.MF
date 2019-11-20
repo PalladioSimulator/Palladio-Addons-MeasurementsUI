@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Swtbot
 Bundle-SymbolicName: SWTBotGUI.it.tests
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.palladiosimulator.swtbot.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -16,6 +16,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swtbot.e4.finder,
  org.eclipse.e4.ui.workbench,
  org.eclipse.e4.ui.model.workbench
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.palladiosimulator.swtbot
 Bundle-ActivationPolicy: lazy
