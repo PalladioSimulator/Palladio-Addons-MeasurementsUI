@@ -21,7 +21,7 @@
             ID="org.palladiosimulator.measurementsui.extension.contributions.client5"
             MeasuringPoint="ExternalCallActionMeasuringPoint"
             MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
-            Name="ExternallCall with ResponseTime"
+            Name="ExternalCall with ResponseTime"
             SuggestedMetricDescription="true">
       </client>
       <client
