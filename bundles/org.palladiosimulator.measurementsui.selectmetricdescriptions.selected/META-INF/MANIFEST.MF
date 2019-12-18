@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.palladio.simulator.measurementsui.selectmeasurements.emptyview
+Bundle-Name: org.palladiosimulator.measurementsui.selectmeasurements.emptyview
 Bundle-Vendor: My Company
 Bundle-Version: 4.2.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected;singleton:=true
-Bundle-Activator: org.palladio.simulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsActivator
+Bundle-Activator: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsActivator
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -16,5 +16,5 @@ Require-Bundle: org.eclipse.core.runtime,
 Import-Package: org.apache.log4j,
  org.apache.commons.logging
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: org.palladio.simulator.measurementsui.selectmetricdescriptions.selected,
+Export-Package: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected,
  org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected
