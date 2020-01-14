@@ -9,7 +9,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class SelectedMetricDescriptionsActivator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.palladiosimulator.measurementsui.selectmeasurements.emptyview"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.palladiosimulator.measurementsui.selectmetricdescriptions.selected"; //$NON-NLS-1$
 
 	// The shared instance
 	private static SelectedMetricDescriptionsActivator plugin;

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.palladiosimulator.measurementsui.selectmeasurements.emptyview
+Bundle-Name: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected
 Bundle-Vendor: My Company
 Bundle-Version: 4.2.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected;singleton:=true

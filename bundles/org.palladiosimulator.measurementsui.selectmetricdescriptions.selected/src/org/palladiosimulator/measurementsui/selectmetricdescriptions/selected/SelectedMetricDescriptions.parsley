@@ -1,7 +1,7 @@
 import org.palladiosimulator.monitorrepository.MeasurementSpecification
 import org.palladiosimulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsTableView
 
-/* org.palladiosimulator.measurementsui.selectmeasurements.emptyview EMF Parsley Dsl Module file */
+/* org.palladiosimulator.measurementsui.selectmetricdescriptions.selected EMF Parsley Dsl Module file */
 module org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected {
 	
 	parts {

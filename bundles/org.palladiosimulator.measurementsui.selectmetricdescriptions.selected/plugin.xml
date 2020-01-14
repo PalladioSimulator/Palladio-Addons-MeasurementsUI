@@ -5,13 +5,6 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.emf.parsley"
-            class="org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected.SelectedExecutableExtensionFactory:org.palladiosimulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsTableView"
-            id="org.palladiosimulator.measurementsui.selectmeasurements.emptyview"
-            name="SelectedMetricDescriptionsTableView"
-            restorable="true">
-      </view>
-      <view
-            category="org.eclipse.emf.parsley"
             class="org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected.SelectedExecutableExtensionFactory:org.palladio.simulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsTableView"
             id="org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected"
             name="SelectedMetricDescriptionsTableView"
