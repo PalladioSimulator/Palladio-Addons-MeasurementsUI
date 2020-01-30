@@ -18,17 +18,10 @@
             SuggestedMetricDescription="true">
       </client>
       <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client4"
-            MeasuringPoint="AssemblyOperationMeasuringPoint"
-            MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
-            Name="AssemblyOperation with ResponseTime"
-            SuggestedMetricDescription="true">
-      </client>
-      <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client5"
             MeasuringPoint="ExternalCallActionMeasuringPoint"
             MetricDescription="_6rYmYs7nEeOX_4BzImuHbA"
-            Name="ExternallCall with ResponseTime"
+            Name="ExternalCall with ResponseTime"
             SuggestedMetricDescription="true">
       </client>
       <client
@@ -39,32 +32,11 @@
             SuggestedMetricDescription="true">
       </client>
       <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client7"
-            MeasuringPoint="ResourceContainerMeasuringPoint"
-            MetricDescription="_paDhIs7qEeOX_4BzImuHbA"
-            Name="ResourceContainer with StateOfActiveResource"
-            SuggestedMetricDescription="true">
-      </client>
-      <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client1"
             MeasuringPoint="ActiveResourceMeasuringPoint"
             MetricDescription="_eg_F0s7qEeOX_4BzImuHbA"
             Name="ActiveResource with ResourceDemand"
             SuggestedMetricDescription="true">
-      </client>
-      <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client2"
-            MeasuringPoint="ActiveResourceMeasuringPoint"
-            MetricDescription="_QIb6cikUEeSuf8LV7cHLgA"
-            Name="ActiveResource with UtilizationOfActiveResource"
-            SuggestedMetricDescription="true">
-      </client>
-      <client
-            ID="org.palladiosimulator.measurementsui.extension.contributions.client3"
-            MeasuringPoint="ActiveResourceMeasuringPoint"
-            MetricDescription="_mhws4SkUEeSuf8LV7cHLgA"
-            Name="ActiveResource with UtilizationOfActiveResourceTuple"
-            SuggestedMetricDescription="false">
       </client>
       <client
             ID="org.palladiosimulator.measurementsui.extension.contributions.client4"
