@@ -10,6 +10,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
  * Interface for editing Resources through {@link DataEditor}.
  * 
  * @author Florian Nieuwenhuizen
+ * @author Jan Hofmann
  *
  */
 public interface ResourceEditor {
@@ -125,5 +126,46 @@ public interface ResourceEditor {
      * @param value
      */
     public void setAProcessingTypeAttribute(EObject processingType, String processingTypeAttributeName, Object value);
+
+    /**
+     * Binds a Measuring Point to a Monitor using EMF Command.
+     * 
+     * @param monitor 
+     * @param mp
+     */
+	void setMeasuringPointToMonitor(EObject monitor, EObject mp);
+
+    /**
+     * Sets the name of the Service Level Objective using EMF Set Command.
+     * 
+     * @param resource	the Slo to set the name
+     * @param newName	the new name to set
+     */
+	void addServiceLevelObjectiveToRepository(EObject sloRep, EObject slo);
+	
+    /**
+     * Sets the name of the Service Level Objective using EMF Set Command.
+     * 
+     * @param resource	the Slo to set the name
+     * @param newName	the new name to set
+     */
+	void setServiceLevelObjectiveName(EObject slo, String name);
+
+    /**
+     * Sets the description of the Service Level Objective using EMF Set Command.
+     * 
+     * @param resource	the Slo to set the name
+     * @param newName	the new name to set
+     */
+	void setServiceLevelObjectiveDescription(EObject slo, String newDescription);
+
+    /**
+     * Binds a Measurement Specification the Service Level Objective using EMF Set Command.
+     * 
+     * @param resource	the Slo to set the name
+     * @param newName	the new name to set
+     */
+	void setMeasurementSpecificationToServiceLevelObjective(EObject slo,
+			EObject measurementSpec);
 
 }

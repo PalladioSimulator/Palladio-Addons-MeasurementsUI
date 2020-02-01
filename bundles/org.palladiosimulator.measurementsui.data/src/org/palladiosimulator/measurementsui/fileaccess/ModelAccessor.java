@@ -1,9 +1,9 @@
 package org.palladiosimulator.measurementsui.fileaccess;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -33,11 +33,15 @@ import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.pcm.system.SystemPackage;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
+import org.palladiosimulator.servicelevelobjective.*;
 /**
  * Class for accessing all Palladio models of a Modelling Project (.aird file available)
  * Offers access to each model.
  * 
  * @author Lasse Merz
+ * 
+ * @author Jan Hofmann: Added SLO-Support
+ * @author Mario Maser: Added SLO-Support
  *
  */
 public class ModelAccessor {
@@ -51,6 +55,8 @@ public class ModelAccessor {
 
     private List<MeasuringPointRepository> measuringPointRepositoryList;
     private List<MonitorRepository> monitorRepositoryList;
+    private List<ServiceLevelObjectiveRepository> sloRepositoryList;
+    private List<String> sloRepositoryNameList;
 
     /**
      * Constructor
@@ -65,6 +71,8 @@ public class ModelAccessor {
         this.subsystemList = new LinkedList<>();
         this.measuringPointRepositoryList = new LinkedList<>();
         this.monitorRepositoryList = new LinkedList<>();
+        this.sloRepositoryList = new LinkedList<>();
+        this.sloRepositoryNameList = new LinkedList<>();
     }
     
     /**
@@ -128,6 +136,10 @@ public class ModelAccessor {
         Collection<MonitorRepository> monitorRepositories = EcoreUtil.getObjectsByType(allModelObjectsInSession,
                 MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
         this.monitorRepositoryList.addAll(monitorRepositories);
+        
+        Collection<ServiceLevelObjectiveRepository> sloRepositories = EcoreUtil.getObjectsByType(allModelObjectsInSession,
+                ServicelevelObjectivePackage.eINSTANCE.getServiceLevelObjectiveRepository());
+        this.sloRepositoryList.addAll(sloRepositories);
 
         Collection<ResourceEnvironment> resourceEnvironments = EcoreUtil.getObjectsByType(allModelObjectsInSession,
                 ResourceenvironmentPackage.eINSTANCE.getResourceEnvironment());
@@ -143,6 +155,7 @@ public class ModelAccessor {
         Collection<Repository> repositories = EcoreUtil.getObjectsByType(allModelObjectsInSession,
                 RepositoryPackage.eINSTANCE.getRepository());
         this.repositoryList.addAll(repositories);
+        
 
         Collection<UsageModel> usageModels = EcoreUtil.getObjectsByType(allModelObjectsInSession,
                 UsagemodelPackage.eINSTANCE.getUsageModel());
@@ -151,6 +164,14 @@ public class ModelAccessor {
         Collection<SubSystem> subSystems = EcoreUtil.getObjectsByType(allModelObjectsInSession,
                 SubsystemPackage.eINSTANCE.getSubSystem());
         this.subsystemList.addAll(subSystems);
+        
+        
+        // Dirty way of getting slo file names
+        for (ServiceLevelObjectiveRepository repo : sloRepositoryList) {
+            String uri = EcoreUtil.getURI(repo).toString();
+            String name = new File(uri).getName();
+            this.sloRepositoryNameList.add(name);
+        }
     }
     
     /**
@@ -167,7 +188,11 @@ public class ModelAccessor {
     	
     	if (!measuringPointRepositoryExists()) {
     		addMeasuringPointRepository(RepositoryCreator.getInstance().createMeasuringPointRepository(project));
-    	}		
+    	}	
+
+    	if(!sloRepositoryExists()){
+    		addSloRepository(RepositoryCreator.getInstance().createSLORepository(project));
+    	}
     }
 
     /**
@@ -182,6 +207,8 @@ public class ModelAccessor {
         this.subsystemList.clear();
         this.monitorRepositoryList.clear();
         this.measuringPointRepositoryList.clear();
+        this.sloRepositoryList.clear();
+        this.sloRepositoryNameList.clear();
     }
     
     /**
@@ -211,6 +238,14 @@ public class ModelAccessor {
     public boolean measuringPointRepositoryExists() { 
         return (this.measuringPointRepositoryList != null && !this.measuringPointRepositoryList.isEmpty());
     }
+    
+    /**
+     * Checks whether there exists a SLO Repository
+     * @return
+     */
+    public boolean sloRepositoryExists() {
+    	return (this.sloRepositoryList != null && !this.sloRepositoryList.isEmpty());
+    }
   
     /**
      * Adds a MonitorRepository to the MonitorRepository list
@@ -226,6 +261,19 @@ public class ModelAccessor {
      */
     protected void addMeasuringPointRepository(MeasuringPointRepository measuringPointRepository) {
         this.measuringPointRepositoryList.add(measuringPointRepository);
+    }
+    
+    /**
+     * Adds a ServiceLevelObjectiveRepository to the sloRepository list
+     * @param sloRepository
+     */
+    protected void addSloRepository(ServiceLevelObjectiveRepository sloRepository) {
+    	this.sloRepositoryList.add(sloRepository);
+    	
+    	// Extract and save name
+        String uri = EcoreUtil.getURI(sloRepository).toString();
+        String name = new File(uri).getName();
+        this.sloRepositoryNameList.add(name);
     }
     
     /**
@@ -290,6 +338,22 @@ public class ModelAccessor {
      */
     public List<MonitorRepository> getMonitorRepositoryList() {
         return monitorRepositoryList;
+    }
+    
+    /**
+     * Returns the list of SloRepositorys
+     * @return list of SloRepositorys
+     */
+    public List<ServiceLevelObjectiveRepository> getSLORepositoryList(){
+    	return sloRepositoryList;
+    }
+    
+    /**
+     * Returns the list of SloRepositoryNames
+     * @return list of SloRepositoryNames
+     */
+    public List<String> getSLORepositoryNameList(){
+    	return sloRepositoryNameList;
     }
 
 }

@@ -10,70 +10,76 @@ import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.parts.MeasurementsDashboardView;
 
 /**
- * This class implements the IResourceChangeListener to listen to changes
- * in the workspace and update our GUI accordingly
+ * This class implements the IResourceChangeListener to listen to changes in the
+ * workspace and update our GUI accordingly
  * 
  * @author Lasse Merz
+ * @author Jan Hofmann
  *
  */
 public class WorkspaceListener implements IResourceChangeListener {
-    
-   private IProject addedProject;
-   private IProject deletedProject;
-   
-   private MeasurementsDashboardView dashboardView;
-   private DataApplication dataApplication;
-    
-    
-    /**
-     * Constructor 
-     * initiates dashboardView and dataApplication
-     * @param dashboardView to call for changes
-     */
-    public WorkspaceListener(MeasurementsDashboardView dashboardView) {
-        this.dashboardView = dashboardView;
-        this.dataApplication = DataApplication.getInstance();
-    }
 
-    /**
-     * Listens to ChangeEvents and sets the changed project,
-     * which are then used to update our Dashboard view
-     */
-    @Override
-    public void resourceChanged(IResourceChangeEvent event) {
-        deletedProject = null;
-        addedProject = null;
-        IResourceDelta delta = event.getDelta();
-        for (IResourceDelta deltaElement : delta.getAffectedChildren()) {
-            IResource res = deltaElement.getResource();
+	private IProject addedProject;
+	private IProject deletedProject;
+	private IProject changedProject;
 
-            switch (deltaElement.getKind()) {
-            case IResourceDelta.ADDED:
-                if(res instanceof IProject) {
-                    addedProject = (IProject) res;
-                }
-                break;
-            case IResourceDelta.REMOVED:
-                if(res instanceof IProject) {
-                    deletedProject = (IProject) res;
-                }
-                break; 
-            default:
-                break;
-            }
+	private MeasurementsDashboardView dashboardView;
+	private DataApplication dataApplication;
 
-        }  
-        updateDashboardView();
+	/**
+	 * Constructor initiates dashboardView and dataApplication
+	 * 
+	 * @param dashboardView to call for changes
+	 */
+	public WorkspaceListener(MeasurementsDashboardView dashboardView) {
+		this.dashboardView = dashboardView;
+		this.dataApplication = DataApplication.getInstance();
+	}
 
-    }
-   
-    
-    /**
-     * Updates the parts of our Dashboard view accordinglyt the changes
-     * in the workspace
-     */
-    private void updateDashboardView() {
-		if (deletedProject != null || addedProject != null) {
+	/**
+	 * Listens to ChangeEvents and sets the changed project, which are then used to
+	 * update our Dashboard view
+	 */
+	@Override
+	public void resourceChanged(IResourceChangeEvent event) {
+		deletedProject = null;
+		addedProject = null;
+		changedProject = null;
+
+		IResourceDelta delta = event.getDelta();
+		for (IResourceDelta deltaElement : delta.getAffectedChildren()) {
+			IResource res = deltaElement.getResource();
+
+			switch (deltaElement.getKind()) {
+			case IResourceDelta.ADDED:
+				if (res instanceof IProject) {
+					addedProject = (IProject) res;
+				}
+				break;
+			case IResourceDelta.REMOVED:
+				if (res instanceof IProject) {
+					deletedProject = (IProject) res;
+				}
+				break;
+			case IResourceDelta.CHANGED:
+				if (res instanceof IProject) {
+					changedProject = (IProject) res;
+				}
+				break;
+			default:
+				break;
+			}
+
+		}
+		updateDashboardView();
+	}
+
+	/**
+	 * Updates the parts of our Dashboard view accordinglyt the changes in the
+	 * workspace
+	 */
+	private void updateDashboardView() {
+		if (deletedProject != null || addedProject != null || changedProject != null) {
 
 			Display.getDefault().asyncExec(() -> {
 
@@ -91,7 +97,7 @@ public class WorkspaceListener implements IResourceChangeListener {
 						// the name of the currently selected project was changed
 						dashboardView.updateMeasurementsDashboardView(addedProject);
 						dashboardView.updateProjectComboBox();
-
+						dashboardView.updateSLORepositoryComboBox();
 					}
 
 					// some project got added/deleted or name changed -> update comboBox with
@@ -101,8 +107,12 @@ public class WorkspaceListener implements IResourceChangeListener {
 						dashboardView.updateMeasurementsDashboardView(addedProject);
 					}
 					dashboardView.updateProjectComboBox();
+					
+					// file in the currently selected project got created or deleted without the measurement dashboard
+				} else if (changedProject != null && changedProject.equals(dataApplication.getProject())) {				
+					dashboardView.updateMeasurementsDashboardView();
 				}
 			});
-		}
+		} 
 	}
 }
