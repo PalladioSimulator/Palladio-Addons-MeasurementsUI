@@ -23,6 +23,9 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
+import org.palladiosimulator.servicelevelobjective.ServicelevelObjectiveFactory;
+import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +34,7 @@ import org.slf4j.LoggerFactory;
  * will be created as default emf model instances.
  * 
  * @author Lasse Merz
+ * @author Jan Hofmann
  *
  */
 public final class RepositoryCreator {
@@ -42,13 +46,16 @@ public final class RepositoryCreator {
     private static final String MONITORREPOSITORY_FILE_ENDING = "/default.monitorrepository";
     private MonitorRepositoryFactory monitorFactory;
     private MonitorRepositoryPackage monitorPackage;
-
+    
+    private static final String SLO_REPOSITORY_FILE_ENDING = "/default.slo";
+	protected ServicelevelObjectivePackage serviceLevelObjectivePackage;
+    protected ServicelevelObjectiveFactory servicelevelObjectiveFactory;
+	
     private static RepositoryCreator instance;
-
     private final Logger logger = LoggerFactory.getLogger(RepositoryCreator.class);
 
     /**
-     * private Constructor for singelton pattern
+     * private Constructor for singleton pattern
      */
     private RepositoryCreator() {
         this.measuringpointPackage = MeasuringpointPackage.eINSTANCE;
@@ -56,6 +63,9 @@ public final class RepositoryCreator {
 
         this.monitorPackage = MonitorRepositoryPackage.eINSTANCE;
         this.monitorFactory = this.monitorPackage.getMonitorRepositoryFactory();
+        
+        this.serviceLevelObjectivePackage = ServicelevelObjectivePackage.eINSTANCE;
+        this.servicelevelObjectiveFactory = this.serviceLevelObjectivePackage.getServicelevelObjectiveFactory();
     }
 
     /**
@@ -144,5 +154,41 @@ public final class RepositoryCreator {
 
         return (MonitorRepository) monitorRepositoryRootObject;
     }
+    
+    /**
+     * Creates a ServiceLevelObjective Repository named "default.slo" in the given project.
+     * 
+     * @param project to create ServiceLevelObjective Repository in
+     * @return created ServiceLevelObjective Repository
+     */
+    public ServiceLevelObjectiveRepository createSLORepository(IProject project) {
+        String servicelevelRepositoryfileName = project.getFullPath() + SLO_REPOSITORY_FILE_ENDING;
+        final URI servicelevelRepositoryfileURI = URI.createPlatformResourceURI(servicelevelRepositoryfileName, true);
 
+        List<AdapterFactory> factories = new LinkedList<>();
+        factories.add(new ResourceItemProviderAdapterFactory());
+        ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory();
+        BasicCommandStack commandStack = new BasicCommandStack();
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(adapterFactory, commandStack);
+
+        final Resource resource = editingDomain.getResourceSet().createResource(servicelevelRepositoryfileURI);
+
+        EClass servicelevelRepository = this.serviceLevelObjectivePackage.getServiceLevelObjectiveRepository();
+        final EObject servicelevelRootObject = servicelevelObjectiveFactory.create(servicelevelRepository);
+
+        if (servicelevelRootObject != null) {
+            resource.getContents().add(servicelevelRootObject);
+        }
+
+        final Map<Object, Object> options = new HashMap<>();
+        options.put(XMLResource.OPTION_ENCODING, "UTF-8");
+        try {
+            resource.save(options);
+        } catch (IOException e) {
+            logger.warn("IOException when attempting to create ServiceLevelObjectiv Repository. Stacktrace: {}", e.getMessage());
+        }
+        
+        return (ServiceLevelObjectiveRepository) servicelevelRootObject;
+    }
+    
 }

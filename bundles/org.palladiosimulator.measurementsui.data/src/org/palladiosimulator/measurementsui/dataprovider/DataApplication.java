@@ -7,6 +7,7 @@ import org.eclipse.sirius.business.api.session.Session;
 import org.eclipse.sirius.business.api.session.SessionManager;
 import org.palladiosimulator.measurementsui.fileaccess.ValidProjectAccessor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.servicelevelobjective.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
@@ -16,6 +17,7 @@ import org.palladiosimulator.measurementsui.fileaccess.ModelAccessor;
  * and provides access to all necessary data from this project.
  * 
  * @author Lasse Merz
+ * @author Jan Hofmann
  *
  */
 public final class DataApplication {
@@ -26,6 +28,7 @@ public final class DataApplication {
     private URI sessionResourceURI;
     private IProject project;
     private MonitorRepository monitorRepository;
+    private ServiceLevelObjectiveRepository sloRepository;
 
     private static DataApplication instance;
 
@@ -62,7 +65,7 @@ public final class DataApplication {
      * @param monitorRepositorySelectionIndex
      *             index from the monitorRepository to load
      */
-    public void loadData(IProject project, int monitorRepositorySelectionIndex) {
+    public void loadData(IProject project, int monitorRepositorySelectionIndex, int sloRepositorySelectionIndex) {
         this.project = project;
 
         this.validProjectAccessor.getAirdFileOfProject(this.project).ifPresent(airdFile -> 
@@ -73,6 +76,7 @@ public final class DataApplication {
             this.modelAccessor.initializeModels(session);
             this.modelAccessor.checkIfRepositoriesExist(project);
             updateMonitorRepository(monitorRepositorySelectionIndex);
+            updateSLORepository(sloRepositorySelectionIndex);
 
         } else {
             logger.warn("No Models are initiated. Make sure a Session is open.");
@@ -86,9 +90,10 @@ public final class DataApplication {
      *  
      * @param monitorRepositorySelectionIndex
      *             index from the monitorRepository to load
+     * @param sloRepositorySelectionIndex 
      */
-    public void updateData(int monitorRepositorySelectionIndex) {
-        loadData(this.project, monitorRepositorySelectionIndex);
+    public void updateData(int monitorRepositorySelectionIndex, int sloRepositorySelectionIndex) {
+        loadData(this.project, monitorRepositorySelectionIndex, sloRepositorySelectionIndex);
     }
 
     /**
@@ -135,6 +140,15 @@ public final class DataApplication {
             this.monitorRepository = this.modelAccessor.getMonitorRepositoryList().get(0);
         }
     }
+    
+    public void updateSLORepository(int selectionIndex) {
+    	if(this.modelAccessor.sloRepositoryExists()
+    			&& this.modelAccessor.getSLORepositoryList().size() > selectionIndex && selectionIndex >= 0) {
+    		this.sloRepository = this.modelAccessor.getSLORepositoryList().get(selectionIndex);
+    	}else {
+    		this.sloRepository = this.modelAccessor.getSLORepositoryList().get(0);
+    	}
+    }
 
     /**
      * Returns an instance of ModelAccessor which can be used to access all pcm models after they
@@ -171,6 +185,14 @@ public final class DataApplication {
      */
     public MonitorRepository getMonitorRepository() {
         return monitorRepository;
+    }
+    
+    /**
+     * Returns the selected sloRepository
+     * @return
+     */
+    public ServiceLevelObjectiveRepository getSLORepository() {
+    	return sloRepository;
     }
 
 }

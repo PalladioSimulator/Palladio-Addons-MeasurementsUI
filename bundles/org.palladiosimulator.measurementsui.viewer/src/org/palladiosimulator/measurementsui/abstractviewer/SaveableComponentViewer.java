@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.net4j.util.om.log.Log;
 import org.eclipse.swt.widgets.Composite;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 
@@ -123,7 +124,6 @@ public abstract class SaveableComponentViewer extends ComponentViewer {
      *             if the save operation fails
      */
     public void save(MDirtyable dirty) throws IOException {
-        
         final Map<Object, Object> options = new HashMap<>();
         options.put(XMLResource.OPTION_SAVE_ONLY_IF_CHANGED, XMLResource.OPTION_SAVE_ONLY_IF_CHANGED_FILE_BUFFER);       
         resource.save(options);

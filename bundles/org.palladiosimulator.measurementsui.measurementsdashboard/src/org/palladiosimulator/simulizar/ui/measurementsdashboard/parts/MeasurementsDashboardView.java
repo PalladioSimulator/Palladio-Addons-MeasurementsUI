@@ -1,6 +1,7 @@
 
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.parts;
 
+import java.awt.Dialog;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.net4j.util.om.log.Log;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyAdapter;
@@ -49,14 +51,18 @@ import org.palladiosimulator.measurementsui.abstractviewer.MeasurementsTreeViewe
 import org.palladiosimulator.measurementsui.abstractviewer.listener.MeasuringpointDropListener;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditor;
 import org.palladiosimulator.measurementsui.datamanipulation.ResourceEditorImpl;
+import org.palladiosimulator.measurementsui.datamanipulation.SloEditor;
 import org.palladiosimulator.measurementsui.dataprovider.DataApplication;
 import org.palladiosimulator.measurementsui.wizard.main.MeasurementsWizard;
+import org.palladiosimulator.measurementsui.wizard.main.ServiceLevelObjectiveWizard;
 import org.palladiosimulator.measurementsui.wizard.main.StandardSetWizard;
 import org.palladiosimulator.measurementsui.wizardmodel.WizardModelType;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.filter.MeasurementsFilter;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RedoHandler;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.RefreshHandler;
@@ -64,6 +70,7 @@ import org.palladiosimulator.simulizar.ui.measurementsdashboard.handlers.UndoHan
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.listeners.WorkspaceListener;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.EmptyMeasuringPointsTreeViewer;
 import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.MonitorTreeViewer;
+import org.palladiosimulator.simulizar.ui.measurementsdashboard.viewer.SloTreeViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,17 +79,26 @@ import org.slf4j.LoggerFactory;
  * a selected MonitorRepository.
  * 
  * @author David Schuetz
+ * @author Jan Hofmann
+ * @author Mario Maser
  * 
  */
 public class MeasurementsDashboardView implements PropertyChangeListener{
 
     private MeasurementsTreeViewer monitorTreeViewer;
     private MeasurementsTreeViewer measuringTreeViewer;
+    private MeasurementsTreeViewer sloTreeViewer;
     private Combo projectsComboDropDown;
     private Combo monitorRepositoriesComboDropDown;
+    private Combo sloRepositoriesComboDropbDown;
     private DataApplication dataApplication;
     private Button deleteButton;
     private Button editButton;
+    private Button addSloButton;
+    private Button editSloButton;
+    private Button deleteSloButton;
+    private Button templateSloButton;
+    private Label buttonSpacer;
     private MeasurementsFilter filter;
     private Text searchText;
     
@@ -99,6 +115,11 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
             + " palladio core models before you can create measuring points."
             + " They are used to model your systems architecture and characteristics."
             + " Use the buttons on the toolbar on top to start creating.";
+    
+    private static final String ADDTEXT_SLO = "Add new SLO";
+    private static final String EDITTEXT_SLO = "Edit SLO";
+    private static final String DELETETEXT_SLO = "Delete SLO";
+	private static final String TEMPLATE_SLO = "SLO Templates";
 
     private static final String SAVE_COMMAND = "org.eclipse.ui.file.save";
     private static final String SAVEALL_COMMAND = "org.eclipse.ui.file.saveAll";
@@ -154,23 +175,24 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
 
         Composite monitorContainer = createTreeComposite(treeContainer);
         Composite undefinedMeasuringContainer = createTreeComposite(treeContainer);
-        treeContainer.setWeights(new int[] { 10, 5 });
+        Composite sloContainer = createTreeComposite(treeContainer);
+        treeContainer.setWeights(new int[] { 10, 5, 5 });
         
         createViewButtons(buttonContainer);
         
         monitorTreeViewer = createMonitorTreeViewer(monitorContainer);
         measuringTreeViewer = createEmptyMeasuringPointsTreeViewer(undefinedMeasuringContainer);
-        
+        sloTreeViewer = createSloTreeViewer(sloContainer);
         initHandlers();
     }
 
     /**
-     * Initializes the connecton to the data management and manipulation package
+     * Initializes the connection to the data management and manipulation package
      */
     private void initializeApplication() {
         this.dataApplication = DataApplication.getInstance();
         if (!dataApplication.getValidProjectAccessor().getAllProjectAirdfiles().isEmpty()) {
-            dataApplication.loadData(dataApplication.getValidProjectAccessor().getAllProjectAirdfiles().get(0), 0);
+            dataApplication.loadData(dataApplication.getValidProjectAccessor().getAllProjectAirdfiles().get(0), 0, 0);
         }
     }
 
@@ -201,6 +223,14 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         addSelectionListener(measurementsTreeViewer);
 
         return measurementsTreeViewer;
+    }
+    
+    private MeasurementsTreeViewer createSloTreeViewer(Composite parent) {
+    	SloTreeViewer sloTreeViewer = new SloTreeViewer(parent, dirty, commandService, dataApplication.getSLORepository());
+    	sloTreeViewer.addMouseListener();
+    	sloTreeViewer.getViewer().addFilter(filter);
+    	addSelectionListener(sloTreeViewer);
+    	return sloTreeViewer;
     }
 
     /**
@@ -250,35 +280,47 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
 
             editButton.setText(EDITTEXT_GRAYEDOUT);
             deleteButton.setText(DELETETEXT_GRAYEDOUT);
+            deleteSloButton.setEnabled(false);
+            editSloButton.setEnabled(false);
 
             if (selectionObject == null || selectionObject instanceof MonitorRepository
-                    || selectionObject instanceof MeasuringPointRepository) {
+                    || selectionObject instanceof MeasuringPointRepository 
+                    || selectionObject instanceof ServiceLevelObjectiveRepository) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
-            }
+            }          
             if (selectionObject instanceof MeasuringPoint) {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(true);
-                deleteButton.setText(DELETETEXT_MEASURINGPOINT);
+                deleteButton.setText(DELETETEXT_MEASURINGPOINT);  
             }
-
             if (selectionObject instanceof ProcessingType) {
                 deleteButton.setEnabled(false);
                 editButton.setEnabled(true);
-                editButton.setText(EDITTEXT_PROCESSINGTYPE);
+                editButton.setText(EDITTEXT_PROCESSINGTYPE);           
             }
-
             if (selectionObject instanceof Monitor) {
                 deleteButton.setEnabled(true);
                 editButton.setEnabled(true);
                 editButton.setText(EDITTEXT_MONITOR);
                 deleteButton.setText(DELETETEXT_MONITOR);
-            }
+            }        
             if (selectionObject instanceof MeasurementSpecification) {
                 deleteButton.setEnabled(true);
                 editButton.setEnabled(true);
                 editButton.setText(EDITTEXT_MEASUREMENT);
                 deleteButton.setText(DELETETEXT_MEASUREMENT);
+            }
+            if (selectionObject instanceof ServiceLevelObjective) {
+            	// Standard buttons
+                editButton.setEnabled(false);
+                deleteButton.setEnabled(false);
+            	
+            	// SLO Buttons
+                deleteSloButton.setEnabled(true);
+                deleteSloButton.setText(DELETETEXT_SLO);
+                editSloButton.setEnabled(true);
+                editSloButton.setText(EDITTEXT_SLO);
             }
         });
 
@@ -359,6 +401,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         filter.setSearchText(searchText.getText());
         monitorTreeViewer.getViewer().refresh();
         measuringTreeViewer.getViewer().refresh();
+        sloTreeViewer.getViewer().refresh();
         filter.setSearchText("");
     }
 
@@ -374,6 +417,13 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         createDeleteButton(buttonContainer);
         createEditButton(buttonContainer);
         createStandardSetButton(buttonContainer);
+           
+        createButtonSpacer(buttonContainer);
+        createAddSLOButton(buttonContainer);
+        createEditSLOButton(buttonContainer);
+        createDeleteSLOButton(buttonContainer);
+        createButtonSpacer(buttonContainer);
+//        createTemplateSLOButton(buttonContainer);
     }
 
     /**
@@ -402,6 +452,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
             }
         });
     }
+    
 
     /**
      * Creates a Button which deletes selected EObjects
@@ -469,6 +520,119 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
     }
     
     /**
+     * Creates spacer for service level objective buttons
+     * 
+     * @param parent
+     *            a composite where the spacer will be placed
+     */
+    private void createButtonSpacer(Composite parent) {
+        buttonSpacer = new Label(parent, SWT.PUSH);
+        buttonSpacer.setText("");
+        buttonSpacer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+    }
+    
+    /**
+     * Creates a Button which adds new service level objective
+     * 
+     * @param parent
+     *            a composite where the button will be placed
+     */
+    private void createAddSLOButton(Composite parent) {
+        addSloButton = new Button(parent, SWT.PUSH);
+        addSloButton.setText(ADDTEXT_SLO);
+        addSloButton.setEnabled(true);
+        addSloButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        addSloButton.addListener(SWT.Selection, e -> {
+            checkDirtyState();
+            ServiceLevelObjectiveWizard wizard = new ServiceLevelObjectiveWizard(true, null);
+            wizard.addPropertyChangeListener(this);
+            Shell parentShell = wizard.getShell();
+            WizardDialog dialog = new WizardDialog(parentShell, wizard);
+            dialog.setPageSize(690, 450);
+            dialog.setMinimumPageSize(690, 450);
+            dialog.setShellStyle(SWT.CLOSE | SWT.TITLE | SWT.BORDER
+                    | SWT.APPLICATION_MODAL);
+            dialog.open();
+        });
+    }
+    
+    /**
+     * Creates a Button which edits service level objective
+     * 
+     * @param parent
+     *            a composite where the button will be placed
+     */
+    private void createEditSLOButton(Composite parent) {
+        editSloButton = new Button(parent, SWT.PUSH);
+        editSloButton.setText(EDITTEXT_SLO);
+        editSloButton.setEnabled(false);
+        editSloButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        editSloButton.addListener(SWT.Selection, e -> {      
+			checkDirtyState();
+
+			Object selection = selectionService.getSelection();
+			if (selection instanceof ServiceLevelObjective) {
+				ServiceLevelObjectiveWizard wizard = new ServiceLevelObjectiveWizard(false,
+						(ServiceLevelObjective) selection);
+				wizard.addPropertyChangeListener(this);
+				Shell parentShell = wizard.getShell();
+				WizardDialog dialog = new WizardDialog(parentShell, wizard);
+				dialog.setPageSize(690, 450);
+				dialog.setMinimumPageSize(690, 450);
+				dialog.setShellStyle(SWT.CLOSE | SWT.TITLE | SWT.BORDER | SWT.APPLICATION_MODAL);
+				dialog.open();
+            }
+        });
+    }
+    
+    /**
+     * Creates a Button which deletes service level objective
+     * 
+     * @param parent
+     *            a composite where the button will be placed
+     */
+    private void createDeleteSLOButton(Composite parent) {
+        deleteSloButton = new Button(parent, SWT.PUSH);
+        deleteSloButton.setText(DELETETEXT_SLO);
+        deleteSloButton.setEnabled(false);
+        deleteSloButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        deleteSloButton.addListener(SWT.Selection, e -> {
+            ResourceEditor resourceEditor = ResourceEditorImpl.getInstance();
+            Object selection = selectionService.getSelection();
+            if (selection instanceof EObject) {
+                resourceEditor.deleteResource((EObject) selection);
+            }
+        });
+    }
+    
+    /**
+     * Creates a Button to create SLO templates
+     * 
+     * @param parent
+     *            a composite where the button will be placed
+     */
+    private void createTemplateSLOButton(Composite parent) {
+        templateSloButton = new Button(parent, SWT.PUSH);
+        templateSloButton.setText(TEMPLATE_SLO);
+        templateSloButton.setEnabled(true);
+        templateSloButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+
+        templateSloButton.addListener(SWT.Selection, e -> {
+            checkDirtyState();
+//            StandardSetWizard wizard = new StandardSetWizard();
+//            wizard.addPropertyChangeListener(this);
+//            Shell parentShell = wizard.getShell();
+//            WizardDialog dialog = new WizardDialog(parentShell, wizard);
+//            dialog.setPageSize(720, 400);
+//            dialog.setMinimumPageSize(720, 400);
+//            dialog.open();
+        });
+    }
+    
+    /**
      * Creates a button which opens a wizard to create standard sets of
      * measuring points and monitors
      * 
@@ -524,6 +688,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         createProjectsSelectionComboBox(container);
         createMonitorRepositorySelectionComboBox(container);
+        createSLORepositorySelectionComboBox(container);
     }
 
     /**
@@ -547,9 +712,10 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
             public void widgetSelected(SelectionEvent e) {
                 int selectionIndex = projectsComboDropDown.getSelectionIndex();
                 dataApplication
-                        .loadData(dataApplication.getValidProjectAccessor().getAllProjectAirdfiles().get(selectionIndex), 0);
+                        .loadData(dataApplication.getValidProjectAccessor().getAllProjectAirdfiles().get(selectionIndex), 0, 0);
                 updateTreeViewer();
                 updateMonitorRepositoryComboBox();
+                updateSLORepositoryComboBox();
             }
 
             @Override
@@ -594,6 +760,40 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
         monitorRepositoriesComboDropDown.select(0);
 
     }
+    
+    /**
+     * Creates a ComboBox at the top of the view where user can select a SLO Repository
+     * 
+     * @param parent
+     *            a composite where the combobox is placed in
+     */
+    private void createSLORepositorySelectionComboBox(Composite parent) {
+
+        Composite sloRepositoryContainer = new Composite(parent, SWT.NONE);
+        sloRepositoryContainer.setLayout(new GridLayout(2, false));
+        sloRepositoryContainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        final Label filterLabel = new Label(sloRepositoryContainer, SWT.NONE);
+        filterLabel.setText("SLO Repository:");
+        sloRepositoriesComboDropbDown = new Combo(sloRepositoryContainer, SWT.READ_ONLY);
+        sloRepositoriesComboDropbDown.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+
+        updateSLORepositoryComboBox();
+        sloRepositoriesComboDropbDown.addSelectionListener(new SelectionListener() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                int selectionIndex = sloRepositoriesComboDropbDown.getSelectionIndex();
+                dataApplication.updateSLORepository(selectionIndex);
+                updateTreeViewer();
+            }
+
+            @Override
+            public void widgetDefaultSelected(SelectionEvent e) {
+            	sloRepositoriesComboDropbDown.select(0);
+            }
+        });
+        sloRepositoriesComboDropbDown.select(0);
+
+    }
 
     /**
      * If more then 1 monitorRepository exists in the current project this updates the
@@ -613,9 +813,35 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
             monitorRepositoriesComboDropDown.add(i + 1 + ". " + monitorRepository.getEntityName());
         }
         monitorRepositoriesComboDropDown.select(selectionIndex);
-
         if (dataApplication.getModelAccessor().getMonitorRepositoryList().size() <= 1) {
             monitorRepositoriesComboDropDown.setEnabled(false);
+        }
+
+    }
+    
+    /**
+     * If more then 1 monitorRepository exists in the current project this updates the
+     * MonitorRepositoryComboBox
+     */
+    public void updateSLORepositoryComboBox() {
+
+    	sloRepositoriesComboDropbDown.setEnabled(true);
+        int selectionIndex = 0;
+        sloRepositoriesComboDropbDown.removeAll();
+        List<ServiceLevelObjectiveRepository> sloRepositories = dataApplication.getModelAccessor().getSLORepositoryList();
+        List<String> sloRepositoryNames = dataApplication.getModelAccessor().getSLORepositoryNameList();
+        for (int i = 0; i < sloRepositories.size(); i++) {
+        	ServiceLevelObjectiveRepository sloRepository = sloRepositories.get(i);
+            if (sloRepository.equals(dataApplication.getSLORepository())) {
+                selectionIndex = i;
+            }
+            // Add the name of the file holding the slo repository and remove the trailing # character.
+            sloRepositoriesComboDropbDown.add(i + 1 + ". " + 
+                		sloRepositoryNames.get(i).substring(0,  sloRepositoryNames.get(i).length() - 1));   
+        }
+        sloRepositoriesComboDropbDown.select(selectionIndex);
+        if (sloRepositories.size() <= 1) {
+        	sloRepositoriesComboDropbDown.setEnabled(false);
         }
 
     }
@@ -649,7 +875,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      *            to update
      */
     public void updateMeasurementsDashboardView(IProject project) {
-        dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex());
+        dataApplication.loadData(project, monitorRepositoriesComboDropDown.getSelectionIndex(), sloRepositoriesComboDropbDown.getSelectionIndex());
         updateTreeViewer();
     }
 
@@ -660,9 +886,10 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      *            to update
      */
     public void updateMeasurementsDashboardView() {
-        dataApplication.updateData(monitorRepositoriesComboDropDown.getSelectionIndex());
+        dataApplication.updateData(monitorRepositoriesComboDropDown.getSelectionIndex(), sloRepositoriesComboDropbDown.getSelectionIndex());
         updateTreeViewer();
         updateMonitorRepositoryComboBox();
+        updateSLORepositoryComboBox();
     }
 
     /**
@@ -671,14 +898,16 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
     private void undoChanges() {
         monitorTreeViewer.undoAll();
         measuringTreeViewer.undoAll();
+        sloTreeViewer.undoAll();
     }
 
     /**
-     * Updates the Monitor and Measuringpoint Tree Viewer
+     * Updates the Monitor, SLO and Measuringpoint Tree Viewer
      */
     private void updateTreeViewer() {
         monitorTreeViewer.update(dataApplication.getMonitorRepository());
         measuringTreeViewer.update(dataApplication.getModelAccessor().getMeasuringPointRepositoryList().get(0));
+        sloTreeViewer.update(dataApplication.getSLORepository());
     }
     
     /**
@@ -686,6 +915,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      */
     public void undo() {
         monitorTreeViewer.undo();
+        sloTreeViewer.undo();
     }
 
     /**
@@ -693,6 +923,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
      */
     public void redo() {
         monitorTreeViewer.redo();
+        sloTreeViewer.redo();
     }
 
 
@@ -708,6 +939,7 @@ public class MeasurementsDashboardView implements PropertyChangeListener{
     public void save() throws IOException {
         monitorTreeViewer.save(dirty);
         measuringTreeViewer.save(dirty);
+        sloTreeViewer.save(dirty);
     }
    
     @Override

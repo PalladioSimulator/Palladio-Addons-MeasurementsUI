@@ -1,0 +1,13 @@
+import org.palladiosimulator.measurementsui.servicelevelobjectiveview.ServicelevelobjectiveviewOnSelectionTreeView
+
+/* org.palladiosimulator.measurementsui.servicelevelobjectiveview EMF Parsley Dsl Module file */
+module org.palladiosimulator.measurementsui.servicelevelobjectiveview {
+	
+	parts {
+		viewpart org.palladiosimulator.measurementsui.servicelevelobjectiveview {
+			viewname "Servicelevelobjectiveview"
+			viewclass ServicelevelobjectiveviewOnSelectionTreeView
+		}
+	}
+	
+}

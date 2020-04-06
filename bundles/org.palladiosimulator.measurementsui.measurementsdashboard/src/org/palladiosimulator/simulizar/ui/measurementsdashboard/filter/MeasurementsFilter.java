@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.ui.measurementsdashboard.filter;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
@@ -9,12 +11,16 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
+import org.palladiosimulator.servicelevelobjective.Threshold;
 
 /**
  * Viewer Filter which filters all elements of a TreeViewer given a search text. Additionally
  * expands or collapses certain elements of the tree.
  * 
  * @author David Schuetz
+ * @author Jan Hofmann
  *
  */
 public class MeasurementsFilter extends ViewerFilter {
@@ -36,10 +42,12 @@ public class MeasurementsFilter extends ViewerFilter {
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
         TreeViewer treeViewer = (TreeViewer) viewer;
-        if (searchText == null || searchText.length() == 0 || element instanceof MonitorRepository
+        if (searchText == null || searchText.length() == 0 
+        		|| element instanceof MonitorRepository
                 || element instanceof MeasuringPointRepository) {
             return true;
         }
+        try {
         if (element instanceof Monitor) {
             return filterMonitor(element, treeViewer);
         }
@@ -52,10 +60,26 @@ public class MeasurementsFilter extends ViewerFilter {
         if (element instanceof MeasuringPoint) {
             return filterMeasuringPoint(element);
         }
+        if (element instanceof ServiceLevelObjectiveRepository) {
+        	return filterServiceLevelObjectiveRepository(element, treeViewer);
+        }
+        if (element instanceof ServiceLevelObjective) {
+        	return filterServiceLevelObjective(element);
+        }
+        if (element instanceof Threshold) {
+        	return true;
+        }
+        } catch (Exception e) {
+        	// TODO: Handle
+        	// !MESSAGE Ignored reentrant call while viewer is busy. 
+        	// This is only logged once per viewer instance, but similar 
+        	// calls will still be ignored.
+			// e.printStackTrace();
+		}
         return false;
     }
 
-    /**
+	/**
      * 
      * @param element
      *            a monitor which is matched with the search text
@@ -138,6 +162,44 @@ public class MeasurementsFilter extends ViewerFilter {
         String measuringPointMatch = measuringPoint.getStringRepresentation() + "$" + measuringPoint.toString()
                 + "$MeasuringPoint";
         return measurementMatchesSearchText(measuringPointMatch, searchText);
+    }
+    
+    /**
+     * This method filters a Service Level Objective Repository by performing a recursive 
+     * search of its Service Level Objective children.
+     * @param element
+     *            a ServiceLevelObjectiveRepository which is used for recursive search 
+     *            of its ServiceLevelObjective children.
+     * @param treeViewer
+     *            a treeviewer where the ServiceLevelObjectiveRepository is in
+     * @return true if the search text matches the ServiceLevelObjective properties
+     */
+    private boolean filterServiceLevelObjectiveRepository(Object element, TreeViewer treeViewer) {
+    	ServiceLevelObjectiveRepository sloRepo = (ServiceLevelObjectiveRepository) element;
+    	EList<EObject> slos = sloRepo.eContents();
+    	treeViewer.setExpandedState(element, false);
+    	for (EObject slo : slos) {
+        	if (select(treeViewer, sloRepo, slo)) {
+                treeViewer.setExpandedState(element, true);
+                return true;
+            }
+    	}	
+    	return true;
+	}
+    
+    /**
+     * Filters Service Level Objectives View
+     * @param element
+     *            a ServiceLevelObjective which is matched with the search text
+     * @return true if the search text matches the ServiceLevelObjective properties
+     */
+    private boolean filterServiceLevelObjective(Object element) {
+        ServiceLevelObjective slo = (ServiceLevelObjective) element;
+        final String serviceLevelObjectiveMatch = slo.getName() + "$" + slo.getId() + "$"
+        		+ slo.getDescription() + "$"
+        		+ slo.getMeasurementSpecification() + "$"
+                + "$ServiceLevelObjective";
+        return measurementMatchesSearchText(serviceLevelObjectiveMatch, searchText);
     }
 
     /**

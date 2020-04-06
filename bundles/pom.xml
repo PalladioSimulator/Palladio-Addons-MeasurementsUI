@@ -17,6 +17,7 @@
 		<module>org.palladiosimulator.measurementsui.measurementsdashboard</module>
 		<module>org.palladiosimulator.measurementsui.processingtype</module>
 		<module>org.palladiosimulator.measurementsui.monitorrepositoryview</module>
+		<module>org.palladiosimulator.measurementsui.servicelevelobjectiveview</module>
 		<module>org.palladiosimulator.measurementsui.propertiespage</module>
 		<module>org.palladiosimulator.measurementsui.selectmetricdescriptions.available</module>
 		<module>org.palladiosimulator.measurementsui.selectmetricdescriptions.selected</module>
