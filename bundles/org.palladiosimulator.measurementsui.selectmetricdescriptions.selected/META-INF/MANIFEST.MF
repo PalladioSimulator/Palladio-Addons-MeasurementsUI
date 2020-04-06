@@ -18,3 +18,4 @@ Import-Package: org.apache.log4j,
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected,
  org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected
+Automatic-Module-Name: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected
