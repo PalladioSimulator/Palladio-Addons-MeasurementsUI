@@ -12,8 +12,8 @@
 
 	<properties>
 		<org.palladiosimulator.maven.tychotprefresh.tplocation.2>${project.basedir}/releng/org.palladiosimulator.measurementsui.targetplatform/tp.target</org.palladiosimulator.maven.tychotprefresh.tplocation.2>
-		<xtext-version>2.18.0</xtext-version>
-		<parsley.version>1.7.0</parsley.version>
+		<xtext-version>2.22.0</xtext-version>
+		<parsley.version>1.10.0</parsley.version><!-- 2020-06 uses 1.11.0 but this is not available as of now -->
 	</properties>
 	<modules>
 		<module>bundles</module>
