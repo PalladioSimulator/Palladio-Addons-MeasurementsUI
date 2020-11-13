@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?><target name="org.palladiosimulator.measurementsui Target Platform" sequenceNumber="1">
 <locations>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
-<unit id="org.palladiosimulator.simulizar.feature.feature.group" version="2.1.0.201711211534-8h_SEFbcPueBA312721262539"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
+<unit id="org.palladiosimulator.simulizar.measuringpoint.create" version="0.0.0"/>
+<unit id="org.palladiosimulator.simulizar.ui.perspective" version="0.0.0"/>
 <repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simulizar/releases/latest/"/>
 </location>
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
-<unit id="org.palladiosimulator.simulizar.feature.feature.group" version="2.1.0.201711211534-8h_SEFbcPueBA312721262539"/>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
+<unit id="org.palladiosimulator.simulizar.measuringpoint.create" version="0.0.0"/>
+<unit id="org.palladiosimulator.simulizar.ui.perspective" version="0.0.0"/>
 <repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simulizar/nightly/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
