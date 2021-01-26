@@ -212,8 +212,8 @@
 <repository location="http://download.eclipse.org/technology/swtbot/releases/2.7.0/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
-<unit id="org.eclipse.swtchart" version="0.7.0.201906051446"/>
-<repository location="http://download.eclipse.org/swtchart/releases/0.7.0/update/"/>
+<unit id="org.eclipse.swtchart.feature.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/swtchart/releases/0.13.0/repository"/>
 </location>
 </locations>
 </target>
