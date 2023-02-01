@@ -22,7 +22,7 @@ Require-Bundle: javax.inject,
  org.eclipse.e4.ui.workbench,
  org.palladiosimulator.measurementsui.viewer
 Automatic-Module-Name: org.palladiosimulator.simulizar.ui.measuringview
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Import-Package: emptymeasuringpoints,
  monitorrepositoryview,
  org.palladiosimulator.measurementsui.datamanipulation,

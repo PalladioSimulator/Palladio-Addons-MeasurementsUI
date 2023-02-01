@@ -17,6 +17,6 @@ Import-Package: org.apache.commons.logging,
  org.palladiosimulator.measurementsui.dataprovider,
  org.palladiosimulator.measurementsui.fileaccess,
  org.palladiosimulator.measurementsui.wizard.main
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: emptymeasuringpoints
 

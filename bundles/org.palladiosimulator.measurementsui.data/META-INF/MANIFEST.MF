@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.ui,
  org.slf4j.api,
  org.palladiosimulator.servicelevelobjective,
  org.palladiosimulator.servicelevelobjective.edit
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: HelloWorldMenu
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.measurementsui.datamanipulation,

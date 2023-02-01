@@ -13,6 +13,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.monitorrepository;bundle-version="3.0.1"
 Import-Package: org.apache.log4j,
  org.apache.commons.logging
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.measurementsui.processingtype
 Automatic-Module-Name: org.palladiosimulator.measurementsui.processingtype

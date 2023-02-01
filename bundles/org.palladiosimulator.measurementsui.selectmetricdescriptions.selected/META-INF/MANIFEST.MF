@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.measurementsui.data
 Import-Package: org.apache.log4j,
  org.apache.commons.logging
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected,
  org.palladiosimulator.measurementsui.selectedmetricdescriptions.selected
 Automatic-Module-Name: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected
