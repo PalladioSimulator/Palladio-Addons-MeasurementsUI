@@ -3,7 +3,7 @@ Automatic-Module-Name: servicelevelobjectiveview
 Bundle-ManifestVersion: 2
 Bundle-Name: servicelevelobjectiveview
 Bundle-Vendor: My Company
-Bundle-Version: 5.1.0.qualifier
+Bundle-Version: 5.2.0
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.servicelevelobjectiveview; singleton:=true
 Bundle-Activator: org.palladiosimulator.measurementsui.servicelevelobjectiveview.ServicelevelobjectiveviewActivator
 Bundle-ActivationPolicy: lazy
