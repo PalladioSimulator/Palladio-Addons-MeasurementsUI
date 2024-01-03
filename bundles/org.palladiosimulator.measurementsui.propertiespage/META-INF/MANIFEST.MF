@@ -3,7 +3,7 @@ Automatic-Module-Name: PropertiesPage
 Bundle-ManifestVersion: 2
 Bundle-Name: PropertiesPage
 Bundle-Vendor: My Company
-Bundle-Version: 5.1.0.qualifier
+Bundle-Version: 5.2.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.propertiespage;singleton:=true
 Bundle-Activator: propertiespage.PropertiespageActivator
 Bundle-ActivationPolicy: lazy
