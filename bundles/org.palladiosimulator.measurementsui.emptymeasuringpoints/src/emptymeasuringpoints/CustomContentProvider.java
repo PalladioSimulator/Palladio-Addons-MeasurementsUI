@@ -1,6 +1,6 @@
 package emptymeasuringpoints;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.parsley.edit.ui.provider.ViewerContentProvider;

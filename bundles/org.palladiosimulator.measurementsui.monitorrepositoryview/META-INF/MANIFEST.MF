@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.parsley.views,
  org.eclipse.xtext.xbase.lib,
  org.palladiosimulator.monitorrepository,
- javax.annotation,
+ jakarta.annotation,
  org.eclipse.emf.parsley.common,
  org.eclipse.core.resources
 Import-Package: org.apache.commons.logging,
