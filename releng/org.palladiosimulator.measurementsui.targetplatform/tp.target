@@ -9,7 +9,7 @@
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 <unit id="org.palladiosimulator.simulizar.measuringpoint.create" version="0.0.0"/>
 <unit id="org.palladiosimulator.simulizar.ui.perspective" version="0.0.0"/>
-<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simulizar/branches/no_ui-workflow"/>
+<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simulizar/branches/no_ui-workflow_dlim"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
 <unit id="org.palladiosimulator.edp2.feature.feature.group" version="1.0.0.201712071336"/>
@@ -153,7 +153,7 @@
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 <unit id="org.scaledl.usageevolution.feature.feature.group" version="1.0.0.201803191436"/>
-<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-cloudscaleusageevolution/branches/no_ui-workflow"/>
+<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-cloudscaleusageevolution/branches/no_ui-workflow_dlim"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" refresh="true">
 <unit id="tools.descartes.dlim.feature.feature.group" version="0.0.0"/>
