@@ -83,5 +83,6 @@ local.properties
 
 target/
 .checkstyle
+.polyglot.*
 
 *.jpeg

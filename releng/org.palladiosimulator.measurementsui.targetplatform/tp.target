@@ -156,8 +156,8 @@
 <repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-cloudscaleusageevolution/branches/no_ui-edp2"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" refresh="true">
-<unit id="LIMBO_DLIM.feature.group" version="0.16.1.201606230914"/>
-<repository location="https://updatesite.palladio-simulator.com/palladio-p2mirror-dlim/nightly/"/>
+<unit id="tools.descartes.dlim.feature.feature.group" version="0.0.0"/>
+<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-limbo/nightly/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
 <unit id="org.palladiosimulator.servicelevelobjective.feature.feature.group" version="1.1.0.201709290951"/>
