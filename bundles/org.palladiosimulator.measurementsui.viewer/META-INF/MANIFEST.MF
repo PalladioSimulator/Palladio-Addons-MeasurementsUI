@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Parts
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.viewer
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.measurementsui.measuringview.parts
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: javax.inject,

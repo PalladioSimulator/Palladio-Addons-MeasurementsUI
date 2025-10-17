@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Wizard
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.wizard;singleton:=true
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.measurementsui.wizard.main.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

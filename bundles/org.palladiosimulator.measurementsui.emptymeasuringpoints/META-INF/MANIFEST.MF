@@ -3,7 +3,7 @@ Automatic-Module-Name: EmptyMeasuringpoints
 Bundle-ManifestVersion: 2
 Bundle-Name: EmptyMeasuringpoints
 Bundle-Vendor: My Company
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.emptymeasuringpoints;singleton:=true
 Bundle-Activator: emptymeasuringpoints.EmptymeasuringpointsActivator
 Bundle-ActivationPolicy: lazy

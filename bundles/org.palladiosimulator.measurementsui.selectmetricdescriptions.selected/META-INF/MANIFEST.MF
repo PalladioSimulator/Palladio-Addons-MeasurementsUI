@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected
 Bundle-Vendor: My Company
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected;singleton:=true
 Bundle-Activator: org.palladiosimulator.measurementsui.selectmetricdescriptions.selected.SelectedMetricDescriptionsActivator
 Bundle-ActivationPolicy: lazy
