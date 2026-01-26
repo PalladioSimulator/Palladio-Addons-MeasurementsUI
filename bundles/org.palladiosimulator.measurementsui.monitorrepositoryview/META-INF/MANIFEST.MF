@@ -3,7 +3,7 @@ Automatic-Module-Name: monitorrepositoryview
 Bundle-ManifestVersion: 2
 Bundle-Name: monitorrepositoryview
 Bundle-Vendor: My Company
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.monitorrepositoryview;singleton:=true
 Bundle-Activator: org.palladiosimulator.measurementsui.monitorrepositoryview.MonitorRepositoryActivator
 Bundle-ActivationPolicy: lazy

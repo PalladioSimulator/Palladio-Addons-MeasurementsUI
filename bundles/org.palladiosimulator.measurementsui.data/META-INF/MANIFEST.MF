@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: DataProject
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.data;singleton:=true
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -11,8 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.edp2,
  de.uka.ipd.sdq.workflow.mdsd,
  org.palladiosimulator.analyzer.workflow,
- org.palladiosimulator.pcm.resources;bundle-version="4.0.0",
- org.palladiosimulator.pcm;bundle-version="4.1.0",
+ org.palladiosimulator.pcm.resources,
+ org.palladiosimulator.pcm,
  org.palladiosimulator.monitorrepository,
  org.eclipse.sirius;bundle-version="5.1.1",
  org.eclipse.emf.transaction,
