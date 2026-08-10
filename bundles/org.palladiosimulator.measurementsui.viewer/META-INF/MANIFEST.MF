@@ -4,7 +4,7 @@ Bundle-Name: Parts
 Bundle-SymbolicName: org.palladiosimulator.measurementsui.viewer
 Bundle-Version: 6.0.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.measurementsui.measuringview.parts
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: jakarta.inject.jakarta.inject-api;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.osgi,
  org.eclipse.jface,
